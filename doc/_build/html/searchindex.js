@@ -1,0 +1,1 @@
+Search.setIndex({envversion:48,filenames:["index","source/coro_sleec","source/modules"],objects:{},objnames:{},objtypes:{},terms:{content:0,index:0,modul:0,page:0,search:0},titles:["Welcome to sleec&#8217;s documentation!","coro_sleec module","source"],titleterms:{coro_sleec:1,document:0,indic:0,modul:1,sleec:0,sourc:2,tabl:0,welcom:0}})
