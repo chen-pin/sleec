@@ -1,0 +1,1533 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.atmosphere package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-atmosphere-package">
+<h1>hcipy.hcipy.atmosphere package<a class="headerlink" href="#hcipy-hcipy-atmosphere-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere.atmospheric_model">
+<span id="hcipy-hcipy-atmosphere-atmospheric-model-module"></span><h2>hcipy.hcipy.atmosphere.atmospheric_model module<a class="headerlink" href="#module-hcipy.hcipy.atmosphere.atmospheric_model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">AtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.L0" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.L0"><code class="xref py py-obj docutils literal"><span class="pre">L0</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.t" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.velocity" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.velocity"><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></a></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td>Evolve the atmospheric layer until time <cite>t</cite>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td>Get the phase screen at a certain wavelength.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td>Reset the phase screen.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd><p>The integrated value of Cn^2 for the layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of the phase structure function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evolve the atmospheric layer until time <cite>t</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>t</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The time to which to evolve the atmospheric layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of the phase structure function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.output_grid">
+<code class="descname">output_grid</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.output_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the phase screen at a certain wavelength.</p>
+<p>Each atmospheric layer is modelled as an infinitely-thin phase screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the phase screen.</p>
+<p>This will create a randomized uncorrelated phase screen.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.t">
+<code class="descname">t</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current time of the atmospheric layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.velocity">
+<code class="descname">velocity</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer.velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The two-dimensional velocity of the layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.Cn_squared_from_fried_parameter">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">Cn_squared_from_fried_parameter</code><span class="sig-paren">(</span><em>r0</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.Cn_squared_from_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">MultiLayerAtmosphere</code><span class="sig-paren">(</span><em>layers</em>, <em>scintilation=False</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.Cn_squared" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The total Cn^2 value of the simulated atmosphere.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.layers" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.layers"><code class="xref py py-obj docutils literal"><span class="pre">layers</span></code></a></dt>
+<dd><p class="first last">A list of :class:<a href="#id1"><span class="problematic" id="id2">`</span></a>AtmosphericLayer: objects.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.outer_scale" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of all layers.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.scintilation" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.scintilation"><code class="xref py py-obj docutils literal"><span class="pre">scintilation</span></code></a></dt>
+<dd><p class="first last">Whether to include scintilation effects in the propagation.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.t" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></dt>
+<dd><p class="first last">The current time.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.calculate_propagators" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.calculate_propagators"><code class="xref py py-obj docutils literal"><span class="pre">calculate_propagators</span></code></a>()</td>
+<td>Recalculates the list of optical elements used for a propagation.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.evolve_until" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td>Evolve all atmospheric layers to a time t.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.phase_for" title="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td>Get the unwrapped phase for the atmosphere.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>reset</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total Cn^2 value of the simulated atmosphere.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.calculate_propagators">
+<code class="descname">calculate_propagators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.calculate_propagators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recalculates the list of optical elements used for a propagation.</p>
+<p>This function is called automatically by other functions, but a recalculation
+can be forced by calling it explicitly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evolve all atmospheric layers to a time t.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>t</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The time to which to evolve the atmospheric layers.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.layers">
+<code class="descname">layers</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of :class:<a href="#id3"><span class="problematic" id="id4">`</span></a>AtmosphericLayer: objects.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of all layers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unwrapped phase for the atmosphere.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The total unwrapped phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.scintilation">
+<code class="descname">scintilation</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.scintilation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to include scintilation effects in the propagation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.t">
+<code class="descname">t</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.MultiLayerAtmosphere.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.fried_parameter_from_Cn_squared">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">fried_parameter_from_Cn_squared</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.fried_parameter_from_Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.fried_parameter_to_seeing">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">fried_parameter_to_seeing</code><span class="sig-paren">(</span><em>r0</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.fried_parameter_to_seeing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.phase_covariance_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">phase_covariance_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.phase_covariance_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.phase_structure_function_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">phase_structure_function_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.phase_structure_function_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.power_spectral_density_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">power_spectral_density_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.power_spectral_density_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.seeing_to_fried_parameter">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">seeing_to_fried_parameter</code><span class="sig-paren">(</span><em>seeing</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.seeing_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.atmospheric_model.von_karman_psd">
+<code class="descclassname">hcipy.hcipy.atmosphere.atmospheric_model.</code><code class="descname">von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>r0</em>, <em>L0=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.atmospheric_model.von_karman_psd" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function implements the von Karman power spectral density.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere.finite_atmospheric_layer">
+<span id="hcipy-hcipy-atmosphere-finite-atmospheric-layer-module"></span><h2>hcipy.hcipy.atmosphere.finite_atmospheric_layer module<a class="headerlink" href="#module-hcipy.hcipy.atmosphere.finite_atmospheric_layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.finite_atmospheric_layer.</code><code class="descname">FiniteAtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em>, <em>oversampling=2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.finite_atmospheric_layer.FiniteAtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere.infinite_atmospheric_layer">
+<span id="hcipy-hcipy-atmosphere-infinite-atmospheric-layer-module"></span><h2>hcipy.hcipy.atmosphere.infinite_atmospheric_layer module<a class="headerlink" href="#module-hcipy.hcipy.atmosphere.infinite_atmospheric_layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.infinite_atmospheric_layer.</code><code class="descname">InfiniteAtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em>, <em>stencil_length=2</em>, <em>use_interpolation=False</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.infinite_atmospheric_layer.InfiniteAtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere.modal_adaptive_optics_layer">
+<span id="hcipy-hcipy-atmosphere-modal-adaptive-optics-layer-module"></span><h2>hcipy.hcipy.atmosphere.modal_adaptive_optics_layer module<a class="headerlink" href="#module-hcipy.hcipy.atmosphere.modal_adaptive_optics_layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.</code><code class="descname">ModalAdaptiveOpticsLayer</code><span class="sig-paren">(</span><em>layer</em>, <em>controlled_modes</em>, <em>lag</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.Cn_squared" title="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.outer_scale" title="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.evolve_until" title="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.phase_for" title="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code>()</td>
+<td>Reset the phase screen.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.modal_adaptive_optics_layer.ModalAdaptiveOpticsLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere.standard_atmosphere">
+<span id="hcipy-hcipy-atmosphere-standard-atmosphere-module"></span><h2>hcipy.hcipy.atmosphere.standard_atmosphere module<a class="headerlink" href="#module-hcipy.hcipy.atmosphere.standard_atmosphere" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.standard_atmosphere.make_standard_atmospheric_layers">
+<code class="descclassname">hcipy.hcipy.atmosphere.standard_atmosphere.</code><code class="descname">make_standard_atmospheric_layers</code><span class="sig-paren">(</span><em>input_grid</em>, <em>L0=10</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.standard_atmosphere.make_standard_atmospheric_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.atmosphere">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.atmosphere" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">MultiLayerAtmosphere</code><span class="sig-paren">(</span><em>layers</em>, <em>scintilation=False</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.Cn_squared" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The total Cn^2 value of the simulated atmosphere.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.layers" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.layers"><code class="xref py py-obj docutils literal"><span class="pre">layers</span></code></a></dt>
+<dd><p class="first last">A list of :class:<a href="#id5"><span class="problematic" id="id6">`</span></a>AtmosphericLayer: objects.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.outer_scale" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of all layers.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.scintilation" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.scintilation"><code class="xref py py-obj docutils literal"><span class="pre">scintilation</span></code></a></dt>
+<dd><p class="first last">Whether to include scintilation effects in the propagation.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.t" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></dt>
+<dd><p class="first last">The current time.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.calculate_propagators" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.calculate_propagators"><code class="xref py py-obj docutils literal"><span class="pre">calculate_propagators</span></code></a>()</td>
+<td>Recalculates the list of optical elements used for a propagation.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.evolve_until" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td>Evolve all atmospheric layers to a time t.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.phase_for" title="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td>Get the unwrapped phase for the atmosphere.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>reset</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total Cn^2 value of the simulated atmosphere.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.calculate_propagators">
+<code class="descname">calculate_propagators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.calculate_propagators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recalculates the list of optical elements used for a propagation.</p>
+<p>This function is called automatically by other functions, but a recalculation
+can be forced by calling it explicitly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evolve all atmospheric layers to a time t.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>t</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The time to which to evolve the atmospheric layers.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.layers">
+<code class="descname">layers</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of :class:<a href="#id7"><span class="problematic" id="id8">`</span></a>AtmosphericLayer: objects.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of all layers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the unwrapped phase for the atmosphere.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The total unwrapped phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.scintilation">
+<code class="descname">scintilation</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.scintilation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to include scintilation effects in the propagation.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.MultiLayerAtmosphere.t">
+<code class="descname">t</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.MultiLayerAtmosphere.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">AtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.AtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.L0" title="hcipy.hcipy.atmosphere.AtmosphericLayer.L0"><code class="xref py py-obj docutils literal"><span class="pre">L0</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.AtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.t" title="hcipy.hcipy.atmosphere.AtmosphericLayer.t"><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></a></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.velocity" title="hcipy.hcipy.atmosphere.AtmosphericLayer.velocity"><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></a></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.AtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td>Evolve the atmospheric layer until time <cite>t</cite>.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.AtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td>Get the phase screen at a certain wavelength.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.AtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td>Reset the phase screen.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd><p>The integrated value of Cn^2 for the layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of the phase structure function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evolve the atmospheric layer until time <cite>t</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>t</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The time to which to evolve the atmospheric layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>The outer scale of the phase structure function.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.output_grid">
+<code class="descname">output_grid</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.output_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the phase screen at a certain wavelength.</p>
+<p>Each atmospheric layer is modelled as an infinitely-thin phase screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the phase screen.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the phase screen.</p>
+<p>This will create a randomized uncorrelated phase screen.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.t">
+<code class="descname">t</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.t" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current time of the atmospheric layer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.AtmosphericLayer.velocity">
+<code class="descname">velocity</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.AtmosphericLayer.velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The two-dimensional velocity of the layer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.phase_covariance_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">phase_covariance_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.phase_covariance_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.phase_structure_function_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">phase_structure_function_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.phase_structure_function_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.power_spectral_density_von_karman">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">power_spectral_density_von_karman</code><span class="sig-paren">(</span><em>r0</em>, <em>L0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.power_spectral_density_von_karman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.Cn_squared_from_fried_parameter">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">Cn_squared_from_fried_parameter</code><span class="sig-paren">(</span><em>r0</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.Cn_squared_from_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.fried_parameter_from_Cn_squared">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">fried_parameter_from_Cn_squared</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.fried_parameter_from_Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.seeing_to_fried_parameter">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">seeing_to_fried_parameter</code><span class="sig-paren">(</span><em>seeing</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.seeing_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.fried_parameter_to_seeing">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">fried_parameter_to_seeing</code><span class="sig-paren">(</span><em>r0</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.fried_parameter_to_seeing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">FiniteAtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em>, <em>oversampling=2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.FiniteAtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">InfiniteAtmosphericLayer</code><span class="sig-paren">(</span><em>input_grid</em>, <em>Cn_squared=None</em>, <em>L0=inf</em>, <em>velocity=0</em>, <em>height=0</em>, <em>stencil_length=2</em>, <em>use_interpolation=False</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.Cn_squared" title="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.outer_scale" title="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.evolve_until" title="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.phase_for" title="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.reset" title="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.InfiniteAtmosphericLayer.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">ModalAdaptiveOpticsLayer</code><span class="sig-paren">(</span><em>layer</em>, <em>controlled_modes</em>, <em>lag</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer" title="hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.atmosphere.atmospheric_model.AtmosphericLayer</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.Cn_squared" title="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.Cn_squared"><code class="xref py py-obj docutils literal"><span class="pre">Cn_squared</span></code></a></dt>
+<dd><p class="first last">The integrated value of Cn^2 for the layer.</p>
+</dd>
+<dt><strong>L0</strong></dt>
+<dd></dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.outer_scale" title="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.outer_scale"><code class="xref py py-obj docutils literal"><span class="pre">outer_scale</span></code></a></dt>
+<dd><p class="first last">The outer scale of the phase structure function.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+<dd></dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">t</span></code></dt>
+<dd><p class="first last">The current time of the atmospheric layer.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal"><span class="pre">velocity</span></code></dt>
+<dd><p class="first last">The two-dimensional velocity of the layer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.evolve_until" title="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.evolve_until"><code class="xref py py-obj docutils literal"><span class="pre">evolve_until</span></code></a>(t)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.phase_for" title="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.phase_for"><code class="xref py py-obj docutils literal"><span class="pre">phase_for</span></code></a>(wavelength)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code>()</td>
+<td>Reset the phase screen.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.Cn_squared">
+<code class="descname">Cn_squared</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.Cn_squared" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.L0">
+<code class="descname">L0</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.L0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.evolve_until">
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.evolve_until" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.outer_scale">
+<code class="descname">outer_scale</code><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.outer_scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.phase_for">
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.ModalAdaptiveOpticsLayer.phase_for" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.atmosphere.make_standard_atmospheric_layers">
+<code class="descclassname">hcipy.hcipy.atmosphere.</code><code class="descname">make_standard_atmospheric_layers</code><span class="sig-paren">(</span><em>input_grid</em>, <em>L0=10</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.atmosphere.make_standard_atmospheric_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.atmosphere package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere.atmospheric_model">hcipy.hcipy.atmosphere.atmospheric_model module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere.finite_atmospheric_layer">hcipy.hcipy.atmosphere.finite_atmospheric_layer module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere.infinite_atmospheric_layer">hcipy.hcipy.atmosphere.infinite_atmospheric_layer module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere.modal_adaptive_optics_layer">hcipy.hcipy.atmosphere.modal_adaptive_optics_layer module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere.standard_atmosphere">hcipy.hcipy.atmosphere.standard_atmosphere module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.atmosphere">Module contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.atmosphere.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.atmosphere.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

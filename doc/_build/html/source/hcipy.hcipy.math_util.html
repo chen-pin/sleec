@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.math_util package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-math-util-package">
+<h1>hcipy.hcipy.math_util package<a class="headerlink" href="#hcipy-hcipy-math-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.math_util.matrix_inversion">
+<span id="hcipy-hcipy-math-util-matrix-inversion-module"></span><h2>hcipy.hcipy.math_util.matrix_inversion module<a class="headerlink" href="#module-hcipy.hcipy.math_util.matrix_inversion" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_tikhonov">
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> using Tikhonov regularization.</p>
+<p>Tikhonov regularization will be an identity matrix, with strength 
+<cite>rcond</cite> * the maximum singular value of the matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>rcond</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The relative strength of the regularization. An identity matrix
+will be used for the regularization.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_truncated">
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> truncating the number of modes.</p>
+<p>Modes are given by a singular value decomposition of the input matrix.
+If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
+order by their singular values. All modes with a singular value lower than 
+<cite>rcond</cite> times the maximum singular value, will be ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>rcond</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The relative condition number of the highest-order mode that must 
+be used for inversion.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_truncated_modal">
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> with <cite>num_modes</cite> modes.</p>
+<p>Modes are given by a singular value decomposition of the input matrix.
+If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
+order by their singular values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of modes to use for the inversion. Higher-order modes
+are ignored.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.math_util.singular_value_decomposition">
+<span id="hcipy-hcipy-math-util-singular-value-decomposition-module"></span><h2>hcipy.hcipy.math_util.singular_value_decomposition module<a class="headerlink" href="#module-hcipy.hcipy.math_util.singular_value_decomposition" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.singular_value_decomposition.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>M</strong></dt>
+<dd></dd>
+<dt><strong>S</strong></dt>
+<dd></dd>
+<dt><strong>U</strong></dt>
+<dd></dd>
+<dt><strong>Vt</strong></dt>
+<dd></dd>
+<dt><strong>left_singular_modes</strong></dt>
+<dd></dd>
+<dt><strong>num_modes</strong></dt>
+<dd></dd>
+<dt><strong>right_singular_modes</strong></dt>
+<dd></dd>
+<dt><strong>singular_values</strong></dt>
+<dd></dd>
+<dt><strong>svd</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.M">
+<code class="descname">M</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.S">
+<code class="descname">S</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.S" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.U">
+<code class="descname">U</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.U" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.Vt">
+<code class="descname">Vt</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.Vt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.left_singular_modes">
+<code class="descname">left_singular_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.left_singular_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.num_modes">
+<code class="descname">num_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.num_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.right_singular_modes">
+<code class="descname">right_singular_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.right_singular_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.singular_values">
+<code class="descname">singular_values</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.singular_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD.svd">
+<code class="descname">svd</code><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD.svd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.math_util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.math_util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.inverse_truncated">
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> truncating the number of modes.</p>
+<p>Modes are given by a singular value decomposition of the input matrix.
+If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
+order by their singular values. All modes with a singular value lower than 
+<cite>rcond</cite> times the maximum singular value, will be ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>rcond</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The relative condition number of the highest-order mode that must 
+be used for inversion.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.inverse_truncated_modal">
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> with <cite>num_modes</cite> modes.</p>
+<p>Modes are given by a singular value decomposition of the input matrix.
+If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
+order by their singular values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of modes to use for the inversion. Higher-order modes
+are ignored.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.math_util.inverse_tikhonov">
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert <cite>M</cite> using Tikhonov regularization.</p>
+<p>Tikhonov regularization will be an identity matrix, with strength 
+<cite>rcond</cite> * the maximum singular value of the matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>M</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd><p class="first last">The matrix to invert. This matrix must be two-dimensional.</p>
+</dd>
+<dt><strong>rcond</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The relative strength of the regularization. An identity matrix
+will be used for the regularization.</p>
+</dd>
+<dt><strong>svd</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SVD object</span><dd><p class="first last">A precalculated singular value decomposition object. This will
+be used if supplied, to avoid recalculation of an SVD.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The inverted matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.math_util.SVD">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.SVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>M</strong></dt>
+<dd></dd>
+<dt><strong>S</strong></dt>
+<dd></dd>
+<dt><strong>U</strong></dt>
+<dd></dd>
+<dt><strong>Vt</strong></dt>
+<dd></dd>
+<dt><strong>left_singular_modes</strong></dt>
+<dd></dd>
+<dt><strong>num_modes</strong></dt>
+<dd></dd>
+<dt><strong>right_singular_modes</strong></dt>
+<dd></dd>
+<dt><strong>singular_values</strong></dt>
+<dd></dd>
+<dt><strong>svd</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.M">
+<code class="descname">M</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.S">
+<code class="descname">S</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.S" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.U">
+<code class="descname">U</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.U" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.Vt">
+<code class="descname">Vt</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.Vt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.left_singular_modes">
+<code class="descname">left_singular_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.left_singular_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.num_modes">
+<code class="descname">num_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.num_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.right_singular_modes">
+<code class="descname">right_singular_modes</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.right_singular_modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.singular_values">
+<code class="descname">singular_values</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.singular_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.math_util.SVD.svd">
+<code class="descname">svd</code><a class="headerlink" href="#hcipy.hcipy.math_util.SVD.svd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.math_util package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.math_util.matrix_inversion">hcipy.hcipy.math_util.matrix_inversion module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.math_util.singular_value_decomposition">hcipy.hcipy.math_util.singular_value_decomposition module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.math_util">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.math_util.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.math_util.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

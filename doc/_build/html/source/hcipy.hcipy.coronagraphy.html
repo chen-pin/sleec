@@ -1,0 +1,1486 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.coronagraphy package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-coronagraphy-package">
+<h1>hcipy.hcipy.coronagraphy package<a class="headerlink" href="#hcipy-hcipy-coronagraphy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.coronagraphy.apodizing_phase_plate">
+<span id="hcipy-hcipy-coronagraphy-apodizing-phase-plate-module"></span><h2>hcipy.hcipy.coronagraphy.apodizing_phase_plate module<a class="headerlink" href="#module-hcipy.hcipy.coronagraphy.apodizing_phase_plate" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_doelman">
+<code class="descclassname">hcipy.hcipy.coronagraphy.apodizing_phase_plate.</code><code class="descname">generate_app_doelman</code><span class="sig-paren">(</span><em>wavefront</em>, <em>propagator</em>, <em>propagator_max</em>, <em>contrast</em>, <em>num_iterations</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_doelman" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_keller">
+<code class="descclassname">hcipy.hcipy.coronagraphy.apodizing_phase_plate.</code><code class="descname">generate_app_keller</code><span class="sig-paren">(</span><em>wavefront</em>, <em>propagator</em>, <em>propagator_max</em>, <em>contrast</em>, <em>num_iterations</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_keller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified Gerchberg-Saxton algorithm based on code by Christoph Keller.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_por">
+<code class="descclassname">hcipy.hcipy.coronagraphy.apodizing_phase_plate.</code><code class="descname">generate_app_por</code><span class="sig-paren">(</span><em>wavefront</em>, <em>propagator</em>, <em>propagator_max</em>, <em>contrast</em>, <em>num_iterations=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.apodizing_phase_plate.generate_app_por" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize a one-sided APP using a globally optimal algorithm. This algorithm does not
+apply any symmetries for two-sided dark zones or circularly-symmetric pupils. This 
+function requires that you have installed the Gurobi optimizer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefont</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input aperture as a wavefront.</p>
+</dd>
+<dt><strong>propagator</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Propagator</span><dd><p class="first last">The propagator from <cite>wavefront</cite> to the focal plane grid.</p>
+</dd>
+<dt><strong>propagator_max</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Propagator</span><dd><p class="first last">The propagator from <cite>wavefront</cite> to the point in the focal-plane that we want to maximize.</p>
+</dd>
+<dt><strong>contrast</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like or scalar</span><dd><p class="first last">The required contrast in the focal plane.</p>
+</dd>
+<dt><strong>num_iterations</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of iterations for the Strehl ratio to converge.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The resultant electric field transmission function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.coronagraphy.lyot">
+<span id="hcipy-hcipy-coronagraphy-lyot-module"></span><h2>hcipy.hcipy.coronagraphy.lyot module<a class="headerlink" href="#module-hcipy.hcipy.coronagraphy.lyot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.lyot.</code><code class="descname">LyotCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em>, <em>lyot_stop=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A Lyot coronagraph with a small focal-plane mask.</p>
+<p>The area outside of this focal-plane mask is assumed to be fully transmisive. The 
+method for propagation is based on Soummer et al. (2007), &#8220;Fast computation of Lyot-style
+coronagraph propagation&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>focal_plane_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement</span><dd><p class="first last">The (complex) transmission of the focal-plane mask. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of focal-plane
+masks.</p>
+</dd>
+<dt><strong>lyot_stop</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd><p class="first last">The (complex) transmission of the Lyot stop. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of Lyot stops.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.backward" title="hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront from the Lyot plane to the pupil plane.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.forward" title="hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the Lyot coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront from the Lyot plane to the pupil plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.LyotCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the Lyot coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.lyot.</code><code class="descname">OccultedLyotCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A Lyot coronagraph with a focal-plane mask.</p>
+<p>The area outside of this focal-plane mask is assumed to be fully absorbing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>focal_plane_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement</span><dd><p class="first last">The (complex) transmission of the focal-plane mask. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of focal-plane
+masks.</p>
+</dd>
+<dt><strong>lyot_stop</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd><p class="first last">The (complex) transmission of the Lyot stop. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of Lyot stops.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.backward" title="hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront from the Lyot plane to the pupil plane.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.forward" title="hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the Lyot coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront from the Lyot plane to the pupil plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.lyot.OccultedLyotCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the Lyot coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.coronagraphy.perfect_coronagraph">
+<span id="hcipy-hcipy-coronagraphy-perfect-coronagraph-module"></span><h2>hcipy.hcipy.coronagraphy.perfect_coronagraph module<a class="headerlink" href="#module-hcipy.hcipy.coronagraphy.perfect_coronagraph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.perfect_coronagraph.</code><code class="descname">PerfectCoronagraph</code><span class="sig-paren">(</span><em>aperture</em>, <em>order=2</em>, <em>coeffs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A perfect coronagraph for a certain aperture and order.</p>
+<p>These type of coronagraphs suppress all light for a flat wavefront. The incoming complex
+amplitude  is modified as follows (following <a class="reference internal" href="#rb68ad4cf6e39-1" id="id1">[1]</a>):</p>
+<p>where  is the resulting complex ampliutude,  is the telescope
+pupil, and  is the Strehl ratio of the incoming wavefront.</p>
+<p>Higher orders are added by fitting higher-order electric field modes to the incoming
+wavefront and subtracting those, following <a class="reference internal" href="#rb68ad4cf6e39-2" id="id2">[2]</a>.</p>
+<table class="docutils citation" frame="void" id="rb68ad4cf6e39-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Celine Cavarroc et al. &#8220;Fundamental limitations on Earth-like planet detection with extremely large telescopes.&#8221; Astronomy &amp; Astrophysics 447.1 (2006): 397-403</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="rb68ad4cf6e39-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id2">1</a>, <a class="fn-backref" href="#id3">2</a>)</em> Olivier Guyon et al. &#8220;Theoretical limits on extrasolar terrestrial planet detection with coronagraphs.&#8221; The Astrophysical Journal Supplement Series 167.1 (2006): 81</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The reference aperture. The perfect coronagraph is designed for this aperture.</p>
+</dd>
+<dt><strong>order</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The order of the perfect coronagraph. This must be even.</p>
+</dd>
+<dt><strong>coeffs</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray or None</span><dd><p class="first last">The coefficients that are used for subtraction. This allows for partial suppression of certain
+modes, which can be used to design perfect coronagraphs that are insensitive to stellar
+radius <a class="reference internal" href="#rb68ad4cf6e39-2" id="id3">[2]</a>. If it is None, all modes are completely suppressed.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.backward" title="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront backwards through the perfect coronagraph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.forward" title="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the perfect coronagraph.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_backward" title="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_backward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code></a>([wavelength])</td>
+<td>Get the backwards propagation transformation matrix.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_forward" title="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_forward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code></a>([wavelength])</td>
+<td>Get the forward propagation transformation matrix.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="62%" />
+<col width="38%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront backwards through the perfect coronagraph.</p>
+<p>This method behaves the same as the forward propagation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The incoming wavefront (in the pupil plane)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The post-coronagraphic wavefront (in the pupil plane).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the perfect coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The incoming wavefront (in the pupil plane)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The post-coronagraphic wavefront (in the pupil plane).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_backward">
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the backwards propagation transformation matrix.</p>
+<p>This method behaves the same as the forward propagation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the transformation matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The backward transformation_matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_forward">
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.perfect_coronagraph.PerfectCoronagraph.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the forward propagation transformation matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the transformation matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The forward transformation_matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.coronagraphy.vortex">
+<span id="hcipy-hcipy-coronagraphy-vortex-module"></span><h2>hcipy.hcipy.coronagraphy.vortex module<a class="headerlink" href="#module-hcipy.hcipy.coronagraphy.vortex" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.vortex.</code><code class="descname">VortexCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>charge=2</em>, <em>levels=4</em>, <em>scaling_factor=4</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>An optical vortex coronagraph.</p>
+<p>This <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code> simulations the propagation of light through
+a vortex in the focal plane. To resolve the singularity of this vortex
+phase plate, a multi-scale approach is made. Discretisation errors made at
+a certain level are corrected by the next level with finer sampling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex.</p>
+</dd>
+<dt><strong>levels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of levels in the multi-scale sampling.</p>
+</dd>
+<dt><strong>scaling_factor</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The fractional increase in spatial frequency sampling per level.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.backward" title="hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate backwards through the vortex coronagraph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.forward" title="hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate a wavefront through the vortex coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate backwards through the vortex coronagraph.</p>
+<p>This essentially is a forward propagation through a the same vortex
+coronagraph, but with the sign of the its charge flipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The Lyot plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.vortex.VortexCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate a wavefront through the vortex coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is expected to be
+in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.vortex.get_ravc_planet_transmission">
+<code class="descclassname">hcipy.hcipy.coronagraphy.vortex.</code><code class="descname">get_ravc_planet_transmission</code><span class="sig-paren">(</span><em>central_obscuration_ratio</em>, <em>charge=2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.vortex.get_ravc_planet_transmission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the planet transmission for a ring-apodized vortex coronagraph.</p>
+<p>The formulas were implemented according to <a class="reference internal" href="#r08132b4862fb-1" id="id4">[1]</a>.</p>
+<table class="docutils citation" frame="void" id="r08132b4862fb-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[1]</a></td><td>Dimitri Mawet et al. 2013 &#8220;Ring-apodized vortex coronagraphs for obscured telescopes. I. Transmissive ring apodizers&#8221; The Astrophysical Journal Supplement Series 209.1 (2013): 7</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>central_obscuration_ratio</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The ratio of the central obscuration diameter and the pupil diameter.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex coronagraph used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The intensity transmission for a sufficiently off-axis point source 
+for the ring-apodized vortex coronagraph. Point sources close to the vortex
+singularity will be lower in intensity.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.vortex.make_ravc_masks">
+<code class="descclassname">hcipy.hcipy.coronagraphy.vortex.</code><code class="descname">make_ravc_masks</code><span class="sig-paren">(</span><em>central_obscuration</em>, <em>charge=2</em>, <em>pupil_diameter=1</em>, <em>lyot_undersize=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.vortex.make_ravc_masks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make field generators for the pupil and Lyot-stop masks for a
+ring apodized vortex coronagraph.</p>
+<p>The formulas were implemented according to <a class="reference internal" href="#r74bd8ad6d9f8-1" id="id5">[1]</a>.</p>
+<table class="docutils citation" frame="void" id="r74bd8ad6d9f8-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[1]</a></td><td>Dimitri Mawet et al. 2013 &#8220;Ring-apodized vortex coronagraphs for obscured telescopes. I. Transmissive ring apodizers&#8221; The Astrophysical Journal Supplement Series 209.1 (2013): 7</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>central_obscuration</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the central obscuration.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex coronagraph used.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the pupil.</p>
+</dd>
+<dt><strong>lyot_undersize</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The fraction of the pupil diameter to which to undersize the Lyot stop.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The complex transmission of the pupil mask.</p>
+</dd>
+<dt><strong>lyot_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The complex transmission of the Lyot-stop mask.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.coronagraphy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.coronagraphy" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.generate_app_keller">
+<code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">generate_app_keller</code><span class="sig-paren">(</span><em>wavefront</em>, <em>propagator</em>, <em>propagator_max</em>, <em>contrast</em>, <em>num_iterations</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.generate_app_keller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modified Gerchberg-Saxton algorithm based on code by Christoph Keller.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.generate_app_por">
+<code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">generate_app_por</code><span class="sig-paren">(</span><em>wavefront</em>, <em>propagator</em>, <em>propagator_max</em>, <em>contrast</em>, <em>num_iterations=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.generate_app_por" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize a one-sided APP using a globally optimal algorithm. This algorithm does not
+apply any symmetries for two-sided dark zones or circularly-symmetric pupils. This 
+function requires that you have installed the Gurobi optimizer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefont</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input aperture as a wavefront.</p>
+</dd>
+<dt><strong>propagator</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Propagator</span><dd><p class="first last">The propagator from <cite>wavefront</cite> to the focal plane grid.</p>
+</dd>
+<dt><strong>propagator_max</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Propagator</span><dd><p class="first last">The propagator from <cite>wavefront</cite> to the point in the focal-plane that we want to maximize.</p>
+</dd>
+<dt><strong>contrast</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like or scalar</span><dd><p class="first last">The required contrast in the focal plane.</p>
+</dd>
+<dt><strong>num_iterations</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of iterations for the Strehl ratio to converge.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The resultant electric field transmission function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.LyotCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">LyotCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em>, <em>lyot_stop=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.LyotCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A Lyot coronagraph with a small focal-plane mask.</p>
+<p>The area outside of this focal-plane mask is assumed to be fully transmisive. The 
+method for propagation is based on Soummer et al. (2007), &#8220;Fast computation of Lyot-style
+coronagraph propagation&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>focal_plane_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement</span><dd><p class="first last">The (complex) transmission of the focal-plane mask. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of focal-plane
+masks.</p>
+</dd>
+<dt><strong>lyot_stop</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd><p class="first last">The (complex) transmission of the Lyot stop. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of Lyot stops.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.LyotCoronagraph.backward" title="hcipy.hcipy.coronagraphy.LyotCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront from the Lyot plane to the pupil plane.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.LyotCoronagraph.forward" title="hcipy.hcipy.coronagraphy.LyotCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the Lyot coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.LyotCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.LyotCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront from the Lyot plane to the pupil plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.LyotCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.LyotCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the Lyot coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">OccultedLyotCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A Lyot coronagraph with a focal-plane mask.</p>
+<p>The area outside of this focal-plane mask is assumed to be fully absorbing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>focal_plane_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement</span><dd><p class="first last">The (complex) transmission of the focal-plane mask. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of focal-plane
+masks.</p>
+</dd>
+<dt><strong>lyot_stop</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd><p class="first last">The (complex) transmission of the Lyot stop. If this is an <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code>,
+this will be used instead. This allows for more realistic implementations of Lyot stops.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.backward" title="hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront from the Lyot plane to the pupil plane.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.forward" title="hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the Lyot coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront from the Lyot plane to the pupil plane.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.OccultedLyotCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the Lyot coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.PerfectCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">PerfectCoronagraph</code><span class="sig-paren">(</span><em>aperture</em>, <em>order=2</em>, <em>coeffs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A perfect coronagraph for a certain aperture and order.</p>
+<p>These type of coronagraphs suppress all light for a flat wavefront. The incoming complex
+amplitude  is modified as follows (following <a class="reference internal" href="#rc89b84826eec-1" id="id6">[1]</a>):</p>
+<p>where  is the resulting complex ampliutude,  is the telescope
+pupil, and  is the Strehl ratio of the incoming wavefront.</p>
+<p>Higher orders are added by fitting higher-order electric field modes to the incoming
+wavefront and subtracting those, following <a class="reference internal" href="#rc89b84826eec-2" id="id7">[2]</a>.</p>
+<table class="docutils citation" frame="void" id="rc89b84826eec-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[1]</a></td><td>Celine Cavarroc et al. &#8220;Fundamental limitations on Earth-like planet detection with extremely large telescopes.&#8221; Astronomy &amp; Astrophysics 447.1 (2006): 397-403</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="rc89b84826eec-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td><em>(<a class="fn-backref" href="#id7">1</a>, <a class="fn-backref" href="#id8">2</a>)</em> Olivier Guyon et al. &#8220;Theoretical limits on extrasolar terrestrial planet detection with coronagraphs.&#8221; The Astrophysical Journal Supplement Series 167.1 (2006): 81</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The reference aperture. The perfect coronagraph is designed for this aperture.</p>
+</dd>
+<dt><strong>order</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The order of the perfect coronagraph. This must be even.</p>
+</dd>
+<dt><strong>coeffs</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray or None</span><dd><p class="first last">The coefficients that are used for subtraction. This allows for partial suppression of certain
+modes, which can be used to design perfect coronagraphs that are insensitive to stellar
+radius <a class="reference internal" href="#rc89b84826eec-2" id="id8">[2]</a>. If it is None, all modes are completely suppressed.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.backward" title="hcipy.hcipy.coronagraphy.PerfectCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront backwards through the perfect coronagraph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.forward" title="hcipy.hcipy.coronagraphy.PerfectCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate the wavefront through the perfect coronagraph.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_backward" title="hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_backward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code></a>([wavelength])</td>
+<td>Get the backwards propagation transformation matrix.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_forward" title="hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_forward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code></a>([wavelength])</td>
+<td>Get the forward propagation transformation matrix.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="62%" />
+<col width="38%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.PerfectCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront backwards through the perfect coronagraph.</p>
+<p>This method behaves the same as the forward propagation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The incoming wavefront (in the pupil plane)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The post-coronagraphic wavefront (in the pupil plane).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.PerfectCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate the wavefront through the perfect coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The incoming wavefront (in the pupil plane)</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The post-coronagraphic wavefront (in the pupil plane).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_backward">
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the backwards propagation transformation matrix.</p>
+<p>This method behaves the same as the forward propagation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the transformation matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The backward transformation_matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_forward">
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.PerfectCoronagraph.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the forward propagation transformation matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavelength</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The wavelength at which to calculate the transformation matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">The forward transformation_matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.coronagraphy.VortexCoronagraph">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">VortexCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>charge=2</em>, <em>levels=4</em>, <em>scaling_factor=4</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.VortexCoronagraph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>An optical vortex coronagraph.</p>
+<p>This <code class="xref py py-class docutils literal"><span class="pre">OpticalElement</span></code> simulations the propagation of light through
+a vortex in the focal plane. To resolve the singularity of this vortex
+phase plate, a multi-scale approach is made. Discretisation errors made at
+a certain level are corrected by the next level with finer sampling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex.</p>
+</dd>
+<dt><strong>levels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of levels in the multi-scale sampling.</p>
+</dd>
+<dt><strong>scaling_factor</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The fractional increase in spatial frequency sampling per level.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.VortexCoronagraph.backward" title="hcipy.hcipy.coronagraphy.VortexCoronagraph.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(wavefront)</td>
+<td>Propagate backwards through the vortex coronagraph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.coronagraphy.VortexCoronagraph.forward" title="hcipy.hcipy.coronagraphy.VortexCoronagraph.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagate a wavefront through the vortex coronagraph.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.VortexCoronagraph.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.VortexCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate backwards through the vortex coronagraph.</p>
+<p>This essentially is a forward propagation through a the same vortex
+coronagraph, but with the sign of the its charge flipped.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The Lyot plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The pupil-plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.coronagraphy.VortexCoronagraph.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.VortexCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagate a wavefront through the vortex coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront to propagate. This wavefront is expected to be
+in the pupil plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavefront</strong></dt>
+<dd><p class="first last">The Lyot plane wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.make_ravc_masks">
+<code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">make_ravc_masks</code><span class="sig-paren">(</span><em>central_obscuration</em>, <em>charge=2</em>, <em>pupil_diameter=1</em>, <em>lyot_undersize=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.make_ravc_masks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make field generators for the pupil and Lyot-stop masks for a
+ring apodized vortex coronagraph.</p>
+<p>The formulas were implemented according to <a class="reference internal" href="#r8a828e7a6891-1" id="id9">[1]</a>.</p>
+<table class="docutils citation" frame="void" id="r8a828e7a6891-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[1]</a></td><td>Dimitri Mawet et al. 2013 &#8220;Ring-apodized vortex coronagraphs for obscured telescopes. I. Transmissive ring apodizers&#8221; The Astrophysical Journal Supplement Series 209.1 (2013): 7</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>central_obscuration</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the central obscuration.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex coronagraph used.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the pupil.</p>
+</dd>
+<dt><strong>lyot_undersize</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The fraction of the pupil diameter to which to undersize the Lyot stop.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The complex transmission of the pupil mask.</p>
+</dd>
+<dt><strong>lyot_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The complex transmission of the Lyot-stop mask.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.coronagraphy.get_ravc_planet_transmission">
+<code class="descclassname">hcipy.hcipy.coronagraphy.</code><code class="descname">get_ravc_planet_transmission</code><span class="sig-paren">(</span><em>central_obscuration_ratio</em>, <em>charge=2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.coronagraphy.get_ravc_planet_transmission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the planet transmission for a ring-apodized vortex coronagraph.</p>
+<p>The formulas were implemented according to <a class="reference internal" href="#r337c527f0c1b-1" id="id10">[1]</a>.</p>
+<table class="docutils citation" frame="void" id="r337c527f0c1b-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[1]</a></td><td>Dimitri Mawet et al. 2013 &#8220;Ring-apodized vortex coronagraphs for obscured telescopes. I. Transmissive ring apodizers&#8221; The Astrophysical Journal Supplement Series 209.1 (2013): 7</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>central_obscuration_ratio</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The ratio of the central obscuration diameter and the pupil diameter.</p>
+</dd>
+<dt><strong>charge</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The charge of the vortex coronagraph used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The intensity transmission for a sufficiently off-axis point source 
+for the ring-apodized vortex coronagraph. Point sources close to the vortex
+singularity will be lower in intensity.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.coronagraphy package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.coronagraphy.apodizing_phase_plate">hcipy.hcipy.coronagraphy.apodizing_phase_plate module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.coronagraphy.lyot">hcipy.hcipy.coronagraphy.lyot module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.coronagraphy.perfect_coronagraph">hcipy.hcipy.coronagraphy.perfect_coronagraph module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.coronagraphy.vortex">hcipy.hcipy.coronagraphy.vortex module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.coronagraphy">Module contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.coronagraphy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.coronagraphy.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

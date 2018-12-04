@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.statistics package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-statistics-package">
+<h1>hcipy.hcipy.statistics package<a class="headerlink" href="#hcipy-hcipy-statistics-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.statistics.spectral_noise">
+<span id="hcipy-hcipy-statistics-spectral-noise-module"></span><h2>hcipy.hcipy.statistics.spectral_noise module<a class="headerlink" href="#module-hcipy.hcipy.statistics.spectral_noise" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoise">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoise</code><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoise.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoise.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoise.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoise.shifted">
+<code class="descname">shifted</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise.shifted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoiseFFT</code><span class="sig-paren">(</span><em>factory</em>, <em>C</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoise"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoise</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFFT.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFFT.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoiseFactory</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoiseFactoryFFT</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>oversample=1</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryFFT.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoiseFactoryMultiscale</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>oversampling</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactoryMultiscale.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseMultiscale">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.spectral_noise.</code><code class="descname">SpectralNoiseMultiscale</code><span class="sig-paren">(</span><em>factory</em>, <em>C_1</em>, <em>C_2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseMultiscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoise"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoise</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseMultiscale.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseMultiscale.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.statistics.util">
+<span id="hcipy-hcipy-statistics-util-module"></span><h2>hcipy.hcipy.statistics.util module<a class="headerlink" href="#module-hcipy.hcipy.statistics.util" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.statistics.util.large_poisson">
+<code class="descclassname">hcipy.hcipy.statistics.util.</code><code class="descname">large_poisson</code><span class="sig-paren">(</span><em>lam</em>, <em>thresh=1000000.0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.util.large_poisson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw samples from a Poisson distribution, taking care of large values of <cite>lam</cite>.</p>
+<p>At large values of <cite>lam</cite> the distribution automatically switches to the corresponding normal distribution.
+This switch is independently decided for each expectation value in the <cite>lam</cite> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>lam</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">Expectation value for the Poisson distribution. Must be &gt;= 0.</p>
+</dd>
+<dt><strong>thresh</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The threshold at which the distribution switched from a Poisson to a normal distribution.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong></dt>
+<dd><p class="first last">The drawn samples from the Poisson or normal distribution, depending on the expectation value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.statistics">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.statistics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactory">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoiseFactory</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactory.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactory.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactory.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactory.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoise">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoise</code><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoise.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoise.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoise.evaluate">
+<code class="descname">evaluate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoise.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoise.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoise.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoise.shifted">
+<code class="descname">shifted</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoise.shifted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoiseFactoryFFT</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>oversample=1</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryFFT.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryFFT.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryFFT.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryFFT.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoiseFFT</code><span class="sig-paren">(</span><em>factory</em>, <em>C</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoise"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoise</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFFT.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFFT.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoiseFactoryMultiscale</code><span class="sig-paren">(</span><em>psd</em>, <em>output_grid</em>, <em>oversampling</em>, <em>psd_args=()</em>, <em>psd_kwargs={}</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoiseFactory</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>make_random</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>make_zero</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale.make_random">
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale.make_random" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale.make_zero">
+<code class="descname">make_zero</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseFactoryMultiscale.make_zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseMultiscale">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">SpectralNoiseMultiscale</code><span class="sig-paren">(</span><em>factory</em>, <em>C_1</em>, <em>C_2</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseMultiscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.statistics.spectral_noise.SpectralNoise" title="hcipy.hcipy.statistics.spectral_noise.SpectralNoise"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.statistics.spectral_noise.SpectralNoise</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>copy</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>evaluate</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>shift</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>shifted</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.statistics.SpectralNoiseMultiscale.shift">
+<code class="descname">shift</code><span class="sig-paren">(</span><em>shift</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.SpectralNoiseMultiscale.shift" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.statistics.large_poisson">
+<code class="descclassname">hcipy.hcipy.statistics.</code><code class="descname">large_poisson</code><span class="sig-paren">(</span><em>lam</em>, <em>thresh=1000000.0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.statistics.large_poisson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw samples from a Poisson distribution, taking care of large values of <cite>lam</cite>.</p>
+<p>At large values of <cite>lam</cite> the distribution automatically switches to the corresponding normal distribution.
+This switch is independently decided for each expectation value in the <cite>lam</cite> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>lam</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">Expectation value for the Poisson distribution. Must be &gt;= 0.</p>
+</dd>
+<dt><strong>thresh</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">float</span><dd><p class="first last">The threshold at which the distribution switched from a Poisson to a normal distribution.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong></dt>
+<dd><p class="first last">The drawn samples from the Poisson or normal distribution, depending on the expectation value.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.statistics package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.statistics.spectral_noise">hcipy.hcipy.statistics.spectral_noise module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.statistics.util">hcipy.hcipy.statistics.util module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.statistics">Module contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.statistics.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.statistics.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

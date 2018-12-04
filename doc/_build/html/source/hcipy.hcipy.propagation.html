@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.propagation package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-propagation-package">
+<h1>hcipy.hcipy.propagation package<a class="headerlink" href="#hcipy-hcipy-propagation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.propagation.angular_spectrum">
+<span id="hcipy-hcipy-propagation-angular-spectrum-module"></span><h2>hcipy.hcipy.propagation.angular_spectrum module<a class="headerlink" href="#module-hcipy.hcipy.propagation.angular_spectrum" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.propagation.angular_spectrum.</code><code class="descname">AngularSpectrumPropagatorMonochromatic</code><span class="sig-paren">(</span><em>input_grid</em>, <em>distance</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.angular_spectrum.AngularSpectrumPropagatorMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.propagation.fraunhofer">
+<span id="hcipy-hcipy-propagation-fraunhofer-module"></span><h2>hcipy.hcipy.propagation.fraunhofer module<a class="headerlink" href="#module-hcipy.hcipy.propagation.fraunhofer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.propagation.fraunhofer.</code><code class="descname">FraunhoferPropagatorMonochromatic</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid</em>, <em>wavelength_0=1</em>, <em>focal_length=1</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.propagation.propagator.MonochromaticPropagator" title="hcipy.hcipy.propagation.propagator.MonochromaticPropagator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.propagation.propagator.MonochromaticPropagator</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.get_transformation_matrix_backward">
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.get_transformation_matrix_forward">
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fraunhofer.FraunhoferPropagatorMonochromatic.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.propagation.fresnel">
+<span id="hcipy-hcipy-propagation-fresnel-module"></span><h2>hcipy.hcipy.propagation.fresnel module<a class="headerlink" href="#module-hcipy.hcipy.propagation.fresnel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.propagation.fresnel.</code><code class="descname">FresnelPropagatorMonochromatic</code><span class="sig-paren">(</span><em>input_grid</em>, <em>distance</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.fresnel.FresnelPropagatorMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.propagation.propagator">
+<span id="hcipy-hcipy-propagation-propagator-module"></span><h2>hcipy.hcipy.propagation.propagator module<a class="headerlink" href="#module-hcipy.hcipy.propagation.propagator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.propagation.propagator.MonochromaticPropagator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.propagation.propagator.</code><code class="descname">MonochromaticPropagator</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.propagator.MonochromaticPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.propagation.propagator.make_propagator">
+<code class="descclassname">hcipy.hcipy.propagation.propagator.</code><code class="descname">make_propagator</code><span class="sig-paren">(</span><em>monochromatic_propagator</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.propagator.make_propagator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.propagation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.propagation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.propagation.MonochromaticPropagator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.propagation.</code><code class="descname">MonochromaticPropagator</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.MonochromaticPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.propagation.make_propagator">
+<code class="descclassname">hcipy.hcipy.propagation.</code><code class="descname">make_propagator</code><span class="sig-paren">(</span><em>monochromatic_propagator</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.propagation.make_propagator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.propagation.FresnelPropagator">
+<code class="descclassname">hcipy.hcipy.propagation.</code><code class="descname">FresnelPropagator</code><a class="headerlink" href="#hcipy.hcipy.propagation.FresnelPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Propagator</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.propagation.FraunhoferPropagator">
+<code class="descclassname">hcipy.hcipy.propagation.</code><code class="descname">FraunhoferPropagator</code><a class="headerlink" href="#hcipy.hcipy.propagation.FraunhoferPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Propagator</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.propagation.AngularSpectrumPropagator">
+<code class="descclassname">hcipy.hcipy.propagation.</code><code class="descname">AngularSpectrumPropagator</code><a class="headerlink" href="#hcipy.hcipy.propagation.AngularSpectrumPropagator" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Propagator</span></code></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.propagation package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.propagation.angular_spectrum">hcipy.hcipy.propagation.angular_spectrum module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.propagation.fraunhofer">hcipy.hcipy.propagation.fraunhofer module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.propagation.fresnel">hcipy.hcipy.propagation.fresnel module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.propagation.propagator">hcipy.hcipy.propagation.propagator module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.propagation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.propagation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.propagation.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.metrics package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-metrics-package">
+<h1>hcipy.hcipy.metrics package<a class="headerlink" href="#hcipy-hcipy-metrics-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.metrics.contrast">
+<span id="hcipy-hcipy-metrics-contrast-module"></span><h2>hcipy.hcipy.metrics.contrast module<a class="headerlink" href="#module-hcipy.hcipy.metrics.contrast" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.contrast.get_mean_intensity_in_roi">
+<code class="descclassname">hcipy.hcipy.metrics.contrast.</code><code class="descname">get_mean_intensity_in_roi</code><span class="sig-paren">(</span><em>img</em>, <em>mask</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.contrast.get_mean_intensity_in_roi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mean intensity in a masked region of interest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A binary array describing the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The mean intensity in the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.contrast.get_mean_raw_contrast">
+<code class="descclassname">hcipy.hcipy.metrics.contrast.</code><code class="descname">get_mean_raw_contrast</code><span class="sig-paren">(</span><em>img</em>, <em>mask</em>, <em>ref_img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.contrast.get_mean_raw_contrast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mean raw contrast in a masked region of interest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A binary array describing the region of interest.</p>
+</dd>
+<dt><strong>img_ref</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A reference focal-plane image without aberrations. This is used
+to determine the Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The mean raw contrast in the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.contrast.get_strehl_from_focal">
+<code class="descclassname">hcipy.hcipy.metrics.contrast.</code><code class="descname">get_strehl_from_focal</code><span class="sig-paren">(</span><em>img</em>, <em>ref_img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.contrast.get_strehl_from_focal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Strehl ratio from a focal-plane image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>ref_img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The reference focal-plane image without aberrations.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.contrast.get_strehl_from_pupil">
+<code class="descclassname">hcipy.hcipy.metrics.contrast.</code><code class="descname">get_strehl_from_pupil</code><span class="sig-paren">(</span><em>aperture</em>, <em>ref_aperture</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.contrast.get_strehl_from_pupil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Strehl ratio from a pupil-plane electric field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The pupil-plane electric field.</p>
+</dd>
+<dt><strong>ref_aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The reference pupil-plane electric field without aberrations.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.metrics.profile">
+<span id="hcipy-hcipy-metrics-profile-module"></span><h2>hcipy.hcipy.metrics.profile module<a class="headerlink" href="#module-hcipy.hcipy.metrics.profile" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.profile.azimutal_profile">
+<code class="descclassname">hcipy.hcipy.metrics.profile.</code><code class="descname">azimutal_profile</code><span class="sig-paren">(</span><em>image</em>, <em>num_bins</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.profile.azimutal_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an azimuthal profile of the image around its center.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>image</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The image that we want an azimuthal profile from. This image must be 
+two-dimensional.</p>
+</dd>
+<dt><strong>num_bins</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of bins in theta. Bins will be equally distributed in theta.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting azimuthal profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.profile.binned_profile">
+<code class="descclassname">hcipy.hcipy.metrics.profile.</code><code class="descname">binned_profile</code><span class="sig-paren">(</span><em>y</em>, <em>x</em>, <em>bins=20</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.profile.binned_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a profile of y(x) in the specified bins.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>y</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-coordinates of the data points. This should be 1-dimensional.</p>
+</dd>
+<dt><strong>x</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The x-coordinates of the data points. This should be 1-dimensional 
+and the same size as <cite>y</cite>.</p>
+</dd>
+<dt><strong>bins</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like or int</span><dd><p class="first last">The bin edges of the profile. If this is an integer, <cite>bins</cite> is the 
+number of bins that will be equally distributed along the whole range
+of <cite>x</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.profile.radial_profile">
+<code class="descclassname">hcipy.hcipy.metrics.profile.</code><code class="descname">radial_profile</code><span class="sig-paren">(</span><em>image</em>, <em>bin_size</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.profile.radial_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a radial profile of the image around its center.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>image</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The image that we want an azimuthal profile from. This image must be 
+two-dimensional.</p>
+</dd>
+<dt><strong>bin_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The extent of each bin. Each bin will be a ring from r to r+`bin_size`.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting radial profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.metrics">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.metrics" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.get_strehl_from_focal">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">get_strehl_from_focal</code><span class="sig-paren">(</span><em>img</em>, <em>ref_img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.get_strehl_from_focal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Strehl ratio from a focal-plane image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>ref_img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The reference focal-plane image without aberrations.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.get_strehl_from_pupil">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">get_strehl_from_pupil</code><span class="sig-paren">(</span><em>aperture</em>, <em>ref_aperture</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.get_strehl_from_pupil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Strehl ratio from a pupil-plane electric field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The pupil-plane electric field.</p>
+</dd>
+<dt><strong>ref_aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The reference pupil-plane electric field without aberrations.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.get_mean_intensity_in_roi">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">get_mean_intensity_in_roi</code><span class="sig-paren">(</span><em>img</em>, <em>mask</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.get_mean_intensity_in_roi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mean intensity in a masked region of interest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A binary array describing the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The mean intensity in the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.get_mean_raw_contrast">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">get_mean_raw_contrast</code><span class="sig-paren">(</span><em>img</em>, <em>mask</em>, <em>ref_img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.get_mean_raw_contrast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mean raw contrast in a masked region of interest.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>img</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">The focal-plane image.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A binary array describing the region of interest.</p>
+</dd>
+<dt><strong>img_ref</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or array_like</span><dd><p class="first last">A reference focal-plane image without aberrations. This is used
+to determine the Strehl ratio.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The mean raw contrast in the region of interest.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.binned_profile">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">binned_profile</code><span class="sig-paren">(</span><em>y</em>, <em>x</em>, <em>bins=20</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.binned_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a profile of y(x) in the specified bins.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>y</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-coordinates of the data points. This should be 1-dimensional.</p>
+</dd>
+<dt><strong>x</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The x-coordinates of the data points. This should be 1-dimensional 
+and the same size as <cite>y</cite>.</p>
+</dd>
+<dt><strong>bins</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like or int</span><dd><p class="first last">The bin edges of the profile. If this is an integer, <cite>bins</cite> is the 
+number of bins that will be equally distributed along the whole range
+of <cite>x</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.azimutal_profile">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">azimutal_profile</code><span class="sig-paren">(</span><em>image</em>, <em>num_bins</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.azimutal_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an azimuthal profile of the image around its center.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>image</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The image that we want an azimuthal profile from. This image must be 
+two-dimensional.</p>
+</dd>
+<dt><strong>num_bins</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of bins in theta. Bins will be equally distributed in theta.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting azimuthal profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.metrics.radial_profile">
+<code class="descclassname">hcipy.hcipy.metrics.</code><code class="descname">radial_profile</code><span class="sig-paren">(</span><em>image</em>, <em>bin_size</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.metrics.radial_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a radial profile of the image around its center.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>image</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The image that we want an azimuthal profile from. This image must be 
+two-dimensional.</p>
+</dd>
+<dt><strong>bin_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The extent of each bin. Each bin will be a ring from r to r+`bin_size`.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>bin_centers</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of each of the bins.</p>
+</dd>
+<dt><strong>profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The y-values of the resulting radial profile.</p>
+</dd>
+<dt><strong>std_profile</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The standard deviation within each bin.</p>
+</dd>
+<dt><strong>num_per_bin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The number of samples per bin.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.metrics package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.metrics.contrast">hcipy.hcipy.metrics.contrast module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.metrics.profile">hcipy.hcipy.metrics.profile module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.metrics">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.metrics.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.metrics.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

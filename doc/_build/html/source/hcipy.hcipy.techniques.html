@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.techniques package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-techniques-package">
+<h1>hcipy.hcipy.techniques package<a class="headerlink" href="#hcipy-hcipy-techniques-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.techniques.computer_generated_hologram">
+<span id="hcipy-hcipy-techniques-computer-generated-hologram-module"></span><h2>hcipy.hcipy.techniques.computer_generated_hologram module<a class="headerlink" href="#module-hcipy.hcipy.techniques.computer_generated_hologram" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.techniques.computer_generated_hologram.make_cgh">
+<code class="descclassname">hcipy.hcipy.techniques.computer_generated_hologram.</code><code class="descname">make_cgh</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>mode</em>, <em>position</em>, <em>amplitude</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.computer_generated_hologram.make_cgh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.techniques.computer_generated_hologram.make_multiplexed_cgh">
+<code class="descclassname">hcipy.hcipy.techniques.computer_generated_hologram.</code><code class="descname">make_multiplexed_cgh</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>modes</em>, <em>positions</em>, <em>amplitudes</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.computer_generated_hologram.make_multiplexed_cgh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.techniques.electric_field_conjugation">
+<span id="hcipy-hcipy-techniques-electric-field-conjugation-module"></span><h2>hcipy.hcipy.techniques.electric_field_conjugation module<a class="headerlink" href="#module-hcipy.hcipy.techniques.electric_field_conjugation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.techniques.electric_field_conjugation.</code><code class="descname">ElectricFieldConjugation</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dark_hole_grid</em>, <em>influence_functions=None</em>, <em>propagator=None</em>, <em>matrix_invertor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>efc_matrix</strong></dt>
+<dd></dd>
+<dt><strong>matrix_invertor</strong></dt>
+<dd></dd>
+<dt><strong>svd</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_mode_basis</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>single_step</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.efc_matrix">
+<code class="descname">efc_matrix</code><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.efc_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.get_mode_basis">
+<code class="descname">get_mode_basis</code><span class="sig-paren">(</span><em>num_modes=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.get_mode_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.matrix_invertor">
+<code class="descname">matrix_invertor</code><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.matrix_invertor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.single_step">
+<code class="descname">single_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.single_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.svd">
+<code class="descname">svd</code><a class="headerlink" href="#hcipy.hcipy.techniques.electric_field_conjugation.ElectricFieldConjugation.svd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.techniques.stroke_minimization">
+<span id="hcipy-hcipy-techniques-stroke-minimization-module"></span><h2>hcipy.hcipy.techniques.stroke_minimization module<a class="headerlink" href="#module-hcipy.hcipy.techniques.stroke_minimization" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.techniques">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.techniques" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.techniques.</code><code class="descname">ElectricFieldConjugation</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dark_hole_grid</em>, <em>influence_functions=None</em>, <em>propagator=None</em>, <em>matrix_invertor=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>efc_matrix</strong></dt>
+<dd></dd>
+<dt><strong>matrix_invertor</strong></dt>
+<dd></dd>
+<dt><strong>svd</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>get_mode_basis</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>single_step</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation.efc_matrix">
+<code class="descname">efc_matrix</code><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation.efc_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation.get_mode_basis">
+<code class="descname">get_mode_basis</code><span class="sig-paren">(</span><em>num_modes=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation.get_mode_basis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation.matrix_invertor">
+<code class="descname">matrix_invertor</code><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation.matrix_invertor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation.single_step">
+<code class="descname">single_step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation.single_step" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.techniques.ElectricFieldConjugation.svd">
+<code class="descname">svd</code><a class="headerlink" href="#hcipy.hcipy.techniques.ElectricFieldConjugation.svd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.techniques.make_cgh">
+<code class="descclassname">hcipy.hcipy.techniques.</code><code class="descname">make_cgh</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>mode</em>, <em>position</em>, <em>amplitude</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.make_cgh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.techniques.make_multiplexed_cgh">
+<code class="descclassname">hcipy.hcipy.techniques.</code><code class="descname">make_multiplexed_cgh</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>modes</em>, <em>positions</em>, <em>amplitudes</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.techniques.make_multiplexed_cgh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.techniques package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.techniques.computer_generated_hologram">hcipy.hcipy.techniques.computer_generated_hologram module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.techniques.electric_field_conjugation">hcipy.hcipy.techniques.electric_field_conjugation module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.techniques.stroke_minimization">hcipy.hcipy.techniques.stroke_minimization module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.techniques">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.techniques.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.techniques.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

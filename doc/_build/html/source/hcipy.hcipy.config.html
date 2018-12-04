@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.config package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-config-package">
+<h1>hcipy.hcipy.config package<a class="headerlink" href="#hcipy-hcipy-config-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.config.config">
+<span id="hcipy-hcipy-config-config-module"></span><h2>hcipy.hcipy.config.config module<a class="headerlink" href="#module-hcipy.hcipy.config.config" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.config.config.Configuration">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.config.config.</code><code class="descname">Configuration</code><a class="headerlink" href="#hcipy.hcipy.config.config.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A configuration object that describes the current configuration status of the package.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.config.config.Configuration.get_config_path" title="hcipy.hcipy.config.config.Configuration.get_config_path"><code class="xref py py-obj docutils literal"><span class="pre">get_config_path</span></code></a>()</td>
+<td>Get the current path of the configuration file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.config.config.Configuration.reset" title="hcipy.hcipy.config.config.Configuration.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td>Read the configuration file from the configuration directory.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.config.config.Configuration.get_config_path">
+<code class="descname">get_config_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.config.config.Configuration.get_config_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current path of the configuration file.</p>
+<p>If no configuration file is present, a new one will be made, 
+and its path will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>string</strong></dt>
+<dd><p class="first last">The configuration directory.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.config.config.Configuration.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.config.config.Configuration.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the configuration file from the configuration directory.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.config">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.config" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.config.Configuration">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.config.</code><code class="descname">Configuration</code><a class="headerlink" href="#hcipy.hcipy.config.Configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A configuration object that describes the current configuration status of the package.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.config.Configuration.get_config_path" title="hcipy.hcipy.config.Configuration.get_config_path"><code class="xref py py-obj docutils literal"><span class="pre">get_config_path</span></code></a>()</td>
+<td>Get the current path of the configuration file.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.config.Configuration.reset" title="hcipy.hcipy.config.Configuration.reset"><code class="xref py py-obj docutils literal"><span class="pre">reset</span></code></a>()</td>
+<td>Read the configuration file from the configuration directory.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.config.Configuration.get_config_path">
+<code class="descname">get_config_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.config.Configuration.get_config_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current path of the configuration file.</p>
+<p>If no configuration file is present, a new one will be made, 
+and its path will be returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>string</strong></dt>
+<dd><p class="first last">The configuration directory.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.config.Configuration.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.config.Configuration.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the configuration file from the configuration directory.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.config package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.config.config">hcipy.hcipy.config.config module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.config">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.config.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.config.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

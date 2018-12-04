@@ -1,0 +1,1842 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.mode_basis package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-mode-basis-package">
+<h1>hcipy.hcipy.mode_basis package<a class="headerlink" href="#hcipy-hcipy-mode-basis-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.disk_harmonic">
+<span id="hcipy-hcipy-mode-basis-disk-harmonic-module"></span><h2>hcipy.hcipy.mode_basis.disk_harmonic module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.disk_harmonic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic.disk_harmonic">
+<code class="descclassname">hcipy.hcipy.mode_basis.disk_harmonic.</code><code class="descname">disk_harmonic</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>D=1</em>, <em>bc='dirichlet'</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic.disk_harmonic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a disk harmonic.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Radial order</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Azimuthal order</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the pupil.</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The disk harmonic function evaluated on <cite>grid</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic.disk_harmonic_energy">
+<code class="descclassname">hcipy.hcipy.mode_basis.disk_harmonic.</code><code class="descname">disk_harmonic_energy</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>bc='dirichlet'</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic.disk_harmonic_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the energy of a disk harmonic function.</p>
+<p>This allows for functions to sort a disk harmonic mode basis on energy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Radial order</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Azimuthal order</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The energy corresponding to the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic.get_disk_harmonic_orders_sorted">
+<code class="descclassname">hcipy.hcipy.mode_basis.disk_harmonic.</code><code class="descname">get_disk_harmonic_orders_sorted</code><span class="sig-paren">(</span><em>num_modes</em>, <em>bc='dirichlet'</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic.get_disk_harmonic_orders_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the orders for the first <cite>num_modes</cite> modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of modes to return.</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>list of tuples</strong></dt>
+<dd><p class="first last">A list of orders (n, m).</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic.make_disk_harmonic_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.disk_harmonic.</code><code class="descname">make_disk_harmonic_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>num_modes</em>, <em>D=1</em>, <em>bc='dirichlet'</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic.make_disk_harmonic_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a disk harmonic mode basis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the disk harmonic modes.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of modes to create.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the disk.</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated disk harmonic modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.fourier">
+<span id="hcipy-hcipy-mode-basis-fourier-module"></span><h2>hcipy.hcipy.mode_basis.fourier module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.fourier" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.fourier.make_complex_fourier_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.fourier.</code><code class="descname">make_complex_fourier_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.fourier.make_complex_fourier_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a complex Fourier basis.</p>
+<p>Fourier modes this function are defined to be complex. For each point in <cite>fourier_grid</cite> the complex Fourier mode is contained in the output.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all Fourier modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.fourier.make_cosine_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.fourier.</code><code class="descname">make_cosine_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.fourier.make_cosine_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a cosine basis.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all cosine modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.fourier.make_fourier_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.fourier.</code><code class="descname">make_fourier_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.fourier.make_fourier_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a Fourier basis.</p>
+<p>Fourier modes this function are defined to be real. This means that for each point, both a sine and cosine mode is returned.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all Fourier modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.fourier.make_sine_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.fourier.</code><code class="descname">make_sine_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.fourier.make_sine_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a sine basis.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all sine modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.gaussian_hermite">
+<span id="hcipy-hcipy-mode-basis-gaussian-hermite-module"></span><h2>hcipy.hcipy.mode_basis.gaussian_hermite module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.gaussian_hermite" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite.gaussian_hermite">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_hermite.</code><code class="descname">gaussian_hermite</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite.gaussian_hermite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates a (n, m) order Gaussian-Hermite mode on a grid.
+The definition of the modes are the following,</p>
+<p>Here  is the mode_field_radius, which is . This defintion follows 
+the Physicists definition of the Hermite polynomials. The modes are numerical normalized to have a 
+total power of 1.</p>
+<p>More details on the Hermite Polynomials can be found on: <a class="reference external" href="http://mathworld.wolfram.com/HermitePolynomial.html">http://mathworld.wolfram.com/HermitePolynomial.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The x order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The y order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite.gaussian_hermite_index">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_hermite.</code><code class="descname">gaussian_hermite_index</code><span class="sig-paren">(</span><em>i</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite.gaussian_hermite_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates the i-th order Gaussian-Hermite mode on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The one-dimensional mode index.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Hermite mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated Gaussian-Hermite mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite.index_to_hermite">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_hermite.</code><code class="descname">index_to_hermite</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite.index_to_hermite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a one-dimensional mode index to the two-dimensional mode index.</p>
+<p>The one-dimensional mode index is converted to a two-dimensional index.
+The two-dimensional index determines the order in the x and y directions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The one-dimensional index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The x order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The y order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite.make_gaussian_hermite_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_hermite.</code><code class="descname">make_gaussian_hermite_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>num_modes</em>, <em>mode_field_diameter</em>, <em>starting_mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite.make_gaussian_hermite_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode basis.</p>
+<p>This function evaluates the starting_mode to num_modes + starting_modes Gaussian-Hermite modes.
+And returns a ModeBasis made out of these Gaussian-Hermite modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of modes to create.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>starting_mode</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The starting point of the mode indices.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated Gaussian-Hermite modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.gaussian_laguerre">
+<span id="hcipy-hcipy-mode-basis-gaussian-laguerre-module"></span><h2>hcipy.hcipy.mode_basis.gaussian_laguerre module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.gaussian_laguerre" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_laguerre.gaussian_laguerre">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_laguerre.</code><code class="descname">gaussian_laguerre</code><span class="sig-paren">(</span><em>p</em>, <em>l</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_laguerre.gaussian_laguerre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates a (p,l) order Gaussian-Laguerre mode on a grid.
+The definition of the modes are the following,</p>
+<p>Here  is the mode_field_radius, which is .
+And  are the generalized Laguerre Polynomials.
+All modes are numerical normalized to have a total power of 1.</p>
+<p>More details on generalized Laguerre Polynomials can be found on:
+<a class="reference external" href="http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html">http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial order.</p>
+</dd>
+<dt><strong>l</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_laguerre.make_gaussian_laguerre_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_laguerre.</code><code class="descname">make_gaussian_laguerre_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>pmax</em>, <em>lmax</em>, <em>mode_field_diameter</em>, <em>pmin=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_laguerre.make_gaussian_laguerre_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Laguerre mode basis.</p>
+<p>This function evaluates Gaussian-Laguerre modes. For each radial order 
+within [pmin, pmax] it will calculate the azimuthal order [-lmax, lmax] inclusive.
+This function returns a ModeBasis made out of these Gaussian-Laguerre modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>pmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The maximum radial order of the modes.</p>
+</dd>
+<dt><strong>lmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The maximum azimuthal order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>pmin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The minimal radial order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The Gaussian-Laguerre modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.gaussian_pokes">
+<span id="hcipy-hcipy-mode-basis-gaussian-pokes-module"></span><h2>hcipy.hcipy.mode_basis.gaussian_pokes module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.gaussian_pokes" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_pokes.make_gaussian_pokes">
+<code class="descclassname">hcipy.hcipy.mode_basis.gaussian_pokes.</code><code class="descname">make_gaussian_pokes</code><span class="sig-paren">(</span><em>grid</em>, <em>mu</em>, <em>sigma</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_pokes.make_gaussian_pokes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a basis of Gaussians.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to calculate the mode basis.</p>
+</dd>
+<dt><strong>mu</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The centers for each of the Gaussians.</p>
+</dd>
+<dt><strong>sigma</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray or scalar</span><dd><p class="first last">The standard deviation of each of the Gaussians. If this is a scalar,
+this value will be used for all Gaussians.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The calculated mode basis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.mode_basis">
+<span id="hcipy-hcipy-mode-basis-mode-basis-module"></span><h2>hcipy.hcipy.mode_basis.mode_basis module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.mode_basis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.mode_basis.mode_basis.ModeBasis">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.mode_basis.mode_basis.</code><code class="descname">ModeBasis</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.mode_basis.ModeBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">list</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>orthogonalized</strong></dt>
+<dd></dd>
+<dt><strong>transformation_matrix</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">append</span></code>((object)&nbsp;-&gt;&nbsp;None&nbsp;&#8211;&nbsp;append&nbsp;object&nbsp;to&nbsp;end)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>(()&nbsp;-&gt;&nbsp;None&nbsp;&#8211;&nbsp;remove&nbsp;all&nbsp;items&nbsp;from&nbsp;L)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code>(()&nbsp;-&gt;&nbsp;list&nbsp;&#8211;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;L)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">count</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">extend</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">index</span></code>((value,&nbsp;[start,&nbsp;...)</td>
+<td>Raises ValueError if the value is not present.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">insert</span></code></td>
+<td>L.insert(index, object) &#8211; insert object before index</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">pop</span></code>(...)</td>
+<td>Raises IndexError if list is empty or index is out of range.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">remove</span></code>(...)</td>
+<td>Raises ValueError if the value is not present.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">reverse</span></code></td>
+<td>L.reverse() &#8211; reverse <em>IN PLACE</em></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">sort</span></code>((key=None[,&nbsp;reverse])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.mode_basis.mode_basis.ModeBasis.orthogonalized">
+<code class="descname">orthogonalized</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.mode_basis.ModeBasis.orthogonalized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.mode_basis.mode_basis.ModeBasis.transformation_matrix">
+<code class="descname">transformation_matrix</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.mode_basis.ModeBasis.transformation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis.zernike">
+<span id="hcipy-hcipy-mode-basis-zernike-module"></span><h2>hcipy.hcipy.mode_basis.zernike module<a class="headerlink" href="#module-hcipy.hcipy.mode_basis.zernike" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.ansi_to_zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">ansi_to_zernike</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.ansi_to_zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Zernike index from an ANSI index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The ANSI index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.make_zernike_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">make_zernike_basis</code><span class="sig-paren">(</span><em>num_modes</em>, <em>D</em>, <em>grid</em>, <em>starting_mode=1</em>, <em>ansi=False</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.make_zernike_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a ModeBasis of Zernike polynomials.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of Zernike polynomials to generate.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomials.</p>
+</dd>
+<dt><strong>starting_mode</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The first mode to evaluate.</p>
+</dd>
+<dt><strong>ansi</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the modes will be indexed using ANSI indices. Othewise, a Noll 
+indexing scheme is used.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated mode basis of Zernike polynomials.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.noll_to_zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">noll_to_zernike</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.noll_to_zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Zernike index from a Noll index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The Noll index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>D=1</em>, <em>grid=None</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the Zernike polynomial on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomial. If this is None,
+a Field generator will be returned.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or Field generator</strong></dt>
+<dd><p class="first last">The evaluated Zernike polynomial. If <cite>grid</cite> is None, a Field generator is returned,
+which evaluates the Zernike polynomial on the supplied grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_ansi">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_ansi</code><span class="sig-paren">(</span><em>i</em>, <em>D=1</em>, <em>grid=None</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_ansi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the Zernike polynomial on a grid using an ANSI index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The ANSI index.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomial. If this is None,
+a Field generator will be returned.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or Field generator</strong></dt>
+<dd><p class="first last">The evaluated Zernike polynomial. If <cite>grid</cite> is None, a Field generator is returned,
+which evaluates the Zernike polynomial on the supplied grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_azimuthal">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_azimuthal</code><span class="sig-paren">(</span><em>m</em>, <em>theta</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_azimuthal" title="Permalink to this definition">¶</a></dt>
+<dd><p>The azimuthal component of a Zernike polynomial.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+<dt><strong>theta</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The azimuthal coordinates on which to calculate the polynomial.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong></dt>
+<dd><p class="first last">The azimuthal component of the evaluated Zernike polynomial.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_noll">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_noll</code><span class="sig-paren">(</span><em>i</em>, <em>D=1</em>, <em>grid=None</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_noll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the Zernike polynomial on a grid using a Noll index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The Noll index.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomial. If this is None,
+a Field generator will be returned.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or Field generator</strong></dt>
+<dd><p class="first last">The evaluated Zernike polynomial. If <cite>grid</cite> is None, a Field generator is returned,
+which evaluates the Zernike polynomial on the supplied grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_radial">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_radial</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_radial" title="Permalink to this definition">¶</a></dt>
+<dd><p>The radial component of a Zernike polynomial.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+<dt><strong>r</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The (normalized) radial coordinates on which to calculate the polynomial.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>array_like</strong></dt>
+<dd><p class="first last">The radial component of the evaluated Zernike polynomial.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_to_ansi">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_to_ansi</code><span class="sig-paren">(</span><em>n</em>, <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_to_ansi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ANSI index for a pair of Zernike indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>int</strong></dt>
+<dd><p class="first last">The ANSI index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike.zernike_to_noll">
+<code class="descclassname">hcipy.hcipy.mode_basis.zernike.</code><code class="descname">zernike_to_noll</code><span class="sig-paren">(</span><em>n</em>, <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike.zernike_to_noll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Noll index for a pair of Zernike indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>int</strong></dt>
+<dd><p class="first last">The Noll index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.mode_basis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.mode_basis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.mode_basis.ModeBasis">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">ModeBasis</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.ModeBasis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">list</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>orthogonalized</strong></dt>
+<dd></dd>
+<dt><strong>transformation_matrix</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">append</span></code>((object)&nbsp;-&gt;&nbsp;None&nbsp;&#8211;&nbsp;append&nbsp;object&nbsp;to&nbsp;end)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>(()&nbsp;-&gt;&nbsp;None&nbsp;&#8211;&nbsp;remove&nbsp;all&nbsp;items&nbsp;from&nbsp;L)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code>(()&nbsp;-&gt;&nbsp;list&nbsp;&#8211;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;L)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">count</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">extend</span></code>(...)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">index</span></code>((value,&nbsp;[start,&nbsp;...)</td>
+<td>Raises ValueError if the value is not present.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">insert</span></code></td>
+<td>L.insert(index, object) &#8211; insert object before index</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">pop</span></code>(...)</td>
+<td>Raises IndexError if list is empty or index is out of range.</td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">remove</span></code>(...)</td>
+<td>Raises ValueError if the value is not present.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">reverse</span></code></td>
+<td>L.reverse() &#8211; reverse <em>IN PLACE</em></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">sort</span></code>((key=None[,&nbsp;reverse])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.mode_basis.ModeBasis.orthogonalized">
+<code class="descname">orthogonalized</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.ModeBasis.orthogonalized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.mode_basis.ModeBasis.transformation_matrix">
+<code class="descname">transformation_matrix</code><a class="headerlink" href="#hcipy.hcipy.mode_basis.ModeBasis.transformation_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_gaussian_hermite_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_gaussian_hermite_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>num_modes</em>, <em>mode_field_diameter</em>, <em>starting_mode=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_gaussian_hermite_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode basis.</p>
+<p>This function evaluates the starting_mode to num_modes + starting_modes Gaussian-Hermite modes.
+And returns a ModeBasis made out of these Gaussian-Hermite modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of modes to create.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>starting_mode</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The starting point of the mode indices.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated Gaussian-Hermite modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite_index">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">gaussian_hermite_index</code><span class="sig-paren">(</span><em>i</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates the i-th order Gaussian-Hermite mode on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The one-dimensional mode index.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Hermite mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Hermite mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated Gaussian-Hermite mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_hermite">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">gaussian_hermite</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_hermite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates a (n, m) order Gaussian-Hermite mode on a grid.
+The definition of the modes are the following,</p>
+<p>Here  is the mode_field_radius, which is . This defintion follows 
+the Physicists definition of the Hermite polynomials. The modes are numerical normalized to have a 
+total power of 1.</p>
+<p>More details on the Hermite Polynomials can be found on: <a class="reference external" href="http://mathworld.wolfram.com/HermitePolynomial.html">http://mathworld.wolfram.com/HermitePolynomial.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The x order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The y order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.index_to_hermite">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">index_to_hermite</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.index_to_hermite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a one-dimensional mode index to the two-dimensional mode index.</p>
+<p>The one-dimensional mode index is converted to a two-dimensional index.
+The two-dimensional index determines the order in the x and y directions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The one-dimensional index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The x order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The y order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.gaussian_laguerre">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">gaussian_laguerre</code><span class="sig-paren">(</span><em>p</em>, <em>l</em>, <em>mode_field_diameter=1</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.gaussian_laguerre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Hermite mode.</p>
+<p>This function evaluates a (p,l) order Gaussian-Laguerre mode on a grid.
+The definition of the modes are the following,</p>
+<p>Here  is the mode_field_radius, which is .
+And  are the generalized Laguerre Polynomials.
+All modes are numerical normalized to have a total power of 1.</p>
+<p>More details on generalized Laguerre Polynomials can be found on:
+<a class="reference external" href="http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html">http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial order.</p>
+</dd>
+<dt><strong>l</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the mode.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The evaluated mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_gaussian_laguerre_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_gaussian_laguerre_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>pmax</em>, <em>lmax</em>, <em>mode_field_diameter</em>, <em>pmin=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_gaussian_laguerre_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Gaussian-Laguerre mode basis.</p>
+<p>This function evaluates Gaussian-Laguerre modes. For each radial order 
+within [pmin, pmax] it will calculate the azimuthal order [-lmax, lmax] inclusive.
+This function returns a ModeBasis made out of these Gaussian-Laguerre modes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>pmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The maximum radial order of the modes.</p>
+</dd>
+<dt><strong>lmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The maximum azimuthal order.</p>
+</dd>
+<dt><strong>mode_field_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The mode field diameter of the Gaussian-Laguerre mode.</p>
+</dd>
+<dt><strong>pmin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The minimal radial order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The Gaussian-Laguerre modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_gaussian_pokes">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_gaussian_pokes</code><span class="sig-paren">(</span><em>grid</em>, <em>mu</em>, <em>sigma</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_gaussian_pokes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a basis of Gaussians.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to calculate the mode basis.</p>
+</dd>
+<dt><strong>mu</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The centers for each of the Gaussians.</p>
+</dd>
+<dt><strong>sigma</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray or scalar</span><dd><p class="first last">The standard deviation of each of the Gaussians. If this is a scalar,
+this value will be used for all Gaussians.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The calculated mode basis.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_sine_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_sine_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_sine_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a sine basis.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all sine modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_cosine_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_cosine_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_cosine_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a cosine basis.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all cosine modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_fourier_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_fourier_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_fourier_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a Fourier basis.</p>
+<p>Fourier modes this function are defined to be real. This means that for each point, both a sine and cosine mode is returned.</p>
+<p>Repeated frequencies will not be repeated in this mode basis. This means that opposite points in the <cite>fourier_grid</cite> will be silently ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all Fourier modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_complex_fourier_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_complex_fourier_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>fourier_grid</em>, <em>sort_by_energy=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_complex_fourier_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a complex Fourier basis.</p>
+<p>Fourier modes this function are defined to be complex. For each point in <cite>fourier_grid</cite> the complex Fourier mode is contained in the output.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The <code class="xref py py-class docutils literal"><span class="pre">Grid</span></code> on which to calculate the modes.</p>
+</dd>
+<dt><strong>fourier_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid defining all frequencies.</p>
+</dd>
+<dt><strong>sort_by_energy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">bool</span><dd><p class="first last">Whether to sort by increasing energy or not.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The mode basis containing all Fourier modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_zernike_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_zernike_basis</code><span class="sig-paren">(</span><em>num_modes</em>, <em>D</em>, <em>grid</em>, <em>starting_mode=1</em>, <em>ansi=False</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_zernike_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a ModeBasis of Zernike polynomials.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of Zernike polynomials to generate.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomials.</p>
+</dd>
+<dt><strong>starting_mode</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The first mode to evaluate.</p>
+</dd>
+<dt><strong>ansi</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the modes will be indexed using ANSI indices. Othewise, a Noll 
+indexing scheme is used.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated mode basis of Zernike polynomials.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">zernike</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>D=1</em>, <em>grid=None</em>, <em>radial_cutoff=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the Zernike polynomial on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the Zernike polynomial.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the Zernike polynomial. If this is None,
+a Field generator will be returned.</p>
+</dd>
+<dt><strong>radial_cutoff</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Whether to apply a circular aperture to cutoff the modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or Field generator</strong></dt>
+<dd><p class="first last">The evaluated Zernike polynomial. If <cite>grid</cite> is None, a Field generator is returned,
+which evaluates the Zernike polynomial on the supplied grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.noll_to_zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">noll_to_zernike</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.noll_to_zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Zernike index from a Noll index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The Noll index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike_to_noll">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">zernike_to_noll</code><span class="sig-paren">(</span><em>n</em>, <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike_to_noll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Noll index for a pair of Zernike indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>int</strong></dt>
+<dd><p class="first last">The Noll index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.ansi_to_zernike">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">ansi_to_zernike</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.ansi_to_zernike" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Zernike index from an ANSI index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>i</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The ANSI index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.zernike_to_ansi">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">zernike_to_ansi</code><span class="sig-paren">(</span><em>n</em>, <em>m</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.zernike_to_ansi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ANSI index for a pair of Zernike indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The radial Zernike order.</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The azimuthal Zernike order.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>int</strong></dt>
+<dd><p class="first last">The ANSI index.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">disk_harmonic</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>D=1</em>, <em>bc='dirichlet'</em>, <em>grid=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a disk harmonic.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Radial order</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Azimuthal order</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the pupil.</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the function.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The disk harmonic function evaluated on <cite>grid</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.disk_harmonic_energy">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">disk_harmonic_energy</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>bc='dirichlet'</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.disk_harmonic_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the energy of a disk harmonic function.</p>
+<p>This allows for functions to sort a disk harmonic mode basis on energy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Radial order</p>
+</dd>
+<dt><strong>m</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">Azimuthal order</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>scalar</strong></dt>
+<dd><p class="first last">The energy corresponding to the mode.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.mode_basis.make_disk_harmonic_basis">
+<code class="descclassname">hcipy.hcipy.mode_basis.</code><code class="descname">make_disk_harmonic_basis</code><span class="sig-paren">(</span><em>grid</em>, <em>num_modes</em>, <em>D=1</em>, <em>bc='dirichlet'</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.mode_basis.make_disk_harmonic_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a disk harmonic mode basis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which to evaluate the disk harmonic modes.</p>
+</dd>
+<dt><strong>num_modes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of modes to create.</p>
+</dd>
+<dt><strong>D</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the disk.</p>
+</dd>
+<dt><strong>bc</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">The boundary conditions to use. This can be either &#8216;dirichlet&#8217;, or 
+&#8216;neumann&#8217; for a Dirichlet or Neumann boundary condition respectively.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ModeBasis</strong></dt>
+<dd><p class="first last">The evaluated disk harmonic modes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.mode_basis package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.disk_harmonic">hcipy.hcipy.mode_basis.disk_harmonic module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.fourier">hcipy.hcipy.mode_basis.fourier module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.gaussian_hermite">hcipy.hcipy.mode_basis.gaussian_hermite module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.gaussian_laguerre">hcipy.hcipy.mode_basis.gaussian_laguerre module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.gaussian_pokes">hcipy.hcipy.mode_basis.gaussian_pokes module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.mode_basis">hcipy.hcipy.mode_basis.mode_basis module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis.zernike">hcipy.hcipy.mode_basis.zernike module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.mode_basis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.mode_basis.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.mode_basis.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
