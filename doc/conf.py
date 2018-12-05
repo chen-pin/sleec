@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.intersphinx',
 #    'sphinx.ext.todo',
 #    'sphinx.ext.ifconfig',
-#    'sphinx.ext.autosummary', 
+    'sphinx.ext.autosummary', 
     'sphinx.ext.viewcode',
     'numpydoc',
 ]
@@ -114,8 +114,8 @@ pygments_style = 'sphinx'
 #keep_warnings = False
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
-
+# todo_include_todos = True
+autosummary_generate = True
 
 # -- Options for HTML output ----------------------------------------------
 

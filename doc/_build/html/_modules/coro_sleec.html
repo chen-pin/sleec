@@ -118,8 +118,13 @@
 
 <span class="k">def</span> <span class="nf">_test</span><span class="p">():</span>  
     <span class="n">pupil_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_pupil_grid</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
-    <span class="n">focal_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_focal_grid</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="n">focal_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_focal_grid</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
     <span class="n">prop</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">)</span>
+<span class="c1">#    # Gaussian mask function</span>
+<span class="c1">#    x, y = focal_grid.coords</span>
+<span class="c1">#    r = np.sqrt(x**2 + y**2)</span>
+<span class="c1">#    fpm_transm = 1.0 - np.exp(-(np.log(2.0)/24.0**2)*r**2)</span>
+    <span class="c1"># Binary mask function</span>
     <span class="n">aperture</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">circular_aperture</span><span class="p">(</span><span class="mf">6.5</span><span class="p">)</span>
     <span class="n">fpm_transm</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">aperture</span><span class="p">(</span><span class="n">focal_grid</span><span class="p">)</span>
     <span class="n">fpm</span> <span class="o">=</span> <span class="n">TransmMask</span><span class="p">(</span><span class="n">focal_grid</span><span class="p">,</span> <span class="n">fpm_transm</span><span class="p">)</span>
