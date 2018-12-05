@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.wavefront_sensing.wavefront_sensor &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.wavefront_sensing.wavefront_sensor</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..optics</span> <span class="kn">import</span> <span class="n">OpticalSystem</span>
+
+<div class="viewcode-block" id="WavefrontSensorOptics"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensorOptics">[docs]</a><span class="k">class</span> <span class="nc">WavefrontSensorOptics</span><span class="p">(</span><span class="n">OpticalSystem</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;The optics for a wavefront sensor.</span>
+
+<span class="sd">	This object serves as the base class for all optics in a wavefront sensor.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="WavefrontSensorEstimator"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensorEstimator">[docs]</a><span class="k">class</span> <span class="nc">WavefrontSensorEstimator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;The estimator for a wavefront sensor.</span>
+
+<span class="sd">	This object serves as the base class for all estimators in a wavefront sensor.</span>
+<span class="sd">	It calculates from a list of images what the wavefront is. This wavefront can be</span>
+<span class="sd">	anything that responds to wavefront changes, such as slopes, pupil amplitude, etc...</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="WavefrontSensorEstimator.estimate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensorEstimator.estimate">[docs]</a>	<span class="k">def</span> <span class="nf">estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Estimate the wavefront from `images`.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		images : list</span>
+<span class="sd">			The list of images on which to base the estimate.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Field or ndarray</span>
+<span class="sd">			The estimate of the wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="WavefrontSensor"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensor">[docs]</a><span class="k">class</span> <span class="nc">WavefrontSensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A complete wavefront sensor.</span>
+
+<span class="sd">	This convenience class consolidates the optics, detector, frame correction </span>
+<span class="sd">	and estimation parts of a wavefront sensor.</span>
+
+<span class="sd">	.. caution::</span>
+<span class="sd">		This class only works with estimators that require only one image.</span>
+<span class="sd">		For estimators with more than one required image, the wavefront</span>
+<span class="sd">		sensor must be handcoded.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	wfs_optics : WavefrontSensorOptics object</span>
+<span class="sd">		The optics of the wavefront sensor. If it is not supplied, no optics </span>
+<span class="sd">		will be used.</span>
+<span class="sd">	detector : Detector object</span>
+<span class="sd">		The detector of the wavefront sensor. If it is not supplied, a NoiselessDetector</span>
+<span class="sd">		will be used.</span>
+<span class="sd">	frame_correction : FrameCorrector object</span>
+<span class="sd">		The frame correction of the detector. If it is not supplied, no frame</span>
+<span class="sd">		correction will be used.</span>
+<span class="sd">	wfs_estimator : WavefrontEstimator</span>
+<span class="sd">		The wavefront estimator. If it is not supplied, the corrected image will</span>
+<span class="sd">		be returned instead.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfs_optics</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">detector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">frame_corrector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wfs_estimator</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wfs_optics</span> <span class="o">=</span> <span class="n">wfs_optics</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">detector</span> <span class="o">=</span> <span class="n">detector</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">frame_corrector</span> <span class="o">=</span> <span class="n">frame_corrector</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wfs_estimator</span> <span class="o">=</span> <span class="n">wfs_estimator</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">detector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The used detector.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_detector</span>
+	
+	<span class="nd">@detector.setter</span>
+	<span class="k">def</span> <span class="nf">detector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detector</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">detector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_detector</span> <span class="o">=</span> <span class="n">NoiselessDetector</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_detector</span> <span class="o">=</span> <span class="n">detector</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">wfs_optics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The used wavefront sensor optics.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wfs_optics</span>
+	
+	<span class="nd">@wfs_optics.setter</span>
+	<span class="k">def</span> <span class="nf">wfs_optics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wfs_optics</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">wfs_optics</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_wfs_optics</span> <span class="o">=</span> <span class="n">EmptyOpticalElement</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_wfs_optics</span> <span class="o">=</span> <span class="n">wfs_optics</span>
+		
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">frame_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The used frame corrector.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame_corrector</span>
+	
+	<span class="nd">@frame_corrector.setter</span>
+	<span class="k">def</span> <span class="nf">frame_corrector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_corrector</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">frame_corrector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_frame_corrector</span> <span class="o">=</span> <span class="n">FrameCorrector</span><span class="p">()</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_frame_corrector</span> <span class="o">=</span> <span class="n">frame_corrector</span>
+
+<div class="viewcode-block" id="WavefrontSensor.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensor.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrate the wavefront sensor.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront will be propagated through the wavefront sensor optics </span>
+<span class="sd">			and fall onto the detector.</span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time.</span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfs_optics</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="WavefrontSensor.read_out"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.WavefrontSensor.read_out">[docs]</a>	<span class="k">def</span> <span class="nf">read_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Estimate the wavefront from the read-out detector image.</span>
+
+<span class="sd">		If there is no wavefront estimator avaiable, the corrected detector</span>
+<span class="sd">		image will be returned instead.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Field or ndarray</span>
+<span class="sd">			The estimate of the wavefront sensor. If the wavefront sensor estimator</span>
+<span class="sd">			is not give, the corrected detector image will be given instead.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">read_out</span><span class="p">()</span>
+		<span class="n">corrected_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_corrector</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfs_estimator</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">corrected_img</span>
+
+		<span class="n">wfs_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wfs_estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">([</span><span class="n">corrected_img</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">wfs_response</span></div>
+
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Convenience function to integrate and read out the wavefront sensor.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront will be propagated through the wavefront sensor optics </span>
+<span class="sd">			and fall onto the detector.</span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time.</span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Field or ndarray</span>
+<span class="sd">			The estimate of the wavefront sensor. If the wavefront sensor estimator</span>
+<span class="sd">			is not give, the corrected detector image will be given instead.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_out</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.field.grid &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.field.grid</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<div class="viewcode-block" id="Grid"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid">[docs]</a><span class="k">class</span> <span class="nc">Grid</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A set of points on some coordinate system.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	coords : CoordsBase</span>
+<span class="sd">		The actual definition of the coordinate values.</span>
+<span class="sd">	weights : array_like or None</span>
+<span class="sd">		The interval size, area, volume or hypervolume of each point, depending on the number of dimensions.</span>
+<span class="sd">		If this is None (default), the weights will be attempted to be calculated on the fly when needed.</span>
+<span class="sd">	</span>
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	coords</span>
+<span class="sd">		The coordinate values for each dimension.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="n">_coordinate_system</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+	<span class="n">_coordinate_system_transformations</span> <span class="o">=</span> <span class="p">{}</span>
+	
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
+	
+<div class="viewcode-block" id="Grid.copy"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.copy">[docs]</a>	<span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Create a copy.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="Grid.subset"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.subset">[docs]</a>	<span class="k">def</span> <span class="nf">subset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterium</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Construct a subset of the current sampling, based on `criterium`.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		criterium : function or array_like</span>
+<span class="sd">			The criterium used to select points. A function will be evaluated for every point. </span>
+<span class="sd">			Otherwise, this must be a boolean array of integer array, used for slicing the points.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			A new grid with UnstructuredCoords that includes only the points for which the criterium </span>
+<span class="sd">			was true.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">UnstructuredCoords</span>
+		
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">criterium</span><span class="p">,</span> <span class="s1">&#39;__call__&#39;</span><span class="p">):</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">criterium</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">indices</span> <span class="o">=</span> <span class="n">criterium</span>
+		<span class="n">new_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">]</span>
+		<span class="n">new_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="n">UnstructuredCoords</span><span class="p">(</span><span class="n">new_coords</span><span class="p">),</span> <span class="n">new_weights</span><span class="p">)</span></div>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">ndim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points in this grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">size</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of elements in each dimension for a separated grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not separated.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_separated</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-separated grid does not have dims.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">dims</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The shape of a reshaped ``numpy.ndarray`` using this grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not separated.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_separated</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-separated grid does not have a shape.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">delta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The spacing between points in regularly-spaced grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not regular.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_regular</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-regular grid does not have a delta.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">delta</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The zero point of a regularly-spaced grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not regular.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_regular</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-regular grid does not have a zero.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">zero</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">separated_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A list of coordinates for each dimension in a separated grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not separated.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_separated</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-separated grid does not have separated coordinates.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">separated_coords</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">regular_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The tuple (delta, dims, zero) for a regularly-spaced grid.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the grid is not regular.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_regular</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;A non-regular grid does not have regular coordinates.&#39;</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">regular_coords</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The interval size, area, volume or hypervolume of each point, depending on the number of dimensions.</span>
+
+<span class="sd">		The weights are attempted to be calculated on the fly if not set. If this fails, a warning is emitted and all points will be given an equal weight of one. </span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">_get_automatic_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="mi">1</span>
+				<span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;No automatic weights could be calculated for this grid.&#39;</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weights</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights</span>
+	
+	<span class="nd">@weights.setter</span>
+	<span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_weights</span> <span class="o">=</span> <span class="n">weights</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A list of points of this grid.</span>
+
+<span class="sd">		This can be used for easier iteration::</span>
+<span class="sd">		</span>
+<span class="sd">			for p in grid.points:</span>
+<span class="sd">				print(p)</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_separated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if the grid is separated, False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">is_separated</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_regular</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if the grid is regularly-spaced, False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">is_regular</span>
+	
+<div class="viewcode-block" id="Grid.is_"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.is_">[docs]</a>	<span class="k">def</span> <span class="nf">is_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Check if the coordinate system is `system`.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		system : str</span>
+<span class="sd">			The name of the coordinate system to check for.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		bool</span>
+<span class="sd">			If the coordinate system of the grid is equal to `system`.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">system</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coordinate_system</span></div>
+
+<div class="viewcode-block" id="Grid.as_"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.as_">[docs]</a>	<span class="k">def</span> <span class="nf">as_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Convert the grid to the new coordinate system `system`.</span>
+
+<span class="sd">		If the grid is already in the right coordinate system, this function doesn&#39;t do anything.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		system : str</span>
+<span class="sd">			The name of the coordinate system to check for.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			A new :class:`Grid` in the required coordinate system.</span>
+<span class="sd">		</span>
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If the conversion to the coordinate system `system` isn&#39;t known.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="n">system</span><span class="p">):</span>
+			<span class="k">return</span> <span class="bp">self</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">Grid</span><span class="o">.</span><span class="n">_coordinate_system_transformations</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_coordinate_system</span><span class="p">][</span><span class="n">system</span><span class="p">](</span><span class="bp">self</span><span class="p">)</span></div>
+	
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span> <span class="nf">_add_coordinate_system_transformation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">Grid</span><span class="o">.</span><span class="n">_coordinate_system_transformations</span><span class="p">:</span>
+			<span class="n">Grid</span><span class="o">.</span><span class="n">_coordinate_system_transformations</span><span class="p">[</span><span class="n">source</span><span class="p">][</span><span class="n">dest</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">Grid</span><span class="o">.</span><span class="n">_coordinate_system_transformations</span><span class="p">[</span><span class="n">source</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">dest</span><span class="p">:</span> <span class="n">func</span><span class="p">}</span>
+	
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The `i`-th point in this grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Grid.scale"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.scale">[docs]</a>	<span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Scale the grid in-place.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		scale : array_like</span>
+<span class="sd">			The factor with which to scale the grid.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			Itself to allow for chaining these transformations.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="Grid.scaled"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.scaled">[docs]</a>	<span class="k">def</span> <span class="nf">scaled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A scaled copy of this grid.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		scale : array_like</span>
+<span class="sd">			The factor with which to scale the grid.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			The scaled grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">grid</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">grid</span></div>
+	
+<div class="viewcode-block" id="Grid.shift"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.shift">[docs]</a>	<span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Shift the grid in-place.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		shift : array_like</span>
+<span class="sd">			The amount with which to shift the grid.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			Itself to allow for chaining these transformations.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="Grid.shifted"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.shifted">[docs]</a>	<span class="k">def</span> <span class="nf">shifted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A shifted copy of this grid.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		shift : array_like</span>
+<span class="sd">			The amount with which to shift the grid.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			The scaled grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">grid</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">grid</span></div>
+	
+<div class="viewcode-block" id="Grid.rotate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.rotate">[docs]</a>	<span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Rotate the grid in-place.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		angle : scalar</span>
+<span class="sd">			The angle in radians.</span>
+<span class="sd">		axis : ndarray or None</span>
+<span class="sd">			The axis of rotation. For two-dimensional grids, it is ignored. For</span>
+<span class="sd">			three-dimensional grids it is required.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			Itself to allow for chaining these transformations.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="Grid.rotated"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.rotated">[docs]</a>	<span class="k">def</span> <span class="nf">rotated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A rotated copy of this grid.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		angle : scalar</span>
+<span class="sd">			The angle in radians.</span>
+<span class="sd">		axis : ndarray or None</span>
+<span class="sd">			The axis of rotation. For two-dimensional grids, it is ignored. For</span>
+<span class="sd">			three-dimensional grids it is required.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			The rotated grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">grid</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">grid</span></div>
+
+<div class="viewcode-block" id="Grid.reverse"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.reverse">[docs]</a>	<span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reverse the order of the points in-place.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			Itself to allow for chaining these transformations.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+		<span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Grid.reversed"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.reversed">[docs]</a>	<span class="k">def</span> <span class="nf">reversed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Make a copy of the grid with the order of the points reversed.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Grid</span>
+<span class="sd">			The reversed grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">grid</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+		<span class="k">return</span> <span class="n">grid</span></div>
+	
+	<span class="nd">@staticmethod</span>
+	<span class="k">def</span> <span class="nf">_get_automatic_weights</span><span class="p">(</span><span class="n">coords</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+	
+	<span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;(&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span>
+
+<div class="viewcode-block" id="Grid.closest_to"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Grid.closest_to">[docs]</a>	<span class="k">def</span> <span class="nf">closest_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Get the index of the point closest to point `p`.</span>
+
+<span class="sd">		Point `p` is assumed to have the same coordinate system as the grid itself.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		p : array_like</span>
+<span class="sd">			The point at which to search for.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		int</span>
+<span class="sd">			The index of the closest point.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">rel_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rel_points</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

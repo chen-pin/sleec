@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.mode_basis.gaussian_hermite &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.mode_basis.gaussian_hermite</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">floor</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">eval_hermite</span>
+
+<div class="viewcode-block" id="index_to_hermite"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.index_to_hermite">[docs]</a><span class="k">def</span> <span class="nf">index_to_hermite</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Converts a one-dimensional mode index to the two-dimensional mode index.</span>
+
+<span class="sd">	The one-dimensional mode index is converted to a two-dimensional index.</span>
+<span class="sd">	The two-dimensional index determines the order in the x and y directions.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	i : int</span>
+<span class="sd">		The one-dimensional index.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	n : int</span>
+<span class="sd">		The x order.</span>
+<span class="sd">	m : int</span>
+<span class="sd">		The y order.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1"># Get the max order</span>
+	<span class="n">o</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+	<span class="c1"># Get the y order</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">o</span> <span class="o">*</span> <span class="p">(</span><span class="n">o</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+	<span class="c1"># Get the x order</span>
+	<span class="n">n</span> <span class="o">=</span> <span class="n">o</span> <span class="o">-</span> <span class="n">m</span>
+	<span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span></div>
+	
+<div class="viewcode-block" id="gaussian_hermite"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.gaussian_hermite">[docs]</a><span class="k">def</span> <span class="nf">gaussian_hermite</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">r&#39;&#39;&#39;Creates a Gaussian-Hermite mode.</span>
+
+<span class="sd">	This function evaluates a (n, m) order Gaussian-Hermite mode on a grid.</span>
+<span class="sd">	The definition of the modes are the following,</span>
+
+<span class="sd">	.. math:: </span>
+<span class="sd">		\exp{\left(-\frac{r^2}{w_0^2}\right)} H_n\left(\sqrt{2}\frac{x}{w_0}\right) H_m\left(\sqrt{2}\frac{y}{w_0}\right).</span>
+<span class="sd">	</span>
+<span class="sd">	Here :math:`w_0` is the mode_field_radius, which is :math:`\mathrm{MFD}/2`. This defintion follows </span>
+<span class="sd">	the Physicists definition of the Hermite polynomials. The modes are numerical normalized to have a </span>
+<span class="sd">	total power of 1.</span>
+
+<span class="sd">	More details on the Hermite Polynomials can be found on: http://mathworld.wolfram.com/HermitePolynomial.html</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	n : int</span>
+<span class="sd">		The x order.</span>
+<span class="sd">	m : int</span>
+<span class="sd">		The y order.</span>
+<span class="sd">	mode_field_diameter : scalar</span>
+<span class="sd">		The mode field diameter of the Gaussian-Laguerre mode.</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the mode.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The evaluated mode.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+	<span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_separated</span> <span class="ow">and</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">):</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">x</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">y</span>
+		<span class="n">r2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">mode_field_diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+		<span class="n">r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">r</span> <span class="o">/</span> <span class="n">mode_field_diameter</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+	<span class="c1"># Calculate the mode.</span>
+	<span class="n">hg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r2</span><span class="p">)</span> <span class="o">*</span> <span class="n">eval_hermite</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">mode_field_diameter</span><span class="p">)</span> <span class="o">*</span> <span class="n">eval_hermite</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="n">mode_field_diameter</span><span class="p">)</span>
+	
+	<span class="c1"># Numerically normalize the mode</span>
+	<span class="n">hg</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">hg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">hg</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="gaussian_hermite_index"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.gaussian_hermite_index">[docs]</a><span class="k">def</span> <span class="nf">gaussian_hermite_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Creates a Gaussian-Hermite mode.</span>
+
+<span class="sd">	This function evaluates the i-th order Gaussian-Hermite mode on a grid.	</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	i : int</span>
+<span class="sd">		The one-dimensional mode index.</span>
+<span class="sd">	mode_field_diameter : scalar</span>
+<span class="sd">		The mode field diameter of the Gaussian-Hermite mode.</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the Gaussian-Hermite mode.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The evaluated Gaussian-Hermite mode.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">index_to_hermite</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">gaussian_hermite</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="make_gaussian_hermite_basis"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.make_gaussian_hermite_basis">[docs]</a><span class="k">def</span> <span class="nf">make_gaussian_hermite_basis</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">num_modes</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">starting_mode</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Creates a Gaussian-Hermite mode basis.</span>
+
+<span class="sd">	This function evaluates the starting_mode to num_modes + starting_modes Gaussian-Hermite modes.</span>
+<span class="sd">	And returns a ModeBasis made out of these Gaussian-Hermite modes.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the Gaussian-Hermite mode.</span>
+<span class="sd">	num_modes : int</span>
+<span class="sd">		The number of modes to create.</span>
+<span class="sd">	mode_field_diameter : scalar</span>
+<span class="sd">		The mode field diameter of the Gaussian-Hermite mode.</span>
+<span class="sd">	starting_mode : int</span>
+<span class="sd">		The starting point of the mode indices.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	ModeBasis</span>
+<span class="sd">		The evaluated Gaussian-Hermite modes.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">.mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+
+	<span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gaussian_hermite_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">starting_mode</span><span class="p">,</span> <span class="n">starting_mode</span><span class="o">+</span><span class="n">num_modes</span><span class="p">)]</span>
+	<span class="k">return</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

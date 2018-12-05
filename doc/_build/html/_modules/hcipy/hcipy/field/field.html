@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.field.field &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.field.field</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<div class="viewcode-block" id="Field"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Field">[docs]</a><span class="k">class</span> <span class="nc">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;The value of some physical quantity for each point in some coordinate system.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	arr : array_like</span>
+<span class="sd">		An array of values or tensors for each point in the :class:`Grid`.</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The corresponding :class:`Grid` on which the values are set.</span>
+<span class="sd">	</span>
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which the values are defined.</span>
+
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+		<span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+		<span class="n">obj</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span>
+		<span class="k">return</span> <span class="n">obj</span>
+	
+	<span class="k">def</span> <span class="nf">__array_finalize__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;grid&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">tensor_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The order of the tensor of the field.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">tensor_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The shape of the tensor of the field.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_scalar_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if this field is a scalar field (ie. a tensor order of 0), False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">==</span> <span class="mi">0</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_vector_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if this field is a vector field (ie. a tensor order of 1), False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">==</span> <span class="mi">1</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_valid_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if the field corresponds with its grid.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">shaped</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The reshaped version of this field.</span>
+
+<span class="sd">		Raises</span>
+<span class="sd">		------</span>
+<span class="sd">		ValueError</span>
+<span class="sd">			If this field isn&#39;t separated, no reshaped version can be made.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">is_separated</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This field doesn</span><span class="se">\&#39;</span><span class="s1">t have a shape.&#39;</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">new_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
+			<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+	
+<div class="viewcode-block" id="Field.at"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.Field.at">[docs]</a>	<span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The value of this field closest to point p.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		p : array_like</span>
+<span class="sd">			The point at which the closest value should be returned.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		array_like</span>
+<span class="sd">			The value, potentially tensor, closest to point p.</span>
+
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">closest_to</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">i</span><span class="p">]</span></div></div>
+
+<div class="viewcode-block" id="field_einsum"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_einsum">[docs]</a><span class="k">def</span> <span class="nf">field_einsum</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="o">*</span><span class="n">operands</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Evaluates the Einstein summation convention on the operand fields.</span>
+
+<span class="sd">	This function uses the same conventions as numpy.einsum(). The input</span>
+<span class="sd">	subscript is multiplexed over each position in the grid. The grids of each of</span>
+<span class="sd">	the input field operands don&#39;t have to match, but must have the same lengths.</span>
+
+<span class="sd">	The subscripts must be written as you would for a single position in the grid.</span>
+<span class="sd">	The function alters these subscripts to multiplex over the entire grid.</span>
+
+<span class="sd">	.. caution::</span>
+<span class="sd">		Some subscripts may yield no exception, even though they would fail for</span>
+<span class="sd">		a single point in the grid. The output in these cases can not be trusted.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	subscripts : str</span>
+<span class="sd">		Specifies the subscripts for summation.</span>
+<span class="sd">	operands : list of array_like or `Field`</span>
+<span class="sd">		These are the arrays or fields for the operation.</span>
+<span class="sd">	out : {ndarray, None}, optional</span>
+<span class="sd">		If provided, the calculation is done into this array.</span>
+<span class="sd">	dtype : {data-type, None}, optional</span>
+<span class="sd">		If provided, forces the calculation to use the data type specified.</span>
+<span class="sd">		Note that you may have to also give a more liberal `casting`</span>
+<span class="sd">		parameter to allow the conversions. Default is None.</span>
+<span class="sd">	order : {&#39;C&#39;, &#39;F&#39;, &#39;A&#39;, &#39;K&#39;}, optional</span>
+<span class="sd">		Controls the memory layout of the output. &#39;C&#39; means it should</span>
+<span class="sd">		be C contiguous. &#39;F&#39; means it should be Fortran contiguous,</span>
+<span class="sd">		&#39;A&#39; means it should be &#39;F&#39; if the inputs are all &#39;F&#39;, &#39;C&#39; otherwise.</span>
+<span class="sd">		&#39;K&#39; means it should be as close to the layout as the inputs as</span>
+<span class="sd">		is possible, including arbitrarily permuted axes.</span>
+<span class="sd">		Default is &#39;K&#39;.</span>
+<span class="sd">	casting : {&#39;no&#39;, &#39;equiv&#39;, &#39;safe&#39;, &#39;same_kind&#39;, &#39;unsafe&#39;}, optional</span>
+<span class="sd">		Controls what kind of data casting may occur.  Setting this to</span>
+<span class="sd">		&#39;unsafe&#39; is not recommended, as it can adversely affect accumulations.</span>
+
+<span class="sd">			* &#39;no&#39; means the data types should not be cast at all.</span>
+<span class="sd">			* &#39;equiv&#39; means only byte-order changes are allowed.</span>
+<span class="sd">			* &#39;safe&#39; means only casts which can preserve values are allowed.</span>
+<span class="sd">			* &#39;same_kind&#39; means only safe casts or casts within a kind,	</span>
+<span class="sd">				like float64 to float32, are allowed.</span>
+<span class="sd">			* &#39;unsafe&#39; means any data conversions may be done.</span>
+
+<span class="sd">		Default is &#39;safe&#39;.</span>
+<span class="sd">	optimize : {False, True, &#39;greedy&#39;, &#39;optimal&#39;}, optional</span>
+<span class="sd">		Controls if intermediate optimization should occur. No optimization</span>
+<span class="sd">		will occur if False and True will default to the &#39;greedy&#39; algorithm.</span>
+<span class="sd">		Also accepts an explicit contraction list from the ``np.einsum_path``</span>
+<span class="sd">		function. See ``np.einsum_path`` for more details. Default is False.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The calculated Field based on the Einstein summation convention.</span>
+<span class="sd">	</span>
+<span class="sd">	Raises</span>
+<span class="sd">	------</span>
+<span class="sd">	ValueError</span>
+<span class="sd">		If all of the fields don&#39;t have	the same grid size. If the number of</span>
+<span class="sd">		operands is not equal to the number of subscripts specified.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">is_field</span> <span class="o">=</span> <span class="p">[</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">Field</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">operands</span><span class="p">]</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">is_field</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="o">*</span><span class="n">operands</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	
+	<span class="n">field_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">operands</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_field</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">field_sizes</span><span class="p">,</span> <span class="n">field_sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All fields must be the same size for a field_einsum().&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Decompose the subscript into input and output</span>
+	<span class="n">splitted_string</span> <span class="o">=</span> <span class="n">subscripts</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splitted_string</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+		<span class="n">ss_input</span><span class="p">,</span> <span class="n">ss_output</span> <span class="o">=</span> <span class="n">splitted_string</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">ss_input</span> <span class="o">=</span> <span class="n">splitted_string</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+		<span class="n">ss_output</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+	
+	<span class="c1"># split the input operands in separate strings</span>
+	<span class="n">ss</span> <span class="o">=</span> <span class="n">ss_input</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">operands</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Number of operands is not equal to number of indexing operands.&#39;</span><span class="p">)</span>
+	
+	<span class="c1"># Find an indexing letter that can be used for field dimension.</span>
+	<span class="n">unused_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subscripts</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+	<span class="c1"># Add the field dimension to the input field operands.</span>
+	<span class="n">ss</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="o">+</span> <span class="n">unused_index</span> <span class="k">if</span> <span class="n">is_field</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="n">s</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ss</span><span class="p">)]</span>
+
+	<span class="c1"># Recombine all operands into the final subscripts</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splitted_string</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+		<span class="n">subscripts_new</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;-&gt;&#39;</span> <span class="o">+</span> <span class="n">ss_output</span> <span class="o">+</span> <span class="n">unused_index</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">subscripts_new</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+
+	<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="n">subscripts_new</span><span class="p">,</span> <span class="o">*</span><span class="n">operands</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+	<span class="n">grid</span> <span class="o">=</span> <span class="n">operands</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">is_field</span><span class="p">))[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">grid</span>
+
+	<span class="k">if</span> <span class="s1">&#39;out&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+		<span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;out&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="field_dot"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_dot">[docs]</a><span class="k">def</span> <span class="nf">field_dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Perform a dot product of `a` and `b` multiplexed over the field dimension.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	a : Field or array_like</span>
+<span class="sd">		Left argument of the dot product.</span>
+<span class="sd">	b : Field or array_like</span>
+<span class="sd">		Right argument of the dot product.</span>
+<span class="sd">	out : Field or array_like</span>
+<span class="sd">		If provided, the calculation is done into this array.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The result of the dot product.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="c1"># Find out if a or b are vectors or higher dimensional tensors</span>
+	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;tensor_order&#39;</span><span class="p">):</span>
+		<span class="n">amat</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">&gt;</span> <span class="mi">1</span>
+	<span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">amat</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span>
+	
+	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;tensor_order&#39;</span><span class="p">):</span>
+		<span class="n">bmat</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">&gt;</span> <span class="mi">1</span>
+	<span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">bmat</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span>
+	
+	<span class="c1"># Select correct multiplication behaviour.</span>
+	<span class="k">if</span> <span class="n">amat</span> <span class="ow">and</span> <span class="n">bmat</span><span class="p">:</span>
+		<span class="n">subscripts</span> <span class="o">=</span> <span class="s1">&#39;...ij,...jk-&gt;...ik&#39;</span>
+	<span class="k">elif</span> <span class="n">amat</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bmat</span><span class="p">:</span>
+		<span class="n">subscripts</span> <span class="o">=</span> <span class="s1">&#39;...i,...i-&gt;...&#39;</span>
+	<span class="k">elif</span> <span class="ow">not</span> <span class="n">amat</span> <span class="ow">and</span> <span class="n">bmat</span><span class="p">:</span>
+		<span class="n">subscripts</span> <span class="o">=</span> <span class="s1">&#39;...i,...ij-&gt;...j&#39;</span>
+	<span class="k">elif</span> <span class="ow">not</span> <span class="n">amat</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bmat</span><span class="p">:</span>
+		<span class="n">subscripts</span> <span class="o">=</span> <span class="s1">&#39;...i,...i-&gt;...&#39;</span>
+
+	<span class="c1"># Perform calculation and return.</span>
+	<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">field_einsum</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">field_einsum</span><span class="p">(</span><span class="n">subscripts</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="field_trace"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_trace">[docs]</a><span class="k">def</span> <span class="nf">field_trace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">field_einsum</span><span class="p">(</span><span class="s1">&#39;ii&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">field_einsum</span><span class="p">(</span><span class="s1">&#39;ii&#39;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="field_inv"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_inv">[docs]</a><span class="k">def</span> <span class="nf">field_inv</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+	<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;grid&#39;</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Only tensor fields of order 2 can be inverted.&quot;</span><span class="p">)</span>
+		
+		<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

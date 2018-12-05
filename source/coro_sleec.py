@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-class FocalPlaneMask(hci.OpticalElement):
+class TransmMask(hci.OpticalElement):
     """A <hcipy> :class:'OpticalElement' object representing a focal-plane mask.
     
     Parmeters
@@ -16,16 +16,20 @@ class FocalPlaneMask(hci.OpticalElement):
     transm_field : ndarray
         Mask transmission function.  
     """
-    def __init__(self, input_grid, transm_field):
+    def __init__(self, input_grid, transm_field, wavelength=1):
         self.input_grid = input_grid
         self.transm_field = transm_field
+        self.wavelength = wavelength
+
     def forward(self, wavefront):
-        print("wavefront\n{}\n".format(wavefront))
-        wavefront.electric_field *= self.transm_field
-        return wavefront
+        wf = wavefront.copy()
+        wf.electric_field *= self.transm_field
+        return wf
+
     def backward(self, wavefront):
-        wavefront.electric_field *= self.transm_field
-        return wavefront
+        wf = wavefront.copy()
+        wf.electric_field /= self.transm_field
+        return wf
 
 
 class SleecCoronagraph(hci.OpticalElement):
@@ -76,7 +80,7 @@ def _test():
     prop = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     aperture = hci.circular_aperture(6.0)
     fpm_transm = 1.0 - aperture(focal_grid)
-    fpm = FocalPlaneMask(focal_grid, fpm_transm)
+    fpm = TransmMask(focal_grid, fpm_transm)
     pupil = hci.Wavefront(hci.circular_aperture(1)(pupil_grid))
     coro = SleecCoronagraph(pupil_grid, fpm)
     lyot_plane = coro(pupil)

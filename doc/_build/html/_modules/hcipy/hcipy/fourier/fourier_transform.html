@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.fourier.fourier_transform &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.fourier.fourier_transform</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<div class="viewcode-block" id="FourierTransform"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.FourierTransform">[docs]</a><span class="k">class</span> <span class="nc">FourierTransform</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;The base class for all Fourier transform implementations.</span>
+
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	input_grid : Grid</span>
+<span class="sd">		The grid that is expected for the input field.</span>
+<span class="sd">	output_grid : Grid</span>
+<span class="sd">		The grid that is produced by the Fourier transform.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="FourierTransform.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.FourierTransform.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Returns the forward Fourier transform of the :class:`Field` field.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		field : Field</span>
+<span class="sd">			The field to Fourier transform.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		--------</span>
+<span class="sd">		Field</span>
+<span class="sd">			The Fourier transform of the field.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="FourierTransform.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.FourierTransform.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Returns the inverse Fourier transform of the :class:`Field` field.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		field : Field</span>
+<span class="sd">			The field to inverse Fourier transform.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		--------</span>
+<span class="sd">		Field</span>
+<span class="sd">			The inverse Fourier transform of the field.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="FourierTransform.get_transformation_matrix_forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.FourierTransform.get_transformation_matrix_forward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Returns the transformation matrix corresonding to the</span>
+<span class="sd">		Fourier transform.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		--------</span>
+<span class="sd">		ndarray</span>
+<span class="sd">			A matrix representing the Fourier transform.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">coords_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+		<span class="n">coords_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+
+		<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords_out</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">coords_in</span><span class="p">))</span>
+		<span class="n">A</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">weights</span>
+
+		<span class="k">return</span> <span class="n">A</span></div>
+	
+<div class="viewcode-block" id="FourierTransform.get_transformation_matrix_backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.FourierTransform.get_transformation_matrix_backward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Returns the transformation matrix corresonding to the</span>
+<span class="sd">		Fourier transform.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		--------</span>
+<span class="sd">		ndarray</span>
+<span class="sd">			A matrix representing the Fourier transform.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">coords_in</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+		<span class="n">coords_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+
+		<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords_in</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">coords_out</span><span class="p">))</span>
+		<span class="n">A</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="o">.</span><span class="n">weights</span>
+		<span class="n">A</span> <span class="o">/=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">ndim</span>
+
+		<span class="k">return</span> <span class="n">A</span></div></div>
+
+<div class="viewcode-block" id="time_it"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.time_it">[docs]</a><span class="k">def</span> <span class="nf">time_it</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">t_max</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_max</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+	<span class="kn">import</span> <span class="nn">time</span>
+	
+	<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+	<span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+	
+	<span class="k">while</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">start</span> <span class="o">+</span> <span class="n">t_max</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_max</span><span class="p">):</span>
+		<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+		<span class="n">function</span><span class="p">()</span>
+		<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+		<span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">times</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="make_fourier_transform"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.make_fourier_transform">[docs]</a><span class="k">def</span> <span class="nf">make_fourier_transform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">output_grid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fov</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">planner</span><span class="o">=</span><span class="s1">&#39;estimate&#39;</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Construct a FourierTransform object.</span>
+
+<span class="sd">	The most time-efficient Fourier transform method will be chosen according to actual or estimated performance.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	input_grid : Grid</span>
+<span class="sd">		The grid that will be used for the Field passed to the Fourier transform.</span>
+<span class="sd">	output_grid : None or Grid</span>
+<span class="sd">		The grid of the resulting field. If it is None, a optimal grid will be chosen, according to `q` and `fov`.</span>
+<span class="sd">	q : scalar</span>
+<span class="sd">		Describes how many samples to take in the Fourier domain. A value of 1 means critcally sampled in the Fourier domain.</span>
+<span class="sd">	fov : scalar</span>
+<span class="sd">		Describes how far out the Fourier domain extends. A value of 1 means the same amount of samples as the spatial domain.</span>
+<span class="sd">	planner : string</span>
+<span class="sd">		If it is &#39;estimate&#39;, performance of the different methods will be estimated from theoretical complexity estimates. </span>
+<span class="sd">		If it is &#39;measure&#39;, actual Fourier transforms will be performed to get the actual performance. The latter takes longer,</span>
+<span class="sd">		but is more accurate.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	FourierTransform</span>
+<span class="sd">		The Fourier transform that was requested.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">.fast_fourier_transform</span> <span class="kn">import</span> <span class="n">FastFourierTransform</span><span class="p">,</span> <span class="n">make_fft_grid</span>
+	<span class="kn">from</span> <span class="nn">.matrix_fourier_transform</span> <span class="kn">import</span> <span class="n">MatrixFourierTransform</span>
+	<span class="kn">from</span> <span class="nn">.naive_fourier_transform</span> <span class="kn">import</span> <span class="n">NaiveFourierTransform</span>
+
+	<span class="k">if</span> <span class="n">output_grid</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="c1"># Choose between FFT and MFT</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">input_grid</span><span class="o">.</span><span class="n">is_regular</span> <span class="ow">and</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)):</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;For non-regular non-cartesian Grids, a Fourier transform is required to have an output_grid.&#39;</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+			<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;fft&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">output_grid</span> <span class="o">=</span> <span class="n">make_fft_grid</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+
+			<span class="k">if</span> <span class="n">planner</span> <span class="o">==</span> <span class="s1">&#39;estimate&#39;</span><span class="p">:</span>
+				<span class="c1"># Estimate analytically from complexities</span>
+				<span class="n">N_in</span> <span class="o">=</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">shape</span> <span class="o">*</span> <span class="n">q</span>
+				<span class="n">N_out</span> <span class="o">=</span> <span class="n">output_grid</span><span class="o">.</span><span class="n">shape</span>
+
+				<span class="k">if</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+					<span class="n">fft</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">N_in</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">N_in</span><span class="p">)</span>
+					<span class="n">mft</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="n">N_out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">fft</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">N_in</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">N_in</span><span class="p">))</span>
+					<span class="n">mft</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">input_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">N_out</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">N_out</span><span class="p">)</span> <span class="o">*</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+				<span class="k">if</span> <span class="n">fft</span> <span class="o">&gt;</span> <span class="n">mft</span><span class="p">:</span>
+					<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;mft&#39;</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;fft&#39;</span>
+			<span class="k">elif</span> <span class="n">planner</span> <span class="o">==</span> <span class="s1">&#39;measure&#39;</span><span class="p">:</span>
+				<span class="c1"># Measure directly</span>
+				<span class="n">fft</span> <span class="o">=</span> <span class="n">FastFourierTransform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+				<span class="n">mft</span> <span class="o">=</span> <span class="n">MatrixFourierTransform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">)</span>
+
+				<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">input_grid</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">)</span>
+				<span class="n">fft_time</span> <span class="o">=</span> <span class="n">time_it</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">fft</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+				<span class="n">mft_time</span> <span class="o">=</span> <span class="n">time_it</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">mft</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+				<span class="k">if</span> <span class="n">fft_time</span> <span class="o">&gt;</span> <span class="n">mft_time</span><span class="p">:</span>
+					<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;mft&#39;</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;fft&#39;</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="c1"># Choose between MFT and Naive</span>
+		<span class="k">if</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">is_separated</span> <span class="ow">and</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">output_grid</span><span class="o">.</span><span class="n">is_separated</span> <span class="ow">and</span> <span class="n">output_grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+			<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;mft&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;naive&#39;</span>
+	
+	<span class="c1"># Make the Fourier transform</span>
+	<span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;fft&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">FastFourierTransform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">fov</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;mft&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">MatrixFourierTransform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;naive&#39;</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">NaiveFourierTransform</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="multiplex_for_tensor_fields"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.fourier.html#hcipy.hcipy.multiplex_for_tensor_fields">[docs]</a><span class="k">def</span> <span class="nf">multiplex_for_tensor_fields</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A decorator for automatically multiplexing a function over the tensor directions.</span>
+
+<span class="sd">	This function is used internally for simplifying the implementation of the Fourier transforms.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	func : function</span>
+<span class="sd">		The function to multiplex. This function gets called for each of the tensor elements.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">is_scalar_field</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">field</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="p">))</span>
+			<span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ff</span><span class="p">)</span> <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span>
+			<span class="n">new_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">field</span><span class="o">.</span><span class="n">tensor_shape</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+			<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shape</span><span class="p">),</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">inner</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.apodization &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.apodization</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.optical_element</span> <span class="kn">import</span> <span class="n">OpticalElement</span><span class="p">,</span> <span class="n">make_polychromatic</span>
+
+<div class="viewcode-block" id="ApodizerMonochromatic"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ApodizerMonochromatic">[docs]</a><span class="k">class</span> <span class="nc">ApodizerMonochromatic</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A monochromatic thin apodizer.</span>
+<span class="sd">	</span>
+<span class="sd">	This apodizer can apodize both in phase and amplitude. It assumes a </span>
+<span class="sd">	</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	apodization : Field or scalar</span>
+<span class="sd">		The apodization that we want to apply to any input wavefront.</span>
+<span class="sd">	wavelength : scalar</span>
+<span class="sd">		The wavelength at which the apodization is defined.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">apodization</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">apodization</span> <span class="o">=</span> <span class="n">apodization</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
+	
+<div class="viewcode-block" id="ApodizerMonochromatic.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ApodizerMonochromatic.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apodization</span>
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="ApodizerMonochromatic.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ApodizerMonochromatic.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">apodization</span>
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+
+<span class="n">Apodizer</span> <span class="o">=</span> <span class="n">make_polychromatic</span><span class="p">([</span><span class="s2">&quot;apodization&quot;</span><span class="p">])(</span><span class="n">ApodizerMonochromatic</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PhaseApodizerMonochromatic"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.PhaseApodizerMonochromatic">[docs]</a><span class="k">class</span> <span class="nc">PhaseApodizerMonochromatic</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phase</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
+	
+<div class="viewcode-block" id="PhaseApodizerMonochromatic.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.PhaseApodizerMonochromatic.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="PhaseApodizerMonochromatic.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.PhaseApodizerMonochromatic.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+
+<span class="n">PhaseApodizer</span> <span class="o">=</span> <span class="n">make_polychromatic</span><span class="p">([</span><span class="s2">&quot;phase&quot;</span><span class="p">])(</span><span class="n">PhaseApodizerMonochromatic</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ThinLens"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ThinLens">[docs]</a><span class="k">class</span> <span class="nc">ThinLens</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">focal_length</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">focal_length</span> <span class="o">=</span> <span class="n">focal_length</span>
+	
+<div class="viewcode-block" id="ThinLens.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ThinLens.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="k">pass</span></div>
+	
+<div class="viewcode-block" id="ThinLens.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ThinLens.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="k">pass</span></div></div>
+
+<div class="viewcode-block" id="SurfaceApodizerMonochromatic"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceApodizerMonochromatic">[docs]</a><span class="k">class</span> <span class="nc">SurfaceApodizerMonochromatic</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">refractive_index</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">refractive_index</span>
+	
+<div class="viewcode-block" id="SurfaceApodizerMonochromatic.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceApodizerMonochromatic.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span>
+		
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="SurfaceApodizerMonochromatic.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceApodizerMonochromatic.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span>
+		
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+
+<span class="n">SurfaceApodizer</span> <span class="o">=</span> <span class="n">make_polychromatic</span><span class="p">([</span><span class="s2">&quot;surface&quot;</span><span class="p">,</span> <span class="s2">&quot;refractive_index&quot;</span><span class="p">])(</span><span class="n">SurfaceApodizerMonochromatic</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ComplexSurfaceApodizer"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ComplexSurfaceApodizer">[docs]</a><span class="k">class</span> <span class="nc">ComplexSurfaceApodizer</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amplitude</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">refractive_index</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amplitude</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">refractive_index</span>
+	
+<div class="viewcode-block" id="ComplexSurfaceApodizer.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ComplexSurfaceApodizer.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span>
+		
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="ComplexSurfaceApodizer.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.ComplexSurfaceApodizer.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span>
+		
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wf</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+
+<div class="viewcode-block" id="MultiplexedComplexSurfaceApodizer"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.MultiplexedComplexSurfaceApodizer">[docs]</a><span class="k">class</span> <span class="nc">MultiplexedComplexSurfaceApodizer</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amplitude</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">refractive_index</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amplitude</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">=</span> <span class="n">surface</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">refractive_index</span>
+	
+<div class="viewcode-block" id="MultiplexedComplexSurfaceApodizer.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.MultiplexedComplexSurfaceApodizer.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">apodizer_mask</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">amplitude</span><span class="p">,</span> <span class="n">surface</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">):</span>
+			<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">surface</span>
+			<span class="n">apodizer_mask</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">apodizer_mask</span>
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="MultiplexedComplexSurfaceApodizer.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.MultiplexedComplexSurfaceApodizer.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">apodizer_mask</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">amplitude</span><span class="p">,</span> <span class="n">surface</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span><span class="p">):</span>
+			<span class="n">opd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">surface</span>
+			<span class="n">apodizer_mask</span> <span class="o">+=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">opd</span> <span class="o">*</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+			
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">/=</span> <span class="n">apodizer_mask</span>
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

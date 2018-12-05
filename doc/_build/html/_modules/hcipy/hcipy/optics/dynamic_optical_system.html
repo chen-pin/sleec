@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.dynamic_optical_system &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.dynamic_optical_system</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">heapq</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="DynamicOpticalSystem"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DynamicOpticalSystem">[docs]</a><span class="k">class</span> <span class="nc">DynamicOpticalSystem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A dynamically varying optical system.</span>
+
+<span class="sd">	This can be used as a starting point for an implementation of an adaptive optics system. The optics </span>
+<span class="sd">	are changed as specific moments in time, which can be scheduled by submitting a callback. The time</span>
+<span class="sd">	points are bridged using the integrate function, which is written by the derived class. This </span>
+<span class="sd">	function should integrate on each detector without reading out the detector. Detector readouts or </span>
+<span class="sd">	DM changes should be implemented as callbacks.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">callback_counter</span> <span class="o">=</span> <span class="mi">0</span>
+	
+<div class="viewcode-block" id="DynamicOpticalSystem.evolve_until"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DynamicOpticalSystem.evolve_until">[docs]</a>	<span class="k">def</span> <span class="nf">evolve_until</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Evolve the optical system until time `t`.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : scalar</span>
+<span class="sd">			The point in time to which to simulate this optical system. Callbacks and integrations</span>
+<span class="sd">			are handled along the way.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Backwards evolution is not allowed.&#39;</span><span class="p">)</span>
+		
+		<span class="n">end</span> <span class="o">=</span> <span class="bp">False</span>
+		<span class="k">while</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
+			<span class="n">t_next</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">callback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="k">if</span> <span class="n">t_next</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
+				<span class="n">integration_time</span> <span class="o">=</span> <span class="n">t_next</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span>
+				<span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">integration_time</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span>
+				<span class="n">end</span> <span class="o">=</span> <span class="bp">True</span>
+			
+			<span class="c1"># Avoid multiple expensive integrations if we have multiple callbacks</span>
+			<span class="c1"># at the same time.</span>
+			<span class="k">if</span> <span class="n">integration_time</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">integration_time</span><span class="p">)</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+=</span> <span class="n">integration_time</span>
+			
+			<span class="k">if</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
+				<span class="n">callback</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="DynamicOpticalSystem.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DynamicOpticalSystem.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">integration_time</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrate the current optical system for a certain integration time.</span>
+
+<span class="sd">		This function should be implemented by a user in a derived class.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		integration_time : scalar</span>
+<span class="sd">			The integration time with which to integrate the optical system.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">pass</span></div>
+	
+<div class="viewcode-block" id="DynamicOpticalSystem.add_callback"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DynamicOpticalSystem.add_callback">[docs]</a>	<span class="k">def</span> <span class="nf">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add a callback to the list of callbacks.</span>
+
+<span class="sd">		This function can even be called during handling of a callback. This is </span>
+<span class="sd">		especially useful when implementing periodic callbacks: a callback can</span>
+<span class="sd">		reinsert itself at a later time at the end of handling of the callback.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		t : scalar</span>
+<span class="sd">			The time at which to call the callback.</span>
+<span class="sd">		callback : function</span>
+<span class="sd">			The function to call at time `t`. This function should have no arguments.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="c1"># Callback counter is to avoid comparison of callback functions</span>
+		<span class="c1"># if the times are equal, as comparison of functions is not allowed.</span>
+		<span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callbacks</span><span class="p">,</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_counter</span><span class="p">,</span> <span class="n">callback</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">callback_counter</span> <span class="o">+=</span> <span class="mi">1</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

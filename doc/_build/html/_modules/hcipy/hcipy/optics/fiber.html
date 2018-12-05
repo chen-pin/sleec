@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.fiber &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.fiber</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.detector</span> <span class="kn">import</span> <span class="n">Detector</span>
+<span class="kn">from</span> <span class="nn">.optical_element</span> <span class="kn">import</span> <span class="n">OpticalElement</span>
+<span class="kn">from</span> <span class="nn">.wavefront</span> <span class="kn">import</span> <span class="n">Wavefront</span>
+<span class="kn">from</span> <span class="nn">..mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<div class="viewcode-block" id="fiber_mode_gaussian"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.fiber_mode_gaussian">[docs]</a><span class="k">def</span> <span class="nf">fiber_mode_gaussian</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">):</span>
+	<span class="n">r2</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">grid</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+	<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r2</span><span class="o">/</span><span class="p">((</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">mode_field_diameter</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SingleModeFiber"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiber">[docs]</a><span class="k">class</span> <span class="nc">SingleModeFiber</span><span class="p">(</span><span class="n">Detector</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">input_grid</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mode_field_diameter</span> <span class="o">=</span> <span class="n">mode_field_diameter</span>
+
+		<span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">mode</span> <span class="o">=</span> <span class="n">gaussian_mode</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="SingleModeFiber.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiber.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">+=</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span></div>
+	
+<div class="viewcode-block" id="SingleModeFiber.read_out"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiber.read_out">[docs]</a>	<span class="k">def</span> <span class="nf">read_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">intensity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">return</span> <span class="n">intensity</span></div></div>
+
+<span class="c1"># This implementation assumes orthogonality of the different fibers.</span>
+<span class="c1"># Forward() should be changed if this is added in the future.</span>
+<span class="c1"># Also, the modes are independent of wavelength.</span>
+<div class="viewcode-block" id="SingleModeFiberArray"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiberArray">[docs]</a><span class="k">class</span> <span class="nc">SingleModeFiberArray</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">fiber_grid</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;An array of single-mode fibers.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		input_grid : Grid</span>
+<span class="sd">			The grid on which the input wavefront is defined.</span>
+<span class="sd">		fiber_grid : Grid</span>
+<span class="sd">			The centers of each of the single-mode fibers.</span>
+<span class="sd">		mode : function</span>
+<span class="sd">			The mode of the single-mode fibers. The function should take a grid </span>
+<span class="sd">			and return the amplitude of the fiber mode.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">input_grid</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fiber_grid</span> <span class="o">=</span> <span class="n">fiber_grid</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span><span class="p">(</span><span class="n">input_grid</span><span class="o">.</span><span class="n">shifted</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">fiber_grid</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">mode</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">input_grid</span><span class="o">.</span><span class="n">weights</span><span class="p">))</span> <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span><span class="p">]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span> <span class="o">=</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">projection_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_modes</span><span class="o">.</span><span class="n">transformation_matrix</span>
+
+<div class="viewcode-block" id="SingleModeFiberArray.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiberArray.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_matrix</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Wavefront</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_grid</span><span class="p">),</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SingleModeFiberArray.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiberArray.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_matrix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Wavefront</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">),</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SingleModeFiberArray.get_transformation_matrix_forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiberArray.get_transformation_matrix_forward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_matrix</span><span class="o">.</span><span class="n">T</span></div>
+	
+<div class="viewcode-block" id="SingleModeFiberArray.get_transformation_matrix_backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SingleModeFiberArray.get_transformation_matrix_backward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection_matrix</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

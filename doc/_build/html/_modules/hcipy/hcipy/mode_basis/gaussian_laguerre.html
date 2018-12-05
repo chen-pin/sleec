@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.mode_basis.gaussian_laguerre &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.mode_basis.gaussian_laguerre</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">floor</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">eval_genlaguerre</span>
+
+<div class="viewcode-block" id="gaussian_laguerre"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.gaussian_laguerre">[docs]</a><span class="k">def</span> <span class="nf">gaussian_laguerre</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">r&#39;&#39;&#39;Creates a Gaussian-Hermite mode.</span>
+
+<span class="sd">	This function evaluates a (p,l) order Gaussian-Laguerre mode on a grid.</span>
+<span class="sd">	The definition of the modes are the following,</span>
+
+<span class="sd">	.. math::</span>
+<span class="sd">		\exp{\left(-\frac{r^2}{w_0^2}\right)} L_p^{|l|}\left(\frac{2r^2}{w_0^2} \right) \left(\sqrt{2}\frac{r}{w_0}\right)</span>
+
+<span class="sd">	Here :math:`w_0` is the mode_field_radius, which is :math:`\mathrm{MFD}/2`.</span>
+<span class="sd">	And :math:`L_p^{|l|}` are the generalized Laguerre Polynomials.</span>
+<span class="sd">	All modes are numerical normalized to have a total power of 1.</span>
+
+<span class="sd">	More details on generalized Laguerre Polynomials can be found on:</span>
+<span class="sd">	http://mathworld.wolfram.com/AssociatedLaguerrePolynomial.html</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	p : int</span>
+<span class="sd">		The radial order.</span>
+<span class="sd">	l : int</span>
+<span class="sd">		The azimuthal order.</span>
+<span class="sd">	mode_field_diameter : scalar</span>
+<span class="sd">		The mode field diameter of the mode.</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the mode.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The evaluated mode.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+	<span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_separated</span> <span class="ow">and</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">):</span>
+		<span class="n">R</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">separated_coords</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">R</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+
+	<span class="c1"># Easy access</span>
+	<span class="n">r</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">R</span><span class="o">/</span><span class="n">mode_field_diameter</span>
+	<span class="n">r2</span> <span class="o">=</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span>
+	<span class="c1"># The mode</span>
+	<span class="n">lg</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">*</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">r2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span><span class="o">*</span><span class="n">l</span><span class="o">*</span><span class="n">Theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">eval_genlaguerre</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">l</span><span class="p">),</span> <span class="mi">2</span><span class="o">*</span><span class="n">r2</span><span class="p">)</span>
+	<span class="c1"># Numerically normalize the modes</span>
+	<span class="n">lg</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">lg</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+<span class="c1"># High level functions</span>
+<div class="viewcode-block" id="make_gaussian_laguerre_basis"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.make_gaussian_laguerre_basis">[docs]</a><span class="k">def</span> <span class="nf">make_gaussian_laguerre_basis</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">pmax</span><span class="p">,</span> <span class="n">lmax</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">pmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Creates a Gaussian-Laguerre mode basis.</span>
+
+<span class="sd">	This function evaluates Gaussian-Laguerre modes. For each radial order </span>
+<span class="sd">	within [pmin, pmax] it will calculate the azimuthal order [-lmax, lmax] inclusive.</span>
+<span class="sd">	This function returns a ModeBasis made out of these Gaussian-Laguerre modes.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the Gaussian-Laguerre mode.</span>
+<span class="sd">	pmax : int</span>
+<span class="sd">		The maximum radial order of the modes.</span>
+<span class="sd">	lmax : int</span>
+<span class="sd">		The maximum azimuthal order.</span>
+<span class="sd">	mode_field_diameter : scalar</span>
+<span class="sd">		The mode field diameter of the Gaussian-Laguerre mode.</span>
+<span class="sd">	pmin : int</span>
+<span class="sd">		The minimal radial order.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	ModeBasis</span>
+<span class="sd">		The Gaussian-Laguerre modes.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">.mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+
+	<span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gaussian_laguerre</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">li</span><span class="p">,</span> <span class="n">mode_field_diameter</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">lmax</span><span class="p">,</span> <span class="n">lmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">pi</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pmin</span><span class="p">,</span> <span class="n">pmax</span><span class="p">)]</span>
+	<span class="k">return</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
