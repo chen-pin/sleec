@@ -35,11 +35,11 @@ sys.path.insert(0, os.path.abspath('../source'))
 extensions = [
     'sphinx.ext.autodoc',
 #    'sphinx.ext.doctest',
-#    'sphinx.ext.intersphinx',
+    'sphinx.ext.intersphinx',
 #    'sphinx.ext.todo',
 #    'sphinx.ext.ifconfig',
 #    'sphinx.ext.autosummary', 
-#    'sphinx.ext.viewcode',
+    'sphinx.ext.viewcode',
     'numpydoc',
 ]
 

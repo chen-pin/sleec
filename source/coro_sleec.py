@@ -75,22 +75,32 @@ class SleecCoronagraph(hci.OpticalElement):
 
 
 def _test():  
-    pupil_grid = hci.make_pupil_grid(128)
-    focal_grid = hci.make_focal_grid(pupil_grid, 8, 32)
+    pupil_grid = hci.make_pupil_grid(256)
+    focal_grid = hci.make_focal_grid(pupil_grid, 8, 128)
     prop = hci.FraunhoferPropagator(pupil_grid, focal_grid)
-    aperture = hci.circular_aperture(6.0)
+#    # Gaussian mask function
+#    x, y = focal_grid.coords
+#    r = np.sqrt(x**2 + y**2)
+#    fpm_transm = 1.0 - np.exp(-(np.log(2.0)/24.0**2)*r**2)
+    # Binary mask function
+    aperture = hci.circular_aperture(6.5)
     fpm_transm = 1.0 - aperture(focal_grid)
     fpm = TransmMask(focal_grid, fpm_transm)
     pupil = hci.Wavefront(hci.circular_aperture(1)(pupil_grid))
+    img_ref = prop(pupil)
+    hci.imshow_field(fpm(img_ref).amplitude)
+    plt.colorbar()
+    plt.show()
     coro = SleecCoronagraph(pupil_grid, fpm)
     lyot_plane = coro(pupil)
+#    print(lyot_plane.electric_field)
+#    plt.imshow(np.square(np.abs(lyot_plane.electric_field.reshape(128,128))), cmap='inferno')
     hci.imshow_field(lyot_plane.intensity)
     plt.colorbar()
     plt.show()
     lyot_stop = hci.Apodizer(hci.circular_aperture(254.0/256)(pupil_grid))
     prop = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     img = prop(lyot_stop(lyot_plane))
-    img_ref = prop(pupil)
     hci.imshow_field(lyot_stop(lyot_plane).intensity)
     plt.colorbar()
     plt.show()

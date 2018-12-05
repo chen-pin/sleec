@@ -47,7 +47,7 @@
 <span id="hcipy-hcipy-math-util-matrix-inversion-module"></span><h2>hcipy.hcipy.math_util.matrix_inversion module<a class="headerlink" href="#module-hcipy.hcipy.math_util.matrix_inversion" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_tikhonov">
-<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_tikhonov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> using Tikhonov regularization.</p>
 <p>Tikhonov regularization will be an identity matrix, with strength 
 <cite>rcond</cite> * the maximum singular value of the matrix.</p>
@@ -83,7 +83,7 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_truncated">
-<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_truncated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> truncating the number of modes.</p>
 <p>Modes are given by a singular value decomposition of the input matrix.
 If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
@@ -121,7 +121,7 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.matrix_inversion.inverse_truncated_modal">
-<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.matrix_inversion.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_truncated_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.matrix_inversion.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> with <cite>num_modes</cite> modes.</p>
 <p>Modes are given by a singular value decomposition of the input matrix.
 If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
@@ -161,8 +161,8 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 <span id="hcipy-hcipy-math-util-singular-value-decomposition-module"></span><h2>hcipy.hcipy.math_util.singular_value_decomposition module<a class="headerlink" href="#module-hcipy.hcipy.math_util.singular_value_decomposition" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.math_util.singular_value_decomposition.SVD">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.singular_value_decomposition.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.singular_value_decomposition.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/singular_value_decomposition.html#SVD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.singular_value_decomposition.SVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -243,7 +243,7 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.math_util" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.inverse_truncated">
-<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_truncated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> truncating the number of modes.</p>
 <p>Modes are given by a singular value decomposition of the input matrix.
 If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
@@ -281,7 +281,7 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.inverse_truncated_modal">
-<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_truncated_modal</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_truncated_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_truncated_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> with <cite>num_modes</cite> modes.</p>
 <p>Modes are given by a singular value decomposition of the input matrix.
 If <cite>svd</cite> is given, it is used instead. Modes are ordered in descending
@@ -318,7 +318,7 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.math_util.inverse_tikhonov">
-<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">inverse_tikhonov</code><span class="sig-paren">(</span><em>M</em>, <em>rcond=1e-15</em>, <em>svd=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/matrix_inversion.html#inverse_tikhonov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.inverse_tikhonov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Invert <cite>M</cite> using Tikhonov regularization.</p>
 <p>Tikhonov regularization will be an identity matrix, with strength 
 <cite>rcond</cite> * the maximum singular value of the matrix.</p>
@@ -354,8 +354,8 @@ be used if supplied, to avoid recalculation of an SVD.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.math_util.SVD">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.math_util.SVD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.math_util.</code><code class="descname">SVD</code><span class="sig-paren">(</span><em>M</em>, <em>num_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/math_util/singular_value_decomposition.html#SVD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.math_util.SVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -47,7 +47,7 @@
 <span id="hcipy-hcipy-optics-aberration-module"></span><h2>hcipy.hcipy.optics.aberration module<a class="headerlink" href="#module-hcipy.hcipy.optics.aberration" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.aberration.SurfaceAberration">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">SurfaceAberration</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>refractive_index=-1</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">SurfaceAberration</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>refractive_index=-1</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.PolychromaticOpticalElement</span></code></p>
 <p>A surface aberration with a specific power law.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -124,7 +124,7 @@ errors with optic alignment.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">SurfaceAberrationAtDistance</code><span class="sig-paren">(</span><em>surface_aberration</em>, <em>distance</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">SurfaceAberrationAtDistance</code><span class="sig-paren">(</span><em>surface_aberration</em>, <em>distance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A surface at a certain distance from the current plane.</p>
 <p>Light is propagated to this surface, then the surface errors are
@@ -185,7 +185,7 @@ focal and pupil planes.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the surface aberration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -212,7 +212,7 @@ given at the same plane as <cite>wavefront</cite>.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.aberration.SurfaceAberrationAtDistance.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront forwards through the surface aberration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -241,7 +241,7 @@ given at the same plane as <cite>wavefront</cite>.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.aberration.make_power_law_error">
-<code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">make_power_law_error</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.aberration.make_power_law_error" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.aberration.</code><code class="descname">make_power_law_error</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#make_power_law_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.aberration.make_power_law_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an error surface from a power-law power spectral density.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -288,8 +288,8 @@ errors with optic alignment.</p>
 <span id="hcipy-hcipy-optics-apodization-module"></span><h2>hcipy.hcipy.optics.apodization module<a class="headerlink" href="#module-hcipy.hcipy.optics.apodization" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.ApodizerMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ApodizerMonochromatic</code><span class="sig-paren">(</span><em>apodization</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ApodizerMonochromatic</code><span class="sig-paren">(</span><em>apodization</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ApodizerMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A monochromatic thin apodizer.</p>
 <p>This apodizer can apodize both in phase and amplitude. It assumes a</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -325,19 +325,19 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ApodizerMonochromatic.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ApodizerMonochromatic.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ApodizerMonochromatic.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ApodizerMonochromatic.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -376,19 +376,19 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">MultiplexedComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">MultiplexedComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -427,20 +427,20 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.MultiplexedComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">PhaseApodizerMonochromatic</code><span class="sig-paren">(</span><em>phase</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">PhaseApodizerMonochromatic</code><span class="sig-paren">(</span><em>phase</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#PhaseApodizerMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -458,19 +458,19 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#PhaseApodizerMonochromatic.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#PhaseApodizerMonochromatic.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.PhaseApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">SurfaceApodizerMonochromatic</code><span class="sig-paren">(</span><em>surface</em>, <em>refractive_index</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">SurfaceApodizerMonochromatic</code><span class="sig-paren">(</span><em>surface</em>, <em>refractive_index</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#SurfaceApodizerMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -509,19 +509,19 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#SurfaceApodizerMonochromatic.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#SurfaceApodizerMonochromatic.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.SurfaceApodizerMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.apodization.ThinLens">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ThinLens</code><span class="sig-paren">(</span><em>focal_length</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.apodization.</code><code class="descname">ThinLens</code><span class="sig-paren">(</span><em>focal_length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -560,12 +560,12 @@ errors with optic alignment.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ThinLens.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.apodization.ThinLens.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.apodization.ThinLens.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -575,7 +575,7 @@ errors with optic alignment.</p>
 <span id="hcipy-hcipy-optics-deformable-mirror-module"></span><h2>hcipy.hcipy.optics.deformable_mirror module<a class="headerlink" href="#module-hcipy.hcipy.optics.deformable_mirror" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.deformable_mirror.DeformableMirror">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.deformable_mirror.</code><code class="descname">DeformableMirror</code><span class="sig-paren">(</span><em>influence_functions</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.deformable_mirror.</code><code class="descname">DeformableMirror</code><span class="sig-paren">(</span><em>influence_functions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A deformable mirror using influence functions.</p>
 <p>This class does not contain any temporal simulation (ie. settling time),
@@ -643,7 +643,7 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.deformable_mirror.DeformableMirror.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the deformable mirror.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -669,7 +669,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.deformable_mirror.DeformableMirror.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront through the deformable mirror.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -701,7 +701,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.deformable_mirror.DeformableMirror.phase_for">
-<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.phase_for" title="Permalink to this definition">¶</a></dt>
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.phase_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.DeformableMirror.phase_for" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the phase that is added to a wavefront with a specified wavelength.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -735,7 +735,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.deformable_mirror.make_xinetics_influence_functions">
-<code class="descclassname">hcipy.hcipy.optics.deformable_mirror.</code><code class="descname">make_xinetics_influence_functions</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>num_actuators_across_pupil</em>, <em>actuator_spacing</em>, <em>x_tilt=0</em>, <em>y_tilt=0</em>, <em>z_tilt=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.make_xinetics_influence_functions" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.deformable_mirror.</code><code class="descname">make_xinetics_influence_functions</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>num_actuators_across_pupil</em>, <em>actuator_spacing</em>, <em>x_tilt=0</em>, <em>y_tilt=0</em>, <em>z_tilt=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#make_xinetics_influence_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.deformable_mirror.make_xinetics_influence_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create influence functions for a Xinetics deformable mirror.</p>
 <p>This function uses a The rotation of the deformable mirror will be done in the order X-Y-Z.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -780,7 +780,7 @@ and assumes that there is no crosstalk between actuators.</p>
 <span id="hcipy-hcipy-optics-detector-module"></span><h2>hcipy.hcipy.optics.detector module<a class="headerlink" href="#module-hcipy.hcipy.optics.detector" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.detector.BasicFrameCorrector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">BasicFrameCorrector</code><span class="sig-paren">(</span><em>dark=0</em>, <em>flat_field=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.BasicFrameCorrector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">BasicFrameCorrector</code><span class="sig-paren">(</span><em>dark=0</em>, <em>flat_field=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#BasicFrameCorrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.BasicFrameCorrector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.FrameCorrector" title="hcipy.hcipy.optics.detector.FrameCorrector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.FrameCorrector</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
@@ -796,15 +796,15 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.BasicFrameCorrector.correct">
-<code class="descname">correct</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.BasicFrameCorrector.correct" title="Permalink to this definition">¶</a></dt>
+<code class="descname">correct</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#BasicFrameCorrector.correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.BasicFrameCorrector.correct" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.detector.Detector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">Detector</code><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">Detector</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -825,7 +825,7 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.Detector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -850,7 +850,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.Detector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.Detector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>No noise will be added to the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -872,8 +872,8 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.detector.FrameCorrector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">FrameCorrector</code><a class="headerlink" href="#hcipy.hcipy.optics.detector.FrameCorrector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">FrameCorrector</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#FrameCorrector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.FrameCorrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -888,14 +888,14 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.FrameCorrector.correct">
-<code class="descname">correct</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.FrameCorrector.correct" title="Permalink to this definition">¶</a></dt>
+<code class="descname">correct</code><span class="sig-paren">(</span><em>img</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#FrameCorrector.correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.FrameCorrector.correct" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.detector.NoiselessDetector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">NoiselessDetector</code><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">NoiselessDetector</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p>A detector without noise.</p>
 <p>This detector includes no noise effects at all. This can be used as a
@@ -920,7 +920,7 @@ theoretically perfect detector.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.NoiselessDetector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -945,7 +945,7 @@ theoretically perfect detector.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.NoiselessDetector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoiselessDetector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>No noise will be added to the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -967,7 +967,7 @@ theoretically perfect detector.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.detector.NoisyDetector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">NoisyDetector</code><span class="sig-paren">(</span><em>input_grid</em>, <em>dark_current_rate=0</em>, <em>read_noise=0</em>, <em>flat_field=0</em>, <em>include_photon_noise=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.detector.</code><code class="descname">NoisyDetector</code><span class="sig-paren">(</span><em>input_grid</em>, <em>dark_current_rate=0</em>, <em>read_noise=0</em>, <em>flat_field=0</em>, <em>include_photon_noise=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p>A detector class that has some basic noise properties.</p>
 <p>A detector that includes the following noise sources: photon shot noise, dark current 
@@ -1036,7 +1036,7 @@ is standard deviation about 1) is generated that will be used.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.NoisyDetector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <p>The amount of power and dark current that the detector generates are calculated
 for a given integration time and weight.</p>
@@ -1063,7 +1063,7 @@ for a given integration time and weight.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.detector.NoisyDetector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.detector.NoisyDetector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>The read out operation of the detector. This means that, if applicable, first photon noise 
 will be included to the power. Then, in this order, the flat field error and 
@@ -1090,8 +1090,8 @@ read-out noise are applied. After the read out the power is reset.</p>
 <span id="hcipy-hcipy-optics-dynamic-optical-system-module"></span><h2>hcipy.hcipy.optics.dynamic_optical_system module<a class="headerlink" href="#module-hcipy.hcipy.optics.dynamic_optical_system" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.dynamic_optical_system.</code><code class="descname">DynamicOpticalSystem</code><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.dynamic_optical_system.</code><code class="descname">DynamicOpticalSystem</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A dynamically varying optical system.</p>
 <p>This can be used as a starting point for an implementation of an adaptive optics system. The optics 
 are changed as specific moments in time, which can be scheduled by submitting a callback. The time
@@ -1118,7 +1118,7 @@ DM changes should be implemented as callbacks.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.add_callback">
-<code class="descname">add_callback</code><span class="sig-paren">(</span><em>t</em>, <em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.add_callback" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_callback</code><span class="sig-paren">(</span><em>t</em>, <em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.add_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.add_callback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a callback to the list of callbacks.</p>
 <p>This function can even be called during handling of a callback. This is 
 especially useful when implementing periodic callbacks: a callback can
@@ -1143,7 +1143,7 @@ reinsert itself at a later time at the end of handling of the callback.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.evolve_until">
-<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.evolve_until" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.evolve_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.evolve_until" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evolve the optical system until time <cite>t</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1163,7 +1163,7 @@ are handled along the way.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>integration_time</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>integration_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.dynamic_optical_system.DynamicOpticalSystem.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrate the current optical system for a certain integration time.</p>
 <p>This function should be implemented by a user in a derived class.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1188,7 +1188,7 @@ are handled along the way.</p>
 <span id="hcipy-hcipy-optics-fiber-module"></span><h2>hcipy.hcipy.optics.fiber module<a class="headerlink" href="#module-hcipy.hcipy.optics.fiber" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiber">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">SingleModeFiber</code><span class="sig-paren">(</span><em>input_grid</em>, <em>mode_field_diameter</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">SingleModeFiber</code><span class="sig-paren">(</span><em>input_grid</em>, <em>mode_field_diameter</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -1210,19 +1210,19 @@ are handled along the way.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiber.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber.integrate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiber.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiber.read_out" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiberArray">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">SingleModeFiberArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>fiber_grid</em>, <em>mode</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">SingleModeFiberArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>fiber_grid</em>, <em>mode</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -1261,29 +1261,29 @@ are handled along the way.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiberArray.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiberArray.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.SingleModeFiberArray.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.fiber.fiber_mode_gaussian">
-<code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">fiber_mode_gaussian</code><span class="sig-paren">(</span><em>grid</em>, <em>mode_field_diameter</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber.fiber_mode_gaussian" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.fiber.</code><code class="descname">fiber_mode_gaussian</code><span class="sig-paren">(</span><em>grid</em>, <em>mode_field_diameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#fiber_mode_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber.fiber_mode_gaussian" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -1291,8 +1291,8 @@ are handled along the way.</p>
 <span id="hcipy-hcipy-optics-gaussian-beam-module"></span><h2>hcipy.hcipy.optics.gaussian_beam module<a class="headerlink" href="#module-hcipy.hcipy.optics.gaussian_beam" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.gaussian_beam.GaussianBeam">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.gaussian_beam.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>w0</em>, <em>z</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.gaussian_beam.GaussianBeam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.gaussian_beam.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>w0</em>, <em>z</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/gaussian_beam.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.gaussian_beam.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1384,7 +1384,7 @@ are handled along the way.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.gaussian_beam.GaussianBeam.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.gaussian_beam.GaussianBeam.evaluate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/gaussian_beam.html#GaussianBeam.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.gaussian_beam.GaussianBeam.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1449,7 +1449,7 @@ are handled along the way.</p>
 <span id="hcipy-hcipy-optics-micro-lens-array-module"></span><h2>hcipy.hcipy.optics.micro_lens_array module<a class="headerlink" href="#module-hcipy.hcipy.optics.micro_lens_array" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.micro_lens_array.MicroLensArray">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.micro_lens_array.</code><code class="descname">MicroLensArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>lenslet_grid</em>, <em>focal_length</em>, <em>lenslet_shape=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.micro_lens_array.</code><code class="descname">MicroLensArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>lenslet_grid</em>, <em>focal_length</em>, <em>lenslet_shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -1488,19 +1488,19 @@ are handled along the way.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.micro_lens_array.MicroLensArray.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.micro_lens_array.MicroLensArray.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.MicroLensArray.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.micro_lens_array.closest_points">
-<code class="descclassname">hcipy.hcipy.optics.micro_lens_array.</code><code class="descname">closest_points</code><span class="sig-paren">(</span><em>point_grid</em>, <em>evaluated_grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.closest_points" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.micro_lens_array.</code><code class="descname">closest_points</code><span class="sig-paren">(</span><em>point_grid</em>, <em>evaluated_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#closest_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.micro_lens_array.closest_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -1508,7 +1508,7 @@ are handled along the way.</p>
 <span id="hcipy-hcipy-optics-multi-layer-atmosphere-module"></span><h2>hcipy.hcipy.optics.multi_layer_atmosphere module<a class="headerlink" href="#module-hcipy.hcipy.optics.multi_layer_atmosphere" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">AtmosphericModel</code><span class="sig-paren">(</span><em>spectral_noise_factory</em>, <em>turbulence_layers</em>, <em>zenith_angle=0</em>, <em>off_axis_angle=0</em>, <em>include_scintilation=False</em>, <em>unwanted_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">AtmosphericModel</code><span class="sig-paren">(</span><em>spectral_noise_factory</em>, <em>turbulence_layers</em>, <em>zenith_angle=0</em>, <em>off_axis_angle=0</em>, <em>include_scintilation=False</em>, <em>unwanted_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>Modeling abberations for atmospheric turbulence using discrete atmospheric layers.
 If r_0 is given, the C_n^2 profile is scaled to that Fried parameter.
@@ -1576,12 +1576,12 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.evolve_until">
-<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.evolve_until" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.evolve_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.evolve_until" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1591,7 +1591,7 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.make_random">
-<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.make_random" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.make_random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.AtmosphericModel.make_random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1613,17 +1613,17 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.get_fried_parameter">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">get_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.get_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">get_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#get_fried_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.get_fried_parameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.kolmogorov_psd">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">kolmogorov_psd</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.kolmogorov_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">kolmogorov_psd</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#kolmogorov_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.kolmogorov_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.make_standard_multilayer_atmosphere">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">make_standard_multilayer_atmosphere</code><span class="sig-paren">(</span><em>fried_parameter=1</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.make_standard_multilayer_atmosphere" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">make_standard_multilayer_atmosphere</code><span class="sig-paren">(</span><em>fried_parameter=1</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#make_standard_multilayer_atmosphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.make_standard_multilayer_atmosphere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard atmosphere from Guyon (2005):
 Limits of Adaptive Optics for high contrast imaging.
 Returns an unnormalized Cn_squared profile.</p>
@@ -1631,23 +1631,23 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.modified_von_karman_psd">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">modified_von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em>, <em>u_i=100</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.modified_von_karman_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">modified_von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em>, <em>u_i=100</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#modified_von_karman_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.modified_von_karman_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.random_velocity">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">random_velocity</code><span class="sig-paren">(</span><em>velocity</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.random_velocity" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">random_velocity</code><span class="sig-paren">(</span><em>velocity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#random_velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.random_velocity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a random 2D vector with the specified magnitude.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.scale_Cn_squared_to_fried_parameter">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">scale_Cn_squared_to_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>fried_parameter</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.scale_Cn_squared_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">scale_Cn_squared_to_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>fried_parameter</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#scale_Cn_squared_to_fried_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.scale_Cn_squared_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.multi_layer_atmosphere.von_karman_psd">
-<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.von_karman_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.multi_layer_atmosphere.</code><code class="descname">von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#von_karman_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.multi_layer_atmosphere.von_karman_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -1655,7 +1655,7 @@ Returns an unnormalized Cn_squared profile.</p>
 <span id="hcipy-hcipy-optics-optical-element-module"></span><h2>hcipy.hcipy.optics.optical_element module<a class="headerlink" href="#module-hcipy.hcipy.optics.optical_element" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.optical_element.EmptyOpticalElement">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">EmptyOpticalElement</code><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">EmptyOpticalElement</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#EmptyOpticalElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -1694,30 +1694,30 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.EmptyOpticalElement.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#EmptyOpticalElement.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.EmptyOpticalElement.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#EmptyOpticalElement.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#EmptyOpticalElement.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#EmptyOpticalElement.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.EmptyOpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">OpticalElement</code><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">OpticalElement</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -1755,34 +1755,34 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement.get_instance">
-<code class="descname">get_instance</code><span class="sig-paren">(</span><em>input_grid</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_instance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_instance</code><span class="sig-paren">(</span><em>input_grid</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_instance" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalSystem">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">OpticalSystem</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">OpticalSystem</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1833,22 +1833,22 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalSystem.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalSystem.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.OpticalSystem.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -1860,7 +1860,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.optical_element.make_polychromatic">
-<code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">make_polychromatic</code><span class="sig-paren">(</span><em>evaluated_arguments=None</em>, <em>num_in_cache=50</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.make_polychromatic" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.optical_element.</code><code class="descname">make_polychromatic</code><span class="sig-paren">(</span><em>evaluated_arguments=None</em>, <em>num_in_cache=50</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#make_polychromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.optical_element.make_polychromatic" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -1868,7 +1868,7 @@ Returns an unnormalized Cn_squared profile.</p>
 <span id="hcipy-hcipy-optics-polarization-module"></span><h2>hcipy.hcipy.optics.polarization module<a class="headerlink" href="#module-hcipy.hcipy.optics.polarization" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.CircularRetarderMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">CircularRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.CircularRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">CircularRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#CircularRetarderMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.CircularRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic" title="hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
@@ -1889,7 +1889,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.HalfWavePlateMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">HalfWavePlateMonochromatic</code><span class="sig-paren">(</span><em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.HalfWavePlateMonochromatic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">HalfWavePlateMonochromatic</code><span class="sig-paren">(</span><em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#HalfWavePlateMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.HalfWavePlateMonochromatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic" title="hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
@@ -1910,7 +1910,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.LinearPolarizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">LinearPolarizer</code><span class="sig-paren">(</span><em>polarization_angle</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">LinearPolarizer</code><span class="sig-paren">(</span><em>polarization_angle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1970,7 +1970,7 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.polarization.LinearPolarizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1996,7 +1996,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.polarization.LinearPolarizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearPolarizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront forwards through the linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2030,7 +2030,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">LinearRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">LinearRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearRetarderMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic" title="hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
@@ -2051,8 +2051,8 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">PhaseRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>fast_axis_orientation</em>, <em>circularity</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">PhaseRetarderMonochromatic</code><span class="sig-paren">(</span><em>phase_retardation</em>, <em>fast_axis_orientation</em>, <em>circularity</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#PhaseRetarderMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -2070,19 +2070,19 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#PhaseRetarderMonochromatic.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#PhaseRetarderMonochromatic.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.PhaseRetarderMonochromatic.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.polarization.QuarterWavePlateMonochromatic">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">QuarterWavePlateMonochromatic</code><span class="sig-paren">(</span><em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.polarization.QuarterWavePlateMonochromatic" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.polarization.</code><code class="descname">QuarterWavePlateMonochromatic</code><span class="sig-paren">(</span><em>fast_axis_orientation</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#QuarterWavePlateMonochromatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.polarization.QuarterWavePlateMonochromatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic" title="hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.polarization.LinearRetarderMonochromatic</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="docutils">
@@ -2106,7 +2106,7 @@ Returns an unnormalized Cn_squared profile.</p>
 <span id="hcipy-hcipy-optics-vibration-module"></span><h2>hcipy.hcipy.optics.vibration module<a class="headerlink" href="#module-hcipy.hcipy.optics.vibration" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.vibration.SimpleVibration">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.vibration.</code><code class="descname">SimpleVibration</code><span class="sig-paren">(</span><em>mode</em>, <em>amplitude</em>, <em>frequency</em>, <em>phase_0=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.vibration.</code><code class="descname">SimpleVibration</code><span class="sig-paren">(</span><em>mode</em>, <em>amplitude</em>, <em>frequency</em>, <em>phase_0=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2159,12 +2159,12 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.vibration.SimpleVibration.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.vibration.SimpleVibration.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.vibration.SimpleVibration.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2184,8 +2184,8 @@ Returns an unnormalized Cn_squared profile.</p>
 <span id="hcipy-hcipy-optics-wavefront-module"></span><h2>hcipy.hcipy.optics.wavefront module<a class="headerlink" href="#module-hcipy.hcipy.optics.wavefront" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="hcipy.hcipy.optics.wavefront.Wavefront">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.wavefront.</code><code class="descname">Wavefront</code><span class="sig-paren">(</span><em>electric_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.wavefront.Wavefront" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.wavefront.</code><code class="descname">Wavefront</code><span class="sig-paren">(</span><em>electric_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/wavefront.html#Wavefront"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.wavefront.Wavefront" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2235,7 +2235,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.wavefront.Wavefront.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.wavefront.Wavefront.copy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/wavefront.html#Wavefront.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.wavefront.Wavefront.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -2290,7 +2290,7 @@ Returns an unnormalized Cn_squared profile.</p>
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.optics" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="hcipy.hcipy.optics.make_power_law_error">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_power_law_error</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.make_power_law_error" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_power_law_error</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#make_power_law_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.make_power_law_error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an error surface from a power-law power spectral density.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2334,7 +2334,7 @@ errors with optic alignment.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.SurfaceAberration">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SurfaceAberration</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>refractive_index=-1</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SurfaceAberration</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>ptv</em>, <em>diameter</em>, <em>exponent=-2.5</em>, <em>refractive_index=-1</em>, <em>aperture=None</em>, <em>remove_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.PolychromaticOpticalElement</span></code></p>
 <p>A surface aberration with a specific power law.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2411,7 +2411,7 @@ errors with optic alignment.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.SurfaceAberrationAtDistance">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SurfaceAberrationAtDistance</code><span class="sig-paren">(</span><em>surface_aberration</em>, <em>distance</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SurfaceAberrationAtDistance</code><span class="sig-paren">(</span><em>surface_aberration</em>, <em>distance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A surface at a certain distance from the current plane.</p>
 <p>Light is propagated to this surface, then the surface errors are
@@ -2472,7 +2472,7 @@ focal and pupil planes.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SurfaceAberrationAtDistance.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the surface aberration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2499,7 +2499,7 @@ given at the same plane as <cite>wavefront</cite>.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SurfaceAberrationAtDistance.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/aberration.html#SurfaceAberrationAtDistance.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SurfaceAberrationAtDistance.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront forwards through the surface aberration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2540,7 +2540,7 @@ given at the same plane as <cite>wavefront</cite>.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.ThinLens">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">ThinLens</code><span class="sig-paren">(</span><em>focal_length</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">ThinLens</code><span class="sig-paren">(</span><em>focal_length</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -2579,12 +2579,12 @@ given at the same plane as <cite>wavefront</cite>.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.ThinLens.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.ThinLens.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ThinLens.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ThinLens.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2597,7 +2597,7 @@ given at the same plane as <cite>wavefront</cite>.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.ComplexSurfaceApodizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">ComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">ComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -2636,19 +2636,19 @@ given at the same plane as <cite>wavefront</cite>.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.ComplexSurfaceApodizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.ComplexSurfaceApodizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#ComplexSurfaceApodizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.ComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">MultiplexedComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">MultiplexedComplexSurfaceApodizer</code><span class="sig-paren">(</span><em>amplitude</em>, <em>surface</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -2687,20 +2687,20 @@ given at the same plane as <cite>wavefront</cite>.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/apodization.html#MultiplexedComplexSurfaceApodizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MultiplexedComplexSurfaceApodizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.DynamicOpticalSystem">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">DynamicOpticalSystem</code><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">DynamicOpticalSystem</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>A dynamically varying optical system.</p>
 <p>This can be used as a starting point for an implementation of an adaptive optics system. The optics 
 are changed as specific moments in time, which can be scheduled by submitting a callback. The time
@@ -2727,7 +2727,7 @@ DM changes should be implemented as callbacks.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DynamicOpticalSystem.add_callback">
-<code class="descname">add_callback</code><span class="sig-paren">(</span><em>t</em>, <em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.add_callback" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_callback</code><span class="sig-paren">(</span><em>t</em>, <em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.add_callback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.add_callback" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a callback to the list of callbacks.</p>
 <p>This function can even be called during handling of a callback. This is 
 especially useful when implementing periodic callbacks: a callback can
@@ -2752,7 +2752,7 @@ reinsert itself at a later time at the end of handling of the callback.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DynamicOpticalSystem.evolve_until">
-<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.evolve_until" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.evolve_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.evolve_until" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evolve the optical system until time <cite>t</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2772,7 +2772,7 @@ are handled along the way.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DynamicOpticalSystem.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>integration_time</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>integration_time</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/dynamic_optical_system.html#DynamicOpticalSystem.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DynamicOpticalSystem.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrate the current optical system for a certain integration time.</p>
 <p>This function should be implemented by a user in a derived class.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2794,7 +2794,7 @@ are handled along the way.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.make_xinetics_influence_functions">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_xinetics_influence_functions</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>num_actuators_across_pupil</em>, <em>actuator_spacing</em>, <em>x_tilt=0</em>, <em>y_tilt=0</em>, <em>z_tilt=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.make_xinetics_influence_functions" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_xinetics_influence_functions</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>num_actuators_across_pupil</em>, <em>actuator_spacing</em>, <em>x_tilt=0</em>, <em>y_tilt=0</em>, <em>z_tilt=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#make_xinetics_influence_functions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.make_xinetics_influence_functions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create influence functions for a Xinetics deformable mirror.</p>
 <p>This function uses a The rotation of the deformable mirror will be done in the order X-Y-Z.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2836,7 +2836,7 @@ are handled along the way.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.DeformableMirror">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">DeformableMirror</code><span class="sig-paren">(</span><em>influence_functions</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">DeformableMirror</code><span class="sig-paren">(</span><em>influence_functions</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A deformable mirror using influence functions.</p>
 <p>This class does not contain any temporal simulation (ie. settling time),
@@ -2904,7 +2904,7 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DeformableMirror.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the deformable mirror.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2930,7 +2930,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DeformableMirror.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront through the deformable mirror.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2962,7 +2962,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.DeformableMirror.phase_for">
-<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.phase_for" title="Permalink to this definition">¶</a></dt>
+<code class="descname">phase_for</code><span class="sig-paren">(</span><em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/deformable_mirror.html#DeformableMirror.phase_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.DeformableMirror.phase_for" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the phase that is added to a wavefront with a specified wavelength.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2996,8 +2996,8 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.Detector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">Detector</code><a class="headerlink" href="#hcipy.hcipy.optics.Detector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">Detector</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.Detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -3018,7 +3018,7 @@ and assumes that there is no crosstalk between actuators.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.Detector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.Detector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.Detector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3043,7 +3043,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.Detector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.Detector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#Detector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.Detector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>No noise will be added to the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3065,7 +3065,7 @@ and assumes that there is no crosstalk between actuators.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.NoiselessDetector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">NoiselessDetector</code><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">NoiselessDetector</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p>A detector without noise.</p>
 <p>This detector includes no noise effects at all. This can be used as a
@@ -3090,7 +3090,7 @@ theoretically perfect detector.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.NoiselessDetector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3115,7 +3115,7 @@ theoretically perfect detector.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.NoiselessDetector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoiselessDetector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoiselessDetector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>No noise will be added to the image.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3137,7 +3137,7 @@ theoretically perfect detector.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.NoisyDetector">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">NoisyDetector</code><span class="sig-paren">(</span><em>input_grid</em>, <em>dark_current_rate=0</em>, <em>read_noise=0</em>, <em>flat_field=0</em>, <em>include_photon_noise=True</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">NoisyDetector</code><span class="sig-paren">(</span><em>input_grid</em>, <em>dark_current_rate=0</em>, <em>read_noise=0</em>, <em>flat_field=0</em>, <em>include_photon_noise=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p>A detector class that has some basic noise properties.</p>
 <p>A detector that includes the following noise sources: photon shot noise, dark current 
@@ -3206,7 +3206,7 @@ is standard deviation about 1) is generated that will be used.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.NoisyDetector.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector.integrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Integrates the detector.</p>
 <p>The amount of power and dark current that the detector generates are calculated
 for a given integration time and weight.</p>
@@ -3233,7 +3233,7 @@ for a given integration time and weight.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.NoisyDetector.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/detector.html#NoisyDetector.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.NoisyDetector.read_out" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads out the detector.</p>
 <p>The read out operation of the detector. This means that, if applicable, first photon noise 
 will be included to the power. Then, in this order, the flat field error and 
@@ -3257,7 +3257,7 @@ read-out noise are applied. After the read out the power is reset.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.SingleModeFiber">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SingleModeFiber</code><span class="sig-paren">(</span><em>input_grid</em>, <em>mode_field_diameter</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SingleModeFiber</code><span class="sig-paren">(</span><em>input_grid</em>, <em>mode_field_diameter</em>, <em>mode=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.detector.Detector" title="hcipy.hcipy.optics.detector.Detector"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.detector.Detector</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -3279,24 +3279,24 @@ read-out noise are applied. After the read out the power is reset.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiber.integrate">
-<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber.integrate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber.integrate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiber.read_out">
-<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber.read_out" title="Permalink to this definition">¶</a></dt>
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiber.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiber.read_out" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.fiber_mode_gaussian">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">fiber_mode_gaussian</code><span class="sig-paren">(</span><em>grid</em>, <em>mode_field_diameter</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.fiber_mode_gaussian" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">fiber_mode_gaussian</code><span class="sig-paren">(</span><em>grid</em>, <em>mode_field_diameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#fiber_mode_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.fiber_mode_gaussian" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.SingleModeFiberArray">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SingleModeFiberArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>fiber_grid</em>, <em>mode</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SingleModeFiberArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>fiber_grid</em>, <em>mode</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -3335,30 +3335,30 @@ read-out noise are applied. After the read out the power is reset.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiberArray.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiberArray.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/fiber.html#SingleModeFiberArray.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SingleModeFiberArray.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.GaussianBeam">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>w0</em>, <em>z</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.GaussianBeam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>w0</em>, <em>z</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/gaussian_beam.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3450,7 +3450,7 @@ read-out noise are applied. After the read out the power is reset.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.GaussianBeam.evaluate">
-<code class="descname">evaluate</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.GaussianBeam.evaluate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/gaussian_beam.html#GaussianBeam.evaluate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.GaussianBeam.evaluate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3512,7 +3512,7 @@ read-out noise are applied. After the read out the power is reset.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.MicroLensArray">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">MicroLensArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>lenslet_grid</em>, <em>focal_length</em>, <em>lenslet_shape=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">MicroLensArray</code><span class="sig-paren">(</span><em>input_grid</em>, <em>lenslet_grid</em>, <em>focal_length</em>, <em>lenslet_shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
@@ -3551,24 +3551,24 @@ read-out noise are applied. After the read out the power is reset.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.MicroLensArray.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.MicroLensArray.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#MicroLensArray.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.MicroLensArray.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.closest_points">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">closest_points</code><span class="sig-paren">(</span><em>point_grid</em>, <em>evaluated_grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.closest_points" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">closest_points</code><span class="sig-paren">(</span><em>point_grid</em>, <em>evaluated_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/micro_lens_array.html#closest_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.closest_points" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.AtmosphericModel">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">AtmosphericModel</code><span class="sig-paren">(</span><em>spectral_noise_factory</em>, <em>turbulence_layers</em>, <em>zenith_angle=0</em>, <em>off_axis_angle=0</em>, <em>include_scintilation=False</em>, <em>unwanted_modes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">AtmosphericModel</code><span class="sig-paren">(</span><em>spectral_noise_factory</em>, <em>turbulence_layers</em>, <em>zenith_angle=0</em>, <em>off_axis_angle=0</em>, <em>include_scintilation=False</em>, <em>unwanted_modes=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>Modeling abberations for atmospheric turbulence using discrete atmospheric layers.
 If r_0 is given, the C_n^2 profile is scaled to that Fried parameter.
@@ -3636,12 +3636,12 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.AtmosphericModel.evolve_until">
-<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t=None</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.evolve_until" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evolve_until</code><span class="sig-paren">(</span><em>t=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.evolve_until"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.evolve_until" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.AtmosphericModel.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3651,7 +3651,7 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.AtmosphericModel.make_random">
-<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.make_random" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make_random</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#AtmosphericModel.make_random"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.AtmosphericModel.make_random" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3673,22 +3673,22 @@ If a velocity is scalar, the direction for that layer is chosen randomly.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.kolmogorov_psd">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">kolmogorov_psd</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.kolmogorov_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">kolmogorov_psd</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#kolmogorov_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.kolmogorov_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.von_karman_psd">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.von_karman_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#von_karman_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.von_karman_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.modified_von_karman_psd">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">modified_von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em>, <em>u_i=100</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.modified_von_karman_psd" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">modified_von_karman_psd</code><span class="sig-paren">(</span><em>grid</em>, <em>u_o=0.1</em>, <em>u_i=100</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#modified_von_karman_psd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.modified_von_karman_psd" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.make_standard_multilayer_atmosphere">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_standard_multilayer_atmosphere</code><span class="sig-paren">(</span><em>fried_parameter=1</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.make_standard_multilayer_atmosphere" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">make_standard_multilayer_atmosphere</code><span class="sig-paren">(</span><em>fried_parameter=1</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#make_standard_multilayer_atmosphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.make_standard_multilayer_atmosphere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Standard atmosphere from Guyon (2005):
 Limits of Adaptive Optics for high contrast imaging.
 Returns an unnormalized Cn_squared profile.</p>
@@ -3696,18 +3696,18 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.scale_Cn_squared_to_fried_parameter">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">scale_Cn_squared_to_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>fried_parameter</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.scale_Cn_squared_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">scale_Cn_squared_to_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>fried_parameter</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#scale_Cn_squared_to_fried_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.scale_Cn_squared_to_fried_parameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="hcipy.hcipy.optics.get_fried_parameter">
-<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">get_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.get_fried_parameter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">get_fried_parameter</code><span class="sig-paren">(</span><em>Cn_squared</em>, <em>wavelength=5e-07</em>, <em>zenith_angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/multi_layer_atmosphere.html#get_fried_parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.get_fried_parameter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.OpticalElement">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">OpticalElement</code><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">OpticalElement</code><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -3745,34 +3745,34 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalElement.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalElement.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalElement.get_instance">
-<code class="descname">get_instance</code><span class="sig-paren">(</span><em>input_grid</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_instance" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_instance</code><span class="sig-paren">(</span><em>input_grid</em>, <em>wavelength</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_instance" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalElement.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalElement.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.OpticalSystem">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">OpticalSystem</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">OpticalSystem</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3823,22 +3823,22 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalSystem.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalSystem.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_backward">
-<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_forward">
-<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/optical_element.html#OpticalSystem.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.OpticalSystem.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -3880,7 +3880,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.LinearPolarizer">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">LinearPolarizer</code><span class="sig-paren">(</span><em>polarization_angle</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">LinearPolarizer</code><span class="sig-paren">(</span><em>polarization_angle</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3940,7 +3940,7 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.LinearPolarizer.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer.backward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront backwards through the linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3966,7 +3966,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.LinearPolarizer.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/polarization.html#LinearPolarizer.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.LinearPolarizer.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Propagate a wavefront forwards through the linear polarizer.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4000,7 +4000,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.SimpleVibration">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SimpleVibration</code><span class="sig-paren">(</span><em>mode</em>, <em>amplitude</em>, <em>frequency</em>, <em>phase_0=0</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">SimpleVibration</code><span class="sig-paren">(</span><em>mode</em>, <em>amplitude</em>, <em>frequency</em>, <em>phase_0=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4053,12 +4053,12 @@ Returns an unnormalized Cn_squared profile.</p>
 </table>
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SimpleVibration.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.SimpleVibration.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/vibration.html#SimpleVibration.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.SimpleVibration.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -4075,8 +4075,8 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="class">
 <dt id="hcipy.hcipy.optics.Wavefront">
-<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">Wavefront</code><span class="sig-paren">(</span><em>electric_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.Wavefront" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.optics.</code><code class="descname">Wavefront</code><span class="sig-paren">(</span><em>electric_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/wavefront.html#Wavefront"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.Wavefront" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -4126,7 +4126,7 @@ Returns an unnormalized Cn_squared profile.</p>
 
 <dl class="method">
 <dt id="hcipy.hcipy.optics.Wavefront.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.optics.Wavefront.copy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/optics/wavefront.html#Wavefront.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.optics.Wavefront.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

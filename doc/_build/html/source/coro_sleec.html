@@ -42,60 +42,8 @@
 <span id="coro-sleec-module"></span><h1>coro_sleec module<a class="headerlink" href="#module-coro_sleec" title="Permalink to this headline">¶</a></h1>
 <p>Module for modeling a coronagraph</p>
 <dl class="class">
-<dt id="coro_sleec.FocalPlaneMask">
-<em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">FocalPlaneMask</code><span class="sig-paren">(</span><em>input_grid</em>, <em>transm_field</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.FocalPlaneMask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
-<p>A &lt;hcipy&gt; :class:&#8217;OpticalElement&#8217; object representing a focal-plane mask.</p>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<table border="1" class="docutils">
-<colgroup>
-<col width="79%" />
-<col width="21%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><strong>backward</strong></td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-even"><td><strong>forward</strong></td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_instance</strong></td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
-<td>&nbsp;</td>
-</tr>
-<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="coro_sleec.FocalPlaneMask.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.FocalPlaneMask.backward" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="coro_sleec.FocalPlaneMask.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.FocalPlaneMask.forward" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="coro_sleec.SleecCoronagraph">
-<em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">SleecCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em>, <em>lyot_stop=None</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.SleecCoronagraph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">SleecCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em>, <em>lyot_stop=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#SleecCoronagraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.SleecCoronagraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
 <p>A Lyot coronagraph.
 Parameters
@@ -148,12 +96,64 @@ the Lyot stop.</dd>
 </table>
 <dl class="method">
 <dt id="coro_sleec.SleecCoronagraph.backward">
-<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.SleecCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#SleecCoronagraph.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.SleecCoronagraph.backward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="coro_sleec.SleecCoronagraph.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="headerlink" href="#coro_sleec.SleecCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#SleecCoronagraph.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.SleecCoronagraph.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="coro_sleec.TransmMask">
+<em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">TransmMask</code><span class="sig-paren">(</span><em>input_grid</em>, <em>transm_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#TransmMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.TransmMask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
+<p>A &lt;hcipy&gt; :class:&#8217;OpticalElement&#8217; object representing a focal-plane mask.</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="coro_sleec.TransmMask.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#TransmMask.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.TransmMask.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="coro_sleec.TransmMask.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#TransmMask.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.TransmMask.forward" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
