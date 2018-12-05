@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 
 
 class TransmMask(hci.OpticalElement):
-    """A <hcipy> :class:'OpticalElement' object representing a focal-plane mask.
+    """A `hci.OpticalElement` object representing a focal-plane mask.
     
-    Parmeters
+    Parameters
     ---------
-    input_grid : Grid
+    input_grid : hci.Grid
         The grid on which the incoming wavefront is defined.
     transm_field : ndarray
         Mask transmission function.  
@@ -34,16 +34,15 @@ class TransmMask(hci.OpticalElement):
 
 class SleecCoronagraph(hci.OpticalElement):
     """A Lyot coronagraph.
+    
     Parameters
     ----------
     input_grid : hci.Grid
         The grid on which the incoming wavefront is defined.
     focal_plane_mask : hci.OpticalElement
-	:class:'OpticalElement' specifying the (complex) transmission of 
-        the focal-plane mask. 
+	Complex transmission of the focal-plane mask. 
     lyot_stop : Field or OpticalElement or None
-        :class:'OpticalElement' specifying the (complex) transmission of 
-        the Lyot stop. 
+        Complex transmission of the Lyot stop. 
     """
     
     def __init__(self, input_grid, focal_plane_mask, lyot_stop=None):
