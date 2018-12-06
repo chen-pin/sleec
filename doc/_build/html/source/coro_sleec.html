@@ -45,20 +45,26 @@
 <dt id="coro_sleec.SleecCoronagraph">
 <em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">SleecCoronagraph</code><span class="sig-paren">(</span><em>input_grid</em>, <em>focal_plane_mask</em>, <em>lyot_stop=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#SleecCoronagraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.SleecCoronagraph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
-<p>A Lyot coronagraph.
-Parameters
-&#8212;&#8212;&#8212;-
-input_grid : hci.Grid</p>
-<blockquote>
-<div>The grid on which the incoming wavefront is defined.</div></blockquote>
-<dl class="docutils">
-<dt>focal_plane_mask</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">hci.OpticalElement</span><dd>:class:&#8217;OpticalElement&#8217; specifying the (complex) transmission of 
-the focal-plane mask.</dd>
-<dt>lyot_stop</dt>
- <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd>:class:&#8217;OpticalElement&#8217; specifying the (complex) transmission of 
-the Lyot stop.</dd>
+<p>A Lyot coronagraph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">hci.Grid</span><dd><p class="first last">The grid on which the incoming wavefront is defined.</p>
+</dd>
+<dt><strong>focal_plane_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">hci.OpticalElement</span><dd><p class="first last">Complex transmission of the focal-plane mask.</p>
+</dd>
+<dt><strong>lyot_stop</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or OpticalElement or None</span><dd><p class="first last">Complex transmission of the Lyot stop.</p>
+</dd>
 </dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -110,7 +116,13 @@ the Lyot stop.</dd>
 <dt id="coro_sleec.TransmMask">
 <em class="property">class </em><code class="descclassname">coro_sleec.</code><code class="descname">TransmMask</code><span class="sig-paren">(</span><em>input_grid</em>, <em>transm_field</em>, <em>wavelength=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/coro_sleec.html#TransmMask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#coro_sleec.TransmMask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalElement" title="hcipy.hcipy.optics.optical_element.OpticalElement"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalElement</span></code></a></p>
-<p>A &lt;hcipy&gt; :class:&#8217;OpticalElement&#8217; object representing a focal-plane mask.</p>
+<p>A <cite>hci.OpticalElement</cite> object representing a focal-plane mask.</p>
+<dl class="docutils">
+<dt>input_grid</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">hci.Grid</span><dd>The grid on which the incoming wavefront is defined.</dd>
+<dt>transm_field</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span><dd>Mask transmission function.</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table border="1" class="longtable docutils">
 <colgroup>

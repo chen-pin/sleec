@@ -49,11 +49,11 @@
 
 
 <div class="viewcode-block" id="TransmMask"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.TransmMask">[docs]</a><span class="k">class</span> <span class="nc">TransmMask</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A &lt;hcipy&gt; :class:&#39;OpticalElement&#39; object representing a focal-plane mask.</span>
+    <span class="sd">&quot;&quot;&quot;A `hci.OpticalElement` object representing a focal-plane mask.</span>
 <span class="sd">    </span>
-<span class="sd">    Parmeters</span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ---------</span>
-<span class="sd">    input_grid : Grid</span>
+<span class="sd">    input_grid : hci.Grid</span>
 <span class="sd">        The grid on which the incoming wavefront is defined.</span>
 <span class="sd">    transm_field : ndarray</span>
 <span class="sd">        Mask transmission function.  </span>
@@ -76,16 +76,15 @@
 
 <div class="viewcode-block" id="SleecCoronagraph"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.SleecCoronagraph">[docs]</a><span class="k">class</span> <span class="nc">SleecCoronagraph</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A Lyot coronagraph.</span>
+<span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    input_grid : hci.Grid</span>
 <span class="sd">        The grid on which the incoming wavefront is defined.</span>
 <span class="sd">    focal_plane_mask : hci.OpticalElement</span>
-<span class="sd">	:class:&#39;OpticalElement&#39; specifying the (complex) transmission of </span>
-<span class="sd">        the focal-plane mask. </span>
+<span class="sd">	Complex transmission of the focal-plane mask. </span>
 <span class="sd">    lyot_stop : Field or OpticalElement or None</span>
-<span class="sd">        :class:&#39;OpticalElement&#39; specifying the (complex) transmission of </span>
-<span class="sd">        the Lyot stop. </span>
+<span class="sd">        Complex transmission of the Lyot stop. </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">focal_plane_mask</span><span class="p">,</span> <span class="n">lyot_stop</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
