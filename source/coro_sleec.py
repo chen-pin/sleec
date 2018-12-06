@@ -169,8 +169,10 @@ def _test_class():
 #    plt.show()
 
 
-def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
-                   , num_airy=64, dm_dia_num_acttr=32, dm_seprtn=1/600e-6):
+def _test_instance(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
+                   , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
+                   , oversmpl=8, num_airy=24, dm_dia_num_acttr=48
+                   , dm_seprtn=1/600e-6):
     t0 = time.time()
     optical_elements = []
     # Make pupil
@@ -198,16 +200,18 @@ def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
         inflnc_ftns[0] = hci.Field(inflnc_ftns[0], pupil_grid)
     # DM1
     dm1 = hci.DeformableMirror(inflnc_ftns)
-    dm1.actuators = np.zeros(len(inflnc_ftns))
-    #dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+#    dm1.actuators = np.zeros(len(inflnc_ftns))
+#    dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+    dm1.actuators = dm1_array
     optical_elements.append(dm1)
     # Propagator to DM2
     prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
     optical_elements.append(prop_to_dm2)
     # DM2
     dm2 = hci.DeformableMirror(inflnc_ftns)
-    #dm2.actuators = np.zeros(len(inflnc_ftns))
-    dm2.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+#    dm2.actuators = np.zeros(len(inflnc_ftns))
+#    dm2.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+    dm2.actuators = dm2_array
     optical_elements.append(dm2)
     # Propagator to Pupil
     prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
@@ -236,9 +240,18 @@ def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
     camera_wf = coro(hci.Wavefront(pupil_transm))
     print("Computation took {:g} s".format(time.time()-t0))
     hci.imshow_field(np.log10(camera_wf.intensity/psf.intensity.max())
-                              , vmin=-12)
+                              , vmin=-12, cmap='gray')
     plt.colorbar()
-    plt.show()
-    hci.imshow_field(camera_wf.phase)
+#    plt.show()
+    plt.savefig('dm2_int.jpg')
+    plt.close()
+    hci.imshow_field(camera_wf.phase, vmin=-1, vmax=1, cmap='gray')
     plt.colorbar()
-    plt.show()
+#    plt.show()
+    plt.savefig('dm2_ph.jpg')
+    plt.close()
+#    reshape_wid = int(np.sqrt(camera_wf.phase.shape[0]))
+#    diff = (camera_wf.phase.reshape((reshape_wid, -1))[reshape_wid//2, :]
+#           - camera_wf.phase.reshape((reshape_wid, -1))[:, reshape_wid//2])
+#    plt.plot(diff)
+#    plt.show()
