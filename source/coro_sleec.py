@@ -1,9 +1,12 @@
 """Module for modeling a coronagraph"""
 
-
-from hcipy import hcipy as hci
-import numpy as np
+import os
 import matplotlib.pyplot as plt
+import pickle
+import time
+import numpy as np
+from hcipy import hcipy as hci
+
 
 class TransmMask(hci.OpticalElement):
     """A `hci.OpticalElement` object representing a focal-plane mask.
@@ -168,6 +171,7 @@ def _test_class():
 
 def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
                    , num_airy=64, dm_dia_num_acttr=32, dm_seprtn=1/600e-6):
+    t0 = time.time()
     optical_elements = []
     # Make pupil
     pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
@@ -175,19 +179,35 @@ def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
     pupil_transm = hci.circular_aperture(1)(pupil_grid)
     pupil = TransmMask(pupil_grid, pupil_transm)
     optical_elements.append(pupil)
-    # DM1
-    inflnc_ftns = hci.make_xinetics_influence_functions(pupil_grid
+    # Influence Functions
+    pickle_fn = ('inflnc_ftns_'+str(dm_dia_num_acttr)+'_'+str(pupil_dia_pxl)
+                 +'.pkl')
+    pickle_path = os.path.join(os.path.expanduser('~'), 'data_sleec', pickle_fn)
+    try:
+        f = open(pickle_path, 'rb')
+    except FileNotFoundError:
+        print("Influence-functions pickle file not found.")
+        print("Generate influence functions on the fly.")
+        inflnc_ftns = hci.make_xinetics_influence_functions(pupil_grid
                                                        , dm_dia_num_acttr
                                                        , 1.0/dm_dia_num_acttr)
+        f = open(pickle_path, 'wb')
+        pickle.dump(inflnc_ftns, f)
+    else:
+        inflnc_ftns = pickle.load(f)
+        inflnc_ftns[0] = hci.Field(inflnc_ftns[0], pupil_grid)
+    # DM1
     dm1 = hci.DeformableMirror(inflnc_ftns)
-    dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+    dm1.actuators = np.zeros(len(inflnc_ftns))
+    #dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
     optical_elements.append(dm1)
     # Propagator to DM2
     prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
     optical_elements.append(prop_to_dm2)
     # DM2
     dm2 = hci.DeformableMirror(inflnc_ftns)
-    dm2.actuators = np.zeros(len(inflnc_ftns))
+    #dm2.actuators = np.zeros(len(inflnc_ftns))
+    dm2.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
     optical_elements.append(dm2)
     # Propagator to Pupil
     prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
@@ -214,7 +234,11 @@ def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
     psf = prop_to_focal(hci.Wavefront(pupil_transm))
     coro = hci.OpticalSystem(optical_elements)
     camera_wf = coro(hci.Wavefront(pupil_transm))
+    print("Computation took {:g} s".format(time.time()-t0))
     hci.imshow_field(np.log10(camera_wf.intensity/psf.intensity.max())
                               , vmin=-12)
+    plt.colorbar()
+    plt.show()
+    hci.imshow_field(camera_wf.phase)
     plt.colorbar()
     plt.show()
