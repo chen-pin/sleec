@@ -22,8 +22,6 @@ class TransmMask(hci.OpticalElement):
 
     def forward(self, wavefront):
         wf = wavefront.copy()
-        print("wf\n{}\n".format(wf))
-        print("mask_transm\n{}\n".format(self.mask_transm))
         wf.electric_field *= self.mask_transm
         return wf
 
@@ -61,6 +59,27 @@ class FraunhoferBack(hci.OpticalElement):
                                              , focal_length=self.focal_length
                                             )
     
+    def forward(self, wavefront):
+        return self.prop.backward(wavefront)
+    def backward(self, wavefront):
+        return self.prop.forward(wavefront)
+
+
+class FresnelBack(hci.OpticalElement):
+    """`hcipy.OpticalElement` for backward Fresnel propagation.
+
+    Parameters
+    ----------
+    input_grid : hci.Grid
+        Grid on which the input wavefront is defined.
+    distance : float
+        Propagation distance
+    """
+    def __init__(self, input_grid, distance):
+        self.input_grid = input_grid
+        self.distance = distance
+        self.prop = hci.FresnelPropagator(input_grid=self.input_grid
+                                         , distance=self.distance)
     def forward(self, wavefront):
         return self.prop.backward(wavefront)
     def backward(self, wavefront):
@@ -148,7 +167,7 @@ def _test_class():
 
 
 def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
-                   , num_airy=64):
+                   , num_airy=64, dm_dia_num_acttr=32, dm_seprtn=1/600e-6):
     optical_elements = []
     # Make pupil
     pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
@@ -156,25 +175,42 @@ def _test_instance(pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9, oversmpl=8
     pupil_transm = hci.circular_aperture(1)(pupil_grid)
     pupil = TransmMask(pupil_grid, pupil_transm)
     optical_elements.append(pupil)
-    # Propagator to focal plane
+    # DM1
+    inflnc_ftns = hci.make_xinetics_influence_functions(pupil_grid
+                                                       , dm_dia_num_acttr
+                                                       , 1.0/dm_dia_num_acttr)
+    dm1 = hci.DeformableMirror(inflnc_ftns)
+    dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
+    optical_elements.append(dm1)
+    # Propagator to DM2
+    prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
+    optical_elements.append(prop_to_dm2)
+    # DM2
+    dm2 = hci.DeformableMirror(inflnc_ftns)
+    dm2.actuators = np.zeros(len(inflnc_ftns))
+    optical_elements.append(dm2)
+    # Propagator to Pupil
+    prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
+    optical_elements.append(prop_to_pupil)
+    # Propagator to Focal Plane
     prop_to_focal = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     optical_elements.append(prop_to_focal)
-    # Apply focal-plane mask
+    # Focal-Plane Mask
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(focal_grid)
     fpm = TransmMask(focal_grid, fpm_transm)
     optical_elements.append(fpm)
-    # Propagator to Lyot plane
+    # Propagator to Lyot Plane
     prop_to_lyot = FraunhoferBack(pupil_grid, focal_grid)
     optical_elements.append(prop_to_lyot)
-    # Apply Lyot-plane mask
+    # Lyot-Plane Mask
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
     lyot_mask = TransmMask(pupil_grid, lyot_transm)
     optical_elements.append(lyot_mask)
-    # Propagator to camera
+    # Propagator to Camera
     prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     optical_elements.append(prop_to_camera)
-    # Generate non-corongraphic PSF
+    # Generate Non-Corongraphic PSF
     psf = prop_to_focal(hci.Wavefront(pupil_transm))
     coro = hci.OpticalSystem(optical_elements)
     camera_wf = coro(hci.Wavefront(pupil_transm))
