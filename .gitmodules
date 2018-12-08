@@ -1,3 +1,0 @@
-[submodule "hcipy"]
-	path = source/hcipy
-	url = https://github.com/ehpor/hcipy.git
