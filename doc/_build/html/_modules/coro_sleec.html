@@ -42,36 +42,93 @@
   <h1>Source code for coro_sleec</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Module for modeling a coronagraph&quot;&quot;&quot;</span>
 
-
-<span class="kn">from</span> <span class="nn">hcipy</span> <span class="kn">import</span> <span class="n">hcipy</span> <span class="k">as</span> <span class="n">hci</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">hcipy</span> <span class="kn">import</span> <span class="n">hcipy</span> <span class="k">as</span> <span class="n">hci</span>
 
 
 <div class="viewcode-block" id="TransmMask"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.TransmMask">[docs]</a><span class="k">class</span> <span class="nc">TransmMask</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A `hci.OpticalElement` object representing a focal-plane mask.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
-<span class="sd">    ---------</span>
+<span class="sd">    ----------</span>
 <span class="sd">    input_grid : hci.Grid</span>
 <span class="sd">        The grid on which the incoming wavefront is defined.</span>
-<span class="sd">    transm_field : ndarray</span>
+<span class="sd">    mask_transm : ndarray</span>
 <span class="sd">        Mask transmission function.  </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">transm_field</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">mask_transm</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">input_grid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transm_field</span> <span class="o">=</span> <span class="n">transm_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask_transm</span> <span class="o">=</span> <span class="n">mask_transm</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
 
 <div class="viewcode-block" id="TransmMask.forward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.TransmMask.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
         <span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transm_field</span>
+        <span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_transm</span>
         <span class="k">return</span> <span class="n">wf</span></div>
 
 <div class="viewcode-block" id="TransmMask.backward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.TransmMask.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
         <span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transm_field</span>
+        <span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">/=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask_transm</span>
         <span class="k">return</span> <span class="n">wf</span></div></div>
+
+
+<div class="viewcode-block" id="FraunhoferBack"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FraunhoferBack">[docs]</a><span class="k">class</span> <span class="nc">FraunhoferBack</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;`hcipy.OpticalElement` for backward Fraunhofer propagation.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pupil_grid : hci.Grid</span>
+<span class="sd">        Pupil-plane grid</span>
+<span class="sd">    focal_grid : hci.Grid</span>
+<span class="sd">        Focal-plane grid</span>
+<span class="sd">    wavelength_0 : float</span>
+<span class="sd">        Reference wavelength</span>
+<span class="sd">    focal_length : float</span>
+<span class="sd">        Focal distance</span>
+<span class="sd">    wavelength : float </span>
+<span class="sd">        Wavelength</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">,</span> <span class="n">wavelength_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">focal_length</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span> <span class="o">=</span> <span class="n">pupil_grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span> <span class="o">=</span> <span class="n">focal_grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength_0</span> <span class="o">=</span> <span class="n">wavelength_0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focal_length</span> <span class="o">=</span> <span class="n">focal_length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">input_grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span>
+                                             <span class="p">,</span> <span class="n">output_grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span>
+                                             <span class="p">,</span> <span class="n">wavelength_0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength_0</span>
+                                             <span class="p">,</span> <span class="n">focal_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_length</span>
+                                            <span class="p">)</span>
+    
+<div class="viewcode-block" id="FraunhoferBack.forward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FraunhoferBack.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></div>
+<div class="viewcode-block" id="FraunhoferBack.backward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FraunhoferBack.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FresnelBack"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FresnelBack">[docs]</a><span class="k">class</span> <span class="nc">FresnelBack</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;`hcipy.OpticalElement` for backward Fresnel propagation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    input_grid : hci.Grid</span>
+<span class="sd">        Grid on which the input wavefront is defined.</span>
+<span class="sd">    distance : float</span>
+<span class="sd">        Propagation distance</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">input_grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FresnelPropagator</span><span class="p">(</span><span class="n">input_grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span>
+                                         <span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">)</span>
+<div class="viewcode-block" id="FresnelBack.forward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FresnelBack.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></div>
+<div class="viewcode-block" id="FresnelBack.backward"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.FresnelBack.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="SleecCoronagraph"><a class="viewcode-back" href="../source/coro_sleec.html#coro_sleec.SleecCoronagraph">[docs]</a><span class="k">class</span> <span class="nc">SleecCoronagraph</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">OpticalElement</span><span class="p">):</span>
@@ -115,7 +172,7 @@
         <span class="k">return</span> <span class="n">pup</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">_test</span><span class="p">():</span>  
+<span class="k">def</span> <span class="nf">_test_class</span><span class="p">():</span>  
     <span class="n">pupil_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_pupil_grid</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
     <span class="n">focal_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_focal_grid</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
     <span class="n">prop</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">)</span>
@@ -149,9 +206,97 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="c1">#    dm = hci.make_xinetics_influence_functions(pupil_grid, 48, 1.0/47.)</span>
-<span class="c1">#    plt.imshow(dm[2304//2+24].reshape(128,128))</span>
+<span class="c1">#    hci.imshow_field(dm[2304//2+24])</span>
+<span class="c1">#    plt.colorbar()</span>
 <span class="c1">#    plt.show()</span>
 
+
+<span class="k">def</span> <span class="nf">_test_instance</span><span class="p">(</span><span class="n">dm1_array</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">48</span><span class="o">*</span><span class="mi">48</span><span class="p">),</span> <span class="n">dm2_array</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">48</span><span class="o">*</span><span class="mi">48</span><span class="p">)</span>
+                   <span class="p">,</span> <span class="n">pupil_dia_pxl</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="n">fpm_wid</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span> <span class="n">lyot_dia</span><span class="o">=</span><span class="mf">0.9</span>
+                   <span class="p">,</span> <span class="n">oversmpl</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">num_airy</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">dm_dia_num_acttr</span><span class="o">=</span><span class="mi">48</span>
+                   <span class="p">,</span> <span class="n">dm_seprtn</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mf">600e-6</span><span class="p">):</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">optical_elements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Make pupil</span>
+    <span class="n">pupil_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_pupil_grid</span><span class="p">(</span><span class="n">pupil_dia_pxl</span><span class="p">)</span>
+    <span class="n">focal_grid</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_focal_grid</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">oversmpl</span><span class="p">,</span> <span class="n">num_airy</span><span class="p">)</span>
+    <span class="n">pupil_transm</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">circular_aperture</span><span class="p">(</span><span class="mi">1</span><span class="p">)(</span><span class="n">pupil_grid</span><span class="p">)</span>
+    <span class="n">pupil</span> <span class="o">=</span> <span class="n">TransmMask</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">pupil_transm</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pupil</span><span class="p">)</span>
+    <span class="c1"># Influence Functions</span>
+    <span class="n">pickle_fn</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;inflnc_ftns_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">dm_dia_num_acttr</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pupil_dia_pxl</span><span class="p">)</span>
+                 <span class="o">+</span><span class="s1">&#39;.pkl&#39;</span><span class="p">)</span>
+    <span class="n">pickle_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span> <span class="s1">&#39;data_sleec&#39;</span><span class="p">,</span> <span class="n">pickle_fn</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickle_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Influence-functions pickle file not found.&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Generate influence functions on the fly.&quot;</span><span class="p">)</span>
+        <span class="n">inflnc_ftns</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">make_xinetics_influence_functions</span><span class="p">(</span><span class="n">pupil_grid</span>
+                                                       <span class="p">,</span> <span class="n">dm_dia_num_acttr</span>
+                                                       <span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">dm_dia_num_acttr</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">pickle_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">inflnc_ftns</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">inflnc_ftns</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">inflnc_ftns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">inflnc_ftns</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pupil_grid</span><span class="p">)</span>
+    <span class="c1"># DM1</span>
+    <span class="n">dm1</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">DeformableMirror</span><span class="p">(</span><span class="n">inflnc_ftns</span><span class="p">)</span>
+<span class="c1">#    dm1.actuators = np.zeros(len(inflnc_ftns))</span>
+<span class="c1">#    dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))</span>
+    <span class="n">dm1</span><span class="o">.</span><span class="n">actuators</span> <span class="o">=</span> <span class="n">dm1_array</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dm1</span><span class="p">)</span>
+    <span class="c1"># Propagator to DM2</span>
+    <span class="n">prop_to_dm2</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FresnelPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">dm_seprtn</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_to_dm2</span><span class="p">)</span>
+    <span class="c1"># DM2</span>
+    <span class="n">dm2</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">DeformableMirror</span><span class="p">(</span><span class="n">inflnc_ftns</span><span class="p">)</span>
+<span class="c1">#    dm2.actuators = np.zeros(len(inflnc_ftns))</span>
+<span class="c1">#    dm2.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))</span>
+    <span class="n">dm2</span><span class="o">.</span><span class="n">actuators</span> <span class="o">=</span> <span class="n">dm2_array</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dm2</span><span class="p">)</span>
+    <span class="c1"># Propagator to Pupil</span>
+    <span class="n">prop_to_pupil</span> <span class="o">=</span> <span class="n">FresnelBack</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">dm_seprtn</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_to_pupil</span><span class="p">)</span>
+    <span class="c1"># Propagator to Focal Plane</span>
+    <span class="n">prop_to_focal</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_to_focal</span><span class="p">)</span>
+    <span class="c1"># Focal-Plane Mask</span>
+    <span class="n">fpm_opacity</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">circular_aperture</span><span class="p">(</span><span class="n">fpm_wid</span><span class="p">)</span>
+    <span class="n">fpm_transm</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">fpm_opacity</span><span class="p">(</span><span class="n">focal_grid</span><span class="p">)</span>
+    <span class="n">fpm</span> <span class="o">=</span> <span class="n">TransmMask</span><span class="p">(</span><span class="n">focal_grid</span><span class="p">,</span> <span class="n">fpm_transm</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fpm</span><span class="p">)</span>
+    <span class="c1"># Propagator to Lyot Plane</span>
+    <span class="n">prop_to_lyot</span> <span class="o">=</span> <span class="n">FraunhoferBack</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_to_lyot</span><span class="p">)</span>
+    <span class="c1"># Lyot-Plane Mask</span>
+    <span class="n">lyot_transm</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">circular_aperture</span><span class="p">(</span><span class="n">lyot_dia</span><span class="p">)(</span><span class="n">pupil_grid</span><span class="p">)</span>
+    <span class="n">lyot_mask</span> <span class="o">=</span> <span class="n">TransmMask</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">lyot_transm</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lyot_mask</span><span class="p">)</span>
+    <span class="c1"># Propagator to Camera</span>
+    <span class="n">prop_to_camera</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">focal_grid</span><span class="p">)</span>
+    <span class="n">optical_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_to_camera</span><span class="p">)</span>
+    <span class="c1"># Generate Non-Corongraphic PSF</span>
+    <span class="n">psf</span> <span class="o">=</span> <span class="n">prop_to_focal</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">Wavefront</span><span class="p">(</span><span class="n">pupil_transm</span><span class="p">))</span>
+    <span class="n">coro</span> <span class="o">=</span> <span class="n">hci</span><span class="o">.</span><span class="n">OpticalSystem</span><span class="p">(</span><span class="n">optical_elements</span><span class="p">)</span>
+    <span class="n">camera_wf</span> <span class="o">=</span> <span class="n">coro</span><span class="p">(</span><span class="n">hci</span><span class="o">.</span><span class="n">Wavefront</span><span class="p">(</span><span class="n">pupil_transm</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Computation took {:g} s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t0</span><span class="p">))</span>
+    <span class="n">hci</span><span class="o">.</span><span class="n">imshow_field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">camera_wf</span><span class="o">.</span><span class="n">intensity</span><span class="o">/</span><span class="n">psf</span><span class="o">.</span><span class="n">intensity</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                              <span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">12</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="c1">#    plt.show()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;dm2_int.jpg&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">hci</span><span class="o">.</span><span class="n">imshow_field</span><span class="p">(</span><span class="n">camera_wf</span><span class="o">.</span><span class="n">phase</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="c1">#    plt.show()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;dm2_ph.jpg&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="c1">#    reshape_wid = int(np.sqrt(camera_wf.phase.shape[0]))</span>
+<span class="c1">#    diff = (camera_wf.phase.reshape((reshape_wid, -1))[reshape_wid//2, :]</span>
+<span class="c1">#           - camera_wf.phase.reshape((reshape_wid, -1))[:, reshape_wid//2])</span>
+<span class="c1">#    plt.plot(diff)</span>
+<span class="c1">#    plt.show()</span>
 </pre></div>
 
           </div>
