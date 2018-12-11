@@ -38,7 +38,6 @@ def plot_exact():
     plt.plot(x,exact,'b-')
     plt.legend(["Exact"])
     plt.axis([-1.4,1.4,-2,8],'k-')
-    plt.draw()
     return
  
 # plot the polynomial
@@ -50,7 +49,6 @@ def plot_solution(params,style='y-'):
     plt.plot(x,y,style)
     plt.legend(["Exact","Fitted"])
     plt.axis([-1.4,1.4,-2,8],'k-')
-    plt.draw()
     return
 
 
@@ -81,6 +79,5 @@ if __name__ == '__main__':
     # plot solution versus exact coefficients
     plot_solution(solution)
     plt.show()
-    getch() #XXX: or plt.show() ?
 
 # end of file
