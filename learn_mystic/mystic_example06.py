@@ -68,7 +68,7 @@ if __name__ == '__main__':
     plot_exact()
 
     # use Powell's method to solve 8th-order Chebyshev coefficients
-    solution = fmin_powell(chebyshev8cost,x0)
+    solution = fmin_powell(chebyshev8cost, x0, ftol=1e-6,  gtol=100)
 
     # use pretty print for polynomials
     print(poly1d(solution))
