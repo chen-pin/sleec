@@ -47,7 +47,7 @@ def _test():
     model = Quad()
     target = [0.0, 0.0]  # True values
     print("target = {}".format(target)) 
-    num_data_pts = 900  
+    num_data_pts = 1000
     coord_ampl = 5
     coords = coord_ampl*2.0*(np.random.rand(num_data_pts, 2)-0.5)
     print(coords.shape)
@@ -56,13 +56,12 @@ def _test():
     # Generate fake data
     noise_ampl = 0.1
     obsrvd_data = None
-    obsrvd_data = [(model.evaluate(coeffs=target, coords=coords[i,:]) 
+    obsrvd_data = np.array([(model.evaluate(coeffs=target, coords=coords[i,:]) 
                    + noise_ampl*2.0*(np.random.rand()-0.5)) for i in 
-                   range(num_data_pts)]
+                   range(num_data_pts)])
     fig = plt.figure()
     plot = Axes3D(fig)
     plot.scatter(xs=coords[:, 0], ys=coords[:, 1], zs=obsrvd_data)
-    plt.show()
     print("starting point = {}".format(p0))
     #model.CostFactory = model.evaluate
     solution = mys.solvers.fmin_powell(
@@ -70,7 +69,14 @@ def _test():
                                       , obsrvd_data, 2), p0
                                       )
     print("solution = {}".format(solution))
-
+    cost = model.__cost__(solution)
+    print("solution cost value = {}".format(cost))
+    predctn = np.array([model.evaluate(solution, coords=coords[i, :]) for i in 
+               range(num_data_pts)])
+    rms = np.sqrt(np.square((predctn-obsrvd_data)).mean())
+    print("RMS predictn - data = {}".format(rms))
+    plot.scatter(coords[:, 0], coords[:, 1], predctn)
+    plt.show()
 
 if __name__ == 'main':
     _test()
