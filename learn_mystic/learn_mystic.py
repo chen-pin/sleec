@@ -54,14 +54,15 @@ def _test():
     p0 = 10*(np.random.rand(2)-0.5)  # Initial guess of coefficients
     print("Initial guess of coefficients = {}".format(p0))
     # Generate fake data
-    noise_ampl = 0.1
+    noise_ampl = 5 
     obsrvd_data = None
     obsrvd_data = np.array([(model.evaluate(coeffs=target, coords=coords[i,:]) 
                    + noise_ampl*2.0*(np.random.rand()-0.5)) for i in 
                    range(num_data_pts)])
     fig = plt.figure()
     plot = Axes3D(fig)
-    plot.scatter(xs=coords[:, 0], ys=coords[:, 1], zs=obsrvd_data)
+    plot.scatter(xs=coords[:, 0], ys=coords[:, 1], zs=obsrvd_data, marker='.'
+                 , label='data')
     print("starting point = {}".format(p0))
     #model.CostFactory = model.evaluate
     solution = mys.solvers.fmin_powell(
@@ -75,9 +76,12 @@ def _test():
                range(num_data_pts)])
     rms = np.sqrt(np.square((predctn-obsrvd_data)).mean())
     print("RMS predictn - data = {}".format(rms))
-    plot.scatter(coords[:, 0], coords[:, 1], predctn)
+    plot.scatter(coords[:, 0], coords[:, 1], predctn, marker='.'
+                 , label="predict'n")
+    plt.legend()
     plt.show()
 
-if __name__ == 'main':
+
+if __name__ == '__main__':
     _test()
     
