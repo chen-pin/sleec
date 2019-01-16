@@ -30,7 +30,9 @@ class Quad(models.abstract_model.AbstractModel):
 
         """
 #        print("<evaluate(coeffs={}, coord={})".format(coeffs, coords))
-        result = (coords[0]-coeffs[0])**2 + (coords[1]-coeffs[1])**2 
+#        result = (coords[0]-coeffs[0])**2 + (coords[1]-coeffs[1])**2 
+        result = (20*np.cos(0.3*2*np.pi*coords[0]-coeffs[0]) 
+                 + (coords[1]-coeffs[1])**2) 
 #        print("result = {}".format(result))
         return result
 
