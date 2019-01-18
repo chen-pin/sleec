@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import pickle
 import time
 import numpy as np
+import scipy.sparse as spr
+import astropy.io.fits as fits
 from hcipy import hcipy as hci
 
 
@@ -91,10 +93,54 @@ class FresnelBack(hci.OpticalElement):
         return self.prop.forward(wavefront)
 
 
-def _test_instance(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
+class InflncFtn(object): 
+    """Make influence functions for `hci.DeformableMirror` using sparse 
+    matrices.  
+    
+    Parameters
+    ----------
+        
+    """
+    def __init__(self):
+        pass 
+
+    def generate(self, acttr_fn, grid, num_acttrs_across, acttr_spacing
+                 , x_tilt=0.0, y_tilt=0.0, z_tilt=0.0):
+        """Create DM influence functions using sparse matrices and save 
+        the output.  
+
+        Parameters
+        ----------
+        acctr_fn : string
+            Filename of the fits file containing the influence function of a 
+            single actuator, which will be applied to all actuators.  
+        grid : hci.Grid
+            The grid on which to calculate the influence functions.
+        num_acttrs_across : integer
+            The number of actuators across the DM aperture.  
+        x_tilt : scalar
+            Tilt of the DM around the x-axis in radians.
+        y_tilt : scalar
+            Tilt of the DM around the y-axis in radians.
+        z_tilt : scalar
+            Tilt of the DM around the z-axis in radians.
+        
+        """
+   
+        extent = acttr_spacing*(num_acttrs_across-1)
+        acttr_positns = hci.make_uniform_grid(num_acttrs_across, [extent]*2)
+        evaluated_grid = grid.scaled(1.0/np.cos([y_tilt, x_tilt])).rotated(
+                                                                      -z_tilt)
+        hdu1 = fits.getdata(attr_ftn)
+
+
+def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
                    , oversmpl=8, num_airy=24, dm_dia_num_acttr=48
                    , dm_seprtn=1/600e-6):
+    """Test routine.
+    
+    """
     t0 = time.time()
     optical_elements = []
     # Make pupil
@@ -184,4 +230,4 @@ def _test_instance(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
 
 
 if __name__ == '__main__':
-    _test_instance()
+    _test()
