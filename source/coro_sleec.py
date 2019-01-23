@@ -118,8 +118,8 @@ class InflncFtn(object):
     """
     def __init__(self, acttr_filnm, num_acttr_across):
         self.acttr_filnm = acttr_filnm 
-        self.acttr_loctns = acttr_loctns
         self.num_acttr_across = num_acttr_across
+        self.acttr = fits.getdata(self.acttr_filnm)
 
     def generate(self, pupil_grid, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0):
         """Create DM influence functions using sparse matrices and save 
@@ -141,8 +141,8 @@ class InflncFtn(object):
         
         """
    
-        evaluated_grid = grid.scaled(1.0/np.cos([y_tilt, x_tilt])).rotated(
-                                                                      -z_tilt)
+        evaluated_grid = (pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
+                         .rotated(-z_tilt))
         self.acttr = hci.make_linear_interpolator_separated(self.acttr.ravel()
                         , self.acttr_grid, 0)
         modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
@@ -151,7 +151,7 @@ class InflncFtn(object):
         return hci.ModeBasis(modes)
 
     @property
-    def acttr_positns(self, acttr_spacing):
+    def acttr_positns(self, acttr_spacing=1.0/48):
         """
         Generate and automatic, uniform grid of actuator positions.  
 
@@ -165,7 +165,7 @@ class InflncFtn(object):
  
         """  
         extent = acttr_spacing*(self.num_acttr_across-1)
-        return make_uniform_grid(self.num_acttrs_across, [extent]*2)
+        return hci.make_uniform_grid(self.num_acttr_across, [extent]*2)
 
     @property
     def acctr(self):
@@ -175,18 +175,24 @@ class InflncFtn(object):
         return fits.getdata(self.attr_filnm)
         
     @property
-    def acttr_grid(self, scale_row, scale_col):
+    def acttr_grid(self, scale_row=114/(48*15.87), scale_col=114/(48*15.96)):
         """Generate an automatic grid for a single actuator.
         
         Parameters
         ----------
-        scale_x, scale_y : float
+        scale_row, scale_col : float
             Ratio between the number of pixels across the influence function 
             patch and that across the full pupil width, in row (vertical) and 
             column (horizontal) directions.
+
+        Notes
+        -----
+        Defaults `scale_row` and `scale_col` values are based on VSG data 
+        for Xinetics DM 48.3.  See 5/22/2018 notes in <HCIT_DM_notes.txt>.
         """
-        return make_uniform_grid(self.acttr.shape
-                                 , [scale_row, scale_col]*np.array(acttr.shape)
+        return hci.make_uniform_grid(self.acttr.shape
+                                     , [scale_row, scale_col]
+                                       *np.array(self.acttr.shape))
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
