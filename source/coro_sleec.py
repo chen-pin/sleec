@@ -99,9 +99,11 @@ class InflncFtn(object):
     
     Parameters
     ----------
-    acttr_filnm : string
+    acttr_filnm : str
         Fits filename for a single actuator influence function (2darray).  
-        The same function is applied to all actuators.  
+        The same function is applied to all actuators. 
+    num_acttr_across : int
+        Number of actuators across the DM pupil.
     
     Attributes
     ----------
@@ -175,7 +177,7 @@ class InflncFtn(object):
         return fits.getdata(self.attr_filnm)
         
     @property
-    def acttr_grid(self, scale_row=114/(48*15.87), scale_col=114/(48*15.96)):
+    def acttr_grid(self, scale_row=114/(48*15.87*256), scale_col=114/(48*15.96*256)):
         """Generate an automatic grid for a single actuator.
         
         Parameters
