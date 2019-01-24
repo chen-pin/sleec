@@ -107,6 +107,9 @@ class InflncFtn(object):
     
     Attributes
     ----------
+    pupil_grid : hci.Grid
+        The grid on which to calculate the influence functions spanning 
+        the aperture of the DM.
     acttr_positns : hci.grid, @property
         Actuator center positions. 
     acttr : 2darray, @property
@@ -118,20 +121,18 @@ class InflncFtn(object):
       actuator.  
  
     """
-    def __init__(self, acttr_filnm, num_acttr_across):
+    def __init__(self, pupil_grid, acttr_filnm, num_acttr_across):
+        self.pupil_grid = pupil_grid
         self.acttr_filnm = acttr_filnm 
         self.num_acttr_across = num_acttr_across
         self.acttr = fits.getdata(self.acttr_filnm)
 
-    def generate(self, pupil_grid, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0):
+    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0):
         """Create DM influence functions using sparse matrices and save 
         the output.  
 
         Parameters
         ----------
-        pupil_grid : hci.Grid
-            The grid on which to calculate the influence functions spanning 
-            the aperture of the DM.
         num_acttrs_across : integer
             The number of actuators across the DM aperture.  
         x_tilt : scalar
@@ -142,14 +143,13 @@ class InflncFtn(object):
             Tilt of the DM around the z-axis in radians.
         
         """
-   
-        evaluated_grid = (pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
+        evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
         self.acttr = hci.make_linear_interpolator_separated(self.acttr.ravel()
                         , self.acttr_grid, 0)
         modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
                   self.acttr_positns]
-        modes = [hci.Field(m, pupil_grid) for m in modes]
+        modes = [hci.Field(m, self.pupil_grid) for m in modes]
         return hci.ModeBasis(modes)
 
     @property
@@ -177,15 +177,15 @@ class InflncFtn(object):
         return fits.getdata(self.attr_filnm)
         
     @property
-    def acttr_grid(self, scale_row=114/(48*15.87*256), scale_col=114/(48*15.96*256)):
+    def acttr_grid(self, scale_row=114/15.87, scale_col=114/15.96):
         """Generate an automatic grid for a single actuator.
         
         Parameters
         ----------
         scale_row, scale_col : float
             Ratio between the number of pixels across the influence function 
-            patch and that across the full pupil width, in row (vertical) and 
-            column (horizontal) directions.
+            patch and that between adjacent actuator centers, in row 
+            (vertical) and column (horizontal) directions.
 
         Notes
         -----
@@ -193,8 +193,12 @@ class InflncFtn(object):
         for Xinetics DM 48.3.  See 5/22/2018 notes in <HCIT_DM_notes.txt>.
         """
         return hci.make_uniform_grid(self.acttr.shape
-                                     , [scale_row, scale_col]
-                                       *np.array(self.acttr.shape))
+                   , [scale_row
+                      /(self.num_acttr_across*self.pupil_grid.coords.dims[0])
+                   , scale_col
+                     /(self.num_acttr_across*self.pupil_grid.coords.dims[1])]
+                   *np.array(self.acttr.shape)
+                                    )
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
