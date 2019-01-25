@@ -127,30 +127,51 @@ class InflncFtn(object):
         self.num_acttr_across = num_acttr_across
         self.acttr = fits.getdata(self.acttr_filnm)
 
-    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0):
-        """Create DM influence functions using sparse matrices and save 
-        the output.  
+    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
+                 , **kwargs):
+        """Create DM influence functions.  If `save`=True, save the influence 
+        functions as CSR  sparse matrices.  If not, return a hci.ModeBasis 
+        object representing the array of influence functions. 
 
         Parameters
         ----------
-        num_acttrs_across : integer
-            The number of actuators across the DM aperture.  
         x_tilt : scalar
             Tilt of the DM around the x-axis in radians.
         y_tilt : scalar
             Tilt of the DM around the y-axis in radians.
         z_tilt : scalar
             Tilt of the DM around the z-axis in radians.
+        save : boolean
+            True --> save the array of influence functions as a CSR sparse 
+            matrix in npz file format.  
+            False --> return a hci.ModeBasis object representing the 
+            array of influence functions.  
+        kwargs : optional
+            If `save`=True, need to provide 'file' keyword parameter, which is 
+            the npz filename.  
+
+        Returns
+        -------
+        result : hci.ModeBasis, if `save`=True
+            Influence functions 
         
         """
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
         self.acttr = hci.make_linear_interpolator_separated(self.acttr.ravel()
                         , self.acttr_grid, 0)
-        modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
-                  self.acttr_positns]
-        modes = [hci.Field(m, self.pupil_grid) for m in modes]
-        return hci.ModeBasis(modes)
+        if save:
+            modes = spr.lil_matrix((self.acttr_positns.size
+                                   , evaluated_grid.size))
+            for i in range(self.acttr_positns.size):
+                modes[i, ] = self.acttr(evaluated_grid
+                                   .shifted(-self.acttr_positns[i]))
+            spr.save_npz(kwargs['file'], modes.tocsr())
+        else:
+            modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
+                      self.acttr_positns]
+            modes = [hci.Field(m, self.pupil_grid) for m in modes]
+            return hci.ModeBasis(modes)
 
     @property
     def acttr_positns(self, acttr_spacing=1.0/48):
