@@ -99,17 +99,20 @@ class InflncFtn(object):
     
     Parameters
     ----------
+    pupil_grid : hci.Grid
+        The grid on which to calculate the influence functions spanning 
+        the aperture of the DM.
     acttr_filnm : str
         Fits filename for a single actuator influence function (2darray).  
         The same function is applied to all actuators. 
+    save_filnm : str
+        Filename for storing/loading array of influence functions in NPZ 
+        format.  
     num_acttr_across : int
         Number of actuators across the DM pupil.
     
     Attributes
     ----------
-    pupil_grid : hci.Grid
-        The grid on which to calculate the influence functions spanning 
-        the aperture of the DM.
     acttr_positns : hci.grid, @property
         Actuator center positions. 
     acttr : 2darray, @property
@@ -121,14 +124,19 @@ class InflncFtn(object):
       actuator.  
  
     """
-    def __init__(self, pupil_grid, acttr_filnm, num_acttr_across):
+    def __init__(self, pupil_grid=hci.make_pupil_grid(480)
+                 , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
+                                            , 'superinf-20180730-10x10.fits')
+                 , save_filnm=os.path.join(os.path.expanduser('~')
+                                           , 'sleec_out', 'acttr.npz')
+                 , num_acttr_across=48):
         self.pupil_grid = pupil_grid
-        self.acttr_filnm = acttr_filnm 
+        self.acttr_filnm = acttr_filnm
+        self.save_filnm = save_filnm 
         self.num_acttr_across = num_acttr_across
         self.acttr = fits.getdata(self.acttr_filnm)
 
-    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
-                 , **kwargs):
+    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True):
         """Create DM influence functions.  If `save`=True, save the influence 
         functions as CSR  sparse matrices.  If not, return a hci.ModeBasis 
         object representing the array of influence functions. 
@@ -146,9 +154,6 @@ class InflncFtn(object):
             matrix in npz file format.  
             False --> return a hci.ModeBasis object representing the 
             array of influence functions.  
-        kwargs : optional
-            If `save`=True, need to provide 'file' keyword parameter, which is 
-            the npz filename.  
 
         Returns
         -------
@@ -166,7 +171,7 @@ class InflncFtn(object):
             for i in range(self.acttr_positns.size):
                 modes[i, ] = self.acttr(evaluated_grid
                                    .shifted(-self.acttr_positns[i]))
-            spr.save_npz(kwargs['file'], modes.tocsr())
+            spr.save_npz(self.save_filnm, modes.tocsr())
         else:
             modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
                       self.acttr_positns]
@@ -198,7 +203,7 @@ class InflncFtn(object):
         return fits.getdata(self.attr_filnm)
         
     @property
-    def acttr_grid(self, scale_row=114/15.87, scale_col=114/15.96):
+    def acttr_grid(self, scale_row=73/10.0, scale_col=73/10.0):
         """Generate an automatic grid for a single actuator.
         
         Parameters
