@@ -215,8 +215,10 @@ class InflncFtn(object):
 
         Notes
         -----
-        Defaults `scale_row` and `scale_col` values are based on VSG data 
-        for Xinetics DM 48.3.  See 5/22/2018 notes in <HCIT_DM_notes.txt>.
+        - Pixel scales are not working out correctly:  the input `acttr` (super-
+          influence function) spans ~ 7 pixels HWHM, but <generate()> output 
+          each actuator spans only < 1 pixel HWHM.
+        - Still need to do away with resampling/interpolation.  
         """
         return hci.make_uniform_grid(self.acttr.shape
                    , [scale_row
