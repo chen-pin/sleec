@@ -128,7 +128,7 @@ class InflncFtn(object):
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'acttr.npz')
+                                           , 'sleec_out', 'acttr2.npz')
                  , num_acttr_across=48):
         self.pupil_grid = pupil_grid
         self.acttr_filnm = acttr_filnm
@@ -221,12 +221,7 @@ class InflncFtn(object):
         - Still need to do away with resampling/interpolation.  
         """
         return hci.make_uniform_grid(self.acttr.shape
-                   , [scale_row
-                      /(self.num_acttr_across*self.pupil_grid.coords.dims[0])
-                   , scale_col
-                     /(self.num_acttr_across*self.pupil_grid.coords.dims[1])]
-                   *np.array(self.acttr.shape)
-                                    )
+                   , (1.0/(48*10))*np.array(self.acttr.shape))
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
