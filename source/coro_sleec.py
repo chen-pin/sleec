@@ -110,13 +110,24 @@ class InflncFtn(object):
         format.  
     num_acttr_across : int
         Number of actuators across the DM pupil.
+    acttr_pxl_spacing: int
+        Pixel scale (i.e. number of pixels between adjacent actuators) 
+        associated with the single-actuator influence function (`self.acttr'). 
+        For example, `self.acttr' loaded from file 
+        'superinf-20180730-10x10.fits' is sampled at a scale of 10 pixels 
+        between adjacent actuators.   
     
     Attributes
     ----------
     acttr_positns : hci.grid, @property
         Actuator center positions. 
+    acttr_spacing : float, @property.
+        Spacing between adjacent actuators.
     acttr : 2darray, @property
         Single-actuator influence function extracted from acttr_filnm
+    acttr_grid : hci.grid, @property
+        Automatically generated grid for a single actuator. Only used for 
+        resampling/interpolation. 
     
     Notes
     -----
@@ -128,13 +139,13 @@ class InflncFtn(object):
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'acttr2.npz')
-                 , num_acttr_across=48):
+                                           , 'sleec_out', 'acttr3.npz')
+                 , num_acttr_across=48, acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
         self.acttr_filnm = acttr_filnm
         self.save_filnm = save_filnm 
         self.num_acttr_across = num_acttr_across
-        self.acttr = fits.getdata(self.acttr_filnm)
+        self.acttr_pxl_spacing = acttr_pxl_spacing
 
     def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True):
         """Create DM influence functions.  If `save`=True, save the influence 
@@ -163,65 +174,68 @@ class InflncFtn(object):
         """
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
-        self.acttr = hci.make_linear_interpolator_separated(self.acttr.ravel()
-                        , self.acttr_grid, 0)
+        acttr_resample = hci.make_linear_interpolator_separated(
+                         self.acttr.ravel(), self.acttr_grid, 0
+                                                           )
         if save:
             modes = spr.lil_matrix((self.acttr_positns.size
                                    , evaluated_grid.size))
             for i in range(self.acttr_positns.size):
-                modes[i, ] = self.acttr(evaluated_grid
+                modes[i, ] = acttr_resample(evaluated_grid
                                    .shifted(-self.acttr_positns[i]))
             spr.save_npz(self.save_filnm, modes.tocsr())
         else:
-            modes =  [self.acttr(evaluated_grid.shifted(-p)) for p in 
+            modes =  [acttr_resample(evaluated_grid.shifted(-p)) for p in 
                       self.acttr_positns]
             modes = [hci.Field(m, self.pupil_grid) for m in modes]
             return hci.ModeBasis(modes)
 
     @property
-    def acttr_positns(self, acttr_spacing=1.0/48):
+    def acttr(self):
+        """
+        Returns
+        -------
+        acttr : 2darray, @property
+            Single-actuator influence function extracted from acttr_filnm
+        """
+        return fits.getdata(self.acttr_filnm)
+
+    @property
+    def acttr_spacing(self):
+        """
+        Returns
+        -------
+        acttr_spacing : float
+            Spacing between adjacent actuators.
+        """
+        return 1.0/self.num_acttr_across
+
+    @property
+    def acttr_positns(self):
         """
         Generate and automatic, uniform grid of actuator positions.  
 
-        Parameters
-        ----------
-        acttr_spacing : float
-            Spacing between adjacent actuators.
         Returns
         -------
         A `hci.Grid` of actuator positions.
  
         """  
-        extent = acttr_spacing*(self.num_acttr_across-1)
+        extent = self.acttr_spacing*(self.num_acttr_across-1)
         return hci.make_uniform_grid(self.num_acttr_across, [extent]*2)
 
     @property
-    def acctr(self):
-        """Return single-actuator influence function
-
-        """
-        return fits.getdata(self.attr_filnm)
-        
-    @property
-    def acttr_grid(self, scale_row=73/10.0, scale_col=73/10.0):
+    def acttr_grid(self):
         """Generate an automatic grid for a single actuator.
         
-        Parameters
-        ----------
-        scale_row, scale_col : float
-            Ratio between the number of pixels across the influence function 
-            patch and that between adjacent actuator centers, in row 
-            (vertical) and column (horizontal) directions.
-
         Notes
         -----
-        - Pixel scales are not working out correctly:  the input `acttr` (super-
-          influence function) spans ~ 7 pixels HWHM, but <generate()> output 
-          each actuator spans only < 1 pixel HWHM.
-        - Still need to do away with resampling/interpolation.  
+        - Only used for resampling/interpolation.  
         """
         return hci.make_uniform_grid(self.acttr.shape
-                   , (1.0/(48*10))*np.array(self.acttr.shape))
+                   , (self.acttr_spacing/self.acttr_pxl_spacing)
+                     *np.array(self.acttr.shape)
+                                    )
+            
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
