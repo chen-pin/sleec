@@ -6,6 +6,7 @@ import pickle
 import time
 import numpy as np
 import scipy.sparse as spr
+import scipy.interpolate as scint
 import astropy.io.fits as fits
 from hcipy import hcipy as hci
 
@@ -139,7 +140,7 @@ class InflncFtn(object):
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'acttr4.npz')
+                                           , 'sleec_out', 'acttr6.npz')
                  , dm_diamtr=1.0, acttr_spacing=1.0/48
                  , acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
@@ -166,25 +167,70 @@ class InflncFtn(object):
         return hci.make_uniform_grid(self.dm_diamtr/self.acttr_spacing
                                      , [extent]*2)
 
+    def make_intrpltr(self, field, grid=None, fill_value=np.nan
+                      , method='nearest'):
+        """Make a linear interpolator for a separated grid.  This method is 
+        basically the hci.make_linear_interpolator_separated method, with the 
+        added `method` option.  
+
+        Parameters
+        ----------
+        field : hci.Field or ndarray
+            The field to interpolate
+        grid : hci.Grid or None
+            The grid of the field.  If it is given, the grid of `field` is 
+            replaced by this grid.  
+        fill_value : scalar
+            The value to use for points outside of the domain of the input 
+            field.  If this is None, the values outside the domain are 
+            extrapolated. 
+        method : {'linear', 'nearest'}
+            The method of interpolation to perform.  
+ 
+        Returns
+        -------
+        hci.Field generator
+            The interpolator, as a hci.Field generator.  The grid on which 
+            this hci.Field generator will be evaluated, does not have to be 
+            separated.  
+
+        """
+        if grid is None:
+            grid = field.grid
+        else:
+            field = hci.Field(field, grid)
+        axes_reversed = np.array(grid.separated_coords)
+        interp = scint.RegularGridInterpolator(
+                     points=axes_reversed, values=field.shaped, method=method
+                     , bounds_error=False, fill_value=fill_value
+                                              )
+        def interpolator(evaluated_grid):
+            evaluated_coords = np.flip(np.array(evaluated_grid.coords), 0)
+            res = interp(evaluated_coords.T)
+            return hci.Field(res.ravel(), evaluated_grid)
+        return interpolator
+
     def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
-                 , resample=False):
+                 , intrpltn='nearest'):
         """Create DM influence functions.  If `save`=True, save the influence 
         functions as CSR sparse matrices.  If not, return a hci.ModeBasis 
         object representing the array of influence functions. 
 
         Parameters
         ----------
-        x_tilt : scalar
+        x_tilt : float
             Tilt of the DM around the x-axis in radians.
-        y_tilt : scalar
+        y_tilt : float
             Tilt of the DM around the y-axis in radians.
-        z_tilt : scalar
+        z_tilt : float
             Tilt of the DM around the z-axis in radians.
-        save : boolean
+        save : bool
             True --> save the array of influence functions as a CSR sparse 
             matrix in npz file format.  
             False --> return a hci.ModeBasis object representing the 
-            array of influence functions.  
+            array of influence functions.
+        intrpltn : 'nearest' or 'linear'
+            Interpolation method   
 
         Returns
         -------
@@ -195,20 +241,22 @@ class InflncFtn(object):
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
         if save:
-            if resample:
-                self.acttr_positns = self.auto_acttr_positns()
-                modes = spr.lil_matrix((self.acttr_positns.size
-                                        , evaluated_grid.size))
-                acttr_out = hci.make_linear_interpolator_separated(
-                                 self.acttr.ravel(), self.acttr_grid, 0
-                                                               )
-                for i in range(self.acttr_positns.size):
-                    modes[i, ] = acttr_out(evaluated_grid
-                                       .shifted(-self.acttr_positns[i]))
-#            else:
-#                acttr_out = hci.Field(self.acttr.ravel(), self.acttr_grid)
-#                for i in range(self.acttr_positns.size):
-#                    shift_fill_acttr[0:   
+            self.acttr_positns = self.auto_acttr_positns()
+            modes = spr.lil_matrix((self.acttr_positns.size
+                                    , evaluated_grid.size))
+            if intrpltn == 'nearest':
+                acttr_out = self.make_intrpltr(
+                                field=self.acttr.ravel(), grid=self.acttr_grid
+                                , fill_value=0.0, method='nearest'
+                                         )
+            elif intrpltn == 'linear':
+                acttr_out = self.make_intrpltr(
+                                field=self.acttr.ravel(), grid=self.acttr_grid
+                                , fill_value=0.0, method='linear'
+                                         )
+            for i in range(self.acttr_positns.size):
+                modes[i, ] = acttr_out(evaluated_grid
+                                   .shifted(-self.acttr_positns[i]))
             spr.save_npz(self.save_filnm, modes.tocsr())
         else:
             modes =  [acttr_out(evaluated_grid.shifted(-p)) for p in 
