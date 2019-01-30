@@ -101,15 +101,17 @@ class InflncFtn(object):
     ----------
     pupil_grid : hci.Grid
         The grid on which to calculate the influence functions spanning 
-        the aperture of the DM.
+        the aperture of the deformable mirror (DM).
     acttr_filnm : str
         Fits filename for a single actuator influence function (2darray).  
         The same function is applied to all actuators. 
     save_filnm : str
         Filename for storing/loading array of influence functions in NPZ 
         format.  
-    num_acttr_across : int
-        Number of actuators across the DM pupil.
+    dm_diamtr: int
+        Physical diameter of the DM pupil.  
+    acttr_spacing : float
+        Physical spacing between adjacent actuators on the DM.
     acttr_pxl_spacing: int
         Pixel scale (i.e. number of pixels between adjacent actuators) 
         associated with the single-actuator influence function (`self.acttr'). 
@@ -121,8 +123,6 @@ class InflncFtn(object):
     ----------
     acttr_positns : hci.grid, @property
         Actuator center positions. 
-    acttr_spacing : float, @property.
-        Spacing between adjacent actuators.
     acttr : 2darray, @property
         Single-actuator influence function extracted from acttr_filnm
     acttr_grid : hci.grid, @property
@@ -135,21 +135,41 @@ class InflncFtn(object):
       actuator.  
  
     """
-    def __init__(self, pupil_grid=hci.make_pupil_grid(480)
+    def __init__(self, pupil_grid=hci.make_pupil_grid(481)
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'acttr3.npz')
-                 , num_acttr_across=48, acttr_pxl_spacing=10):
+                                           , 'sleec_out', 'acttr4.npz')
+                 , dm_diamtr=1.0, acttr_spacing=1.0/48
+                 , acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
         self.acttr_filnm = acttr_filnm
         self.save_filnm = save_filnm 
-        self.num_acttr_across = num_acttr_across
+        self.dm_diamtr = dm_diamtr
+        self.acttr_spacing = acttr_spacing
         self.acttr_pxl_spacing = acttr_pxl_spacing
+    
+    def auto_acttr_positns(self):
+        """
+        Generate an automatic, uniform grid of actuator positions.  
 
-    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True):
+        Returns
+        -------
+        A `hci.Grid` of actuator positions.
+
+        Notes
+        -----
+        - For use with resampling/interpolation.
+ 
+        """  
+        extent = self.dm_diamtr
+        return hci.make_uniform_grid(self.dm_diamtr/self.acttr_spacing
+                                     , [extent]*2)
+
+    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
+                 , resample=False):
         """Create DM influence functions.  If `save`=True, save the influence 
-        functions as CSR  sparse matrices.  If not, return a hci.ModeBasis 
+        functions as CSR sparse matrices.  If not, return a hci.ModeBasis 
         object representing the array of influence functions. 
 
         Parameters
@@ -174,18 +194,24 @@ class InflncFtn(object):
         """
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
-        acttr_resample = hci.make_linear_interpolator_separated(
-                         self.acttr.ravel(), self.acttr_grid, 0
-                                                           )
         if save:
-            modes = spr.lil_matrix((self.acttr_positns.size
-                                   , evaluated_grid.size))
-            for i in range(self.acttr_positns.size):
-                modes[i, ] = acttr_resample(evaluated_grid
-                                   .shifted(-self.acttr_positns[i]))
+            if resample:
+                self.acttr_positns = self.auto_acttr_positns()
+                modes = spr.lil_matrix((self.acttr_positns.size
+                                        , evaluated_grid.size))
+                acttr_out = hci.make_linear_interpolator_separated(
+                                 self.acttr.ravel(), self.acttr_grid, 0
+                                                               )
+                for i in range(self.acttr_positns.size):
+                    modes[i, ] = acttr_out(evaluated_grid
+                                       .shifted(-self.acttr_positns[i]))
+#            else:
+#                acttr_out = hci.Field(self.acttr.ravel(), self.acttr_grid)
+#                for i in range(self.acttr_positns.size):
+#                    shift_fill_acttr[0:   
             spr.save_npz(self.save_filnm, modes.tocsr())
         else:
-            modes =  [acttr_resample(evaluated_grid.shifted(-p)) for p in 
+            modes =  [acttr_out(evaluated_grid.shifted(-p)) for p in 
                       self.acttr_positns]
             modes = [hci.Field(m, self.pupil_grid) for m in modes]
             return hci.ModeBasis(modes)
@@ -201,27 +227,11 @@ class InflncFtn(object):
         return fits.getdata(self.acttr_filnm)
 
     @property
-    def acttr_spacing(self):
-        """
-        Returns
-        -------
-        acttr_spacing : float
-            Spacing between adjacent actuators.
-        """
-        return 1.0/self.num_acttr_across
-
-    @property
     def acttr_positns(self):
-        """
-        Generate and automatic, uniform grid of actuator positions.  
-
-        Returns
-        -------
-        A `hci.Grid` of actuator positions.
- 
-        """  
-        extent = self.acttr_spacing*(self.num_acttr_across-1)
-        return hci.make_uniform_grid(self.num_acttr_across, [extent]*2)
+        return self._acttr_positns 
+    @acttr_positns.setter
+    def acttr_positns(self, positns):
+        self._acttr_positns = positns
 
     @property
     def acttr_grid(self):
