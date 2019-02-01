@@ -140,7 +140,7 @@ class InflncFtn(object):
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'acttr6.npz')
+                                           , 'sleec_out', 'inflnc_ftns.pkl')
                  , dm_diamtr=1.0, acttr_spacing=1.0/48
                  , acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
@@ -194,6 +194,11 @@ class InflncFtn(object):
             this hci.Field generator will be evaluated, does not have to be 
             separated.  
 
+        Notes
+        -----
+        One should only use 'nearest' option when `self.acttr_grid` 
+        coordinates coincide with a subset of the `evaluated_grid` coordinates. 
+
         """
         if grid is None:
             grid = field.grid
@@ -234,8 +239,19 @@ class InflncFtn(object):
 
         Returns
         -------
-        result : hci.ModeBasis, if `save`=True
-            Influence functions 
+        result : hci.ModeBasis, if `save` = False
+            Basis set of influence functions.  If `save`=True, a dictionary 
+            of a CSR sparse matrix of influence functions (key = 'modes') and 
+            relevant paramters are pickled to a file 
+            (filename = `self_save_filnm`).   
+    
+        Notes
+        -----
+        Comparison of saving with NPZ vs. pickle:  
+            In our own benchmark tests of 48x48 actuators and 481x481 pixel 
+            pupil grid, pickle required 1.1 s to load (on average), and it 
+            produced a file size of 131 MB. NPZ required 1.9 s to load, with 
+            a file size of 44.8 MB.   
         
         """
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
@@ -257,12 +273,29 @@ class InflncFtn(object):
             for i in range(self.acttr_positns.size):
                 modes[i, ] = acttr_out(evaluated_grid
                                    .shifted(-self.acttr_positns[i]))
-            spr.save_npz(self.save_filnm, modes.tocsr())
+#            spr.save_npz(self.save_filnm, modes.tocsr())
+            save_dict = {'x_tilt': x_tilt, 'y_tilt': y_tilt, 'z_tilt': z_tilt
+                         , 'intrpltn': intrpltn
+                         , 'evaluated_grid': evaluated_grid
+                         , 'self.acttr_positns': self.acttr_positns
+                         , 'self.acttr_grid': self.acttr_grid
+                         , 'self.acttr': self.acttr
+                         , 'modes': modes.tocsr()} 
+            f = open(self.save_filnm, 'wb')
+            pickle.dump(save_dict, f)
+            f.close()
         else:
             modes =  [acttr_out(evaluated_grid.shifted(-p)) for p in 
                       self.acttr_positns]
             modes = [hci.Field(m, self.pupil_grid) for m in modes]
             return hci.ModeBasis(modes)
+    
+    def load_results(self):
+        f = open(self.save_filnm, 'rb')
+        dict_results = pickle.load(f)
+        modes = dict_results['modes']
+        modes = [hci.Field(m, self.pupil_grid) for m in modes]
+        return hci.ModeBasis(modes)
 
     @property
     def acttr(self):
