@@ -293,7 +293,7 @@ class InflncFtn(object):
     def load_results(self):
         f = open(self.save_filnm, 'rb')
         dict_results = pickle.load(f)
-        modes = dict_results['modes']
+        modes = dict_results['modes'].toarray()
         modes = [hci.Field(m, self.pupil_grid) for m in modes]
         return hci.ModeBasis(modes)
 
