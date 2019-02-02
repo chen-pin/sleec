@@ -128,7 +128,9 @@ class InflncFtn(object):
         Single-actuator influence function extracted from acttr_filnm
     acttr_grid : hci.grid, @property
         Automatically generated grid for a single actuator. Only used for 
-        resampling/interpolation. 
+        resampling/interpolation.
+    modes : spr.csr_matrix, @property
+        Peak-normalized DM influence functions.   
     
     Notes
     -----
@@ -169,9 +171,9 @@ class InflncFtn(object):
 
     def make_intrpltr(self, field, grid=None, fill_value=np.nan
                       , method='nearest'):
-        """Make a linear interpolator for a separated grid.  This method is 
+        """Make an interpolator for a separated grid.  This method is 
         basically the hci.make_linear_interpolator_separated method, with the 
-        added `method` option.  
+        added `method` option so one can choose linear or nearest interpolation.
 
         Parameters
         ----------
@@ -215,7 +217,7 @@ class InflncFtn(object):
             return hci.Field(res.ravel(), evaluated_grid)
         return interpolator
 
-    def generate(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
+    def genrt_modes(self, x_tilt=0.0, y_tilt=0.0, z_tilt=0.0, save=True
                  , intrpltn='nearest'):
         """Create DM influence functions.  If `save`=True, save the influence 
         functions as CSR sparse matrices.  If not, return a hci.ModeBasis 
@@ -239,11 +241,11 @@ class InflncFtn(object):
 
         Returns
         -------
-        result : hci.ModeBasis, if `save` = False
-            Basis set of influence functions.  If `save`=True, a dictionary 
-            of a CSR sparse matrix of influence functions (key = 'modes') and 
-            relevant paramters are pickled to a file 
-            (filename = `self_save_filnm`).   
+        result : csr_matrix, if `save` = False
+            Sparse matrix of peak-normalized influence functions.  If 
+            `save`=True, a dictionary of the CSR sparse matrix of influence 
+            functions (key = 'modes') and relevant paramters are pickled to a 
+            file (filename = `self_save_filnm`).   
     
         Notes
         -----
@@ -256,23 +258,23 @@ class InflncFtn(object):
         """
         evaluated_grid = (self.pupil_grid.scaled(1.0/np.cos([y_tilt, x_tilt]))
                          .rotated(-z_tilt))
+        self.acttr_positns = self.auto_acttr_positns()
+        modes = spr.lil_matrix((self.acttr_positns.size
+                                , evaluated_grid.size))
+        if intrpltn == 'nearest':
+            acttr_out = self.make_intrpltr(
+                            field=self.acttr.ravel(), grid=self.acttr_grid
+                            , fill_value=0.0, method='nearest'
+                                     )
+        elif intrpltn == 'linear':
+            acttr_out = self.make_intrpltr(
+                            field=self.acttr.ravel(), grid=self.acttr_grid
+                            , fill_value=0.0, method='linear'
+                                     )
+        for i in range(self.acttr_positns.size):
+            modes[i, ] = acttr_out(evaluated_grid
+                               .shifted(-self.acttr_positns[i]))
         if save:
-            self.acttr_positns = self.auto_acttr_positns()
-            modes = spr.lil_matrix((self.acttr_positns.size
-                                    , evaluated_grid.size))
-            if intrpltn == 'nearest':
-                acttr_out = self.make_intrpltr(
-                                field=self.acttr.ravel(), grid=self.acttr_grid
-                                , fill_value=0.0, method='nearest'
-                                         )
-            elif intrpltn == 'linear':
-                acttr_out = self.make_intrpltr(
-                                field=self.acttr.ravel(), grid=self.acttr_grid
-                                , fill_value=0.0, method='linear'
-                                         )
-            for i in range(self.acttr_positns.size):
-                modes[i, ] = acttr_out(evaluated_grid
-                                   .shifted(-self.acttr_positns[i]))
 #            spr.save_npz(self.save_filnm, modes.tocsr())
             save_dict = {'x_tilt': x_tilt, 'y_tilt': y_tilt, 'z_tilt': z_tilt
                          , 'intrpltn': intrpltn
@@ -285,17 +287,32 @@ class InflncFtn(object):
             pickle.dump(save_dict, f)
             f.close()
         else:
-            modes =  [acttr_out(evaluated_grid.shifted(-p)) for p in 
-                      self.acttr_positns]
-            modes = [hci.Field(m, self.pupil_grid) for m in modes]
-            return hci.ModeBasis(modes)
-    
-    def load_results(self):
+            return modes
+
+    def make_surfc(self, actuatn_map):
+        """Return the DM surface in meters.  
+ 
+        Parameters
+        ----------
+        actuatn_map : ndarray
+            Coefficient (in meters) applied to each actuator (basically the 
+            voltage map x m/V).  Rows correspond to actuators (e.g. 4096 rows 
+            for 48x48 actuators.  Columns correspond to pixels (e.g. 231361 
+            columns for 481x481 pixels).  
+
+        Returns
+        -------
+        result : hci.Field
+            The DM surface in meters.
+      
+        """
+        surfc = self.modes.transpose().dot(actuatn_map)
+        return hci.Field(surfc, self.pupil_grid)      
+
+    def load_modes(self):
         f = open(self.save_filnm, 'rb')
         dict_results = pickle.load(f)
-        modes = dict_results['modes'].toarray()
-        modes = [hci.Field(m, self.pupil_grid) for m in modes]
-        return hci.ModeBasis(modes)
+        return dict_results['modes']
 
     @property
     def acttr(self):
@@ -309,10 +326,11 @@ class InflncFtn(object):
 
     @property
     def acttr_positns(self):
-        return self._acttr_positns 
+        return self._acttr_positns
+ 
     @acttr_positns.setter
-    def acttr_positns(self, positns):
-        self._acttr_positns = positns
+    def acttr_positns(self, user_input):
+        self._acttr_positns = user_input
 
     @property
     def acttr_grid(self):
@@ -326,6 +344,14 @@ class InflncFtn(object):
                    , (self.acttr_spacing/self.acttr_pxl_spacing)
                      *np.array(self.acttr.shape)
                                     )
+
+    @property
+    def modes(self):
+        return self._modes
+
+    @modes.setter
+    def modes(self, user_input):
+        self._modes = user_input
             
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
