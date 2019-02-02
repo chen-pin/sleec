@@ -11,6 +11,79 @@ import astropy.io.fits as fits
 from hcipy import hcipy as hci
 
 
+class DefrmblMirror(hci.OpticalElement):
+	'''A deformable mirror (DM) with input surface.  This is a modification of 
+    hci.DeformableMirror.  
+
+    Parameters
+    ----------
+    surfc : hci.Field
+        The DM surface.
+
+    Attributes
+    ----------
+    phase_for : hci.Field, @ property
+        DM surface in terms of phase. 
+
+	'''
+	def __init__(self, surfc):
+	    self.surfc = surfc
+
+	def forward(self, wavefront):
+		'''Propagate a wavefront through the deformable mirror.
+
+		Parameters
+		----------
+		wavefront : Wavefront
+			The incoming wavefront.
+		
+		Returns
+		-------
+		Wavefront
+			The reflected wavefront.
+		'''
+		wf = wavefront.copy()
+		wf.electric_field *= np.exp(
+                                         2j*self.surfc*wavefront.wavenumber
+                                           )
+		return wf
+	
+	def backward(self, wavefront):
+		'''Propagate a wavefront backwards through the DM.
+
+		Parameters
+		----------
+		wavefront : Wavefront
+			The incoming wavefront.
+		
+		Returns
+		-------
+		Wavefront
+			The reflected wavefront.
+		'''
+		wf = wavefront.copy()
+		wf.electric_field *= np.exp(
+                                         -2j*self.surfc*wavefront.wavenumber
+                                           )
+		return wf	
+		
+	def phase_for(self, wavelength):
+		'''Get the phase that is added to a wavefront with a specified 
+                wavelength.
+
+		Parameters
+		----------
+		wavelength : float
+                    The wavelength at which to calculate the phase deformation.
+		
+		Returns
+		-------
+		result : hci.Field
+                    The calculated phase deformation.
+		'''
+		return 2*self.surfc*2*np.pi/wavelength
+
+
 class TransmMask(hci.OpticalElement):
     """A `hci.OpticalElement` object representing a focal-plane mask.
     
@@ -355,77 +428,74 @@ class InflncFtn(object):
             
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
-                   , pupil_dia_pxl=256, fpm_wid=6.0, lyot_dia=0.9
-                   , oversmpl=8, num_airy=24, dm_dia_num_acttr=48
+                   , pupil_dia_pxl=481, fpm_wid=6.0, lyot_dia=0.9
+                   , oversmpl=5, num_airy=24, dm_dia_num_acttr=48
                    , dm_seprtn=1/600e-6):
     """Test routine.
     
     """
     t0 = time.time()
     optical_elements = []
+
     # Make pupil
     pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
-    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
     pupil_transm = hci.circular_aperture(1)(pupil_grid)
     pupil = TransmMask(pupil_grid, pupil_transm)
-    optical_elements.append(pupil)
-    # Influence Functions
-# N.B. Re. Influence Fuctions:  
-# An Hcipy influence function is an hcipy.ModeBasis.  A ModeBasis object is 
-# a Python list comprising a list of Hcipy Field objects, each corresponding 
-# to an actuator.   
-    pickle_fn = ('inflnc_ftns_'+str(dm_dia_num_acttr)+'_'+str(pupil_dia_pxl)
-                 +'.pkl')
-    pickle_path = os.path.join(os.path.expanduser('~'), 'data_sleec', pickle_fn)
+    optical_elements.append(pupil)    
+
+    # Influenc Functions
+    inflnc_ftn = InflncFtn()
     try:
-        f = open(pickle_path, 'rb')
+        inflnc_ftn.modes = inflnc_ftn.load_modes()
     except FileNotFoundError:
         print("Influence-functions pickle file not found.")
         print("Generate influence functions on the fly.")
-        inflnc_ftns = hci.make_xinetics_influence_functions(pupil_grid
-                                                       , dm_dia_num_acttr
-                                                       , 1.0/dm_dia_num_acttr)
-        f = open(pickle_path, 'wb')
-        pickle.dump(inflnc_ftns, f)
-    else:
-        inflnc_ftns = pickle.load(f)
-        inflnc_ftns[0] = hci.Field(inflnc_ftns[0], pupil_grid)
+        inflnc_ftn.modes = inflnc_ftn.genrt_modes()
+        
     # DM1
-    dm1 = hci.DeformableMirror(inflnc_ftns)
 #    dm1.actuators = np.zeros(len(inflnc_ftns))
-#    dm1.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
-    dm1.actuators = dm1_array
+    random_actuatn = np.sqrt(1e-3)*np.random.rand(48*48)
+    dm1 = DefrmblMirror(inflnc_ftn.make_surfc(random_actuatn))
     optical_elements.append(dm1)
+
     # Propagator to DM2
     prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
     optical_elements.append(prop_to_dm2)
+
     # DM2
-    dm2 = hci.DeformableMirror(inflnc_ftns)
 #    dm2.actuators = np.zeros(len(inflnc_ftns))
 #    dm2.actuators = np.sqrt(1e-3)*np.random.rand(len(inflnc_ftns))
-    dm2.actuators = dm2_array
+    dm2 = DefrmblMirror(inflnc_ftn.make_surfc(dm2_array))
     optical_elements.append(dm2)
+
     # Propagator to Pupil
     prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
     optical_elements.append(prop_to_pupil)
+
     # Propagator to Focal Plane
+    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
     prop_to_focal = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     optical_elements.append(prop_to_focal)
+
     # Focal-Plane Mask
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(focal_grid)
     fpm = TransmMask(focal_grid, fpm_transm)
     optical_elements.append(fpm)
+
     # Propagator to Lyot Plane
     prop_to_lyot = FraunhoferBack(pupil_grid, focal_grid)
     optical_elements.append(prop_to_lyot)
+
     # Lyot-Plane Mask
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
     lyot_mask = TransmMask(pupil_grid, lyot_transm)
     optical_elements.append(lyot_mask)
+
     # Propagator to Camera
     prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     optical_elements.append(prop_to_camera)
+
     # Generate Non-Corongraphic PSF
     psf = prop_to_focal(hci.Wavefront(pupil_transm))
     coro = hci.OpticalSystem(optical_elements)
