@@ -12,7 +12,7 @@ from hcipy import hcipy as hci
 
 
 class DefrmblMirror(hci.OpticalElement):
-	'''A deformable mirror (DM) with input surface.  This is a modification of 
+    """A deformable mirror (DM) with input surface. This is a modification of 
     hci.DeformableMirror.  
 
     Parameters
@@ -25,63 +25,63 @@ class DefrmblMirror(hci.OpticalElement):
     phase_for : hci.Field, @ property
         DM surface in terms of phase. 
 
-	'''
-	def __init__(self, surfc):
-	    self.surfc = surfc
+    """
+    def __init__(self, surfc):
+        self.surfc = surfc
 
-	def forward(self, wavefront):
-		'''Propagate a wavefront through the deformable mirror.
+    def forward(self, wavefront):
+        """Propagate a wavefront through the deformable mirror.
 
-		Parameters
-		----------
-		wavefront : Wavefront
-			The incoming wavefront.
-		
-		Returns
-		-------
-		Wavefront
-			The reflected wavefront.
-		'''
-		wf = wavefront.copy()
-		wf.electric_field *= np.exp(
-                                         2j*self.surfc*wavefront.wavenumber
-                                           )
-		return wf
-	
-	def backward(self, wavefront):
-		'''Propagate a wavefront backwards through the DM.
+        Parameters
+        ----------
+        wavefront : Wavefront
+        The incoming wavefront.
+        
+        Returns
+        -------
+        Wavefront
+        The reflected wavefront.
+        """
+        wf = wavefront.copy()
+        wf.electric_field *= np.exp(
+                                 2j*self.surfc*wavefront.wavenumber
+                                   )
+        return wf
 
-		Parameters
-		----------
-		wavefront : Wavefront
-			The incoming wavefront.
-		
-		Returns
-		-------
-		Wavefront
-			The reflected wavefront.
-		'''
-		wf = wavefront.copy()
-		wf.electric_field *= np.exp(
-                                         -2j*self.surfc*wavefront.wavenumber
-                                           )
-		return wf	
-		
-	def phase_for(self, wavelength):
-		'''Get the phase that is added to a wavefront with a specified 
-                wavelength.
+    def backward(self, wavefront):
+        """Propagate a wavefront backwards through the DM.
+        
+        Parameters
+        ----------
+        wavefront : Wavefront
+        	The incoming wavefront.
+        
+        Returns
+        -------
+        Wavefront
+        	The reflected wavefront.
+        """
+        wf = wavefront.copy()
+        wf.electric_field *= np.exp(
+                                 -2j*self.surfc*wavefront.wavenumber
+                                   )
+        return wf
 
-		Parameters
-		----------
-		wavelength : float
-                    The wavelength at which to calculate the phase deformation.
-		
-		Returns
-		-------
-		result : hci.Field
-                    The calculated phase deformation.
-		'''
-		return 2*self.surfc*2*np.pi/wavelength
+    def phase_for(self, wavelength):
+        """Get the phase that is added to a wavefront with a specified 
+        wavelength.
+        
+        Parameters
+        ----------
+        wavelength : float
+            The wavelength at which to calculate the phase deformation.
+        
+        Returns
+        -------
+        result : hci.Field
+            The calculated phase deformation.
+        """
+        return 2*self.surfc*2*np.pi/wavelength
 
 
 class TransmMask(hci.OpticalElement):
@@ -429,7 +429,7 @@ class InflncFtn(object):
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
                    , pupil_dia_pxl=481, fpm_wid=6.0, lyot_dia=0.9
-                   , oversmpl=5, num_airy=24, dm_dia_num_acttr=48
+                   , oversmpl=8, num_airy=24, dm_dia_num_acttr=48
                    , dm_seprtn=1/600e-6):
     """Test routine.
     
@@ -454,8 +454,11 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
         
     # DM1
 #    dm1.actuators = np.zeros(len(inflnc_ftns))
+    sinsdl_actuatn = (1e-3/np.pi)*np.cos(
+                                      2.0*np.pi*(12/48)*np.indices((48,48))[1]
+                                        ).ravel()
     random_actuatn = np.sqrt(1e-3)*np.random.rand(48*48)
-    dm1 = DefrmblMirror(inflnc_ftn.make_surfc(random_actuatn))
+    dm1 = DefrmblMirror(inflnc_ftn.make_surfc(sinsdl_actuatn))
     optical_elements.append(dm1)
 
     # Propagator to DM2
@@ -501,17 +504,28 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     coro = hci.OpticalSystem(optical_elements)
     camera_wf = coro(hci.Wavefront(pupil_transm))
     print("Computation took {:g} s".format(time.time()-t0))
-    hci.imshow_field(np.log10(camera_wf.intensity/psf.intensity.max())
-                              , vmin=-12, cmap='gray')
-    plt.colorbar()
-    plt.show()
-#    plt.savefig('dm2_int.jpg')
-    plt.close()
-    hci.imshow_field(camera_wf.phase, vmin=-1, vmax=1, cmap='gray')
+    print("max. intensity = {}".format(
+                                    (camera_wf.intensity/psf.intensity.max())
+                                    .max()
+                                      )
+         )
+#    hci.imshow_field(np.log10(camera_wf.intensity/psf.intensity.max())
+#                              , vmin=-12, cmap='gray')
 #    plt.colorbar()
+#    plt.show()
+##    plt.savefig('dm2_int.jpg')
+#    plt.close()
+    print('camera_wf.intensity.shape = {}'.format(camera_wf.intensity.shape))
+    wid = int(np.sqrt(camera_wf.intensity.shape))
+    plt.plot((camera_wf.intensity/psf.intensity.max()).reshape(wid,wid)[wid//2])
     plt.show()
-#    plt.savefig('dm2_ph.jpg')
     plt.close()
+#    hci.imshow_field(camera_wf.phase, vmin=-1, vmax=1, cmap='gray')
+#    hci.imshow_field(camera_wf.phase, cmap='gray')
+#    plt.colorbar()
+#    plt.show()
+#    plt.savefig('dm2_ph.jpg')
+#    plt.close()
 #    reshape_wid = int(np.sqrt(camera_wf.phase.shape[0]))
 #    diff = (camera_wf.phase.reshape((reshape_wid, -1))[reshape_wid//2, :]
 #           - camera_wf.phase.reshape((reshape_wid, -1))[:, reshape_wid//2])
