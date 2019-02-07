@@ -434,6 +434,7 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     """Test routine.
     
     """
+    from scipy.signal import find_peaks
     t0 = time.time()
     optical_elements = []
 
@@ -454,12 +455,21 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
         
     # DM1
 #    dm1.actuators = np.zeros(len(inflnc_ftns))
-    sinsdl_actuatn = (1e-3/np.pi)*np.cos(
-                                      2.0*np.pi*(12/48)*np.indices((48,48))[1]
-                                        ).ravel()
+    mod_ampl = 0.1/(2*np.pi)
+    mod_freq = 16.2477/48
+    sinsdl_actuatn = (mod_ampl)*np.sin(
+                                    2.0*np.pi*(mod_freq)*np.indices((48,48))[1]
+                                            ).ravel()
     random_actuatn = np.sqrt(1e-3)*np.random.rand(48*48)
     dm1 = DefrmblMirror(inflnc_ftn.make_surfc(sinsdl_actuatn))
+    
     optical_elements.append(dm1)
+# Temporary block to examine influence-function overlap effect
+    hci.imshow_field(dm1(hci.Wavefront(pupil_transm)).electric_field, cmap='gray')
+    plt.colorbar()
+    plt.show()
+    plt.close()
+#######
 
     # Propagator to DM2
     prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
@@ -482,7 +492,9 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
 
     # Focal-Plane Mask
     fpm_opacity = hci.circular_aperture(fpm_wid)
-    fpm_transm = 1.0 - fpm_opacity(focal_grid)
+#    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    fpm_transm = hci.circular_aperture(1e6)(focal_grid)  # No mask, just for 
+                                                         # testing.
     fpm = TransmMask(focal_grid, fpm_transm)
     optical_elements.append(fpm)
 
@@ -491,7 +503,8 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     optical_elements.append(prop_to_lyot)
 
     # Lyot-Plane Mask
-    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+#    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+    lyot_transm = hci.circular_aperture(1.1)(pupil_grid)  # No mask, for testing
     lyot_mask = TransmMask(pupil_grid, lyot_transm)
     optical_elements.append(lyot_mask)
 
@@ -503,21 +516,21 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     psf = prop_to_focal(hci.Wavefront(pupil_transm))
     coro = hci.OpticalSystem(optical_elements)
     camera_wf = coro(hci.Wavefront(pupil_transm))
+    normlzd_intensity = camera_wf.intensity/psf.intensity.max()
     print("Computation took {:g} s".format(time.time()-t0))
-    print("max. intensity = {}".format(
-                                    (camera_wf.intensity/psf.intensity.max())
-                                    .max()
-                                      )
-         )
-#    hci.imshow_field(np.log10(camera_wf.intensity/psf.intensity.max())
-#                              , vmin=-12, cmap='gray')
-#    plt.colorbar()
-#    plt.show()
-##    plt.savefig('dm2_int.jpg')
-#    plt.close()
+    hci.imshow_field(np.log10(normlzd_intensity), vmin=-12, cmap='gray')
+    plt.colorbar()
+    plt.show()
+#    plt.savefig('dm2_int.jpg')
+    plt.close()
     print('camera_wf.intensity.shape = {}'.format(camera_wf.intensity.shape))
     wid = int(np.sqrt(camera_wf.intensity.shape))
-    plt.plot((camera_wf.intensity/psf.intensity.max()).reshape(wid,wid)[wid//2])
+    cross_sectn = (normlzd_intensity).reshape(wid,wid)[wid//2]
+    peaks_x = find_peaks(cross_sectn, height=0.0)[0]
+    print("peak intensities = {}".format(cross_sectn[peaks_x]))
+    print("peak locations {}".format(peaks_x))
+    plt.plot(cross_sectn)
+    plt.grid('on', 'both')
     plt.show()
     plt.close()
 #    hci.imshow_field(camera_wf.phase, vmin=-1, vmax=1, cmap='gray')
