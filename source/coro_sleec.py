@@ -53,12 +53,12 @@ class DefrmblMirror(hci.OpticalElement):
         Parameters
         ----------
         wavefront : Wavefront
-        	The incoming wavefront.
+            The incoming wavefront.
         
         Returns
         -------
         Wavefront
-        	The reflected wavefront.
+            The reflected wavefront.
         """
         wf = wavefront.copy()
         wf.electric_field *= np.exp(
@@ -424,6 +424,71 @@ class InflncFtn(object):
     @modes.setter
     def modes(self, user_input):
         self._modes = user_input
+
+
+class OptclSysPlanesOut(hci.OpticalElement):
+    """Same as hci.OpticalSystem but returns the propagated wavefronts from 
+    all optical elements.
+
+    """
+    def __init__(self, optical_elements):
+        self.optical_elements = optical_elements
+        self.wavefronts = []
+
+    def forward(self, wavefront):
+        """
+        Forward propagation.  
+    
+        Parameters
+        ----------
+        wavefront : hci.Wavefront
+            Input wavefront.
+    
+        Returns
+        -------
+        wavefronts : list
+            Propagated wavefront from every optical element.  
+        
+        """
+        wf = wavefront.copy()
+        for optical_element in self.optical_elements:
+            wf = optical_element.forward(wf)
+            self.wavefronts.append(wf)
+        return self.wavefronts
+    
+    def backward(self, wavefront):
+        wf = wavefront.copy()
+        for optical_element in reversed(self.optical_elements):
+            wf = optical_element.backward(wf)
+            self.wavefronts.append(wf)
+        return self.wavefronts
+    
+    def get_transformation_matrix_forward(self, wavelength=1):
+        matrix = 1
+        for optical_element in self.optical_elements:
+            matrix = np.dot(
+                         optical_element.get_transformation_matrix_forward(
+                                             wavelength), matrix
+                           )
+        return matrix
+    
+    def get_transformation_matrix_backward(self, wavelength=1):
+        matrix = 1
+
+        for optical_element in reversed(self.optical_elements):
+            matrix = np.dot(
+                         optical_element.get_transformation_matrix_backward(
+                                             wavelength), matrix
+                           )
+        return matrix
+    
+    @property
+    def optical_elements(self):
+        return self._optical_elements
+
+    @optical_elements.setter
+    def optical_elements(self, optical_elements):
+        self._optical_elements = list(optical_elements)
             
       
 def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
@@ -433,7 +498,6 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     """Test routine.
     
     """
-    from scipy.signal import find_peaks
     t0 = time.time()
     optical_elements = []
 
@@ -492,14 +556,14 @@ def _test(dm1_array=np.zeros(48*48), dm2_array=np.zeros(48*48)
     prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
     optical_elements.append(prop_to_camera)
 
-    # Generate Non-Corongraphic PSF
-    psf = prop_to_focal(hci.Wavefront(pupil_transm))
-    coro = hci.OpticalSystem(optical_elements)
-    camera_wf = coro(hci.Wavefront(pupil_transm))
-    normlzd_intensity = camera_wf.intensity/psf.intensity.max()
+#    # Generate Non-Corongraphic PSF
+#    psf = prop_to_focal(hci.Wavefront(pupil_transm))
+
+    coro = OptclSysPlanesOut(optical_elements)
+    output = coro(hci.Wavefront(pupil_transm))
     comptng_time = time.time()-t0
     
-    return coro, psf, camera_wf, normlzd_intensity, comptng_time
+    return output
 
 
 if __name__ == '__main__':
