@@ -1,0 +1,17 @@
+The module imports an "input.py" module that contains argument values and 
+routines that generate input values, e.g. pupil and mask fields.
+
+Envisioned arguments:
+pupil_field
+acttr_filnm
+save_filnm
+dm_diamtr
+acttr_spacing
+acttr_pxl_spacing
+dm1_vmap
+dm2_vmap
+dm1_2_dist
+fpm_field
+lyot_field
+
+  
