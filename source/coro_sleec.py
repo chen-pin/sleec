@@ -317,7 +317,7 @@ class InflncFtn(object):
             Sparse matrix of peak-normalized influence functions.  If 
             `save`=True, a dictionary of the CSR sparse matrix of influence 
             functions (key = 'modes') and relevant paramters are pickled to a 
-            file (filename = `self_save_filnm`).   
+            file (filename = `self.save_filnm`).   
     
         Notes
         -----
@@ -495,10 +495,9 @@ class Coronagraph:
     """SLEEC coronagraph model.   
 
     """
-    def __init__(pupil_field, dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
-                       , pupil_dia_pxl=481, fpm_wid=6.0, lyot_dia=0.9
-                       , oversmpl=8, num_airy=24, dm_dia_num_acttr=48
-                       , dm_seprtn=1/600e-6):
+    def __init__(pupil_field, inflnc_ftn, dm1_vmap, dm2_vmap, 
+                 , dm_seprtn, fpm_field
+                 , lyot_field, dark_zone_field, oversmpl, wvl):
         optical_elements = []
         names = [] 
     
