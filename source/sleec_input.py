@@ -5,7 +5,7 @@ import numpy as np
 import hcipy.hcipy as hci
 import coro_sleec as cor
 
-pars = {}a
+pars = {}
 
 
 # wvl
@@ -54,3 +54,16 @@ pars['dm2_vmap'] = np.zeros(num_acttrs_across**2)
 
 #  `dm_seprtn`
 pars['dm_seprtn'] = 1.0/wvl
+
+
+# `oversmpl`
+oversmpl = 8 # Pixel oversampling factor  
+pars['oversmpl'] = oversmpl
+
+
+# `fpm_field`
+focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
+opacity = hci.circular_aperture(fpm_wid)
+fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+pars['fpm_field'] = TransmMask(focal_grid, fpm_transm)
+
