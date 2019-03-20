@@ -89,17 +89,12 @@ class TransmMask(hci.OpticalElement):
     
     Parameters
     ----------
-    input_grid : hci.Grid
-        The grid on which the incoming wavefront is defined.
     mask_transm : ndarray
         Mask transmission function.  
-    wavelength : float
         
     """
-    def __init__(self, input_grid, mask_transm, wavelength=1):
-        self.input_grid = input_grid
+    def __init__(self, mask_transm):
         self.mask_transm = mask_transm
-        self.wavelength = wavelength
 
     def forward(self, wavefront):
         wf = wavefront.copy()
@@ -502,7 +497,7 @@ class Coronagraph:
     
         # Pupil
         @property 
-        def pupil_field()
+        def pupil_field():
             return inp.pars['pupil_field']
         optical_elements.append(pupil)
         names.append('0: pupil')   
@@ -539,7 +534,7 @@ class Coronagraph:
         # Focal-Plane Mask
         fpm_opacity = hci.circular_aperture(fpm_wid)
         fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-        fpm = TransmMask(focal_grid, fpm_transm)
+        fpm = TransmMask(fpm_transm)
         optical_elements.append(fpm)
         names.append('6: fpm')
     
@@ -550,7 +545,7 @@ class Coronagraph:
     
         # Lyot-Plane Mask
         lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
-        lyot_mask = TransmMask(pupil_grid, lyot_transm)
+        lyot_mask = TransmMask(lyot_transm)
         optical_elements.append(lyot_mask)
         names.append('8: lyot')
     
@@ -577,7 +572,7 @@ def _test(dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
     # Make pupil
     pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
     pupil_transm = hci.circular_aperture(1)(pupil_grid)
-    pupil = TransmMask(pupil_grid, pupil_transm)
+    pupil = TransmMask(pupil_transm)
     optical_elements.append(pupil)
     names.append('0: pupil')   
 
@@ -619,7 +614,7 @@ def _test(dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
     # Focal-Plane Mask
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-    fpm = TransmMask(focal_grid, fpm_transm)
+    fpm = TransmMask(fpm_transm)
     optical_elements.append(fpm)
     names.append('6: fpm')
 
@@ -630,7 +625,7 @@ def _test(dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
 
     # Lyot-Plane Mask
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
-    lyot_mask = TransmMask(pupil_grid, lyot_transm)
+    lyot_mask = TransmMask(lyot_transm)
     optical_elements.append(lyot_mask)
     names.append('8: lyot')
 
