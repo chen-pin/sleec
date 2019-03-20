@@ -9,7 +9,8 @@ pars = {}
 
 
 # wvl
-pars['wvl'] = 1.0
+wvl = 1.0
+pars['wvl'] = wvl
 
 
 # Generate `pupil_field`
@@ -57,13 +58,25 @@ pars['dm_seprtn'] = 1.0/wvl
 
 
 # `oversmpl`
-oversmpl = 8 # Pixel oversampling factor  
+oversmpl = 8  # Pixel oversampling factor  
 pars['oversmpl'] = oversmpl
 
 
 # `fpm_field`
+num_airy = 24  
+fpm_wid = 6
 focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
-opacity = hci.circular_aperture(fpm_wid)
+fpm_opacity = hci.circular_aperture(fpm_wid)
 fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-pars['fpm_field'] = TransmMask(focal_grid, fpm_transm)
+pars['fpm_field'] = cor.TransmMask(focal_grid, fpm_transm)
+
+
+# `lyot_field`
+lyot_dia = 0.9
+lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+pars['lyot_field'] = cor.TransmMask(pupil_grid, lyot_transm)
+
+
+# `dark_field`
+
 

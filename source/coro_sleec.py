@@ -8,6 +8,7 @@ import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
 from hcipy import hcipy as hci
+import sleec_input as inp
 
 
 class DefrmblMirror(hci.OpticalElement):
@@ -495,28 +496,20 @@ class Coronagraph:
     """SLEEC coronagraph model.   
 
     """
-    def __init__(pupil_field, inflnc_ftn, dm1_vmap, dm2_vmap, 
-                 , dm_seprtn, fpm_field
-                 , lyot_field, dark_zone_field, oversmpl, wvl):
-        optical_elements = []
-        names = [] 
+    def __init__(self):
+        self.optical_elements = []
+        self.names = [] 
     
-        # Make pupil
-        pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
-        pupil_transm = hci.circular_aperture(1)(pupil_grid)
-        pupil = TransmMask(pupil_grid, pupil_transm)
+        # Pupil
+        @property 
+        def pupil_field()
+            return inp.pars['pupil_field']
         optical_elements.append(pupil)
         names.append('0: pupil')   
     
         # Influenc Functions
-        inflnc_ftn = InflncFtn()
-        try:
-            inflnc_ftn.modes = inflnc_ftn.load_modes()
-        except FileNotFoundError:
-            print("Influence-functions pickle file not found.")
-            print("Generate influence functions on the fly.")
-            inflnc_ftn.modes = inflnc_ftn.genrt_modes()
-            
+        inflnc_ftn = pars['inflnc_ftn']
+    
         # DM1
         dm1 = DefrmblMirror(inflnc_ftn.make_surfc(dm1_vmap))
         optical_elements.append(dm1)
