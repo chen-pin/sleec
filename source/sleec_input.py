@@ -3,7 +3,7 @@
 import os
 import numpy as np
 import hcipy.hcipy as hci
-import coro_sleec as cor
+from coro_sleec import InflncFtn 
 
 pars = {}
 
@@ -34,7 +34,7 @@ save_filnm = os.path.join('..', '..', 'sleec_out', 'inflnc_ftns.pkl')  # File
     # format.  
 dm_diamtr = 1.0  # Physical diameter of the DM
 acttr_spacing = dm_diamtr/num_acttrs_across
-inflnc_ftn = cor.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
+inflnc_ftn = InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
                            , acttr_spacing, acttr_pxl_spacing)
 try:
     inflnc_ftn.modes = inflnc_ftn.load_modes()
@@ -68,15 +68,17 @@ fpm_wid = 6
 focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
 fpm_opacity = hci.circular_aperture(fpm_wid)
 fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-pars['fpm_field'] = cor.TransmMask(focal_grid, fpm_transm)
+pars['fpm_field'] = fpm_transm
 
 
 # `lyot_field`
 lyot_dia = 0.9
 lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
-pars['lyot_field'] = cor.TransmMask(pupil_grid, lyot_transm)
+pars['lyot_field'] = lyot_transm
 
 
 # `dark_field`
-
-
+iwa = 3
+owa = 16
+pars['dark_field'] = ( hci.circular_aperture(owa)(focal_grid) 
+                     - hci.circular_aperture(iwa)(focal_grid) )

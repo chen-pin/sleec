@@ -8,7 +8,6 @@ import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
 from hcipy import hcipy as hci
-import sleec_input as inp
 
 
 class DefrmblMirror(hci.OpticalElement):
@@ -487,7 +486,7 @@ class OptclSysPlanesOut(hci.OpticalElement):
         self._optical_elements = list(optical_elements)
             
 
-class Coronagraph(object):
+class Coronagraph(OptclSysPlanesOut):
     """SLEEC coronagraph model. 
 
     Notes
@@ -499,84 +498,94 @@ class Coronagraph(object):
     - Can have a function (outside of this class) to manipulate the attributes.
 
     """
-    def __init__(self):
+    def __init__(self, wvl=None, pupil_field=None, fpm_field=None
+                 , lyot_field=None, dark_field=None, dm1_vmap=None
+                 , dm2_vmap=None, inflnc_ftn=None, dm_seprtn=None
+                 , oversmpl=None, optical_elements=[]):
+        super().__init__(optical_elements)
+        self.wvl = wvl
+        self.pupil_field = pupil_field
+        self.fpm_field = fpm_field
+        self.lyot_field = lyot_field
+        self.dark_field = dark_field
+        self.dm1_vmap = dm1_vmap
+        self.dm2_vmap = dm2_vmap
+        self.inflnc_ftn = inflnc_ftn
+        self.dm_seprtn = dm_seprtn
+        self.oversmpl = oversmpl
+
+        self.pupil = None
+        self.dm1 = None
+        self.b4_dm2 = None
+        self.dm2 = None
+        self.relay_pupil = None
+        self.b4_fpm = None
+        self.fpm = None
+        self.b4_lyot = None
+        self.lyot = None
+        self.camera = None
         self.optical_elements = []
         self.names = [] 
-    
-    # Pupil
-    @property 
-    def pupil(self):
-        return self._pupil
 
-    @pupil.setter
-    def pupil(self, field):
-        self._pupil = TransMask(field)
-#    optical_elements.append(pupil)
-#    names.append('0: pupil')   
+    def load_args(self):
+        import sleec_input as sip
+        args = sip.pars
+        self.wvl = args['wvl']
+        self.pupil_field = args['pupil_field']
+        self.fpm_field = args['fpm_field']
+        self.lyot_field = args['lyot_field']
+        self.dark_field = args['dark_field']
+        self.dm1_vmap = args['dm1_vmap']
+        self.dm2_vmap = args['dm2_vmap']
+        self.inflnc_ftn = args['inflnc_ftn']
+        self.dm_seprtn = args['dm_seprtn']
+        self.oversmpl = args['oversmpl']
 
-    # Influenc Functions
-    @property
-    def inflnc_ftn(self):
-        return inp.pars['inflnc_ftn']
-
-    # DM1
-    @property 
-    def dm1(self):
-        return DefrmblMirror(inflnc_ftn.make_surfc(dm1_vmap))
-    optical_elements.append(dm1)
-    names.append('1: dm1')
-
-    # Propagator to DM2
-    prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
-    optical_elements.append(prop_to_dm2)
-    names.append('2: b4_dm2')
-
-    # DM2
-    dm2 = DefrmblMirror(inflnc_ftn.make_surfc(dm2_vmap))
-    optical_elements.append(dm2)
-    names.append('3: dm2')
-
-    # Propagator to Pupil
-    prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
-    optical_elements.append(prop_to_pupil)
-    names.append('4: relay_pupil')
-
-    # Propagator to Focal Plane
-    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
-    prop_to_focal = hci.FraunhoferPropagator(pupil_grid, focal_grid)
-    optical_elements.append(prop_to_focal)
-    names.append('5: b4_fpm')
-
-    # Focal-Plane Mask
-    fpm_opacity = hci.circular_aperture(fpm_wid)
-    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-    fpm = TransmMask(fpm_transm)
-    optical_elements.append(fpm)
-    names.append('6: fpm')
-
-    # Propagator to Lyot Plane
-    prop_to_lyot = FraunhoferBack(pupil_grid, focal_grid)
-    optical_elements.append(prop_to_lyot)
-    names.append('7: b4_lyot')
-
-    # Lyot-Plane Mask
-    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
-    lyot_mask = TransmMask(lyot_transm)
-    optical_elements.append(lyot_mask)
-    names.append('8: lyot')
-
-    # Propagator to Camera
-    prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
-    optical_elements.append(prop_to_camera)
-    names.append('9: camera')
-
-#    # Generate Non-Corongraphic PSF
-#    psf = prop_to_focal(hci.Wavefront(pupil_transm))
-
-    coro = OptclSysPlanesOut(optical_elements)
-    output = coro(hci.Wavefront(pupil_transm))
-    
-    return output, names
+    def make_elements(self):
+        # Pupil
+        self.pupil = TransmMask(self.pupil_field)
+        self.optical_elements.append(self.pupil)
+        self.names.append('0: pupil')
+        # DM1
+        dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
+        self.optical_elements.append(dm1)
+        self.names.append('1: dm1')
+        # Propagator to DM2
+        prop_to_dm2 = hci.FresnelPropagator(self.pupil_field.grid
+                                            , self.dm_seprtn)
+        self.optical_elements.append(prop_to_dm2)
+        self.names.append('2: b4_dm2')
+        # DM2
+        dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
+        self.optical_elements.append(dm2)
+        self.names.append('3: dm2')
+        # Propagator to Pupil
+        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
+        self.optical_elements.append(prop_to_pupil)
+        self.names.append('4: relay_pupil')
+        # Propagator to Focal Plane
+        prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
+                                                 , self.fpm_field.grid)
+        self.optical_elements.append(prop_to_focal)
+        self.names.append('5: b4_fpm')
+        # Focal-Plane Mask
+        fpm = TransmMask(self.fpm_field)
+        self.optical_elements.append(fpm)
+        self.names.append('6: fpm')
+        # Propagator to Lyot Plane
+        prop_to_lyot = FraunhoferBack(self.pupil_field.grid
+                                      , self.fpm_field.grid)
+        self.optical_elements.append(prop_to_lyot)
+        self.names.append('7: b4_lyot')
+        # Lyot-Plane Mask
+        lyot_mask = TransmMask(self.lyot_field)
+        self.optical_elements.append(lyot_mask)
+        self.names.append('8: lyot')
+        # Propagator to Camera
+        prop_to_camera = hci.FraunhoferPropagator(self.pupil_field.grid
+                                                  , self.fpm_field.grid)
+        self.optical_elements.append(prop_to_camera)
+        self.names.append('9: camera')
       
 def _test(dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
                    , pupil_dia_pxl=481, fpm_wid=6.0, lyot_dia=0.9
