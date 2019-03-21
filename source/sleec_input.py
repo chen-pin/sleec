@@ -13,18 +13,18 @@ wvl = 1.0
 pars['wvl'] = wvl
 
 
-# Generate `pupil_field`
+# `pupil_field`
 num_acttrs_across = 48  # Number of actuators across the DM aperture.
 acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
     # normally 10 pixels between adjacent actuators.  
 pupil_dia_pxl = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
     # across the pupil.
 pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
-pupil_transm = hci.circular_aperture(1)(pupil_grid)
-pars['pupil_field'] = cor.TransmMask(pupil_grid, pupil_transm)
+pupil_field = hci.circular_aperture(1)(pupil_grid)
+pars['pupil_field'] = pupil_field
 
 
-# Generate `inflnc_ftn'
+# `inflnc_ftn'
 acttr_filnm = os.path.join('..', '..', 'sleec_in'
                            , 'superinf-20180730-10x10.fits')  # Fits filename 
     # for a single-actuator influence function (2darray).  The same function 

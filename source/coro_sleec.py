@@ -487,80 +487,96 @@ class OptclSysPlanesOut(hci.OpticalElement):
         self._optical_elements = list(optical_elements)
             
 
-class Coronagraph:
-    """SLEEC coronagraph model.   
+class Coronagraph(object):
+    """SLEEC coronagraph model. 
+
+    Notes
+    -----
+    - Need optimizable attributes to be modifiable from one iteration to the 
+      next.    
+    - Use @property to define those attributes.  
+    - Have a method that imports <sleec_inp.py> to initialize the coronagraph 
+    - Can have a function (outside of this class) to manipulate the attributes.
 
     """
     def __init__(self):
         self.optical_elements = []
         self.names = [] 
     
-        # Pupil
-        @property 
-        def pupil_field():
-            return inp.pars['pupil_field']
-        optical_elements.append(pupil)
-        names.append('0: pupil')   
+    # Pupil
+    @property 
+    def pupil(self):
+        return self._pupil
+
+    @pupil.setter
+    def pupil(self, field):
+        self._pupil = TransMask(field)
+#    optical_elements.append(pupil)
+#    names.append('0: pupil')   
+
+    # Influenc Functions
+    @property
+    def inflnc_ftn(self):
+        return inp.pars['inflnc_ftn']
+
+    # DM1
+    @property 
+    def dm1(self):
+        return DefrmblMirror(inflnc_ftn.make_surfc(dm1_vmap))
+    optical_elements.append(dm1)
+    names.append('1: dm1')
+
+    # Propagator to DM2
+    prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
+    optical_elements.append(prop_to_dm2)
+    names.append('2: b4_dm2')
+
+    # DM2
+    dm2 = DefrmblMirror(inflnc_ftn.make_surfc(dm2_vmap))
+    optical_elements.append(dm2)
+    names.append('3: dm2')
+
+    # Propagator to Pupil
+    prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
+    optical_elements.append(prop_to_pupil)
+    names.append('4: relay_pupil')
+
+    # Propagator to Focal Plane
+    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
+    prop_to_focal = hci.FraunhoferPropagator(pupil_grid, focal_grid)
+    optical_elements.append(prop_to_focal)
+    names.append('5: b4_fpm')
+
+    # Focal-Plane Mask
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    fpm = TransmMask(fpm_transm)
+    optical_elements.append(fpm)
+    names.append('6: fpm')
+
+    # Propagator to Lyot Plane
+    prop_to_lyot = FraunhoferBack(pupil_grid, focal_grid)
+    optical_elements.append(prop_to_lyot)
+    names.append('7: b4_lyot')
+
+    # Lyot-Plane Mask
+    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+    lyot_mask = TransmMask(lyot_transm)
+    optical_elements.append(lyot_mask)
+    names.append('8: lyot')
+
+    # Propagator to Camera
+    prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
+    optical_elements.append(prop_to_camera)
+    names.append('9: camera')
+
+#    # Generate Non-Corongraphic PSF
+#    psf = prop_to_focal(hci.Wavefront(pupil_transm))
+
+    coro = OptclSysPlanesOut(optical_elements)
+    output = coro(hci.Wavefront(pupil_transm))
     
-        # Influenc Functions
-        inflnc_ftn = pars['inflnc_ftn']
-    
-        # DM1
-        dm1 = DefrmblMirror(inflnc_ftn.make_surfc(dm1_vmap))
-        optical_elements.append(dm1)
-        names.append('1: dm1')
-    
-        # Propagator to DM2
-        prop_to_dm2 = hci.FresnelPropagator(pupil_grid, dm_seprtn)
-        optical_elements.append(prop_to_dm2)
-        names.append('2: b4_dm2')
-    
-        # DM2
-        dm2 = DefrmblMirror(inflnc_ftn.make_surfc(dm2_vmap))
-        optical_elements.append(dm2)
-        names.append('3: dm2')
-    
-        # Propagator to Pupil
-        prop_to_pupil = FresnelBack(pupil_grid, dm_seprtn)
-        optical_elements.append(prop_to_pupil)
-        names.append('4: relay_pupil')
-    
-        # Propagator to Focal Plane
-        focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
-        prop_to_focal = hci.FraunhoferPropagator(pupil_grid, focal_grid)
-        optical_elements.append(prop_to_focal)
-        names.append('5: b4_fpm')
-    
-        # Focal-Plane Mask
-        fpm_opacity = hci.circular_aperture(fpm_wid)
-        fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
-        fpm = TransmMask(fpm_transm)
-        optical_elements.append(fpm)
-        names.append('6: fpm')
-    
-        # Propagator to Lyot Plane
-        prop_to_lyot = FraunhoferBack(pupil_grid, focal_grid)
-        optical_elements.append(prop_to_lyot)
-        names.append('7: b4_lyot')
-    
-        # Lyot-Plane Mask
-        lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
-        lyot_mask = TransmMask(lyot_transm)
-        optical_elements.append(lyot_mask)
-        names.append('8: lyot')
-    
-        # Propagator to Camera
-        prop_to_camera = hci.FraunhoferPropagator(pupil_grid, focal_grid)
-        optical_elements.append(prop_to_camera)
-        names.append('9: camera')
-    
-    #    # Generate Non-Corongraphic PSF
-    #    psf = prop_to_focal(hci.Wavefront(pupil_transm))
-    
-        coro = OptclSysPlanesOut(optical_elements)
-        output = coro(hci.Wavefront(pupil_transm))
-        
-        return output, names
+    return output, names
       
 def _test(dm1_vmap=np.zeros(48*48), dm2_vmap=np.zeros(48*48)
                    , pupil_dia_pxl=481, fpm_wid=6.0, lyot_dia=0.9
