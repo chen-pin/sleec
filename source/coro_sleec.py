@@ -514,16 +514,6 @@ class Coronagraph(OptclSysPlanesOut):
         self.dm_seprtn = dm_seprtn
         self.oversmpl = oversmpl
 
-        self.pupil = None
-        self.dm1 = None
-        self.b4_dm2 = None
-        self.dm2 = None
-        self.relay_pupil = None
-        self.b4_fpm = None
-        self.fpm = None
-        self.b4_lyot = None
-        self.lyot = None
-        self.camera = None
         self.optical_elements = []
         self.names = [] 
 
