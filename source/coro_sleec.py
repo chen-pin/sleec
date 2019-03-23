@@ -514,8 +514,10 @@ class Coronagraph(OptclSysPlanesOut):
         self.dm_seprtn = dm_seprtn
         self.oversmpl = oversmpl
 
-        self.optical_elements = []
-        self.names = [] 
+        self.optical_elements = [None]*10
+        self.names = ['0: pupil', '1: dm1', '2: on_dm2', '3: dm2'
+                      , '4: relay_pupil', '5: on_fpm', '6: fpm', '7: on_lyot'
+                      , '8: lyot', '9: camera'] 
 
     def load_args(self):
         import sleec_input as sip
@@ -531,58 +533,79 @@ class Coronagraph(OptclSysPlanesOut):
         self.dm_seprtn = args['dm_seprtn']
         self.oversmpl = args['oversmpl']
 
-    def make_elements(self):
-        # Pupil
-        self.pupil = TransmMask(self.pupil_field)
-        self.optical_elements.append(self.pupil)
-        self.names.append('0: pupil')
-        # DM1
+    def load_elements(self):
+        self.optical_elements[0] = self.pupil
+        self.optical_elements[1] = self.dm1
+        self.optical_elements[2] = self.on_dm2
+        self.optical_elements[3] = self.dm2
+        self.optical_elements[4] = self.relay_pupil
+        self.optical_elements[5] = self.on_fpm
+        self.optical_elements[6] = self.fpm
+        self.optical_elements[7] = self.on_lyot
+        self.optical_elements[8] = self.lyot
+        self.optical_elements[9] = self.camera
+
+    # Pupil
+    @property
+    def pupil(self):
+        pupil = TransmMask(self.pupil_field)
+        return pupil
+    # DM1
+    @property
+    def dm1(self):
         dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
-        self.optical_elements.append(dm1)
-        self.names.append('1: dm1')
-        # Propagator to DM2
+        return dm1
+    # Propagator to DM2
+    @property
+    def on_dm2(self):
         prop_to_dm2 = hci.FresnelPropagator(self.pupil_field.grid
                                             , self.dm_seprtn)
-        self.optical_elements.append(prop_to_dm2)
-        self.names.append('2: b4_dm2')
-        # DM2
+        return prop_to_dm2
+    # DM2
+    @property
+    def dm2(self):
         dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
-        self.optical_elements.append(dm2)
-        self.names.append('3: dm2')
-        # Propagator to Pupil
+        return dm2
+    # Propagator to Pupil
+    @property
+    def relay_pupil(self):
         prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
-        self.optical_elements.append(prop_to_pupil)
-        self.names.append('4: relay_pupil')
-        # Propagator to Focal Plane
+        return prop_to_pupil
+    # Propagator to Focal Plane
+    @property
+    def on_fpm(self):
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                  , self.fpm_field.grid)
-        self.optical_elements.append(prop_to_focal)
-        self.names.append('5: b4_fpm')
-        # Focal-Plane Mask
+        return prop_to_focal
+    # Focal-Plane Mask
+    @property
+    def fpm(self):
         fpm = TransmMask(self.fpm_field)
-        self.optical_elements.append(fpm)
-        self.names.append('6: fpm')
-        # Propagator to Lyot Plane
+        return fpm
+    # Propagator to Lyot Plane
+    @property
+    def on_lyot(self):
         prop_to_lyot = FraunhoferBack(self.pupil_field.grid
                                       , self.fpm_field.grid)
-        self.optical_elements.append(prop_to_lyot)
-        self.names.append('7: b4_lyot')
-        # Lyot-Plane Mask
+        return prop_to_lyot
+    # Lyot-Plane Mask
+    @property
+    def lyot(self):
         lyot_mask = TransmMask(self.lyot_field)
-        self.optical_elements.append(lyot_mask)
-        self.names.append('8: lyot')
-        # Propagator to Camera
+        return lyot_mask
+    # Propagator to Camera
+    @property
+    def camera(self):
         prop_to_camera = hci.FraunhoferPropagator(self.pupil_field.grid
                                                   , self.fpm_field.grid)
-        self.optical_elements.append(prop_to_camera)
-        self.names.append('9: camera')
+        return prop_to_camera
       
 
 def demo_coronagraph():
     import matplotlib.pyplot as plt
     corngrph = Coronagraph()
     corngrph.load_args()
-    corngrph.make_elements()
+    corngrph.load_elements()
     output = corngrph(hci.Wavefront(corngrph.pupil_field))
     print(corngrph.names)
     hci.imshow_field(output[9].intensity, cmap='inferno')
