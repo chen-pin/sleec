@@ -82,3 +82,12 @@ iwa = 3
 owa = 16
 pars['dark_field'] = ( hci.circular_aperture(owa)(focal_grid) 
                      - hci.circular_aperture(iwa)(focal_grid) )
+
+
+def mutate(fpm_wid):
+# Need to devise a way to hook into the Coronagraph object
+    num_airy = 24  
+    fpm_wid = 6
+    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
