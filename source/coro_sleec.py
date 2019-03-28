@@ -519,20 +519,6 @@ class Coronagraph(OptclSysPlanesOut):
                       , '4: relay_pupil', '5: on_fpm', '6: fpm', '7: on_lyot'
                       , '8: lyot', '9: camera'] 
 
-    def load_args(self):
-        import sleec_input as sip
-        args = sip.pars
-        self.wvl = args['wvl']
-        self.pupil_field = args['pupil_field']
-        self.fpm_field = args['fpm_field']
-        self.lyot_field = args['lyot_field']
-        self.dark_field = args['dark_field']
-        self.dm1_vmap = args['dm1_vmap']
-        self.dm2_vmap = args['dm2_vmap']
-        self.inflnc_ftn = args['inflnc_ftn']
-        self.dm_seprtn = args['dm_seprtn']
-        self.oversmpl = args['oversmpl']
-
     def load_elements(self):
         self.optical_elements[0] = self.pupil
         self.optical_elements[1] = self.dm1
