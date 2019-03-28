@@ -3,7 +3,7 @@
 import os
 import numpy as np
 import hcipy.hcipy as hci
-import coro_sleec as cor
+import sleec_optics as sop
 
 def input_args():
     pars = {}
@@ -34,7 +34,7 @@ def input_args():
         # format.  
     dm_diamtr = 1.0  # Physical diameter of the DM
     acttr_spacing = dm_diamtr/num_acttrs_across
-    inflnc_ftn = cor.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
+    inflnc_ftn = sop.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
                                , acttr_spacing, acttr_pxl_spacing)
     try:
         inflnc_ftn.modes = inflnc_ftn.load_modes()
@@ -81,7 +81,7 @@ def input_args():
 
 def ini_corngrph():
     # Initialize a coronagraph
-    corngrph = cor.Coronagraph()
+    corngrph = sop.Coronagraph()
     args = input_args()
     corngrph.wvl = args['wvl']
     corngrph.pupil_field = args['pupil_field']
