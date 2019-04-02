@@ -95,3 +95,35 @@ def ini_corngrph():
     corngrph.oversmpl = args['oversmpl']
     corngrph.load_elements()
     return corngrph
+
+
+def update_fpm(fpm_wid, corngrph):
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
+    corngrph.fpm_field= fpm_transm
+    return corngrph
+
+
+def test():
+    import matplotlib.pyplot as plt
+    coro = ini_corngrph()
+    output = coro(hci.Wavefront(coro.pupil_field))
+    plt.subplot(221)
+    hci.imshow_field(coro.fpm_field, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(222)
+    hci.imshow_field(output[6].intensity, cmap='inferno')
+    plt.colorbar()
+    coro = update_fpm(1.0, coro)
+    output = coro(hci.Wavefront(coro.pupil_field))
+    plt.subplot(223)
+    hci.imshow_field(coro.fpm_field, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(224)
+    hci.imshow_field(output[6].intensity, cmap='inferno')
+    plt.colorbar()
+    plt.show()
+
+
+if __name__ == '__main__':
+    test()
