@@ -447,12 +447,9 @@ class OptclSysPlanesOut(hci.OpticalElement):
         """
         self.wavefronts = []
         wf = wavefront.copy()
-        n = 0
         for optical_element in self.optical_elements:
             wf = optical_element.forward(wf)
-            print("{}. {}".format(n, optical_element))
             self.wavefronts.append(wf)
-            n += 1
         return self.wavefronts
     
     def backward(self, wavefront):

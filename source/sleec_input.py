@@ -115,7 +115,7 @@ def test():
     plt.subplot(222)
     hci.imshow_field(output[6].intensity, cmap='inferno')
     plt.colorbar()
-    coro = update_fpm(1.0, coro)
+    update_fpm(1.0, coro)
     output = coro(hci.Wavefront(coro.pupil_field))
     plt.subplot(223)
     hci.imshow_field(coro.fpm_field, cmap='inferno')
