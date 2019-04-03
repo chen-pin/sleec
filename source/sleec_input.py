@@ -101,6 +101,7 @@ def update_fpm(fpm_wid, corngrph):
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
     corngrph.fpm_field= fpm_transm
+    corngrph.optical_elements[6] = corngrph.fpm
     return corngrph
 
 
