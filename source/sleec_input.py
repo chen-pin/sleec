@@ -2,8 +2,10 @@
 
 import os
 import numpy as np
-import hcipy.hcipy as hci
+# import hcipy as hci
+import hcipy_local.hcipy as hci
 import sleec_optics as sop
+import time
 
 def input_args():
     pars = {}
@@ -105,26 +107,46 @@ def update_fpm(fpm_wid, corngrph):
     return corngrph
 
 
-def test():
+def thrghpt_on_axis(prop_output):
+    pupil_sum = np.sum(prop_output[0].intensity)
+    dm2_sum = np.sum(prop_output[3].intensity)
+    return dm2_sum/pupil_sum
+
+
+def thrghpt_off_axis(corngrph, r=27, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
+    cgrid = corngrph.pupil_field.grid
+    cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
+    pgrid = cartsn_to_polar(cgrid)
+    value = ampltd*np.exp(-1j*pgrid.r*r*np.cos(theta-pgrid.theta))
+    field = hci.Field(value, cgrid)
+    wavefront = hci.Wavefront(field)
+    return corngrph(wavefront)
+
+
+def demo():
     import matplotlib.pyplot as plt
+    t0 = time.time()   
     coro = ini_corngrph()
     output = coro(hci.Wavefront(coro.pupil_field))
+    print("ini_corngrph & propagation took {} s".format(time.time()-t0))
     plt.subplot(221)
     hci.imshow_field(coro.fpm_field, cmap='inferno')
     plt.colorbar()
     plt.subplot(222)
-    hci.imshow_field(output[6].intensity, cmap='inferno')
+    hci.imshow_field(output[9].intensity, cmap='inferno')
     plt.colorbar()
+    t0 = time.time()   
     update_fpm(1.0, coro)
     output = coro(hci.Wavefront(coro.pupil_field))
+    print("update_fpm and propagation took {} s".format(time.time()-t0))
     plt.subplot(223)
     hci.imshow_field(coro.fpm_field, cmap='inferno')
     plt.colorbar()
     plt.subplot(224)
-    hci.imshow_field(output[6].intensity, cmap='inferno')
+    hci.imshow_field(output[9].intensity, cmap='inferno')
     plt.colorbar()
     plt.show()
 
 
 if __name__ == '__main__':
-    test()
+    demo()
