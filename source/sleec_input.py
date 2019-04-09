@@ -60,7 +60,7 @@ def input_args():
     pars['oversmpl'] = oversmpl
     
     # `fpm_field`
-    num_airy = 24  
+    num_airy = 28  
     fpm_wid = 6
     focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
     fpm_opacity = hci.circular_aperture(fpm_wid)
@@ -99,6 +99,15 @@ def ini_corngrph():
     return corngrph
 
 
+def pupil_lens(focal_length, diamtr, corngrph):
+    pgrid = corngrph.pupil_field.grid.as_('polar')
+    roc = focal_length*2.0
+    dist_from_ctr = np.sqrt(roc**2 - (diamtr/2.0)**2)
+    height = np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr
+    corngrph.pupil_field = hci.Field(arr=height, grid=corngrph.pupil_field.grid)
+    return corngrph 
+
+
 def update_fpm(fpm_wid, corngrph):
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
@@ -113,12 +122,12 @@ def thrghpt_on_axis(prop_output):
     return dm2_sum/pupil_sum
 
 
-def thrghpt_off_axis(corngrph, r=27, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
+def thrghpt_off_axis(corngrph, r=3.0, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
     cgrid = corngrph.pupil_field.grid
     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
     pgrid = cartsn_to_polar(cgrid)
-    value = ampltd*np.exp(-1j*pgrid.r*r*np.cos(theta-pgrid.theta))
-    field = hci.Field(value, cgrid)
+    value = ampltd*np.exp(-1j*2*np.pi*pgrid.r*r*np.cos(theta-pgrid.theta))
+    field = corngrph.pupil_field*(1.0+hci.Field(value, cgrid))
     wavefront = hci.Wavefront(field)
     return corngrph(wavefront)
 
