@@ -522,10 +522,8 @@ class Coronagraph(OptclSysPlanesOut):
         self.optical_elements = [None]*10
         self.names = ['0: pupil', '1: dm1', '2: on_dm2', '3: dm2'
                       , '4: relay_pupil', '5: on_fpm', '6: fpm', '7: on_lyot'
-                      , '8: lyot', '9: camera'] 
-
-        self.focal_length = self.pupil_diamtr*self.f_num
-
+                      , '8: lyot', '9: camera']
+                      
     def load_elements(self):
         self.optical_elements[0] = self.pupil
         self.optical_elements[1] = self.dm1
@@ -564,10 +562,13 @@ class Coronagraph(OptclSysPlanesOut):
     def relay_pupil(self):
         prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
         return prop_to_pupil
+    # Focal length
+    @property
+    def focal_length(self):
+        return self.pupil_diamtr*self.f_num
     # Propagator to Focal Plane
     @property
     def on_fpm(self):
-        self.focal_length = 
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                 , self.fpm_field.grid
                                                 , wavelength_0=self.wvl
@@ -600,9 +601,8 @@ class Coronagraph(OptclSysPlanesOut):
 
 def demo_coronagraph():
     import matplotlib.pyplot as plt
-    corngrph = Coronagraph()
-    corngrph.load_args()
-    corngrph.load_elements()
+    import sleec_input as sli
+    corngrph = sli.ini_corngrph()
     output = corngrph(hci.Wavefront(corngrph.pupil_field))
     print(corngrph.names)
     hci.imshow_field(output[9].intensity, cmap='inferno')

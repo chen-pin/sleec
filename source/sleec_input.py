@@ -9,26 +9,26 @@ import time
 
 def input_args():
     pars = {}
-    
-    # `wvl`
-    wvl = 600E-9
-    pars['wvl'] = wvl
-
-    # `pupil_diamtr`
-    pupil_diamtr = num_acttrs_across*acttr_spacing  # Physical pupil diameter
-    pars['pupil_diamtr'] = pupil_diamtr
-    
-    # `pupil_field`
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
         # normally 10 pixels between adjacent actuators.  
     num_pxl_across = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
         # across the pupil.
     acttr_spacing = 1E-3  # Actuator pitch
+    
+    # `wvl`
+    wvl = 600E-9
+    pars['wvl'] = wvl
+    
+    # `pupil_diamtr`
+    pupil_diamtr = num_acttrs_across*acttr_spacing  # Physical pupil diameter
+    pars['pupil_diamtr'] = pupil_diamtr
     pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
+    
+    # `pupil_field` and
     pupil_field = hci.circular_aperture(diameter=pupil_diamtr)(pupil_grid)
     pars['pupil_field'] = pupil_field
-    
+
     # `inflnc_ftn'
     acttr_filnm = os.path.join('..', '..', 'sleec_in'
                                , 'superinf-20180730-10x10.fits')  # Fits 
