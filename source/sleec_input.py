@@ -10,18 +10,23 @@ import time
 def input_args():
     pars = {}
     
-    # wvl
-    wvl = 1.0
+    # `wvl`
+    wvl = 600E-9
     pars['wvl'] = wvl
+
+    # `pupil_diamtr`
+    pupil_diamtr = num_acttrs_across*acttr_spacing  # Physical pupil diameter
+    pars['pupil_diamtr'] = pupil_diamtr
     
     # `pupil_field`
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
         # normally 10 pixels between adjacent actuators.  
-    pupil_dia_pxl = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
+    num_pxl_across = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
         # across the pupil.
-    pupil_grid = hci.make_pupil_grid(pupil_dia_pxl)
-    pupil_field = hci.circular_aperture(1)(pupil_grid)
+    acttr_spacing = 1E-3  # Actuator pitch
+    pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
+    pupil_field = hci.circular_aperture(diameter=pupil_diamtr)(pupil_grid)
     pars['pupil_field'] = pupil_field
     
     # `inflnc_ftn'
@@ -34,7 +39,7 @@ def input_args():
         # File 
         # name for a storing/loading the array of influence functions in NPZ 
         # format.  
-    dm_diamtr = 1.0  # Physical diameter of the DM
+    dm_diamtr = pupil_diamtr  # Physical diameter of the DM
     acttr_spacing = dm_diamtr/num_acttrs_across
     inflnc_ftn = sop.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
                                , acttr_spacing, acttr_pxl_spacing)
@@ -53,22 +58,29 @@ def input_args():
     pars['dm2_vmap'] = np.zeros(num_acttrs_across**2)
     
     #  `dm_seprtn`
-    pars['dm_seprtn'] = 1.0/wvl
+    pars['dm_seprtn'] = 1.0
     
     # `oversmpl`
     oversmpl = 8  # Pixel oversampling factor  
     pars['oversmpl'] = oversmpl
     
+    # `f_num`    
+    f_num = 30.0  # f/#
+    pars['f_num'] = f_num
+
     # `fpm_field`
-    num_airy = 28  
-    fpm_wid = 6
-    focal_grid = hci.make_focal_grid(pupil_grid, oversmpl, num_airy)
+    num_airy = 28  # Outer extent in terms of Airy rings
+    fpm_wid = 6*f_num*pars['wvl']  # FPM width/diameter
+    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=1
+                                     , num_airy=num_airy
+                                     , focal_length=pars['f_num']*pupil_diamtr
+                                     , wavelength=pars['wvl'])
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
     pars['fpm_field'] = fpm_transm
     
     # `lyot_field`
-    lyot_dia = 0.9
+    lyot_dia = 0.9*pupil_diamtr
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
     pars['lyot_field'] = lyot_transm
     
@@ -86,6 +98,7 @@ def ini_corngrph():
     corngrph = sop.Coronagraph()
     args = input_args()
     corngrph.wvl = args['wvl']
+    corngrph.pupil_diamtr = args['pupil_diamtr']
     corngrph.pupil_field = args['pupil_field']
     corngrph.fpm_field = args['fpm_field']
     corngrph.lyot_field = args['lyot_field']
@@ -95,6 +108,7 @@ def ini_corngrph():
     corngrph.inflnc_ftn = args['inflnc_ftn']
     corngrph.dm_seprtn = args['dm_seprtn']
     corngrph.oversmpl = args['oversmpl']
+    corngrph.f_num = args['f_num']
     corngrph.load_elements()
     return corngrph
 

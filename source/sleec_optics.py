@@ -501,12 +501,14 @@ class Coronagraph(OptclSysPlanesOut):
     - Can have a function (outside of this class) to manipulate the attributes.
 
     """
-    def __init__(self, wvl=None, pupil_field=None, fpm_field=None
-                 , lyot_field=None, dark_field=None, dm1_vmap=None
-                 , dm2_vmap=None, inflnc_ftn=None, dm_seprtn=None
-                 , oversmpl=None, optical_elements=[]):
+    def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
+                 , fpm_field=None , lyot_field=None, dark_field=None
+                 , dm1_vmap=None , dm2_vmap=None, inflnc_ftn=None
+                 , dm_seprtn=None , oversmpl=None, f_num=None
+                 , optical_elements=[]):
         super().__init__(optical_elements)
         self.wvl = wvl
+        self.pupil_diamtr = pupil_diamtr
         self.pupil_field = pupil_field
         self.fpm_field = fpm_field
         self.lyot_field = lyot_field
@@ -516,11 +518,13 @@ class Coronagraph(OptclSysPlanesOut):
         self.inflnc_ftn = inflnc_ftn
         self.dm_seprtn = dm_seprtn
         self.oversmpl = oversmpl
-
+        self.f_num = f_num
         self.optical_elements = [None]*10
         self.names = ['0: pupil', '1: dm1', '2: on_dm2', '3: dm2'
                       , '4: relay_pupil', '5: on_fpm', '6: fpm', '7: on_lyot'
                       , '8: lyot', '9: camera'] 
+
+        self.focal_length = self.pupil_diamtr*self.f_num
 
     def load_elements(self):
         self.optical_elements[0] = self.pupil
@@ -563,8 +567,12 @@ class Coronagraph(OptclSysPlanesOut):
     # Propagator to Focal Plane
     @property
     def on_fpm(self):
+        self.focal_length = 
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
-                                                 , self.fpm_field.grid)
+                                                , self.fpm_field.grid
+                                                , wavelength_0=self.wvl
+                                                , focal_length=self.focal_length
+                                                , wavelength=self.wvl)
         return prop_to_focal
     # Focal-Plane Mask
     @property
