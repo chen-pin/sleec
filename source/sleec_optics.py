@@ -151,9 +151,10 @@ class FresnelBack(hci.OpticalElement):
     distance : float
         Propagation distance
     """
-    def __init__(self, input_grid, distance):
+    def __init__(self, input_grid, distance, wavelength=1):
         self.input_grid = input_grid
         self.distance = distance
+        self.wavelength = wavelength
         self.prop = hci.FresnelPropagator(input_grid=self.input_grid
                                          , distance=self.distance)
     def forward(self, wavefront):
@@ -457,6 +458,7 @@ class OptclSysPlanesOut(hci.OpticalElement):
         self.wavefronts = []
         wf = wavefront.copy()
         for optical_element in reversed(self.optical_elements):
+            print("Propagate {}".format(optical_element))
             wf = optical_element.backward(wf)
             self.wavefronts.append(wf)
         return self.wavefronts
@@ -504,8 +506,7 @@ class Coronagraph(OptclSysPlanesOut):
     def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
                  , fpm_field=None , lyot_field=None, dark_field=None
                  , dm1_vmap=None , dm2_vmap=None, inflnc_ftn=None
-                 , dm_seprtn=None , oversmpl=None, f_num=None
-                 , optical_elements=[]):
+                 , dm_seprtn=None , f_num=None, optical_elements=[]):
         super().__init__(optical_elements)
         self.wvl = wvl
         self.pupil_diamtr = pupil_diamtr
@@ -517,7 +518,6 @@ class Coronagraph(OptclSysPlanesOut):
         self.dm2_vmap = dm2_vmap
         self.inflnc_ftn = inflnc_ftn
         self.dm_seprtn = dm_seprtn
-        self.oversmpl = oversmpl
         self.f_num = f_num
         self.optical_elements = [None]*10
         self.names = ['0: pupil', '1: dm1', '2: on_dm2', '3: dm2'
@@ -569,11 +569,11 @@ class Coronagraph(OptclSysPlanesOut):
     # Propagator to Focal Plane
     @property
     def on_fpm(self):
+    #    prop_to_focal = hci.propagation.fraunhofer.FraunhoferPropagatorMonochromatic(self.pupil_field.grid
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                 , self.fpm_field.grid
                                                 , wavelength_0=self.wvl
-                                                , focal_length=self.focal_length
-                                                , wavelength=self.wvl)
+                                                , focal_length=self.focal_length)
         return prop_to_focal
     # Focal-Plane Mask
     @property
@@ -584,7 +584,9 @@ class Coronagraph(OptclSysPlanesOut):
     @property
     def on_lyot(self):
         prop_to_lyot = FraunhoferBack(self.pupil_field.grid
-                                      , self.fpm_field.grid)
+                                      , self.fpm_field.grid
+                                      , wavelength_0=self.wvl
+                                      , focal_length=self.focal_length)
         return prop_to_lyot
     # Lyot-Plane Mask
     @property
@@ -595,7 +597,9 @@ class Coronagraph(OptclSysPlanesOut):
     @property
     def camera(self):
         prop_to_camera = hci.FraunhoferPropagator(self.pupil_field.grid
-                                                  , self.fpm_field.grid)
+                                                  , self.fpm_field.grid
+                                                  , wavelength_0=self.wvl
+                                                  , focal_length=self.focal_length)
         return prop_to_camera
       
 
@@ -603,10 +607,16 @@ def demo_coronagraph():
     import matplotlib.pyplot as plt
     import sleec_input as sli
     corngrph = sli.ini_corngrph()
-    output = corngrph(hci.Wavefront(corngrph.pupil_field))
+    output = corngrph(hci.Wavefront(electric_field=corngrph.pupil_field
+                                    , wavelength=corngrph.wvl))
     print(corngrph.names)
-    hci.imshow_field(output[9].intensity, cmap='inferno')
-    plt.colorbar()
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for wf in output:
+        plt.subplot(2, len(output)/2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
     plt.show()
 
 if __name__ == '__main__':

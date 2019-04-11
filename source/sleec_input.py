@@ -60,10 +60,6 @@ def input_args():
     #  `dm_seprtn`
     pars['dm_seprtn'] = 1.0
     
-    # `oversmpl`
-    oversmpl = 8  # Pixel oversampling factor  
-    pars['oversmpl'] = oversmpl
-    
     # `f_num`    
     f_num = 30.0  # f/#
     pars['f_num'] = f_num
@@ -71,7 +67,8 @@ def input_args():
     # `fpm_field`
     num_airy = 28  # Outer extent in terms of Airy rings
     fpm_wid = 6*f_num*pars['wvl']  # FPM width/diameter
-    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=1
+    oversmpl = 8  # Pixel oversampling factor 
+    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
                                      , wavelength=pars['wvl'])
@@ -107,7 +104,6 @@ def ini_corngrph():
     corngrph.dm2_vmap = args['dm2_vmap']
     corngrph.inflnc_ftn = args['inflnc_ftn']
     corngrph.dm_seprtn = args['dm_seprtn']
-    corngrph.oversmpl = args['oversmpl']
     corngrph.f_num = args['f_num']
     corngrph.load_elements()
     return corngrph
