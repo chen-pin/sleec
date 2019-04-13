@@ -607,9 +607,9 @@ def demo_coronagraph():
     import matplotlib.pyplot as plt
     import sleec_input as sli
     corngrph = sli.ini_corngrph()
+    print(corngrph.names)
     output = corngrph(hci.Wavefront(electric_field=corngrph.pupil_field
                                     , wavelength=corngrph.wvl))
-    print(corngrph.names)
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
     for wf in output:
