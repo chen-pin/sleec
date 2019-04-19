@@ -109,13 +109,13 @@ def ini_corngrph():
     return corngrph
 
 
-def pupil_lens(focal_length, diamtr, corngrph):
-    pgrid = corngrph.pupil_field.grid.as_('polar')
+def lens_wavfrnt(grid, focal_length, diamtr, wvl):
+    pgrid = grid.as_('polar')
     roc = focal_length*2.0
     dist_from_ctr = np.sqrt(roc**2 - (diamtr/2.0)**2)
-    height = np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr
-    corngrph.pupil_field = hci.Field(arr=height, grid=corngrph.pupil_field.grid)
-    return corngrph 
+    phase = np.exp(2j*(np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr)*2.0*np.pi/wvl)
+    field = hci.Field(arr=phase, grid=grid)
+    return hci.Wavefront(field, wvl) 
 
 
 def update_fpm(fpm_wid, corngrph):
