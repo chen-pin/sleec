@@ -109,13 +109,13 @@ def ini_corngrph():
     return corngrph
 
 
-def lens_wavfrnt(grid, focal_length, diamtr, wvl):
+def sphrcl_vmap(shape, focal_length, diamtr):
+    grid = hci.make_uniform_grid(dims=shape, extent=1)
     pgrid = grid.as_('polar')
     roc = focal_length*2.0
     dist_from_ctr = np.sqrt(roc**2 - (diamtr/2.0)**2)
-    phase = np.exp(2j*(np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr)*2.0*np.pi/wvl)
-    field = hci.Field(arr=phase, grid=grid)
-    return hci.Wavefront(field, wvl) 
+    height = np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr
+    return height 
 
 
 def update_fpm(fpm_wid, corngrph):
