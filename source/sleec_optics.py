@@ -421,77 +421,9 @@ class InflncFtn(object):
     @modes.setter
     def modes(self, user_input):
         self._modes = user_input
+          
 
-
-class OptclSysPlanesOut(hci.OpticalElement):
-    """Same as hci.OpticalSystem but returns the propagated wavefronts from 
-    all optical elements.
-
-    """
-    def __init__(self, optical_elements):
-        self.optical_elements = optical_elements
-        self.wavefronts = None
-
-    def forward(self, wavefront):
-        """
-        Forward propagation.  
-    
-        Parameters
-        ----------
-        wavefront : hci.Wavefront
-            Input wavefront.
-    
-        Returns
-        -------
-        wavefronts : list
-            Propagated wavefront from every optical element.  
-        
-        """
-        self.wavefronts = []
-        wf = wavefront.copy()
-        for optical_element in self.optical_elements:
-            wf = optical_element.forward(wf)
-            self.wavefronts.append(wf)
-        return self.wavefronts
-    
-    def backward(self, wavefront):
-        self.wavefronts = []
-        wf = wavefront.copy()
-        for optical_element in reversed(self.optical_elements):
-            print("Propagate {}".format(optical_element))
-            wf = optical_element.backward(wf)
-            self.wavefronts.append(wf)
-        return self.wavefronts
-    
-    def get_transformation_matrix_forward(self, wavelength=1):
-        matrix = 1
-        for optical_element in self.optical_elements:
-            matrix = np.dot(
-                         optical_element.get_transformation_matrix_forward(
-                                             wavelength), matrix
-                           )
-        return matrix
-    
-    def get_transformation_matrix_backward(self, wavelength=1):
-        matrix = 1
-
-        for optical_element in reversed(self.optical_elements):
-            matrix = np.dot(
-                         optical_element.get_transformation_matrix_backward(
-                                             wavelength), matrix
-                           )
-        return matrix
-    
-    @property
-    def optical_elements(self):
-        return self._optical_elements
-
-    @optical_elements.setter
-    def optical_elements(self, optical_elements):
-        self._optical_elements = list(optical_elements)
-            
-
-class Coronagraph(OptclSysPlanesOut):
+class Coronagraph(hci.OpticalElement):
     """SLEEC coronagraph model. 
 
     Notes
@@ -507,7 +439,6 @@ class Coronagraph(OptclSysPlanesOut):
                  , fpm_field=None , lyot_field=None, dark_field=None
                  , dm1_vmap=None , dm2_vmap=None, inflnc_ftn=None
                  , dm_seprtn=None , f_num=None, optical_elements=[]):
-        super().__init__(optical_elements)
         self.wvl = wvl
         self.pupil_diamtr = pupil_diamtr
         self.pupil_field = pupil_field
@@ -536,6 +467,63 @@ class Coronagraph(OptclSysPlanesOut):
         self.optical_elements[8] = self.lyot
         self.optical_elements[9] = self.camera
 
+    def forward(self, wavefront, load_elements=True):
+        """
+        Forward propagation.  
+    
+        Parameters
+        ----------
+        wavefront : hci.Wavefront
+            Input wavefront.
+    
+        Returns
+        -------
+        wavefronts : list
+            Propagated wavefront from every optical element.  
+        
+        """
+        self.wavefronts = []
+        if load_elements:
+            self.load_elements()
+        wf = wavefront.copy()
+        for optical_element in self.optical_elements:
+            wf = optical_element.forward(wf)
+            self.wavefronts.append(wf)
+        return self.wavefronts
+    
+    def backward(self, wavefront, load_elements=True):
+        self.wavefronts = []
+        if load_elements:
+            self.load_elements()
+        wf = wavefront.copy()
+        for optical_element in reversed(self.optical_elements):
+            print("Propagate {}".format(optical_element))
+            wf = optical_element.backward(wf)
+            self.wavefronts.append(wf)
+        return self.wavefronts
+    
+    def get_transformation_matrix_forward(self, wavelength=1, load_elements=True):
+        matrix = 1
+        if load_elements:
+            self.load_elements()
+        for optical_element in self.optical_elements:
+            matrix = np.dot(
+                         optical_element.get_transformation_matrix_forward(
+                                             wavelength), matrix
+                           )
+        return matrix
+    
+    def get_transformation_matrix_backward(self, wavelength=1, load_elements=True):
+        matrix = 1
+        if load_elements:   
+            self.load_elements()
+        for optical_element in reversed(self.optical_elements):
+            matrix = np.dot(
+                         optical_element.get_transformation_matrix_backward(
+                                             wavelength), matrix
+                           )
+        return matrix
+
     # Pupil
     @property
     def pupil(self):
@@ -545,7 +533,7 @@ class Coronagraph(OptclSysPlanesOut):
     @property
     def dm1(self):
         dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
-        return dm1
+        return dm1 
     # Propagator to DM2
     @property
     def on_dm2(self):
@@ -608,16 +596,19 @@ def demo_coronagraph():
     import sleec_input as sli
     corngrph = sli.ini_corngrph()
     print(corngrph.names)
-    output = corngrph(hci.Wavefront(electric_field=corngrph.pupil_field
-                                    , wavelength=corngrph.wvl))
+    wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
+                                    , wavelength=corngrph.wvl)
+    output0 = corngrph(wf0)
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
-    for wf in output:
-        plt.subplot(2, len(output)/2, subplot_seq)
+    for wf in output0:
+        plt.subplot(2, len(output0)//2, subplot_seq)
         hci.imshow_field(wf.intensity, cmap='inferno')
         plt.colorbar()
         subplot_seq += 1
     plt.show()
+    plt.close()
+ 
 
 if __name__ == '__main__':
     demo_coronagraph()

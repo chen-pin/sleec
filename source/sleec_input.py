@@ -167,5 +167,35 @@ def demo():
     plt.show()
 
 
+def demo2():
+    import matplotlib.pyplot as plt
+    corngrph = ini_corngrph()
+    print(corngrph.names)
+    wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
+                                    , wavelength=corngrph.wvl)
+    output0 = corngrph(wf0)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for wf in output0:
+        plt.subplot(2, len(output0)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    # Temporary stub below to test <optical_elements> update
+    corngrph.dm1_vmap = sphrcl_vmap((48, 48), 3.0, corngrph.pupil_diamtr)
+    output1 = corngrph(wf0)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for wf in output1:
+        plt.subplot(2, len(output1)/2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    # hci.imshow_field(output1[1].phase, cmap='inferno')
+    # plt.colorbar()
+    # plt.show()
+
 if __name__ == '__main__':
-    demo()
+    demo2()
