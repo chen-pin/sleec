@@ -66,7 +66,7 @@ def input_args():
 
     # `fpm_field`
     num_airy = 28  # Outer extent in terms of Airy rings
-    fpm_wid = 6*f_num*pars['wvl']  # FPM width/diameter
+    fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
     oversmpl = 8  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
@@ -82,10 +82,10 @@ def input_args():
     pars['lyot_field'] = lyot_transm
     
     # `dark_field`
-    iwa = 3*f_num*pars['wvl']
+    iwa = 3.0*f_num*pars['wvl']
     owa = 16*f_num*pars['wvl']
-    pars['dark_field'] = ( hci.circular_aperture(owa)(focal_grid) 
-                         - hci.circular_aperture(iwa)(focal_grid) )
+    pars['dark_field'] = ( hci.circular_aperture(2.0*owa)(focal_grid) 
+                         - hci.circular_aperture(2.0*iwa)(focal_grid) )
     
     return pars
 
@@ -126,10 +126,10 @@ def update_fpm(fpm_wid, corngrph):
     return corngrph
 
 
-def thrghpt_on_axis(prop_output):
-    pupil_sum = np.sum(prop_output[0].intensity)
-    dm2_sum = np.sum(prop_output[3].intensity)
-    return dm2_sum/pupil_sum
+def fpm_thrghpt(prop_output, corngrph):
+    fpm_in = np.sum(prop_output[5].intensity*corngrph.dark_field)
+    fpm_out = np.sum(prop_output[6].intensity*corngrph.dark_field)
+    return fpm_out/fpm_in
 
 
 def thrghpt_off_axis(corngrph, r=3.0, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
@@ -167,35 +167,53 @@ def demo():
     plt.show()
 
 
-def demo2():
+def _test_fpm_thrghpt():
     import matplotlib.pyplot as plt
+    from scipy import special as spl
     corngrph = ini_corngrph()
+    # Update FPM
+    f_num = 30.0
+    fpm_coef = 2*1.22*7.0156/3.8317
+    fpm_wid = fpm_coef*f_num*corngrph.wvl  # FPM width/diameter
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)  # Simple mask
+    corngrph.fpm_field = fpm_transm
+    # Update Dark Zone  
+    iwa_coef = 1.22  
+    iwa = iwa_coef*f_num*corngrph.wvl
+    owa_coef = 16.0
+    owa = owa_coef*f_num*corngrph.wvl
+    corngrph.dark_field = ( hci.circular_aperture(2.0*owa)(corngrph.fpm_field.grid) 
+                         - hci.circular_aperture(2.0*iwa)(corngrph.fpm_field.grid) )
     print(corngrph.names)
     wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
                                     , wavelength=corngrph.wvl)
     output0 = corngrph(wf0)
-    subplot_seq = 1
+    predicted_thrghpt = ( (spl.jv(0, np.pi*fpm_coef/2.0)**2 
+                         + spl.jv(1, np.pi*fpm_coef/2.0)**2 
+                           - spl.jv(0, np.pi*owa_coef)**2 
+                           - spl.jv(1, np.pi*owa_coef)**2)
+                         /(spl.jv(0, np.pi*iwa_coef)**2 
+                           + spl.jv(1, np.pi*iwa_coef)**2 
+                           - spl.jv(0, np.pi*owa_coef)**2 
+                           - spl.jv(1, np.pi*owa_coef)**2) )
+    print("Predicted throughput = {}".format(predicted_thrghpt))
+    print("Simulated throughput = {}".format(fpm_thrghpt(output0, corngrph)))
     plt.figure(figsize=(15, 5))
-    for wf in output0:
-        plt.subplot(2, len(output0)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
-        plt.colorbar()
-        subplot_seq += 1
+    plt.subplot(221)
+    hci.imshow_field(output0[5].intensity, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(222)
+    hci.imshow_field(output0[6].intensity, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(223)
+    hci.imshow_field(corngrph.dark_field, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(224)
+    hci.imshow_field(corngrph.fpm.mask_transm, cmap='inferno')
+    plt.colorbar()
     plt.show()
-    # Temporary stub below to test <optical_elements> update
-    corngrph.dm1_vmap = sphrcl_vmap((48, 48), 3.0, corngrph.pupil_diamtr)
-    output1 = corngrph(wf0)
-    subplot_seq = 1
-    plt.figure(figsize=(15, 5))
-    for wf in output1:
-        plt.subplot(2, len(output1)/2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
-        plt.colorbar()
-        subplot_seq += 1
-    plt.show()
-    # hci.imshow_field(output1[1].phase, cmap='inferno')
-    # plt.colorbar()
-    # plt.show()
+
 
 if __name__ == '__main__':
-    demo2()
+    _test_fpm_thrghpt()
