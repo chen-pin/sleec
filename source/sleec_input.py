@@ -132,6 +132,17 @@ def fpm_thrghpt(prop_output, corngrph):
     return fpm_out/fpm_in
 
 
+def lyot_thrghpt(corngrph):
+    indx = np.where(np.absolute(corngrph.pupil.mask_transm) != 0.0)
+    total = np.sum(np.absolute(corngrph.pupil.mask_transm)[indx]**2)
+    sum_transm_ratio = np.sum(
+            (np.absolute(corngrph.lyot.mask_transm)[indx]
+             /np.absolute(corngrph.pupil.mask_transm)[indx]
+             )**2
+                            )
+    return sum_transm_ratio/total
+
+
 def thrghpt_off_axis(corngrph, r=3.0, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
     cgrid = corngrph.pupil_field.grid
     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
@@ -168,20 +179,23 @@ def demo():
 
 
 def _test_fpm_thrghpt():
+    """Validate <fpm_thrghpt> function.  To get valid results, 
+    fpm_coef must be > 2*iwa and owa <= 28 (outer extent of focal grid)"""
+
     import matplotlib.pyplot as plt
     from scipy import special as spl
     corngrph = ini_corngrph()
     # Update FPM
     f_num = 30.0
-    fpm_coef = 2*1.22*7.0156/3.8317
+    fpm_coef = 7.0
     fpm_wid = fpm_coef*f_num*corngrph.wvl  # FPM width/diameter
     fpm_opacity = hci.circular_aperture(fpm_wid)
     fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)  # Simple mask
     corngrph.fpm_field = fpm_transm
     # Update Dark Zone  
-    iwa_coef = 1.22  
+    iwa_coef = 3.0  
     iwa = iwa_coef*f_num*corngrph.wvl
-    owa_coef = 16.0
+    owa_coef = 28.0
     owa = owa_coef*f_num*corngrph.wvl
     corngrph.dark_field = ( hci.circular_aperture(2.0*owa)(corngrph.fpm_field.grid) 
                          - hci.circular_aperture(2.0*iwa)(corngrph.fpm_field.grid) )
@@ -215,5 +229,35 @@ def _test_fpm_thrghpt():
     plt.show()
 
 
+def _test_lyot_thrghpt():
+    """Validate <fpm_thrghpt> function.  To get valid results, 
+    fpm_coef must be > 2*iwa and owa <= 28 (outer extent of focal grid)"""
+
+    import matplotlib.pyplot as plt
+    corngrph = ini_corngrph()
+    # Update FPM
+    f_num = 30.0
+    # Update Lyot Stop
+    lyot_coef = 0.9
+    lyot_dia = lyot_coef*corngrph.pupil_diamtr
+    lyot_transm = hci.circular_aperture(lyot_dia)(corngrph.pupil_field.grid)
+    corngrph.lyot_field = lyot_transm
+    print(corngrph.names)
+    wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
+                                    , wavelength=corngrph.wvl)
+    output0 = corngrph(wf0)
+    predicted_thrghpt = lyot_coef**2
+    print("Predicted throughput = {}".format(predicted_thrghpt))
+    print("Simulated throughput = {}".format(lyot_thrghpt(corngrph)))
+    plt.figure(figsize=(15, 5))
+    plt.subplot(121)
+    hci.imshow_field(np.absolute(corngrph.pupil.mask_transm)**2, cmap='inferno')
+    plt.colorbar()
+    plt.subplot(122)
+    hci.imshow_field(np.absolute(corngrph.lyot.mask_transm)**2, cmap='inferno')
+    plt.colorbar()
+    plt.show()
+
+
 if __name__ == '__main__':
-    _test_fpm_thrghpt()
+    _test_lyot_thrghpt()
