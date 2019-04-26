@@ -209,8 +209,8 @@ def update_fpm(fpm_wid, corngrph):
 
 
 def fpm_thrghpt(prop_output, corngrph):
-    fpm_in = np.sum(prop_output[5].intensity*corngrph.dark_field)
-    fpm_out = np.sum(prop_output[6].intensity*corngrph.dark_field)
+    fpm_in = np.sum(prop_output['on_fpm'].intensity*corngrph.dark_field)
+    fpm_out = np.sum(prop_output['fpm'].intensity*corngrph.dark_field)
     return fpm_out/fpm_in
 
 
@@ -225,7 +225,8 @@ def lyot_thrghpt(corngrph):
     return sum_transm_ratio/total
 
 
-def thrghpt_off_axis(corngrph, r=3.0, theta=np.pi/4.0, ampltd=0.1/(2*np.pi)):
+def thrghpt_off_axis(corngrph, ref_img, r=3.0, theta=np.pi/4.0
+                     , ampltd=0.1/(2*np.pi)):
     cgrid = corngrph.pupil_field.grid
     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
     pgrid = cartsn_to_polar(cgrid)
@@ -239,23 +240,23 @@ def demo():
     import matplotlib.pyplot as plt
     t0 = time.time()   
     coro = ini_corngrph()
-    output = coro(hci.Wavefront(coro.pupil_field))
+    output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
     print("ini_corngrph & propagation took {} s".format(time.time()-t0))
     plt.subplot(221)
     hci.imshow_field(coro.fpm_field, cmap='inferno')
     plt.colorbar()
     plt.subplot(222)
-    hci.imshow_field(output[9].intensity, cmap='inferno')
+    hci.imshow_field(output['camera'].intensity, cmap='inferno')
     plt.colorbar()
     t0 = time.time()   
-    update_fpm(1.0, coro)
-    output = coro(hci.Wavefront(coro.pupil_field))
+    update_fpm(3.0*coro.f_num*coro.wvl, coro)
+    output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
     print("update_fpm and propagation took {} s".format(time.time()-t0))
     plt.subplot(223)
     hci.imshow_field(coro.fpm_field, cmap='inferno')
     plt.colorbar()
     plt.subplot(224)
-    hci.imshow_field(output[9].intensity, cmap='inferno')
+    hci.imshow_field(output['camera'].intensity, cmap='inferno')
     plt.colorbar()
     plt.show()
 
@@ -297,10 +298,10 @@ def _test_fpm_thrghpt():
     print("Simulated throughput = {}".format(fpm_thrghpt(output0, corngrph)))
     plt.figure(figsize=(15, 5))
     plt.subplot(221)
-    hci.imshow_field(output0[5].intensity, cmap='inferno')
+    hci.imshow_field(output0['on_fpm'].intensity, cmap='inferno')
     plt.colorbar()
     plt.subplot(222)
-    hci.imshow_field(output0[6].intensity, cmap='inferno')
+    hci.imshow_field(output0['fpm'].intensity, cmap='inferno')
     plt.colorbar()
     plt.subplot(223)
     hci.imshow_field(corngrph.dark_field, cmap='inferno')

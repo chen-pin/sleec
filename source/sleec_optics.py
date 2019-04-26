@@ -451,9 +451,9 @@ class Coronagraph(hci.OpticalElement):
         self.dm_seprtn = dm_seprtn
         self.f_num = f_num
         self.optical_elements = [None]*10
-        self.names = ['0: pupil', '1: dm1', '2: on_dm2', '3: dm2'
-                      , '4: relay_pupil', '5: on_fpm', '6: fpm', '7: on_lyot'
-                      , '8: lyot', '9: camera']
+        self.names = ['pupil', 'dm1', 'on_dm2', 'dm2'
+                      , 'relay_pupil', 'on_fpm', 'fpm', 'on_lyot'
+                      , 'lyot', 'camera']
                       
     def load_elements(self):
         self.optical_elements[0] = self.pupil
@@ -482,24 +482,23 @@ class Coronagraph(hci.OpticalElement):
             Propagated wavefront from every optical element.  
         
         """
-        self.wavefronts = []
+        self.wavefronts = {}
         if load_elements:
             self.load_elements()
         wf = wavefront.copy()
-        for optical_element in self.optical_elements:
-            wf = optical_element.forward(wf)
-            self.wavefronts.append(wf)
+        for i in range(len(self.optical_elements)):
+            wf = self.optical_elements[i].forward(wf)
+            self.wavefronts[self.names[i]] = wf
         return self.wavefronts
     
     def backward(self, wavefront, load_elements=True):
-        self.wavefronts = []
+        self.wavefronts = {}
         if load_elements:
             self.load_elements()
         wf = wavefront.copy()
-        for optical_element in reversed(self.optical_elements):
-            print("Propagate {}".format(optical_element))
-            wf = optical_element.backward(wf)
-            self.wavefronts.append(wf)
+        for i in len(self.optical_elements):
+            wf = self.optical_elements[::-1][i].backward(wf)
+            self.wavefronts[self.names[::-1][i]] = wf
         return self.wavefronts
     
     def get_transformation_matrix_forward(self, wavelength=1, load_elements=True):
