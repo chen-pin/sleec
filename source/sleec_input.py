@@ -90,10 +90,92 @@ def input_args():
     return pars
 
 
-def ini_corngrph():
+def default_args():
+    pars = {}
+    num_acttrs_across = 48  # Number of actuators across the DM aperture.
+    acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
+        # normally 10 pixels between adjacent actuators. 
+    acttr_spacing = 1E-3  # Actuator pitch 
+    num_pxl_across = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
+        # across the pupil.
+    
+    # `wvl`
+    wvl = 600E-9
+    pars['wvl'] = wvl
+    
+    # `pupil_diamtr`
+    pupil_diamtr = num_acttrs_across*acttr_spacing  # Physical pupil diameter
+    pars['pupil_diamtr'] = pupil_diamtr
+    pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
+    
+    # `pupil_field` 
+    pupil_field = hci.circular_aperture(diameter=pupil_diamtr)(pupil_grid)
+    pars['pupil_field'] = pupil_field
+
+    # `inflnc_ftn'
+    acttr_filnm = os.path.join('..', '..', 'sleec_in'
+                               , 'superinf-20180730-10x10.fits')  # Fits 
+                                                                  # filename 
+        # for a single-actuator influence function (2darray).  The same function 
+        # is applied to all actuators.  
+    save_filnm = os.path.join('..', '..', 'sleec_out', 'inflnc_ftns.pkl')  
+        # File 
+        # name for a storing/loading the array of influence functions in NPZ 
+        # format.  
+    dm_diamtr = pupil_diamtr  # Physical diameter of the DM
+    acttr_spacing = dm_diamtr/num_acttrs_across
+    inflnc_ftn = sop.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
+                               , acttr_spacing, acttr_pxl_spacing)
+    try:
+        inflnc_ftn.modes = inflnc_ftn.load_modes()
+    except FileNotFoundError:
+        print("Influence-functions pickle file not found.")
+        print("Generate influence functions on the fly.")
+        inflnc_ftn.modes = inflnc_ftn.genrt_modes()
+    pars['inflnc_ftn'] = inflnc_ftn
+    
+    #  `dm1_vmap`
+    pars['dm1_vmap'] = np.zeros(num_acttrs_across**2)
+    
+    #  `dm2_vmap`
+    pars['dm2_vmap'] = np.zeros(num_acttrs_across**2)
+    
+    #  `dm_seprtn`
+    pars['dm_seprtn'] = 1.0
+    
+    # `f_num`    
+    f_num = 30.0  # f/#
+    pars['f_num'] = f_num
+
+    # `fpm_field`
+    num_airy = 28  # Outer extent in terms of Airy rings
+    fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
+    oversmpl = 8  # Pixel oversampling factor 
+    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
+                                     , num_airy=num_airy
+                                     , focal_length=pars['f_num']*pupil_diamtr
+                                     , wavelength=pars['wvl'])
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    pars['fpm_field'] = fpm_transm
+    
+    # `lyot_field`
+    lyot_dia = 0.9*pupil_diamtr
+    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+    pars['lyot_field'] = lyot_transm
+    
+    # `dark_field`
+    iwa = 3.0*f_num*pars['wvl']
+    owa = 16*f_num*pars['wvl']
+    pars['dark_field'] = ( hci.circular_aperture(2.0*owa)(focal_grid) 
+                         - hci.circular_aperture(2.0*iwa)(focal_grid) )
+    
+    return pars
+
+
+def ini_corngrph(args=default_args()):
     # Initialize a coronagraph
     corngrph = sop.Coronagraph()
-    args = input_args()
     corngrph.wvl = args['wvl']
     corngrph.pupil_diamtr = args['pupil_diamtr']
     corngrph.pupil_field = args['pupil_field']
@@ -136,10 +218,10 @@ def lyot_thrghpt(corngrph):
     indx = np.where(np.absolute(corngrph.pupil.mask_transm) != 0.0)
     total = np.sum(np.absolute(corngrph.pupil.mask_transm)[indx]**2)
     sum_transm_ratio = np.sum(
-            (np.absolute(corngrph.lyot.mask_transm)[indx]
-             /np.absolute(corngrph.pupil.mask_transm)[indx]
-             )**2
-                            )
+            np.square(np.absolute(corngrph.lyot.mask_transm)[indx]
+                      /np.absolute(corngrph.pupil.mask_transm)[indx]
+                     )
+                             )
     return sum_transm_ratio/total
 
 
@@ -179,7 +261,7 @@ def demo():
 
 
 def _test_fpm_thrghpt():
-    """Validate <fpm_thrghpt> function.  To get valid results, 
+    """Test <fpm_thrghpt> function.  To get valid results, 
     fpm_coef must be > 2*iwa and owa <= 28 (outer extent of focal grid)"""
 
     import matplotlib.pyplot as plt
@@ -230,15 +312,15 @@ def _test_fpm_thrghpt():
 
 
 def _test_lyot_thrghpt():
-    """Validate <fpm_thrghpt> function.  To get valid results, 
-    fpm_coef must be > 2*iwa and owa <= 28 (outer extent of focal grid)"""
+    """Test <lyot_thrghpt> function.  To get valid results, 
+    lyot_coef must be < 1"""
 
     import matplotlib.pyplot as plt
     corngrph = ini_corngrph()
     # Update FPM
     f_num = 30.0
     # Update Lyot Stop
-    lyot_coef = 0.9
+    lyot_coef = 0.5
     lyot_dia = lyot_coef*corngrph.pupil_diamtr
     lyot_transm = hci.circular_aperture(lyot_dia)(corngrph.pupil_field.grid)
     corngrph.lyot_field = lyot_transm
