@@ -225,15 +225,32 @@ def lyot_thrghpt(corngrph):
     return sum_transm_ratio/total
 
 
-def thrghpt_off_axis(corngrph, ref_img, r=3.0, theta=np.pi/4.0
-                     , ampltd=0.1/(2*np.pi)):
-    cgrid = corngrph.pupil_field.grid
-    cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
-    pgrid = cartsn_to_polar(cgrid)
-    value = ampltd*np.exp(-1j*2*np.pi*pgrid.r*r*np.cos(theta-pgrid.theta))
-    field = corngrph.pupil_field*(1.0+hci.Field(value, cgrid))
-    wavefront = hci.Wavefront(field)
-    return corngrph(wavefront)
+# def thrghpt_off_axis(corngrph, ref_img, r, theta=np.radians(60)
+#                      , ampltd=0.1/(2*np.pi)):
+#     cgrid = corngrph.pupil_field.grid
+#     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
+#     pgrid = cartsn_to_polar(cgrid)
+#     value = ampltd*np.exp(-1j*2*np.pi*pgrid.r*r*np.cos(theta-pgrid.theta))
+#     field = corngrph.pupil_field*(1.0+hci.Field(value, cgrid))
+#     wavefront = hci.Wavefront(field)
+#     img = corngrph(wavefront)['on_fpm'].intensity
+#     return hci.get_strehl_from_focal(img, ref_img)
+
+
+def strehl(prop_output, ref_intnsty): 
+    return float(prop_output['on_fpm'].intensity.max()/ref_intnsty)
+
+
+def mean_contrast(corngrph, prop_output, ref_intnsty):
+    return (prop_output['camera'].intensity*np.square(corngrph.dark_field)
+            /ref_intnsty).mean()
+
+
+def cost_ftn(corngrph, prop_output, ref_img, mask, planet_star_ratio=1e-10):
+    contrast = hci.get_mean_raw_contrast(np.array(prop_output['camera'].intensity)
+                                         , mask, ref_img)
+    print('contrast = {}'.format(contrast))
+    value = (contrast+planet_star_ratio/(fpm_thrghpt*lyot_thrghpt))
 
 
 def demo():
@@ -342,5 +359,12 @@ def _test_lyot_thrghpt():
     plt.show()
 
 
+def _test_cost_ftn():
+    coro = ini_corngrph()
+    output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
+    mask = np.where(coro.dark_field>0.0)
+    result = cost_ftn(coro, output, np.array(output['on_fpm'].intensity), mask)
+    return result
+
 if __name__ == '__main__':
-    _test_lyot_thrghpt()
+    _test_cost_ftn()
