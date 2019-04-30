@@ -246,11 +246,12 @@ def mean_contrast(corngrph, prop_output, ref_intnsty):
             /ref_intnsty).mean()
 
 
-def cost_ftn(corngrph, prop_output, ref_img, mask, planet_star_ratio=1e-10):
-    contrast = hci.get_mean_raw_contrast(np.array(prop_output['camera'].intensity)
-                                         , mask, ref_img)
+def cost_ftn(corngrph, prop_output, ref_intnsty, planet_star_ratio=1e-10):
+    contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
     print('contrast = {}'.format(contrast))
-    value = (contrast+planet_star_ratio/(fpm_thrghpt*lyot_thrghpt))
+    return (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
+                                          *lyot_thrghpt(corngrph)
+                                          *strehl(prop_output, ref_intnsty)) )
 
 
 def demo():
@@ -363,8 +364,8 @@ def _test_cost_ftn():
     coro = ini_corngrph()
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
     mask = np.where(coro.dark_field>0.0)
-    result = cost_ftn(coro, output, np.array(output['on_fpm'].intensity), mask)
-    return result
+    result = cost_ftn(coro, output, output['on_fpm'].intensity.max())
+    print("Cost function value = {}".format(result))
 
 if __name__ == '__main__':
     _test_cost_ftn()
