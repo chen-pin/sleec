@@ -380,5 +380,48 @@ def _test_cost_ftn():
     result = cost_ftn(fpm_wid, lyot_wid, coro, wf, ref_intnsty)
     print("Cost function value = {}".format(result))
 
+
+def _try_mystic():
+    from mystic.math import almostEqual
+    from mystic.monitors import Monitor 
+    from mystic.solvers import NelderMeadSimplexSolver  
+    from mystic.termination import CandidateRelativeTolerance as Crt  
+    # Set up coronagraph     
+    coro = ini_corngrph()
+    wf = hci.Wavefront(coro.pupil_field, coro.wvl)
+    output = coro(wf)
+    ref_intnsty = output['on_fpm'].intensity.max()
+    # Set optimization parameters
+    maxiter = 100 
+    ndim = 2 
+    x0 = [6.0*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
+    upper_bound = [12.0*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    esow = Monitor() 
+    ssow = Monitor()
+    solver = NelderMeadSimplexSolver(ndim)
+    solver.SetInitialPoints(x0)
+    solver.SetStrictRanges(lower_bound, upper_bound)
+    solver.SetEvaluationLimits(generations=maxiter)
+    solver.SetEvaluationMonitor(esow)
+    solver.SetGenerationMonitor(ssow)
+    term = Crt()
+    time1 = time.time() 
+    # Set up cost function
+    def costfunc(x):
+        return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
+    # Start solving
+    solver.Solve(costfunc, term)
+    sol = solver.Solution()
+    time_elapsed = time.time() - time1
+    fx = solver.bestEnergy
+    print("Solution:  {}".format(sol))
+    print("f value:  {}".format(fx))
+    print("Iterations:  {}".format(solver.generations))
+    print("Function evaluations:  {}".format(len(esow.x)))
+    print("Time elapsed:  {} s".format(time_elapsed))
+    #assert almostEqual(fx, 0.0, tol=1e-11)
+
+
 if __name__ == '__main__':
-    _test_cost_ftn()
+    _try_mystic()
