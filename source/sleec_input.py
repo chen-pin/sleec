@@ -3,6 +3,7 @@
 import os
 import numpy as np
 # import hcipy as hci
+import matplotlib.pyplot as plt
 import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
@@ -265,7 +266,6 @@ def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
 
 
 def demo():
-    import matplotlib.pyplot as plt
     t0 = time.time()   
     coro = ini_corngrph()
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
@@ -293,7 +293,6 @@ def _test_fpm_thrghpt():
     """Test <fpm_thrghpt> function.  To get valid results, 
     fpm_coef must be > 2*iwa and owa <= 28 (outer extent of focal grid)"""
 
-    import matplotlib.pyplot as plt
     from scipy import special as spl
     corngrph = ini_corngrph()
     # Update FPM
@@ -344,7 +343,6 @@ def _test_lyot_thrghpt():
     """Test <lyot_thrghpt> function.  To get valid results, 
     lyot_coef must be < 1"""
 
-    import matplotlib.pyplot as plt
     corngrph = ini_corngrph()
     # Update FPM
     f_num = 30.0
@@ -415,11 +413,21 @@ def _try_mystic():
     sol = solver.Solution()
     time_elapsed = time.time() - time1
     fx = solver.bestEnergy
+    output_final = coro(wf)
+    contrast_final = output_final['camera'].intensity/ref_intnsty
     print("Solution:  {}".format(sol))
+    print("Solution {}*wvl/D, {}*D".format(sol[0]/(coro.wvl/coro.pupil_diamtr)
+                                           , sol[1]/coro.pupil_diamtr))
     print("f value:  {}".format(fx))
     print("Iterations:  {}".format(solver.generations))
     print("Function evaluations:  {}".format(len(esow.x)))
     print("Time elapsed:  {} s".format(time_elapsed))
+    print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final, ref_intnsty)))
+    hci.imshow_field(np.log10(contrast_final), vmin='-10', vmax='0', cmap='inferno')
+    plt.colorbar()
+    plt.show()
+    return sol, esow, ssow, coro, wf, ref_intnsty
+
     #assert almostEqual(fx, 0.0, tol=1e-11)
 
 
