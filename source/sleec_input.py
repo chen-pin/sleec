@@ -208,6 +208,13 @@ def update_fpm(fpm_wid, corngrph):
     return corngrph
 
 
+def update_lyot(lyot_wid, corngrph):
+    lyot_transm = hci.circular_aperture(lyot_wid)(corngrph.pupil_field.grid)
+    corngrph.lyot_field = lyot_transm
+    corngrph.optical_elements[8] = corngrph.lyot
+    return corngrph
+
+
 def fpm_thrghpt(prop_output, corngrph):
     fpm_in = np.sum(prop_output['on_fpm'].intensity*corngrph.dark_field)
     fpm_out = np.sum(prop_output['fpm'].intensity*corngrph.dark_field)
@@ -246,9 +253,12 @@ def mean_contrast(corngrph, prop_output, ref_intnsty):
             /ref_intnsty).mean()
 
 
-def cost_ftn(corngrph, prop_output, ref_intnsty, planet_star_ratio=1e-10):
+def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
+             , planet_star_ratio=1e-10):
+    update_fpm(fpm_wid, corngrph)
+    update_lyot(lyot_wid, corngrph)
+    prop_output = corngrph(incdnt_wavfrnt)
     contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
-    print('contrast = {}'.format(contrast))
     return (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
                                           *lyot_thrghpt(corngrph)
                                           *strehl(prop_output, ref_intnsty)) )
@@ -361,10 +371,13 @@ def _test_lyot_thrghpt():
 
 
 def _test_cost_ftn():
-    coro = ini_corngrph()
-    output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
-    mask = np.where(coro.dark_field>0.0)
-    result = cost_ftn(coro, output, output['on_fpm'].intensity.max())
+    coro = ini_corngrph()    
+    fpm_wid = 5.0*coro.wvl/coro.pupil_diamtr
+    lyot_wid = 0.6*coro.pupil_diamtr
+    wf = hci.Wavefront(coro.pupil_field, coro.wvl)
+    output = coro(wf)
+    ref_intnsty = output['on_fpm'].intensity.max()
+    result = cost_ftn(fpm_wid, lyot_wid, coro, wf, ref_intnsty)
     print("Cost function value = {}".format(result))
 
 if __name__ == '__main__':
