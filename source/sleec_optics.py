@@ -487,7 +487,9 @@ class Coronagraph(hci.OpticalElement):
             self.load_elements()
         wf = wavefront.copy()
         for i in range(len(self.optical_elements)):
+            print(self.optical_elements[i])  # debug
             wf = self.optical_elements[i].forward(wf)
+            print(i)  # debug
             self.wavefronts[self.names[i]] = wf
         return self.wavefronts
     

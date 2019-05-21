@@ -14,9 +14,8 @@ def input_args():
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
         # normally 10 pixels between adjacent actuators. 
     acttr_spacing = 1E-3  # Actuator pitch 
-    num_pxl_across = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels 
+    num_pxl_across = 2*(num_acttrs_across*acttr_pxl_spacing + 1)  # Number of pixels 
         # across the pupil.
-    
     # `wvl`
     wvl = 600E-9
     pars['wvl'] = wvl
@@ -44,12 +43,15 @@ def input_args():
     acttr_spacing = dm_diamtr/num_acttrs_across
     inflnc_ftn = sop.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
                                , acttr_spacing, acttr_pxl_spacing)
-    try:
-        inflnc_ftn.modes = inflnc_ftn.load_modes()
-    except FileNotFoundError:
-        print("Influence-functions pickle file not found.")
-        print("Generate influence functions on the fly.")
-        inflnc_ftn.modes = inflnc_ftn.genrt_modes()
+    # try:
+    #     inflnc_ftn.modes = inflnc_ftn.load_modes()
+    # except FileNotFoundError:
+        # print("Influence-functions pickle file not found.")
+        # print("Generate influence functions on the fly.")
+        # inflnc_ftn.modes = inflnc_ftn.genrt_modes()
+    print("Generate influence functions on the fly.")
+    inflnc_ftn.modes = inflnc_ftn.genrt_modes(save=False)
+    print("Done")
     pars['inflnc_ftn'] = inflnc_ftn
     
     #  `dm1_vmap`
@@ -68,7 +70,7 @@ def input_args():
     # `fpm_field`
     num_airy = 28  # Outer extent in terms of Airy rings
     fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
-    oversmpl = 8  # Pixel oversampling factor 
+    oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
@@ -151,7 +153,7 @@ def default_args():
     # `fpm_field`
     num_airy = 28  # Outer extent in terms of Airy rings
     fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
-    oversmpl = 8  # Pixel oversampling factor 
+    oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
@@ -385,7 +387,7 @@ def _try_mystic():
     from mystic.solvers import NelderMeadSimplexSolver  
     from mystic.termination import CandidateRelativeTolerance as Crt  
     # Set up coronagraph     
-    coro = ini_corngrph()
+    coro = ini_corngrph(input_args())
     wf = hci.Wavefront(coro.pupil_field, coro.wvl)
     output = coro(wf)
     ref_intnsty = output['on_fpm'].intensity.max()
