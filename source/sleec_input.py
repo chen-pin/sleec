@@ -35,7 +35,7 @@ def input_args():
                                                                   # filename 
         # for a single-actuator influence function (2darray).  The same function 
         # is applied to all actuators.  
-    save_filnm = os.path.join('..', '..', 'sleec_out', 'inflnc_ftns.pkl')  
+    save_filnm = os.path.join('..', '..', 'sleec_out', 'inflnc_ftns_2x.pkl')  
         # File 
         # name for a storing/loading the array of influence functions in NPZ 
         # format.  
@@ -50,7 +50,7 @@ def input_args():
         # print("Generate influence functions on the fly.")
         # inflnc_ftn.modes = inflnc_ftn.genrt_modes()
     print("Generate influence functions on the fly.")
-    inflnc_ftn.modes = inflnc_ftn.genrt_modes(save=False)
+    inflnc_ftn.modes = inflnc_ftn.genrt_modes()
     print("Done")
     pars['inflnc_ftn'] = inflnc_ftn
     
