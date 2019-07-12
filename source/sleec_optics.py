@@ -343,6 +343,7 @@ class InflncFtn(object):
         for i in range(self.acttr_positns.size):
             modes[i, ] = acttr_out(evaluated_grid
                                .shifted(-self.acttr_positns[i]))
+            print("{}/{} mode complete".format((i+1), self.acttr_positns.size))
         if save:
 #            spr.save_npz(self.save_filnm, modes.tocsr())
             save_dict = {'x_tilt': x_tilt, 'y_tilt': y_tilt, 'z_tilt': z_tilt
@@ -487,9 +488,7 @@ class Coronagraph(hci.OpticalElement):
             self.load_elements()
         wf = wavefront.copy()
         for i in range(len(self.optical_elements)):
-            print(self.optical_elements[i])  # debug
             wf = self.optical_elements[i].forward(wf)
-            print(i)  # debug
             self.wavefronts[self.names[i]] = wf
         return self.wavefronts
     

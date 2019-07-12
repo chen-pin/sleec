@@ -8,7 +8,7 @@ import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args():
+def input_args(oversmpl=4, num_airy=28, field_stop=False):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -26,7 +26,7 @@ def input_args():
     pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
     
     # `pupil_field` 
-    pupil_field = hci.circular_aperture(diameter=pupil_diamtr)(pupil_grid)
+    pupil_field = hci.circular_aperture(diameter=0.98*pupil_diamtr)(pupil_grid)
     pars['pupil_field'] = pupil_field
 
     # `inflnc_ftn'
@@ -43,15 +43,12 @@ def input_args():
     acttr_spacing = dm_diamtr/num_acttrs_across
     inflnc_ftn = sop.InflncFtn(pupil_grid, acttr_filnm, save_filnm, dm_diamtr
                                , acttr_spacing, acttr_pxl_spacing)
-    # try:
-    #     inflnc_ftn.modes = inflnc_ftn.load_modes()
-    # except FileNotFoundError:
-        # print("Influence-functions pickle file not found.")
-        # print("Generate influence functions on the fly.")
-        # inflnc_ftn.modes = inflnc_ftn.genrt_modes()
-    print("Generate influence functions on the fly.")
-    inflnc_ftn.modes = inflnc_ftn.genrt_modes()
-    print("Done")
+    try:
+        inflnc_ftn.modes = inflnc_ftn.load_modes()
+    except FileNotFoundError:
+        print("Influence-functions pickle file not found.")
+        print("Generate influence functions on the fly.")
+        inflnc_ftn.modes = inflnc_ftn.genrt_modes()
     pars['inflnc_ftn'] = inflnc_ftn
     
     #  `dm1_vmap`
@@ -68,19 +65,24 @@ def input_args():
     pars['f_num'] = f_num
 
     # `fpm_field`
-    num_airy = 28  # Outer extent in terms of Airy rings
-    fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
-    oversmpl = 4  # Pixel oversampling factor 
+#    num_airy = 28  # Outer extent in terms of Airy rings
+    # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
+    fpm_wid = 5.94098759e-05
+#    oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
                                      , wavelength=pars['wvl'])
     fpm_opacity = hci.circular_aperture(fpm_wid)
-    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    if field_stop:
+        fpm_transm = (1.0 - fpm_opacity(focal_grid))*hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
+    else:
+        fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
     pars['fpm_field'] = fpm_transm
     
     # `lyot_field`
-    lyot_dia = 0.9*pupil_diamtr
+    # lyot_dia = 0.9*pupil_diamtr
+    lyot_dia = 2.80100555e-02
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
     pars['lyot_field'] = lyot_transm
     
@@ -112,7 +114,7 @@ def default_args():
     pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
     
     # `pupil_field` 
-    pupil_field = hci.circular_aperture(diameter=pupil_diamtr)(pupil_grid)
+    pupil_field = hci.circular_aperture(diameter=0.98*pupil_diamtr)(pupil_grid)
     pars['pupil_field'] = pupil_field
 
     # `inflnc_ftn'
@@ -152,7 +154,8 @@ def default_args():
 
     # `fpm_field`
     num_airy = 28  # Outer extent in terms of Airy rings
-    fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
+    # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
+    fpm_wid = 5.94098759e-05
     oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
@@ -163,7 +166,8 @@ def default_args():
     pars['fpm_field'] = fpm_transm
     
     # `lyot_field`
-    lyot_dia = 0.9*pupil_diamtr
+    # lyot_dia = 0.9*pupil_diamtr
+    lyot_dia = 2.80100555e-02
     lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
     pars['lyot_field'] = lyot_transm
     
@@ -387,7 +391,7 @@ def _try_mystic():
     from mystic.solvers import NelderMeadSimplexSolver  
     from mystic.termination import CandidateRelativeTolerance as Crt  
     # Set up coronagraph     
-    coro = ini_corngrph(input_args())
+    coro = ini_corngrph(default_args())
     wf = hci.Wavefront(coro.pupil_field, coro.wvl)
     output = coro(wf)
     ref_intnsty = output['on_fpm'].intensity.max()
@@ -410,7 +414,7 @@ def _try_mystic():
     # Set up cost function
     def costfunc(x):
         return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
-    # Start solving
+    # Start solving 
     solver.Solve(costfunc, term)
     sol = solver.Solution()
     time_elapsed = time.time() - time1
