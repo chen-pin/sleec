@@ -8,7 +8,7 @@ import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args():
+def input_args(oversmpl=4):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -71,7 +71,7 @@ def input_args():
     num_airy = 28  # Outer extent in terms of Airy rings
     # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
     fpm_wid = 5.94098759e-05
-    oversmpl = 8  # Pixel oversampling factor 
+#    oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
@@ -156,7 +156,7 @@ def default_args():
     num_airy = 28  # Outer extent in terms of Airy rings
     # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
     fpm_wid = 5.94098759e-05
-    oversmpl = 8  # Pixel oversampling factor 
+    oversmpl = 4  # Pixel oversampling factor 
     focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
