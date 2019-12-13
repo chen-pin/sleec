@@ -8,7 +8,7 @@ import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args(oversmpl=4, num_airy=28, field_stop=False):
+def input_args(oversmpl=4, num_airy=28, field_stop=True):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -207,9 +207,17 @@ def sphrcl_vmap(shape, focal_length, diamtr):
     return height 
 
 
-def update_fpm(fpm_wid, corngrph):
+def update_fpm(fpm_wid, corngrph, num_airy=28, field_stop=True):
     fpm_opacity = hci.circular_aperture(fpm_wid)
-    fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
+    if field_stop:
+        fpm_transm = (
+            (1.0 - fpm_opacity(corngrph.fpm_field.grid))
+            *hci.circular_aperture(
+                num_airy*corngrph.f_num*corngrph.wvl
+                )(corngrph.fpm_field.grid)
+        )
+    else:
+        fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
     corngrph.fpm_field= fpm_transm
     corngrph.optical_elements[6] = corngrph.fpm
     return corngrph
@@ -391,14 +399,14 @@ def _try_mystic():
     from mystic.solvers import NelderMeadSimplexSolver  
     from mystic.termination import CandidateRelativeTolerance as Crt  
     # Set up coronagraph     
-    coro = ini_corngrph(default_args())
+    coro = ini_corngrph(input_args())
     wf = hci.Wavefront(coro.pupil_field, coro.wvl)
     output = coro(wf)
     ref_intnsty = output['on_fpm'].intensity.max()
     # Set optimization parameters
     maxiter = 100 
     ndim = 2 
-    x0 = [6.0*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    x0 = [12.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     upper_bound = [12.0*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
     esow = Monitor() 
@@ -429,7 +437,7 @@ def _try_mystic():
     print("Function evaluations:  {}".format(len(esow.x)))
     print("Time elapsed:  {} s".format(time_elapsed))
     print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final, ref_intnsty)))
-    hci.imshow_field(np.log10(contrast_final), vmin='-10', vmax='0', cmap='inferno')
+    hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0', cmap='cubehelix')
     plt.colorbar()
     plt.show()
     return sol, esow, ssow, coro, wf, ref_intnsty
