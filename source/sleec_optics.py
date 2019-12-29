@@ -1,4 +1,33 @@
-"""Module for modeling a coronagraph using HCIPy as the propagation code."""
+"""Module for modeling a coronagraph using HCIPy as the propagation code.
+
+Notes   
+-----
+- Basic HCIPy Objects
+    `CoordsBase`:  A construct of coordinates whose values comprise a list of 
+        points, and it contains methods and attributes for coordinate 
+        transformations.
+    `Grid`:  A set of points on which a Field is valuated.  Its arguments are 
+        a `CoordsBase` object and an optional array of weights.  Weights are 
+        the interval size, area, volume or hypervolume of each point, 
+        depending on the number of dimensions.  If this is None (default), 
+        the weights will be attempted to be calculated on the fly when needed.
+    `Feild`:  The value of some physical quantity for each point in some 
+        coordinate system.  Its arguments are an array of values or tensors 
+        for each `Grid` point and a `Grid` object.
+    `Wavefront`:  Representation of the optical wavefront.  Its arguments 
+        comprise a `Field` object named <electric_field> and <wavelength>.  
+    `OpticalElement`:  An object that can propagate a `Wavefront`, given an 
+        input `Wavefront` argument.  The `OpticalElement` has forward and 
+        backward progaton methods.  
+    `OpticalSystem`:  A set of optical elements.  It is a 
+        subclass of `OpticalElement`.  Its input comprises a list of 
+        `OpticalElement` object.  Its propagation methods operates on elements 
+        in the list sequentially, simulating an end-to-end propagation.
+    mode:  A `Field` object representing a basis function
+    `ModeBasis`:  A list of modes  
+
+
+"""
 
 import os
 import pickle
@@ -20,11 +49,6 @@ class DefrmblMirror(hci.OpticalElement):
     surfc : hci.Field
         The DM surface.
 
-    Attributes
-    ----------
-    phase_for : hci.Field, @ property
-        DM surface in terms of phase. 
-
     """
     def __init__(self, surfc):
         self.surfc = surfc
@@ -34,13 +58,13 @@ class DefrmblMirror(hci.OpticalElement):
 
         Parameters
         ----------
-        wavefront : Wavefront
-        The incoming wavefront.
+        wavefront : hci.Wavefront
+            The incoming wavefront.
         
         Returns
         -------
-        Wavefront
-        The reflected wavefront.
+        hci.Wavefront
+            The reflected wavefront.
         """
         wf = wavefront.copy()
         wf.electric_field *= np.exp(
@@ -58,7 +82,7 @@ class DefrmblMirror(hci.OpticalElement):
         
         Returns
         -------
-        Wavefront
+        hci.Wavefront
             The reflected wavefront.
         """
         wf = wavefront.copy()
@@ -67,21 +91,21 @@ class DefrmblMirror(hci.OpticalElement):
                                    )
         return wf
 
-    def phase_for(self, wavelength):
-        """Get the phase that is added to a wavefront with a specified 
-        wavelength.
+    # def phase_for(self, wavelength):
+    #     """Get the phase that is added to a wavefront with a specified 
+    #     wavelength.
         
-        Parameters
-        ----------
-        wavelength : float
-            The wavelength at which to calculate the phase deformation.
+    #     Parameters
+    #     ----------
+    #     wavelength : float
+    #         The wavelength at which to calculate the phase deformation.
         
-        Returns
-        -------
-        result : hci.Field
-            The calculated phase deformation.
-        """
-        return 2*self.surfc*2*np.pi/wavelength
+    #     Returns
+    #     -------
+    #     hci.Field
+    #         The calculated phase deformation.
+    #     """
+    #     return 2*self.surfc*2*np.pi/wavelength
 
 
 class TransmMask(hci.OpticalElement):
@@ -119,9 +143,7 @@ class FraunhoferBack(hci.OpticalElement):
     wavelength_0 : float
         Reference wavelength
     focal_length : float
-        Focal distance
-    wavelength : float 
-        Wavelength
+        Focal distance    
     """
 
     def __init__(self, pupil_grid, focal_grid, wavelength_0=1, focal_length=1):
@@ -150,6 +172,8 @@ class FresnelBack(hci.OpticalElement):
         Grid on which the input wavefront is defined.
     distance : float
         Propagation distance
+    wavelength : float 
+        Wavelength
     """
     def __init__(self, input_grid, distance, wavelength=1):
         self.input_grid = input_grid
@@ -203,8 +227,8 @@ class InflncFtn(object):
     
     Notes
     -----
-    - Future plan:  Expand to use a separate influence function for each 
-      actuator.  
+    - In HCIPy, a mode is a `hci.Field` object, and a `hci.ModeBasis` is a 
+        list of modes.    
  
     """
     def __init__(self, pupil_grid=hci.make_pupil_grid(481)
@@ -302,15 +326,15 @@ class InflncFtn(object):
             Tilt of the DM around the z-axis in radians.
         save : bool
             True --> save the array of influence functions as a CSR sparse 
-            matrix in npz file format.  
-            False --> return a hci.ModeBasis object representing the 
+            matrix as a pickle file.  
+            False --> return a `hci.ModeBasis` object representing the 
             array of influence functions.
         intrpltn : 'nearest' or 'linear'
             Interpolation method   
 
         Returns
         -------
-        result : csr_matrix, if `save` = False
+        csr_matrix, if `save` = False
             Sparse matrix of peak-normalized influence functions.  If 
             `save`=True, a dictionary of the CSR sparse matrix of influence 
             functions (key = 'modes') and relevant paramters are pickled to a 
@@ -380,6 +404,14 @@ class InflncFtn(object):
         return hci.Field(surfc, self.pupil_grid)      
 
     def load_modes(self):
+        """Load previously pickled influence functions.  
+
+        Returns
+        -------
+        csr_matrix
+            Sparse matrix of peak-normalized influence functions.
+        
+        """
         f = open(self.save_filnm, 'rb')
         dict_results = pickle.load(f)
         return dict_results['modes']
@@ -427,13 +459,60 @@ class InflncFtn(object):
 class Coronagraph(hci.OpticalElement):
     """SLEEC coronagraph model. 
 
+    Parameters
+    ----------
+    wvl : float
+        Wavelength
+    pupil_diamtr : float
+        Diameter of the entrance pupil
+    pupil_field : hci.Field
+        Field at the entrance pupil
+    fpm_field : hci.Field
+        Field transmission function of the focal-plane mask (FPM)
+    lyot_field : hci.Field
+        Field transmission function of the Lyot-plane mask (Lyot stop)
+    dark_field : hci.Field
+        Prescription of the target dark-hole zone.  The field values are 
+        *intensity* weights.  
+    dm1_vmap : hci.Field
+        "Voltage" map applied to DM1.  
+    dm2_vmap : hci.Field
+        "Voltage" map applied to DM2
+    inflnc_ftn : sleec_optics.InflncFtn
+        Influence-functions object
+    dm_seprtn : float
+        Physical separation between the two DMs
+    f_num : float
+        Focal ratio at the FPM
+    optical_elements : list
+        A list of 10 `OpticalElement` objects currently comprising the
+        following optical planes
+            0. <pupil>
+            1. <dm1>
+            2. <on_dm2>
+            3. <dm2>
+            4. <relay_pupil>
+            5. <on_fpm>
+            6. <fpm>
+            7. <on_lyot>
+            8. <lyot>
+            9. <camera>.
+        They are instantiated via the @property decorator.  
+
+    Attributes
+    ----------
+    names : list of str
+        Names for the <optical_elements> used as keys in the <wavefronts>
+        dictionary
+    wavefronts : dictionary of OpticalElement objects
+        Returned by <forward> and <backward> progation methods
+
     Notes
     -----
     - Need optimizable attributes to be modifiable from one iteration to the 
-      next.    
+      next; i.e. a function outside of this class manipulates the attributes.
     - Use @property to define those attributes.  
-    - Have a method that imports <sleec_inp.py> to initialize the coronagraph 
-    - Can have a function (outside of this class) to manipulate the attributes.
+    - <load_elements> method imports <sleec_inp.py> to initialize the coronagraph.
 
     """
     def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
@@ -592,6 +671,7 @@ class Coronagraph(hci.OpticalElement):
       
 
 def demo_coronagraph():
+    """Sample routine to demonstrate coronagraph propagation"""
     import matplotlib.pyplot as plt
     import sleec_input as sli
     corngrph = sli.ini_corngrph()
@@ -601,8 +681,11 @@ def demo_coronagraph():
     output0 = corngrph(wf0)
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
-    for wf in output0:
-        plt.subplot(2, len(output0)//2, subplot_seq)
+    for key in corngrph.names:
+        print(key)
+        wf = output0[key]
+        print(wf)
+        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
         hci.imshow_field(wf.intensity, cmap='inferno')
         plt.colorbar()
         subplot_seq += 1

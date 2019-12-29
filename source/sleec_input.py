@@ -165,7 +165,8 @@ def default_args():
                                      , focal_length=pars['f_num']*pupil_diamtr
                                      , wavelength=pars['wvl'])
     fpm_opacity = hci.circular_aperture(fpm_wid)
-    fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    # fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    fpm_transm = (1.0 - fpm_opacity(focal_grid))*hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
     pars['fpm_field'] = fpm_transm
     
     # `lyot_field`
@@ -280,6 +281,22 @@ def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     return (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
                                           *lyot_thrghpt(corngrph)
                                           *strehl(prop_output, ref_intnsty)) )
+
+
+def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
+             , planet_star_ratio=1e-10):
+    update_fpm(fpm_wid, corngrph)
+    update_lyot(lyot_wid, corngrph)
+    prop_output = corngrph(incdnt_wavfrnt)
+    contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
+    raw_cost = (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
+                                          *lyot_thrghpt(corngrph)
+                                          *strehl(prop_output, ref_intnsty)) )
+    beta = 1.0
+    target = 1e-10
+    tolrnc = 3e-10
+    cost = -beta*((raw_cost-target)/tolrnc)**2
+    return cost
 
 
 def demo():
@@ -402,16 +419,23 @@ def _try_mystic():
     from mystic.solvers import NelderMeadSimplexSolver  
     from mystic.termination import CandidateRelativeTolerance as Crt  
     # Set up coronagraph     
+    print("Setting up coronagraph")
     coro = ini_corngrph(input_args())
     wf = hci.Wavefront(coro.pupil_field, coro.wvl)
     output = coro(wf)
     ref_intnsty = output['on_fpm'].intensity.max()
     # Set optimization parameters
+    print("Initializing optimization parameters")
     maxiter = 100 
+    print("maxiter = {}".format(maxiter))
     ndim = 2 
-    x0 = [12.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
+    print("ndim = {}".format(ndim))
+    x0 = [2.0*coro.wvl/coro.pupil_diamtr, 0.75*coro.pupil_diamtr]
+    print("x0 = {}".format(x0))
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
-    upper_bound = [12.0*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    print("lower_bound = {}".format(lower_bound))
+    upper_bound = [3.1*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    print("upper_bound = {}".format(upper_bound))
     esow = Monitor() 
     ssow = Monitor()
     solver = NelderMeadSimplexSolver(ndim)
@@ -422,10 +446,13 @@ def _try_mystic():
     solver.SetGenerationMonitor(ssow)
     term = Crt()
     time1 = time.time() 
+    print("wall time = {}".format(time1))
     # Set up cost function
+    "Setting up cost function"
     def costfunc(x):
-        return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
+        return cost_ftn_2(x[0], x[1], coro, wf, ref_intnsty)
     # Start solving 
+    "Start solving"
     solver.Solve(costfunc, term)
     sol = solver.Solution()
     time_elapsed = time.time() - time1
