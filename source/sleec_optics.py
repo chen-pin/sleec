@@ -162,7 +162,7 @@ class FraunhoferBack(hci.OpticalElement):
     def backward(self, wavefront):
         return self.prop.forward(wavefront)
 
-
+@hci.make_agnostic_optical_element()
 class FresnelBack(hci.OpticalElement):
     """`hcipy.OpticalElement` for backward Fresnel propagation.
 
@@ -181,6 +181,7 @@ class FresnelBack(hci.OpticalElement):
         self.wavelength = wavelength
         self.prop = hci.FresnelPropagator(input_grid=self.input_grid
                                          , distance=self.distance)
+        self.output_grid = input_grid
     def forward(self, wavefront):
         return self.prop.backward(wavefront)
     def backward(self, wavefront):
@@ -635,9 +636,9 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Pupil
     @property
     def relay_pupil(self):
-#        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
-        prop_to_pupil = hci.FresnelPropagator(self.pupil_field.grid
-                                              , self.dm_seprtn).backward
+        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
+#        prop_to_pupil = hci.FresnelPropagator(self.pupil_field.grid
+#                                              , self.dm_seprtn).backward
         return prop_to_pupil
     # Focal length
     @property
