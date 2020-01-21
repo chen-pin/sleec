@@ -184,9 +184,9 @@ def default_args():
     return pars
 
 
-def ini_corngrph(args=default_args()):
+def ini_corngrph(args=default_args(), verbose=False):
     # Initialize a coronagraph
-    corngrph = sop.Coronagraph()
+    corngrph = sop.Coronagraph(verbose=verbose)
     corngrph.wvl = args['wvl']
     corngrph.pupil_diamtr = args['pupil_diamtr']
     corngrph.pupil_field = args['pupil_field']
@@ -289,13 +289,14 @@ def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     update_lyot(lyot_wid, corngrph)
     prop_output = corngrph(incdnt_wavfrnt)
     contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
-    raw_cost = (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
+    raw_cost = (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output
+                                               , corngrph)
                                           *lyot_thrghpt(corngrph)
                                           *strehl(prop_output, ref_intnsty)) )
     beta = 1.0
     target = 1e-10
     tolrnc = 3e-10
-    cost = -beta*((raw_cost-target)/tolrnc)**2
+    cost = beta*((raw_cost-target)/tolrnc)**2
     return cost
 
 
@@ -430,7 +431,7 @@ def _try_mystic():
     print("maxiter = {}".format(maxiter))
     ndim = 2 
     print("ndim = {}".format(ndim))
-    x0 = [2.0*coro.wvl/coro.pupil_diamtr, 0.75*coro.pupil_diamtr]
+    x0 = [3.0*coro.wvl/coro.pupil_diamtr, 0.95*coro.pupil_diamtr]
     print("x0 = {}".format(x0))
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     print("lower_bound = {}".format(lower_bound))
@@ -450,7 +451,7 @@ def _try_mystic():
     # Set up cost function
     "Setting up cost function"
     def costfunc(x):
-        return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
+        return cost_ftn_2(x[0], x[1], coro, wf, ref_intnsty)
     # Start solving 
     "Start solving"
     solver.Solve(costfunc, term)
@@ -466,8 +467,10 @@ def _try_mystic():
     print("Iterations:  {}".format(solver.generations))
     print("Function evaluations:  {}".format(len(esow.x)))
     print("Time elapsed:  {} s".format(time_elapsed))
-    print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final, ref_intnsty)))
-    hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0', cmap='cubehelix')
+    print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final
+                                                        , ref_intnsty)))
+    hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0'
+                     , cmap='cubehelix')
     plt.colorbar()
     plt.show()
     return sol, esow, ssow, coro, wf, ref_intnsty

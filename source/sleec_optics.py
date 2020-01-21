@@ -36,8 +36,8 @@ import numpy as np
 import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
-from hcipy_local import hcipy as hci
-#import hcipy as hci
+#from hcipy_local import hcipy as hci
+import hcipy as hci
 
 
 class DefrmblMirror(hci.OpticalElement):
@@ -518,7 +518,8 @@ class Coronagraph(hci.OpticalElement):
     def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
                  , fpm_field=None , lyot_field=None, dark_field=None
                  , dm1_vmap=None , dm2_vmap=None, inflnc_ftn=None
-                 , dm_seprtn=None , f_num=None, optical_elements=[]):
+                 , dm_seprtn=None , f_num=None, optical_elements=[]
+                 , verbose=False):
         self.wvl = wvl
         self.pupil_diamtr = pupil_diamtr
         self.pupil_field = pupil_field
@@ -534,6 +535,7 @@ class Coronagraph(hci.OpticalElement):
         self.names = ['pupil', 'dm1', 'on_dm2', 'dm2'
                       , 'relay_pupil', 'on_fpm', 'fpm', 'on_lyot'
                       , 'lyot', 'camera']
+        self.verbose = verbose
                       
     def load_elements(self):
         self.optical_elements[0] = self.pupil
@@ -569,6 +571,8 @@ class Coronagraph(hci.OpticalElement):
         for i in range(len(self.optical_elements)):
             wf = self.optical_elements[i].forward(wf)
             self.wavefronts[self.names[i]] = wf
+            if self.verbose:
+                print("Propagated forward through {}".format(self.names[i]))
         return self.wavefronts
     
     def backward(self, wavefront, load_elements=True):
@@ -579,9 +583,12 @@ class Coronagraph(hci.OpticalElement):
         for i in len(self.optical_elements):
             wf = self.optical_elements[::-1][i].backward(wf)
             self.wavefronts[self.names[::-1][i]] = wf
+            if self.verbose:
+                print("Propagated backward through {}".format(self.names[i]))
         return self.wavefronts
     
-    def get_transformation_matrix_forward(self, wavelength=1, load_elements=True):
+    def get_transformation_matrix_forward(self, wavelength=1
+                                          , load_elements=True):
         matrix = 1
         if load_elements:
             self.load_elements()
@@ -592,7 +599,8 @@ class Coronagraph(hci.OpticalElement):
                            )
         return matrix
     
-    def get_transformation_matrix_backward(self, wavelength=1, load_elements=True):
+    def get_transformation_matrix_backward(self, wavelength=1
+                                           , load_elements=True):
         matrix = 1
         if load_elements:   
             self.load_elements()
@@ -627,7 +635,9 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Pupil
     @property
     def relay_pupil(self):
-        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
+#        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
+        prop_to_pupil = hci.FresnelPropagator(self.pupil_field.grid
+                                              , self.dm_seprtn).backward
         return prop_to_pupil
     # Focal length
     @property
@@ -636,7 +646,6 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Focal Plane
     @property
     def on_fpm(self):
-    #    prop_to_focal = hci.propagation.fraunhofer.FraunhoferPropagatorMonochromatic(self.pupil_field.grid
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                 , self.fpm_field.grid
                                                 , wavelength_0=self.wvl
@@ -674,7 +683,7 @@ def demo_coronagraph():
     """Sample routine to demonstrate coronagraph propagation"""
     import matplotlib.pyplot as plt
     import sleec_input as sli
-    corngrph = sli.ini_corngrph()
+    corngrph = sli.ini_corngrph(verbose=True)
     print(corngrph.names)
     wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
                                     , wavelength=corngrph.wvl)
