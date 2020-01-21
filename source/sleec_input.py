@@ -466,8 +466,13 @@ def _try_mystic():
     print("Iterations:  {}".format(solver.generations))
     print("Function evaluations:  {}".format(len(esow.x)))
     print("Time elapsed:  {} s".format(time_elapsed))
-    print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final, ref_intnsty)))
-    hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0', cmap='cubehelix')
+    print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final
+                                          , ref_intnsty)))
+    hci.imshow_field(coro.fpm_field, cmap='cubehelix')
+    plt.colorbar()
+    plt.show()
+    hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0'
+                     , cmap='cubehelix')
     plt.colorbar()
     plt.show()
     return sol, esow, ssow, coro, wf, ref_intnsty
