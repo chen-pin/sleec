@@ -162,7 +162,6 @@ class FraunhoferBack(hci.OpticalElement):
     def backward(self, wavefront):
         return self.prop.forward(wavefront)
 
-@hci.make_agnostic_optical_element()
 class FresnelBack(hci.OpticalElement):
     """`hcipy.OpticalElement` for backward Fresnel propagation.
 
@@ -539,16 +538,16 @@ class Coronagraph(hci.OpticalElement):
         self.verbose = verbose
                       
     def load_elements(self):
-        self.optical_elements[0] = self.pupil
-        self.optical_elements[1] = self.dm1
-        self.optical_elements[2] = self.on_dm2
-        self.optical_elements[3] = self.dm2
-        self.optical_elements[4] = self.relay_pupil
-        self.optical_elements[5] = self.on_fpm
-        self.optical_elements[6] = self.fpm
-        self.optical_elements[7] = self.on_lyot
-        self.optical_elements[8] = self.lyot
-        self.optical_elements[9] = self.camera
+        self.optical_elements[0] = [self.pupil, 1]
+        self.optical_elements[1] = [self.dm1, 1]
+        self.optical_elements[2] = [self.on_dm2, 1]
+        self.optical_elements[3] = [self.dm2, 1]
+        self.optical_elements[4] = [self.relay_pupil, -1]
+        self.optical_elements[5] = [self.on_fpm, 1]
+        self.optical_elements[6] = [self.fpm, 1]
+        self.optical_elements[7] = [self.on_lyot, -1]
+        self.optical_elements[8] = [self.lyot, 1]
+        self.optical_elements[9] = [self.camera, 1]
 
     def forward(self, wavefront, load_elements=True):
         """
@@ -570,8 +569,14 @@ class Coronagraph(hci.OpticalElement):
             self.load_elements()
         wf = wavefront.copy()
         for i in range(len(self.optical_elements)):
-            wf = self.optical_elements[i].forward(wf)
-            self.wavefronts[self.names[i]] = wf
+            if self.optical_elements[i][1] == -1:
+                wf0 = self.optical_elements[i][0].forward(wf)
+                print("wf0 shape: {}".format(wf0.electric_field.shape))
+                wf = self.optical_elements[i][0].backward(wf)
+                print("wf shape: {}".format(wf.electric_field.shape))
+            else:
+                wf = self.optical_elements[i][0].forward(wf)
+            self.wavefronts[self.names[i][0]] = wf
             if self.verbose:
                 print("Propagated forward through {}".format(self.names[i]))
         return self.wavefronts
@@ -636,9 +641,9 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Pupil
     @property
     def relay_pupil(self):
-        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
-#        prop_to_pupil = hci.FresnelPropagator(self.pupil_field.grid
-#                                              , self.dm_seprtn).backward
+#        prop_to_pupil = FresnelBack(self.pupil_field.grid, self.dm_seprtn)
+        prop_to_pupil = hci.FresnelPropagator(self.pupil_field.grid
+                                              , self.dm_seprtn)
         return prop_to_pupil
     # Focal length
     @property
@@ -649,8 +654,9 @@ class Coronagraph(hci.OpticalElement):
     def on_fpm(self):
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                 , self.fpm_field.grid
-                                                , wavelength_0=self.wvl
-                                                , focal_length=self.focal_length)
+                                                , wavelength=self.wvl
+                                                , focal_length=self.focal_length
+                                                )
         return prop_to_focal
     # Focal-Plane Mask
     @property
@@ -660,10 +666,16 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Lyot Plane
     @property
     def on_lyot(self):
-        prop_to_lyot = FraunhoferBack(self.pupil_field.grid
-                                      , self.fpm_field.grid
-                                      , wavelength_0=self.wvl
-                                      , focal_length=self.focal_length)
+#        prop_to_lyot = FraunhoferBack(self.pupil_field.grid
+#                                      , self.fpm_field.grid
+#                                      , wavelength_0=self.wvl
+#                                      , focal_length=self.focal_length)
+        prop_to_lyot = hci.FraunhoferPropagator(
+                           input_grid=self.pupil_field.grid
+                           , output_grid=self.fpm_field.grid
+                           , focal_length=self.focal_length
+                           , wavelength=self.wvl
+                                               )
         return prop_to_lyot
     # Lyot-Plane Mask
     @property
@@ -686,6 +698,7 @@ def demo_coronagraph():
     import sleec_input as sli
     corngrph = sli.ini_corngrph(verbose=True)
     print(corngrph.names)
+    print("fpm_field shape: {}".format(corngrph.fpm_field.shape))
     wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
                                     , wavelength=corngrph.wvl)
     output0 = corngrph(wf0)

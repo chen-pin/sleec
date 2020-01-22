@@ -4,7 +4,8 @@ import os
 import numpy as np
 # import hcipy as hci
 import matplotlib.pyplot as plt
-import hcipy_local.hcipy as hci
+#import hcipy_local.hcipy as hci
+import hcipy as hci
 import sleec_optics as sop
 import time
 
@@ -159,11 +160,13 @@ def default_args():
     num_airy = 28  # Outer extent in terms of Airy rings
     # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
     fpm_wid = 5.94098759e-05
-    oversmpl = 4  # Pixel oversampling factor 
-    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
+    oversmpl = 8  # Pixel oversampling factor 
+    focal_grid = hci.make_focal_grid_from_pupil_grid(
+                                     pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
-                                     , wavelength=pars['wvl'])
+                                     , wavelength=pars['wvl']
+                                                    )
     fpm_opacity = hci.circular_aperture(fpm_wid)
     # fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
     fpm_transm = (1.0 - fpm_opacity(focal_grid))*hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
