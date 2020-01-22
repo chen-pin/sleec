@@ -37,7 +37,7 @@ import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
 from hcipy_local import hcipy as hci
-#import hcipy as hci
+# import hcipy as hci
 
 
 class DefrmblMirror(hci.OpticalElement):

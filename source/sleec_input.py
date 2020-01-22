@@ -278,9 +278,12 @@ def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     update_lyot(lyot_wid, corngrph)
     prop_output = corngrph(incdnt_wavfrnt)
     contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
-    return (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
-                                          *lyot_thrghpt(corngrph)
-                                          *strehl(prop_output, ref_intnsty)) )
+    peak_factor = ( fpm_thrghpt(prop_output, corngrph)*lyot_thrghpt(corngrph)
+                                          *strehl(prop_output, ref_intnsty)
+                  )
+    print("Contrast = {:E}".format(contrast)) 
+    print("Peak factor = {:E}".format(peak_factor)) 
+    return (contrast+planet_star_ratio)/peak_factor
 
 
 def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
@@ -430,11 +433,11 @@ def _try_mystic():
     print("maxiter = {}".format(maxiter))
     ndim = 2 
     print("ndim = {}".format(ndim))
-    x0 = [2.0*coro.wvl/coro.pupil_diamtr, 0.75*coro.pupil_diamtr]
+    x0 = [5.0*coro.wvl/coro.pupil_diamtr, 0.7*coro.pupil_diamtr]
     print("x0 = {}".format(x0))
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     print("lower_bound = {}".format(lower_bound))
-    upper_bound = [3.1*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    upper_bound = [8*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
     print("upper_bound = {}".format(upper_bound))
     esow = Monitor() 
     ssow = Monitor()
@@ -468,9 +471,6 @@ def _try_mystic():
     print("Time elapsed:  {} s".format(time_elapsed))
     print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final
                                           , ref_intnsty)))
-    hci.imshow_field(coro.fpm_field, cmap='cubehelix')
-    plt.colorbar()
-    plt.show()
     hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0'
                      , cmap='cubehelix')
     plt.colorbar()
