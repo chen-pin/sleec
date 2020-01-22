@@ -4,8 +4,7 @@ import os
 import numpy as np
 # import hcipy as hci
 import matplotlib.pyplot as plt
-#import hcipy_local.hcipy as hci
-import hcipy as hci
+import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
@@ -160,13 +159,11 @@ def default_args():
     num_airy = 28  # Outer extent in terms of Airy rings
     # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
     fpm_wid = 5.94098759e-05
-    oversmpl = 8  # Pixel oversampling factor 
-    focal_grid = hci.make_focal_grid_from_pupil_grid(
-                                     pupil_grid=pupil_grid, q=oversmpl
+    oversmpl = 4  # Pixel oversampling factor 
+    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
                                      , num_airy=num_airy
                                      , focal_length=pars['f_num']*pupil_diamtr
-                                     , wavelength=pars['wvl']
-                                                    )
+                                     , wavelength=pars['wvl'])
     fpm_opacity = hci.circular_aperture(fpm_wid)
     # fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
     fpm_transm = (1.0 - fpm_opacity(focal_grid))*hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
@@ -187,9 +184,9 @@ def default_args():
     return pars
 
 
-def ini_corngrph(args=default_args(), verbose=False):
+def ini_corngrph(args=default_args()):
     # Initialize a coronagraph
-    corngrph = sop.Coronagraph(verbose=verbose)
+    corngrph = sop.Coronagraph()
     corngrph.wvl = args['wvl']
     corngrph.pupil_diamtr = args['pupil_diamtr']
     corngrph.pupil_field = args['pupil_field']
@@ -281,9 +278,12 @@ def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     update_lyot(lyot_wid, corngrph)
     prop_output = corngrph(incdnt_wavfrnt)
     contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
-    return (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
-                                          *lyot_thrghpt(corngrph)
-                                          *strehl(prop_output, ref_intnsty)) )
+    peak_factor = ( fpm_thrghpt(prop_output, corngrph)*lyot_thrghpt(corngrph)
+                                          *strehl(prop_output, ref_intnsty)
+                  )
+    print("Contrast = {:E}".format(contrast)) 
+    print("Peak factor = {:E}".format(peak_factor)) 
+    return (contrast+planet_star_ratio)/peak_factor
 
 
 def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
@@ -292,14 +292,13 @@ def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     update_lyot(lyot_wid, corngrph)
     prop_output = corngrph(incdnt_wavfrnt)
     contrast = mean_contrast(corngrph, prop_output, ref_intnsty)
-    raw_cost = (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output
-                                               , corngrph)
+    raw_cost = (contrast+planet_star_ratio)/( (fpm_thrghpt(prop_output, corngrph)
                                           *lyot_thrghpt(corngrph)
                                           *strehl(prop_output, ref_intnsty)) )
     beta = 1.0
     target = 1e-10
     tolrnc = 3e-10
-    cost = beta*((raw_cost-target)/tolrnc)**2
+    cost = -beta*((raw_cost-target)/tolrnc)**2
     return cost
 
 
@@ -434,11 +433,11 @@ def _try_mystic():
     print("maxiter = {}".format(maxiter))
     ndim = 2 
     print("ndim = {}".format(ndim))
-    x0 = [3.0*coro.wvl/coro.pupil_diamtr, 0.95*coro.pupil_diamtr]
+    x0 = [5.0*coro.wvl/coro.pupil_diamtr, 0.7*coro.pupil_diamtr]
     print("x0 = {}".format(x0))
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     print("lower_bound = {}".format(lower_bound))
-    upper_bound = [3.1*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
+    upper_bound = [8*coro.wvl/coro.pupil_diamtr, 1.0*coro.pupil_diamtr]
     print("upper_bound = {}".format(upper_bound))
     esow = Monitor() 
     ssow = Monitor()
@@ -454,7 +453,7 @@ def _try_mystic():
     # Set up cost function
     "Setting up cost function"
     def costfunc(x):
-        return cost_ftn_2(x[0], x[1], coro, wf, ref_intnsty)
+        return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
     # Start solving 
     "Start solving"
     solver.Solve(costfunc, term)
@@ -471,7 +470,7 @@ def _try_mystic():
     print("Function evaluations:  {}".format(len(esow.x)))
     print("Time elapsed:  {} s".format(time_elapsed))
     print("Avg. raw contrast:  {}".format(mean_contrast(coro, output_final
-                                                        , ref_intnsty)))
+                                          , ref_intnsty)))
     hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0'
                      , cmap='cubehelix')
     plt.colorbar()
