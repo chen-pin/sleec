@@ -36,8 +36,8 @@ import numpy as np
 import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
-from hcipy_local import hcipy as hci
-# import hcipy as hci
+# from hcipy_local import hcipy as hci
+import hcipy as hci
 
 
 class DefrmblMirror(hci.OpticalElement):
@@ -146,14 +146,12 @@ class FraunhoferBack(hci.OpticalElement):
         Focal distance    
     """
 
-    def __init__(self, pupil_grid, focal_grid, wavelength_0=1, focal_length=1):
+    def __init__(self, pupil_grid, focal_grid, focal_length=1):
         self.pupil_grid = pupil_grid
         self.focal_grid = focal_grid
-        self.wavelength_0 = wavelength_0
         self.focal_length = focal_length
         self.prop = hci.FraunhoferPropagator(input_grid=self.pupil_grid
                                              , output_grid=self.focal_grid
-                                             , wavelength_0=self.wavelength_0
                                              , focal_length=self.focal_length
                                             )
     
@@ -639,7 +637,6 @@ class Coronagraph(hci.OpticalElement):
     #    prop_to_focal = hci.propagation.fraunhofer.FraunhoferPropagatorMonochromatic(self.pupil_field.grid
         prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
                                                 , self.fpm_field.grid
-                                                , wavelength_0=self.wvl
                                                 , focal_length=self.focal_length)
         return prop_to_focal
     # Focal-Plane Mask
@@ -652,7 +649,6 @@ class Coronagraph(hci.OpticalElement):
     def on_lyot(self):
         prop_to_lyot = FraunhoferBack(self.pupil_field.grid
                                       , self.fpm_field.grid
-                                      , wavelength_0=self.wvl
                                       , focal_length=self.focal_length)
         return prop_to_lyot
     # Lyot-Plane Mask
@@ -665,8 +661,8 @@ class Coronagraph(hci.OpticalElement):
     def camera(self):
         prop_to_camera = hci.FraunhoferPropagator(self.pupil_field.grid
                                                   , self.fpm_field.grid
-                                                  , wavelength_0=self.wvl
-                                                  , focal_length=self.focal_length)
+                                                  , focal_length
+                                                        =self.focal_length)
         return prop_to_camera
       
 
