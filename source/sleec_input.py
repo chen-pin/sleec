@@ -8,7 +8,7 @@ import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args(oversmpl=8, num_airy=2*28, field_stop=True):
+def input_args(oversmpl=8, num_airy=2*48, field_stop=True):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -642,6 +642,6 @@ def _try_mystic_2par():
 
 
 if __name__ == '__main__':
-#    _try_mystic_2par()
+    _try_mystic_2par()
 #    _try_mystic_fpm()
-    _try_mystic_lyot()
+#    _try_mystic_lyot()
