@@ -614,7 +614,7 @@ def _try_mystic_2par():
     # Set up cost function
     "Setting up cost function"
     def costfunc(x):
-        return cost_ftn_3(x[0], x[1], coro, wf, ref_intnsty)
+        return cost_ftn(x[0], x[1], coro, wf, ref_intnsty)
     # Start solving 
     "Start solving"
     solver.Solve(costfunc, term)
