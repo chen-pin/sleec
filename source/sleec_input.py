@@ -8,7 +8,7 @@ import hcipy_local.hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args(oversmpl=4, num_airy=2*48, field_stop=True):
+def input_args(oversmpl=6, num_airy=96, field_stop=True):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -304,7 +304,7 @@ def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     beta = 1.0
     target = 1e-10
     tolrnc = 3e-10
-    cost = -beta*((raw_cost-target)/tolrnc)**2
+    cost = -beta*((raw_cost-target)/tolrnc)**gamma
     return cost
 
 def cost_ftn_3(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
@@ -317,7 +317,7 @@ def cost_ftn_3(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     target = 1e-10
     beta = target**(-gamma)
     print("Contrast = {:E}".format(contrast)) 
-    return beta*(contrast-target)**2
+    return beta*(contrast-target)**gamma
 
 def cost_ftn_4(fpm_wid, corngrph, incdnt_wavfrnt, ref_intnsty
              , planet_star_ratio=1e-10):
@@ -594,7 +594,7 @@ def _try_mystic_2par():
     print("maxiter = {}".format(maxiter))
     ndim = 2 
     print("ndim = {}".format(ndim))
-    x0 = [5.0*coro.wvl/coro.pupil_diamtr, 0.7*coro.pupil_diamtr]
+    x0 = [6.0*coro.wvl/coro.pupil_diamtr, 0.9*coro.pupil_diamtr]
     print("x0 = {}".format(x0))
     lower_bound = [1.0*coro.wvl/coro.pupil_diamtr, 0.5*coro.pupil_diamtr]
     print("lower_bound = {}".format(lower_bound))
@@ -635,7 +635,8 @@ def _try_mystic_2par():
     hci.imshow_field(np.log10(contrast_final), vmin='-12', vmax='0'
                      , cmap='cubehelix')
     plt.colorbar()
-    plt.show()
+#    plt.show()
+    plt.savefig('/home/pinchen/sleec_out/contrast.png')
     return sol, esow, ssow, coro, wf, ref_intnsty
 
     #assert almostEqual(fx, 0.0, tol=1e-11)
