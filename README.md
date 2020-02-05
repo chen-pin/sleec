@@ -17,9 +17,15 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 
 Stay tuned.
 
-### Prerequisites
+### Prerequisites  
+* Python 3
+* Numpy
+* Matplotlib.pyplot
+* Scipy.sparse
+* Scipy.interpolate
+* Astropy,io.fits
+* HCIPy v0.3.0 w/ bug fix #55
 
-Stay tuned.
 
 ### Installing
 
