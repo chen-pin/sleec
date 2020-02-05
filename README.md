@@ -7,9 +7,11 @@ coronagraph is SLEEC's foundation, and we intend to advance coronagraphic
 performance by optimizing the complex transmission functions of all the major 
 optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.  
 
-## Project Status
-
-Just starting.  
+## Project Status  
+### To Do List  
+* Debug average-contrast calculation
+* Add field-stop plane
+* Add run-logging option  
 
 ## Getting Started
 

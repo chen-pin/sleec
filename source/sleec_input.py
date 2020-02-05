@@ -497,5 +497,3 @@ def _try_mystic():
 
 if __name__ == '__main__':
     _try_mystic()
-"""Module to provide input arguments for coro_sleec.Coronagraph."""
->>>>>>> hcipy
