@@ -283,8 +283,14 @@ def strehl(prop_output, ref_intnsty):
 
 
 def mean_contrast(corngrph, prop_output, ref_intnsty):
-    return (prop_output['camera'].intensity*np.square(corngrph.dark_field)
-            /ref_intnsty).mean()
+    contrast_img = (prop_output['camera'].intensity
+                    *np.square(corngrph.dark_field)/ref_intnsty)
+#    hci.imshow_field(np.log10(contrast_img))
+    hci.imshow_field(contrast_img)
+    plt.colorbar()
+    plt.show()
+    contrast = contrast_img.mean()
+    return contrast
 
 
 def cost_ftn(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
@@ -495,5 +501,14 @@ def _try_mystic():
     #assert almostEqual(fx, 0.0, tol=1e-11)
 
 
+def _test_contrast():
+    coro = ini_corngrph(input_args(oversmpl=4, num_airy=128, field_stop=True))   
+    wf = hci.Wavefront(coro.pupil_field, coro.wvl)
+    output = coro(wf)
+    ref_intnsty = output['on_fpm'].intensity.max()
+    print("Contrast = {}".format(mean_contrast(coro, output, ref_intnsty)))
+
+
 if __name__ == '__main__':
-    _try_mystic()
+#    _try_mystic()
+    _test_contrast()
