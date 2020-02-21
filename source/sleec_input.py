@@ -9,7 +9,7 @@ import hcipy as hci
 import sleec_optics as sop
 import time
 
-def input_args(oversmpl=4, num_airy=28, field_stop=True):
+def input_args(oversmpl=4, num_airy=64, field_stop=True):
     pars = {}
     num_acttrs_across = 48  # Number of actuators across the DM aperture.
     acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
@@ -86,7 +86,11 @@ def input_args(oversmpl=4, num_airy=28, field_stop=True):
                                                     )
     fpm_opacity = hci.circular_aperture(fpm_wid)
     if field_stop:
-        fpm_transm = (1.0 - fpm_opacity(focal_grid))*hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
+        fpm_transm = ( (1.0 - fpm_opacity(focal_grid))
+                       *hci.circular_aperture(
+                                num_airy*pars['f_num']*pars['wvl']
+                                             )(focal_grid)
+                     )
     else:
         fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
     pars['fpm_field'] = fpm_transm
@@ -283,13 +287,13 @@ def strehl(prop_output, ref_intnsty):
 
 
 def mean_contrast(corngrph, prop_output, ref_intnsty):
+    """
+    Return average contrast in a zone defined by <corngrph.dark_field>, whose 
+    elements are averaging weights.  
+    """
     contrast_img = (prop_output['camera'].intensity
-                    *np.square(corngrph.dark_field)/ref_intnsty)
-#    hci.imshow_field(np.log10(contrast_img))
-    hci.imshow_field(contrast_img)
-    plt.colorbar()
-    plt.show()
-    contrast = contrast_img.mean()
+                    *corngrph.dark_field/ref_intnsty)
+    contrast = contrast_img.sum()/corngrph.dark_field.sum()
     return contrast
 
 
@@ -501,14 +505,7 @@ def _try_mystic():
     #assert almostEqual(fx, 0.0, tol=1e-11)
 
 
-def _test_contrast():
-    coro = ini_corngrph(input_args(oversmpl=4, num_airy=128, field_stop=True))   
-    wf = hci.Wavefront(coro.pupil_field, coro.wvl)
-    output = coro(wf)
-    ref_intnsty = output['on_fpm'].intensity.max()
-    print("Contrast = {}".format(mean_contrast(coro, output, ref_intnsty)))
 
 
 if __name__ == '__main__':
-#    _try_mystic()
-    _test_contrast()
+    _try_mystic()
