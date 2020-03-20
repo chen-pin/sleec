@@ -9,8 +9,8 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 
 ## Project Status  
 ### To Do List  
-* Update DM function (PC)  
-* Output complex wavefront at each plane (PC)  
+* Add function to Update DMs (PC) 
+* Add option to output complex wavefront at each plane (PC)  
 * Integrate HCIPy & EMCEE (PC)  
 * Input parameter file (JTT)  
 * Add field-stop plane  
