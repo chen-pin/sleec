@@ -55,10 +55,10 @@ def input_args(oversmpl=4, num_airy=64, field_stop=True):
     # print("Done")
     pars['inflnc_ftn'] = inflnc_ftn
     
-    #  `dm1_vmap`
+    #  `dm1_vmap` (in meters)
     pars['dm1_vmap'] = np.zeros(num_acttrs_across**2)
     
-    #  `dm2_vmap`
+    #  `dm2_vmap` (in meters)
     pars['dm2_vmap'] = np.zeros(num_acttrs_across**2)
     
     #  `dm_seprtn`
@@ -154,10 +154,10 @@ def default_args():
         inflnc_ftn.modes = inflnc_ftn.genrt_modes()
     pars['inflnc_ftn'] = inflnc_ftn
     
-    #  `dm1_vmap`
+    #  `dm1_vmap` (in meters)
     pars['dm1_vmap'] = np.zeros(num_acttrs_across**2)
     
-    #  `dm2_vmap`
+    #  `dm2_vmap` (in meters)
     pars['dm2_vmap'] = np.zeros(num_acttrs_across**2)
     
     #  `dm_seprtn`
@@ -253,6 +253,18 @@ def update_lyot(lyot_wid, corngrph):
     return corngrph
 
 
+def update_dm1_vmap(vmap, corngrph):
+    corngrph.dm1_vmap = vmap
+    corngrph.optical_elements[1] = corngrph.dm1
+    return corngrph
+
+
+def update_dm2_vmap(vmap, corngrph):
+    corngrph.dm2_vmap = vmap
+    corngrph.optical_elements[3] = corngrph.dm2
+    return corngrph
+
+
 def fpm_thrghpt(prop_output, corngrph):
     fpm_in = np.sum(prop_output['on_fpm'].intensity*corngrph.dark_field)
     fpm_out = np.sum(prop_output['fpm'].intensity*corngrph.dark_field)
@@ -327,7 +339,7 @@ def cost_ftn_2(fpm_wid, lyot_wid, corngrph, incdnt_wavfrnt, ref_intnsty
     return cost
 
 
-def demo():
+def _demo():
     t0 = time.time()   
     coro = ini_corngrph()
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
@@ -349,6 +361,71 @@ def demo():
     hci.imshow_field(output['camera'].intensity, cmap='inferno')
     plt.colorbar()
     plt.show()
+
+
+def _test_update_dm1(): 
+    import matplotlib.pyplot as plt
+    coro = ini_corngrph()
+    print(coro.names)
+    wf0 = hci.Wavefront(electric_field=coro.pupil_field
+                                    , wavelength=coro.wvl)
+    output0 = coro(wf0)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in coro.names:
+        print(key)
+        wf = output0[key]
+        print(wf)
+        plt.subplot(2, len(coro.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+    vmap = np.ravel(
+               (coro.wvl/100.0)*np.cos(2*np.pi*(5.0/48)*np.indices((48, 48))[1])
+                   )
+    update_dm1_vmap(vmap, coro)
+    output1 = coro(wf0)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in coro.names:
+        print(key)
+        wf = output1[key]
+        print(wf)
+        plt.subplot(2, len(coro.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+
+
+def _test_update_dm2(): 
+    import matplotlib.pyplot as plt
+    coro = ini_corngrph()
+    print(coro.names)
+    wf0 = hci.Wavefront(electric_field=coro.pupil_field
+                                    , wavelength=coro.wvl)
+    output0 = coro(wf0)
+    vmap = np.ravel(
+               (coro.wvl/100.0)*np.cos(2*np.pi*(5.0/48)*np.indices((48, 48))[1])
+                   )
+    update_dm2_vmap(vmap, coro)
+    output1 = coro(wf0)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in coro.names:
+        print(key)
+        wf = output1[key]
+        print(wf)
+        plt.subplot(2, len(coro.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+    
 
 
 def _test_fpm_thrghpt():
