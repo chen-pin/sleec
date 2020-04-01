@@ -68,17 +68,15 @@ def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid):
         contains 3 Slepain functions g_1, g_2, g_3.  The g_k functions have 
         increasing frequencies with increasing k.  Examining a small number 
         examples suggest the number of zeros in the range [0, 1] equals k-1. 
-        Note that k > sqrt(n2d) would not make much sense because the Shannon 
+        Note that k > n2d would not make much sense because the Shannon number  
         signifies the number of significant eigenfunctions (Slepians) that 
         can simultaneously be concentrated into the defined spatio-spectral 
-        (joint) domain. The square root comes from the fact that `r` is only 
-        one of the two degrees of freedom.   
+        domain.
     L : The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
         or else the maximum polynomial degree for which GL wil be exact. 
         Simons states that increasing `L` is almost always a good idea,
         presumably because it increases accuracy.  However, P. Chen found that 
-        computations can fail for high `L` values; the failure threshhold is 
-        machine dependent.    
+        computations can fail for high `L` values.
     method : str
         'DV' compute by the method of De Villiers
         'SE' by Slepian "extension" [the default method]
