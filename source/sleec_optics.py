@@ -47,7 +47,7 @@ class DefrmblMirror(hci.OpticalElement):
     Parameters
     ----------
     surfc : hci.Field
-        The DM surface.
+        The DM surface (in meters).
 
     """
     def __init__(self, surfc):
@@ -472,12 +472,19 @@ class Coronagraph(hci.OpticalElement):
     dark_field : hci.Field
         Prescription of the target dark-hole zone.  The field values are 
         *intensity* weights.  
-    dm1_vmap : hci.Field
-        "Voltage" map applied to DM1.  
-    dm2_vmap : hci.Field
-        "Voltage" map applied to DM2
-    inflnc_ftn : sleec_optics.InflncFtn
-        Influence-functions object
+    dm1_surfc : hci.Field or None
+        dm1 surface figure in meters.  If `None`, `dm1_vmap` and `inflnc_ftn`
+        must be supplied.     
+    dm2_surfc : hci.Field or None
+        dm2 surface figure in meters.  If `None`, `dm2_vmap` and `inflnc_ftn`
+        must be supplied.     
+    dm1_vmap : hci.Field or None
+        "Voltage" map applied to DM1.  If `None`, dm1_surfc must be supplied.  
+    dm2_vmap : hci.Field or None
+        "Voltage" map applied to DM2.  If `None`, dm2_surfc must be supplied.
+    inflnc_ftn : sleec_optics.InflncFtn or None
+        Influence-functions object. Not used when `dm1_surfc` and `dm2_surfc` 
+        fields are supplied. 
     dm_seprtn : float
         Physical separation between the two DMs
     f_num : float
@@ -515,7 +522,8 @@ class Coronagraph(hci.OpticalElement):
     """
     def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
                  , fpm_field=None , lyot_field=None, dark_field=None
-                 , dm1_vmap=None , dm2_vmap=None, inflnc_ftn=None
+                 , dm1_surfc=None, dm2_surfc=None 
+                 , dm1_vmap=None, dm2_vmap=None, inflnc_ftn=None
                  , dm_seprtn=None , f_num=None, optical_elements=[]):
         self.wvl = wvl
         self.pupil_diamtr = pupil_diamtr
@@ -523,6 +531,8 @@ class Coronagraph(hci.OpticalElement):
         self.fpm_field = fpm_field
         self.lyot_field = lyot_field
         self.dark_field = dark_field
+        self.dm1_surfc = dm1_surfc
+        self.dm2_surfc = dm2_surfc
         self.dm1_vmap = dm1_vmap
         self.dm2_vmap = dm2_vmap
         self.inflnc_ftn = inflnc_ftn
@@ -609,7 +619,10 @@ class Coronagraph(hci.OpticalElement):
     # DM1
     @property
     def dm1(self):
-        dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
+        if self.dm1_surfc.all == None:
+            dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
+        else:
+            dm1 = DefrmblMirror(self.dm1_surfc) 
         return dm1 
     # Propagator to DM2
     @property
@@ -620,7 +633,10 @@ class Coronagraph(hci.OpticalElement):
     # DM2
     @property
     def dm2(self):
-        dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
+        if self.dm2_surfc.all == None:
+            dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
+        else: 
+            dm2 = DefrmblMirror(self.dm2_surfc)
         return dm2
     # Propagator to Pupil
     @property

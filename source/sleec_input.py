@@ -55,6 +55,12 @@ def input_args(oversmpl=4, num_airy=64, field_stop=True):
     # print("Done")
     pars['inflnc_ftn'] = inflnc_ftn
     
+    #`dm1_surfc` (in meters)
+    pars['dm1_surfc'] = None
+
+    #`dm2_surfc` (in meters)
+    pars['dm2_surfc'] = None
+
     #  `dm1_vmap` (in meters)
     pars['dm1_vmap'] = np.zeros(num_acttrs_across**2)
     
@@ -154,6 +160,12 @@ def default_args():
         inflnc_ftn.modes = inflnc_ftn.genrt_modes()
     pars['inflnc_ftn'] = inflnc_ftn
     
+    #`dm1_surfc` (in meters)
+    pars['dm1_surfc'] = None
+
+    #`dm2_surfc` (in meters)
+    pars['dm2_surfc'] = None
+
     #  `dm1_vmap` (in meters)
     pars['dm1_vmap'] = np.zeros(num_acttrs_across**2)
     
@@ -203,6 +215,89 @@ def default_args():
     return pars
 
 
+def dm_surfc_args():
+    pars = {}
+    num_acttrs_across = 48  # Number of actuators across the DM aperture.
+    acttr_pxl_spacing = 10  # Pixel sampling of the super-influence function, 
+        # normally 10 pixels between adjacent actuators. 
+    acttr_spacing = 1E-3  # Actuator pitch 
+    num_pxl_across = num_acttrs_across*acttr_pxl_spacing + 1  # Number of pixels
+        # across the pupil.
+    
+    # `wvl`
+    wvl = 600E-9
+    pars['wvl'] = wvl
+    
+    # `pupil_diamtr`
+    pupil_diamtr = num_acttrs_across*acttr_spacing  # Physical pupil diameter
+    pars['pupil_diamtr'] = pupil_diamtr
+    pupil_grid = hci.make_pupil_grid(dims=num_pxl_across, diameter=pupil_diamtr)
+    
+    # `pupil_field` 
+    pupil_field = hci.circular_aperture(diameter=0.98*pupil_diamtr)(pupil_grid)
+    pars['pupil_field'] = pupil_field
+
+    #  `dm1_surfc (in meters)
+    pars['dm1_surfc'] = hci.Field(np.zeros(num_pxl_across**2)
+                                  , pupil_grid)
+    
+    #  `dm2_surfc` (in meters)
+    pars['dm2_surfc'] = hci.Field(np.zeros(num_pxl_across**2)
+                                  , pupil_grid)
+    
+    #  `dm1_vmap` (in meters)
+    pars['dm1_vmap'] = None
+    
+    #  `dm2_vmap` (in meters)
+    pars['dm2_vmap'] = None
+
+    #  `inflnc_ftn`
+    pars['inflnc_ftn'] = None
+    
+    #  `dm_seprtn`
+    pars['dm_seprtn'] = 1.0
+    
+    # `f_num`    
+    f_num = 30.0  # f/#
+    pars['f_num'] = f_num
+
+    # `fpm_field`
+    num_airy = 28  # Outer extent in terms of Airy rings
+    # fpm_wid = 6.0*f_num*pars['wvl']  # FPM width/diameter
+    fpm_wid = 5.94098759e-05
+    oversmpl = 4  # Pixel oversampling factor 
+#    focal_grid = hci.make_focal_grid(pupil_grid=pupil_grid, q=oversmpl
+#                                     , num_airy=num_airy
+#                                     , focal_length=pars['f_num']*pupil_diamtr
+#                                     , wavelength=pars['wvl'])
+    focal_grid = hci.make_focal_grid_from_pupil_grid(
+                                     pupil_grid=pupil_grid
+                                     , q=oversmpl
+                                     , num_airy=num_airy
+                                     , focal_length=pars['f_num']*pupil_diamtr
+                                     , wavelength=pars['wvl']
+                                                    )
+    fpm_opacity = hci.circular_aperture(fpm_wid)
+    # fpm_transm = 1.0 - fpm_opacity(focal_grid)  # Simple mask
+    fpm_transm = (
+        (1.0 - fpm_opacity(focal_grid))
+        *hci.circular_aperture(num_airy*pars['f_num']*pars['wvl'])(focal_grid)
+                 )
+    pars['fpm_field'] = fpm_transm
+    
+    # `lyot_field`
+    # lyot_dia = 0.9*pupil_diamtr
+    lyot_dia = 2.80100555e-02
+    lyot_transm = hci.circular_aperture(lyot_dia)(pupil_grid)
+    pars['lyot_field'] = lyot_transm
+    
+    # `dark_field`
+    iwa = 3.0*f_num*pars['wvl']
+    owa = 16*f_num*pars['wvl']
+    pars['dark_field'] = ( hci.circular_aperture(2.0*owa)(focal_grid) 
+                         - hci.circular_aperture(2.0*iwa)(focal_grid) )
+    return pars
+
 def ini_corngrph(args=default_args()):
     # Initialize a coronagraph
     corngrph = sop.Coronagraph()
@@ -212,6 +307,8 @@ def ini_corngrph(args=default_args()):
     corngrph.fpm_field = args['fpm_field']
     corngrph.lyot_field = args['lyot_field']
     corngrph.dark_field = args['dark_field']
+    corngrph.dm1_surfc= args['dm1_surfc']
+    corngrph.dm2_surfc = args['dm2_surfc']
     corngrph.dm1_vmap = args['dm1_vmap']
     corngrph.dm2_vmap = args['dm2_vmap']
     corngrph.inflnc_ftn = args['inflnc_ftn']
@@ -582,7 +679,27 @@ def _try_mystic():
     #assert almostEqual(fx, 0.0, tol=1e-11)
 
 
+def _demo_dmsurfc():
+    t0 = time.time()   
+    coro = ini_corngrph(dm_surfc_args())
+    output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
+    print("ini_corngrph & propagation took {} s".format(time.time()-t0))
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in coro.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(coro.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap='inferno')
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+    t0 = time.time()   
+
+
 
 
 if __name__ == '__main__':
-    _try_mystic()
+    _demo_dmsurfc()
