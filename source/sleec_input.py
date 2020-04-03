@@ -298,7 +298,7 @@ def dm_surfc_args():
                          - hci.circular_aperture(2.0*iwa)(focal_grid) )
     return pars
 
-def ini_corngrph(args=default_args()):
+def ini_corngrph(args):
     # Initialize a coronagraph
     corngrph = sop.Coronagraph()
     corngrph.wvl = args['wvl']
@@ -682,8 +682,10 @@ def _try_mystic():
 def _demo_dmsurfc():
     t0 = time.time()   
     coro = ini_corngrph(dm_surfc_args())
+    t1 = time.time()
+    print("initialization took {} s".format(t1-t0))
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
-    print("ini_corngrph & propagation took {} s".format(time.time()-t0))
+    print("propagaton took {} s".format(time.time()-t1))
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
     for key in coro.names:
