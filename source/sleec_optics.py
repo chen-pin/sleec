@@ -619,10 +619,16 @@ class Coronagraph(hci.OpticalElement):
     # DM1
     @property
     def dm1(self):
-        if self.dm1_surfc.all == None:
-            dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
-        else:
-            dm1 = DefrmblMirror(self.dm1_surfc) 
+        try:
+            if self.dm1_surfc.all == None:
+                dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
+            else:
+                dm1 = DefrmblMirror(self.dm1_surfc) 
+        except AttributeError: 
+            if self.dm1_surfc == None:
+                dm1 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm1_vmap))
+            else:
+                dm1 = DefrmblMirror(self.dm1_surfc) 
         return dm1 
     # Propagator to DM2
     @property
@@ -633,10 +639,16 @@ class Coronagraph(hci.OpticalElement):
     # DM2
     @property
     def dm2(self):
-        if self.dm2_surfc.all == None:
-            dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
-        else: 
-            dm2 = DefrmblMirror(self.dm2_surfc)
+        try:
+            if self.dm2_surfc.all == None:
+                dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
+            else: 
+                dm2 = DefrmblMirror(self.dm2_surfc)
+        except AttributeError: 
+            if self.dm2_surfc == None:
+                dm2 = DefrmblMirror(self.inflnc_ftn.make_surfc(self.dm2_vmap))
+            else: 
+                dm2 = DefrmblMirror(self.dm2_surfc)
         return dm2
     # Propagator to Pupil
     @property
@@ -686,7 +698,7 @@ def demo_coronagraph():
     """Sample routine to demonstrate coronagraph propagation"""
     import matplotlib.pyplot as plt
     import sleec_input as sli
-    corngrph = sli.ini_corngrph()
+    corngrph = sli.ini_corngrph(sli.default_args())
     print(corngrph.names)
     wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
                                     , wavelength=corngrph.wvl)
