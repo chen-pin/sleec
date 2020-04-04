@@ -362,6 +362,66 @@ def update_dm2_vmap(vmap, corngrph):
     return corngrph
 
 
+def update_dm1_surfc(surfc, corngrph):
+    """Return the coronagraph with DM1's surface figure updated.
+
+    Parameters
+    ----------
+    surfc : hcipy.Field
+        DM surface figure
+    corngrph : sleec_opt.Coronagraph
+        The coronagraph to be updated
+
+    Returns
+    ------
+    return : sleec_opt.Coronagraph
+        The coronagraph with its DM1 updated
+
+    """
+    corngrph.dm1_surfc = surfc
+    corngrph.optical_elements[1] = corngrph.dm1
+    return corngrph
+
+
+def update_dm2_surfc(surfc, corngrph):
+    """Return the coronagraph with DM2's surface figure updated.
+
+    Parameters
+    ----------
+    surfc : hcipy.Field
+        DM surface figure
+    corngrph : sleec_opt.Coronagraph
+        The coronagraph to be updated
+
+    Returns
+    ------
+    return : sleec_opt.Coronagraph
+        The coronagraph with its DM1 updated
+
+    """
+    corngrph.dm2_surfc = surfc
+    corngrph.optical_elements[3] = corngrph.dm2
+    return corngrph
+
+    """Return the coronagraph with DM1's surface figure updated.
+
+    Parameters
+    ----------
+    surfc : hcipy.Field
+        DM surface figure
+    corngrph : sleec_opt.Coronagraph
+        The coronagraph to be updated
+
+    Returns
+    ------
+    return : sleec_opt.Coronagraph
+        The coronagraph with its DM1 updated
+
+    """
+    corngrph.dm1_surfc = surfc
+    corngrph.optical_elements[1] = corngrph.dm1
+    return corngrph
+
 def fpm_thrghpt(prop_output, corngrph):
     fpm_in = np.sum(prop_output['on_fpm'].intensity*corngrph.dark_field)
     fpm_out = np.sum(prop_output['fpm'].intensity*corngrph.dark_field)
@@ -462,7 +522,7 @@ def _demo():
 
 def _test_update_dm1(): 
     import matplotlib.pyplot as plt
-    coro = ini_corngrph()
+    coro = ini_corngrph(dm_surfc_args())
     print(coro.names)
     wf0 = hci.Wavefront(electric_field=coro.pupil_field
                                     , wavelength=coro.wvl)
@@ -479,10 +539,10 @@ def _test_update_dm1():
         subplot_seq += 1
     plt.show()
     plt.close()
-    vmap = np.ravel(
-               (coro.wvl/100.0)*np.cos(2*np.pi*(5.0/48)*np.indices((48, 48))[1])
-                   )
-    update_dm1_vmap(vmap, coro)
+    surfc = hci.Field((coro.wvl/10)
+                *np.cos(2*np.pi*(5/coro.pupil_diamtr)*coro.pupil_field.grid.x)
+                , coro.pupil_field.grid) 
+    update_dm1_surfc(surfc, coro)
     output1 = coro(wf0)
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
@@ -500,15 +560,16 @@ def _test_update_dm1():
 
 def _test_update_dm2(): 
     import matplotlib.pyplot as plt
-    coro = ini_corngrph()
+#    coro = ini_corngrph(dm_surfc_args())
+    coro = ini_corngrph(default_args())
     print(coro.names)
     wf0 = hci.Wavefront(electric_field=coro.pupil_field
                                     , wavelength=coro.wvl)
     output0 = coro(wf0)
-    vmap = np.ravel(
-               (coro.wvl/100.0)*np.cos(2*np.pi*(5.0/48)*np.indices((48, 48))[1])
-                   )
-    update_dm2_vmap(vmap, coro)
+    surfc = hci.Field((coro.wvl/10)
+                *np.cos(2*np.pi*(5/coro.pupil_diamtr)*coro.pupil_field.grid.y)
+                , coro.pupil_field.grid) 
+    update_dm2_surfc(surfc, coro)
     output1 = coro(wf0)
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
@@ -704,4 +765,4 @@ def _demo_dmsurfc():
 
 
 if __name__ == '__main__':
-    _demo_dmsurfc()
+    _test_update_dm2()
