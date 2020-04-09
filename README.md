@@ -9,11 +9,10 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 
 ## Project Status  
 ### To Do List  
-* Add function to Update DMs (PC) 
-* Add option to output complex wavefront at each plane (PC)  
-* Integrate HCIPy & EMCEE (PC)  
-* Input parameter file (JTT)  
-* Add field-stop plane  
+* Add option to save complex wavefront at each plane (PC)  
+* Integrate HCIPy & EMCEE   
+* Integrate J. Trauger's cost functions and utility functions
+* Integrate J. Trauger's input parameter file 
 * Add run-logging option    
 
 ## Getting Started
@@ -27,7 +26,7 @@ Stay tuned.
 * Scipy.sparse
 * Scipy.interpolate
 * Astropy,io.fits
-* HCIPy v0.3.0 w/ bug fix #55
+* HCIPy v0.3.0 w/ bug fix #55 or HCIPy v0.3.1
 
 
 ### Installing
