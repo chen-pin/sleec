@@ -33,14 +33,14 @@ Stay tuned.
 * Install prerequisites (see above)  
 * Clone this repository  
 * Recommended: 
-    * From the code directory <sleec/source>, enter the following commands:   
-        * ~> mkdir ../../sleec_out
-        * ~> mkdir ../../sleec_in
+    * From the code directory <sleec/source>, enter the following commands ("$" represents the command prompt, do not type it):   
+        * $ mkdir ../../sleec_out
+        * $ mkdir ../../sleec_in
 
 ## Running the tests
 * From the code directory <sleec/source>, enter the following commands:
-    * ~> python sleec_opt.py
-    * ~> python sleec_input.py
+    * $ python sleec_opt.py
+    * $ python sleec_input.py
 
 ### Break down into end to end tests
 
