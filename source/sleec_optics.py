@@ -36,8 +36,12 @@ import numpy as np
 import scipy.sparse as spr
 import scipy.interpolate as scint
 import astropy.io.fits as fits
-# from hcipy_local import hcipy as hci
 import hcipy as hci
+from matplotlib.colors import ListedColormap
+from turbo_colormap import turbo_colormap_data
+
+
+turbo = ListedColormap(turbo_colormap_data)
 
 
 class DefrmblMirror(hci.OpticalElement):
@@ -710,7 +714,7 @@ def demo_coronagraph():
         wf = output0[key]
         print(wf)
         plt.subplot(2, len(corngrph.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
+        hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
     plt.show()

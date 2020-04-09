@@ -1,13 +1,17 @@
 """Module to provide input arguments for coro_sleec.Coronagraph."""
 
 import os
+import time
 import numpy as np
 # import hcipy as hci
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 #import hcipy_local.hcipy as hci
 import hcipy as hci
+from turbo_colormap import turbo_colormap_data
 import sleec_optics as sop
-import time
+
+turbo = ListedColormap(turbo_colormap_data)
 
 def input_args(oversmpl=4, num_airy=64, field_stop=True):
     pars = {}
@@ -502,20 +506,20 @@ def _demo():
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
     print("ini_corngrph & propagation took {} s".format(time.time()-t0))
     plt.subplot(221)
-    hci.imshow_field(coro.fpm_field, cmap='inferno')
+    hci.imshow_field(coro.fpm_field, cmap=turbo)
     plt.colorbar()
     plt.subplot(222)
-    hci.imshow_field(output['camera'].intensity, cmap='inferno')
+    hci.imshow_field(output['camera'].intensity, cmap=turbo)
     plt.colorbar()
     t0 = time.time()   
     update_fpm(3.0*coro.f_num*coro.wvl, coro)
     output = coro(hci.Wavefront(coro.pupil_field, coro.wvl))
     print("update_fpm and propagation took {} s".format(time.time()-t0))
     plt.subplot(223)
-    hci.imshow_field(coro.fpm_field, cmap='inferno')
+    hci.imshow_field(coro.fpm_field, cmap=turbo)
     plt.colorbar()
     plt.subplot(224)
-    hci.imshow_field(output['camera'].intensity, cmap='inferno')
+    hci.imshow_field(output['camera'].intensity, cmap=turbo)
     plt.colorbar()
     plt.show()
 
@@ -534,7 +538,7 @@ def _test_update_dm1():
         wf = output0[key]
         print(wf)
         plt.subplot(2, len(coro.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
+        hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
@@ -551,7 +555,7 @@ def _test_update_dm1():
         wf = output1[key]
         print(wf)
         plt.subplot(2, len(coro.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
+        hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
@@ -578,7 +582,7 @@ def _test_update_dm2():
         wf = output1[key]
         print(wf)
         plt.subplot(2, len(coro.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
+        hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
@@ -622,16 +626,16 @@ def _test_fpm_thrghpt():
     print("Simulated throughput = {}".format(fpm_thrghpt(output0, corngrph)))
     plt.figure(figsize=(15, 5))
     plt.subplot(221)
-    hci.imshow_field(output0['on_fpm'].intensity, cmap='inferno')
+    hci.imshow_field(output0['on_fpm'].intensity, cmap=turbo)
     plt.colorbar()
     plt.subplot(222)
-    hci.imshow_field(output0['fpm'].intensity, cmap='inferno')
+    hci.imshow_field(output0['fpm'].intensity, cmap=turbo)
     plt.colorbar()
     plt.subplot(223)
-    hci.imshow_field(corngrph.dark_field, cmap='inferno')
+    hci.imshow_field(corngrph.dark_field, cmap=turbo)
     plt.colorbar()
     plt.subplot(224)
-    hci.imshow_field(corngrph.fpm.mask_transm, cmap='inferno')
+    hci.imshow_field(corngrph.fpm.mask_transm, cmap=turbo)
     plt.colorbar()
     plt.show()
 
@@ -657,10 +661,10 @@ def _test_lyot_thrghpt():
     print("Simulated throughput = {}".format(lyot_thrghpt(corngrph)))
     plt.figure(figsize=(15, 5))
     plt.subplot(121)
-    hci.imshow_field(np.absolute(corngrph.pupil.mask_transm)**2, cmap='inferno')
+    hci.imshow_field(np.absolute(corngrph.pupil.mask_transm)**2, cmap=turbo)
     plt.colorbar()
     plt.subplot(122)
-    hci.imshow_field(np.absolute(corngrph.lyot.mask_transm)**2, cmap='inferno')
+    hci.imshow_field(np.absolute(corngrph.lyot.mask_transm)**2, cmap=turbo)
     plt.colorbar()
     plt.show()
 
@@ -754,7 +758,7 @@ def _demo_dmsurfc():
         wf = output[key]
         print(wf)
         plt.subplot(2, len(coro.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap='inferno')
+        hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
