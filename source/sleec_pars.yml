@@ -1,62 +1,90 @@
 # Input parameter file for sleec    
 
+
 # All parameters are in mks units unless otherwise noted.  
+ 
 
 # Optimization Parameters  
-optmz_fpm_diameter      : [4.000, 2.500, 6.000]     # Airy units [ini, min, max]
+optmz_fpm_dia      : [4.000, 2.500, 6.000]     # Airy units [ini, min, max]
 optmz_fpm_od            : [2.652, 1.000, 5.000]     # Optical density
 optmz_fpm_cosine_apod   : [0.589, 0.050, 1.000]     # Airy units
 optmz_dielectric_dia    : [4.000, 2.500, 6.000]     # Airy units
 optmz_dielectric_phase  : [0.200, 1.000, 2.000]     # Radians
 optmz_dielectric_apod   : [0.589, 0.589, 0.589]     # Airy units
-optmz_lyot_diameter     : [0.706, 0.300, 0.900]     # fraction of pupil diameter
-optmz_method            : 'SLSQP'     # 'Nelder', 'L-BFGS-B', 'TNC', 'SLSQP', 'COBYLA'
+optmz_lyot_dia     : [0.706, 0.300, 0.900]     # fraction of pupil diameter
+optmz_method            : 'SLSQP'     # 'Nelder', 'L-BFGS-B', 'TNC', 'SLSQP'
+                                      # , 'COBYLA', 'EMCEE'
 
 
 # Basic Parameters  
-wvl:  600e-9  
+wvl:  600.0e-9  
+
 
 # Pupil Parameters    
-pupil_type: 'circular_clear'  # Geometric type of the pupil
-pupil_diamtr: 48e-3  # Pupil diameter 
+pupil_type: circular_clear  # Geometric type of the pupil
+pupil_dia: 48.0e-3  # Pupil diameter 
 num_pxl_across: 480  # No. of pixels across the pupil diameter
 
-# DM Parameters
-num_acttrs_across: None  # No. of actuators across the pupil diameter.  
-    # None means DM surface is directly input without using a 
-    # voltage map. 
-acttr_pxl_spacing: None  # Pixel sampling of the super-influence function, 
-    # normally 10 pixels between adjacent actuators. 
-    # None means DM surface is directly input without using a 
-    # voltage map. 
-    
-dm1_vmap: None  # In meters.  
-    # None means DM surface is directly input without using a 
-    # voltage map. 
-    
-dm2_vmap: None  # In meters.  
-    # None means DM surface is directly input without using a 
-    # voltage map. 
 
-inflnc_ftn: None  # The super influence funtion
-    # None means DM surface is directly input without using a 
+# DM Parameters
+dm_seprtn: 1.0  # Physical distance between the two DMs  
+dm1_surfc: zero  # Must be one of the following values:  
+    # A '.fits' filename:  
+        # The path prefix is hard coded to <../../sleec_in>) or `False`.  If a 
+        # filename is entered, then the DM surface is directly input without 
+        # using a voltage map (bypassing actuators altogether), and 
+        # actuator-related parameters below should be `null`.  
+    # zero:  Same as above, except the DM surface is set to a flat field of 
+        # zeros.  
+    # null:  DM is specified through actuator settings, and actuator-related 
+        # parameters below must be provided. 
+dm2_surfc: zero  # Must be one of the following values:  
+    # A '.fits' filename:  
+        # The path prefix is hard coded to <../../sleec_in>) or `False`.  If a 
+        # filename is entered, then the DM surface is directly input without 
+        # using a voltage map (bypassing actuators altogether), and 
+        # actuator-related parameters below should be `null`.  
+    # zero:  Same as above, except the DM surface is set to a flat field of 
+        # zeros.  
+    # null:  DM is specified through actuator settings, and actuator-related 
+        # parameters below must be provided. 
+num_acttrs_across: null  # No. of actuators across the pupil diameter.  
+    # Null means DM surface is directly input without using a 
     # voltage map. 
-    
-dm_seprtn: 1.0  # Physical separation between the two DMs  
+acttr_pxl_spacing: null  # Pixel sampling of the super-influence function, 
+    # normally 10 pixels between adjacent actuators. 
+    # Null means DM surface is directly input without using a 
+    # voltage map. 
+acttr_filnm: null  # Fits filename for the influence function, located in 
+    # <../../sleec_in>.  
+# acttr_filnm: superinf-20180730-10x10.fits
+acttr_save_filnm: null  # Pickle filename to save a computed influence 
+    # function, in <../../sleec_out>.  
+# acttr_save_filnm: inflnc_ftns_2x.pkl    
+dm1_vmap: null  # Either `null` or a `.fits` filename (the path prefix is hard 
+    # coded as <../../sleec_in>).  If the value is `null` AND `dm1_surfc = 
+    # `null` then the voltage map is set to an array of zeros.  
+dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
+    # coded as <../../sleec_in>).  If the value is `null` AND `dm2_surfc` = 
+    # `null` then the voltage map is set to an array of zeros.  
 
 # Focal Plane Parameters  
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
-fpm_diamtr: 5.94098759e-05  # Diameter of the focal-plane mask
+fpm_dia: 5.94098759e-05  # Diameter of the focal-plane mask
 oversmpl: 4  # No. of pixles per resolution width
+fpm_type: dot
+
     
 # Lyot Plane Parameters   
 lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
-lyot_dia: 2.80100555e-02  # Lyot aperture  diameter
+lyot_dia: 0.85  # Lyot aperture diameter, as a fraction of pupil 
+    # diameter.  
+
     
 # Image Plane Parameters
 dark_zone_type: 'annular_full'
-iwa: 3.0  # Inner working angle (for contrast calculation).  
+IWA: 3.0  # Inner working angle (for contrast calculation).  
     # In units of f_num*wvl
-owa: 16*f_num*pars['wvl']  # Outer working angle.  
+OWA: 16.0  # Outer working angle.  
     # In units of f_num*wvl
