@@ -9,17 +9,9 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 
 ## Project Status  
 ### To Do List  
-1. Integrate update functions from <sleec_input.py> into <sleec_optics.py>
-`Coronagraph` class.  
-2. Write a method to parse the yml file in <sleec_input.py> and clean up
-the rest of <sleec_input.py>.  
-3. In <sleec_optics.py>, import/write methods to compute  
-    a. single annular contrast  
-    b. mean contrast in dark zone  
-    c. thruput  
-4. In <sleec_input.py>, write cost function  
-5. In <sleec_input.py>, write function to do <emcee> optimization.  
-6. Add run-logging option    
+* Cost function  
+* Function to do <emcee> optimization.  
+* Run logging     
 
 ## Getting Started
 
