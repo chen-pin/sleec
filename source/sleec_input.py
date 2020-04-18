@@ -155,7 +155,18 @@ def import_pars():
 
 
 def ini_corngrph(args):
-    # Initialize a coronagraph
+    """ Initialize a coronagraph.  
+
+    Parameters
+    ----------
+    args : dictionary  
+        Input arguments for the `sleec_optics.Coronagraph` class.  
+
+    Returns
+    -------
+    return : `sleec_optics.Coronagraph` object
+
+    """ 
     corngrph = sop.Coronagraph()
     corngrph.wvl = args['wvl']
     corngrph.pupil_diamtr = args['pupil_dia']
