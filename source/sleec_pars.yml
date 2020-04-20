@@ -71,7 +71,8 @@ dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
 # Focal Plane Parameters  
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
-fpm_dia: 5.94098759e-05  # Diameter of the focal-plane mask
+fpm_dia: 6.0  # Diameter of the focal-plane mask in units of 
+    # f_num/wvl
 oversmpl: 4  # No. of pixles per resolution width
 fpm_type: dot
 

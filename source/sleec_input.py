@@ -116,7 +116,8 @@ def import_pars():
                                      , reference_wavelength=pars['wvl']
                                      )
     if pars['fpm_type'] == 'dot':
-        fpm_opacity = hci.circular_aperture(pars['fpm_dia'])
+        fpm_opacity = hci.circular_aperture(pars['fpm_dia']
+                                            *pars['f_num']*pars['wvl'])
         fpm_field = ( (1.0 - fpm_opacity(focal_grid))
                        *hci.circular_aperture(
                                 pars['num_airy']*pars['f_num']*pars['wvl']
