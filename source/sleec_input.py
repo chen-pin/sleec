@@ -109,14 +109,12 @@ def import_pars():
 
     
     # FOCAL PLANE
-    focal_grid = hci.make_focal_grid_from_pupil_grid(
-                                     pupil_grid=pupil_grid
-                                     , q=pars['oversmpl']
+    focal_grid = hci.make_focal_grid(
+                                     q=pars['oversmpl']
                                      , num_airy=pars['num_airy']
-                                     , focal_length=pars['f_num']
-                                       *pars['pupil_dia']
-                                     , wavelength=pars['wvl']
-                                                    )
+                                     , f_number=pars['f_num']
+                                     , reference_wavelength=pars['wvl']
+                                     )
     if pars['fpm_type'] == 'dot':
         fpm_opacity = hci.circular_aperture(pars['fpm_dia'])
         fpm_field = ( (1.0 - fpm_opacity(focal_grid))

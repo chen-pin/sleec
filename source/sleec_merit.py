@@ -29,6 +29,13 @@ def wvfrnt_annls_cnj(inner_radius, outer_radius, pupil_dia, grid, wvl):
     return hci.Wavefront(hci.Field((field1-field2), grid), wvl) 
 
 
+def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
+    output = coronagraph(wvfrnt_annls_cnj(inner_radius, outer_radius
+                                          , pupil_dia
+                                          , coronagraph.pupil_field.grid
+                                          , coronagraph.wvl) 
+
+
 def _test_wvfrnt_annls_cnj():
     import matplotlib.pyplot as plt
     import yaml as yml
