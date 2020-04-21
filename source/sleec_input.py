@@ -129,11 +129,6 @@ def import_pars():
         lyot_field = ( hci.circular_aperture(pars['lyot_dia']*pars['pupil_dia'])
                                           (pupil_grid) )
     
-    # DARK FIELD DEFINITION 
-    iwa = pars['IWA']*pars['f_num']*pars['wvl']
-    owa = pars['OWA']*pars['f_num']*pars['wvl']
-    dark_field = ( hci.circular_aperture(2.0*owa)(focal_grid) 
-                         - hci.circular_aperture(2.0*iwa)(focal_grid) )
     # INITIALIZE CORONAGRAPH  
     args = {}
     args['wvl'] = pars['wvl']
@@ -141,7 +136,6 @@ def import_pars():
     args['pupil_field'] = pupil_field  
     args['fpm_field'] = fpm_field  
     args['lyot_field'] = lyot_field
-    args['dark_field'] = dark_field
     args['dm1_surfc'] = dm1_surfc  
     args['dm2_surfc'] = dm2_surfc
     args['dm1_vmap'] = dm1_vmap  
@@ -172,7 +166,6 @@ def ini_corngrph(args):
     corngrph.pupil_field = args['pupil_field']
     corngrph.fpm_field = args['fpm_field']
     corngrph.lyot_field = args['lyot_field']
-    corngrph.dark_field = args['dark_field']
     corngrph.dm1_surfc= args['dm1_surfc']
     corngrph.dm2_surfc = args['dm2_surfc']
     corngrph.dm1_vmap = args['dm1_vmap']

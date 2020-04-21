@@ -70,16 +70,6 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
     return hci.Wavefront(field, wvl)
 
 
-# def thrghpt_off_axis(corngrph, ref_img, r, theta=np.radians(60)
-#                      , ampltd=0.1/(2*np.pi)):
-#     cgrid = corngrph.pupil_field.grid
-#     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
-#     pgrid = cartsn_to_polar(cgrid)
-#     value = ampltd*np.exp(-1j*2*np.pi*pgrid.r*r*np.cos(theta-pgrid.theta))
-#     field = corngrph.pupil_field*(1.0+hci.Field(value, cgrid))
-#     wavefront = hci.Wavefront(field)
-#     img = corngrph(wavefront)['on_fpm'].intensity
-#     return hci.get_strehl_from_focal(img, ref_img)
 def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
     """
     Return throughput in an annular area in the image.  
@@ -111,6 +101,15 @@ def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
     - Need to implement propagation with clear pupil to compute denominators.  
 
     """
+    field = (
+                 (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
+                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.wvl)).electric_field  
+                + (wvfrnt_off_axis((pars['IWA']+pars['OWA'])/2.0, np.pi/4.0, 1.0
+                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.wvl)).electric_field
+                )  
+    wavefront = hci.Wavefront(field, coronagraph.wvl)
     output = coronagraph(wvfrnt_annls_cnj(inner_radius, outer_radius
                                           , pupil_dia
                                           , coronagraph.pupil_field.grid
@@ -195,7 +194,7 @@ def _test_annls_offaxis():
                  (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
                          , pars['pupil_dia'], coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field  
-                + (wvfrnt_off_axis((pars['IWA']+pars['OWA'])/2.0, np.pi/4.0, 1.0
+                + (wvfrnt_off_axis(3.0, np.pi/4.0, 1.0
                          , pars['pupil_dia'], coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field
                 )  

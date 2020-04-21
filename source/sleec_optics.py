@@ -473,9 +473,6 @@ class Coronagraph(hci.OpticalElement):
         Field transmission function of the focal-plane mask (FPM)
     lyot_field : hci.Field
         Field transmission function of the Lyot-plane mask (Lyot stop)
-    dark_field : hci.Field
-        Prescription of the target dark-hole zone.  The field values are 
-        *intensity* weights.  
     dm1_surfc : hci.Field or None
         dm1 surface figure in meters.  If `None`, `dm1_vmap` and `inflnc_ftn`
         must be supplied.     
@@ -525,7 +522,7 @@ class Coronagraph(hci.OpticalElement):
 
     """
     def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
-                 , fpm_field=None , lyot_field=None, dark_field=None
+                 , fpm_field=None , lyot_field=None 
                  , dm1_surfc=None, dm2_surfc=None 
                  , dm1_vmap=None, dm2_vmap=None, inflnc_ftn=None
                  , dm_seprtn=None , f_num=None, optical_elements=[]):
@@ -534,7 +531,6 @@ class Coronagraph(hci.OpticalElement):
         self.pupil_field = pupil_field
         self.fpm_field = fpm_field
         self.lyot_field = lyot_field
-        self.dark_field = dark_field
         self.dm1_surfc = dm1_surfc
         self.dm2_surfc = dm2_surfc
         self.dm1_vmap = dm1_vmap
