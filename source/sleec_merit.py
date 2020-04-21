@@ -1,3 +1,4 @@
+import time
 import numpy as np  
 from scipy.special import jv
 import hcipy as hci
@@ -70,7 +71,8 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
     return hci.Wavefront(field, wvl)
 
 
-def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
+def throughput(coronagraph, inner_radius, outer_radius, amplitude1
+               , off_axis_locatn, azimuthal_positn, amplitude2):
     """
     Return throughput in an annular area in the image.  
 
@@ -101,19 +103,23 @@ def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
     - Need to implement propagation with clear pupil to compute denominators.  
 
     """
+    # Synthesize sum pupil wavefront to produce annular illumination and an 
+    # off-axis PSF in the focal plane
     field = (
-                 (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
-                         , pars['pupil_dia'], coronagraph.pupil_field.grid
-                         , coronagraph.wvl)).electric_field  
-                + (wvfrnt_off_axis((pars['IWA']+pars['OWA'])/2.0, np.pi/4.0, 1.0
-                         , pars['pupil_dia'], coronagraph.pupil_field.grid
-                         , coronagraph.wvl)).electric_field
+                 (wvfrnt_annls_cnj(inner_radius, outer_radiua, amplitude1,
+                                   , coronagraph.pupil_diamtr
+                                   , coronagraph.pupil_field.grid
+                                   , coronagraph.wvl)).electric_field  
+                + (wvfrnt_off_axis(off_axis_locatn, azimuthal_positn
+                                   , amplitude2, coronagraph.pupil_diamtr
+                                   , coronagraph.pupil_field.grid
+                                   , coronagraph.wvl)).electric_field
                 )  
     wavefront = hci.Wavefront(field, coronagraph.wvl)
-    output = coronagraph(wvfrnt_annls_cnj(inner_radius, outer_radius
-                                          , pupil_dia
-                                          , coronagraph.pupil_field.grid
-                                          , coronagraph.wvl) )
+    t0 = time.time()
+    output = coronagraph(wavefront)
+    print('Propagation took {} s'.format(time.time()-t0))
+    # Compute throughputs
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
     bounds = ( np.arange(inner_radius, outer_radius+1)
               *coronagraph.f_num*coronagraph.wvl )
@@ -141,6 +147,15 @@ def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
                                                   *coronagraph.wvl) 
                                                        )])
     whole_throughput = whole_numerator/whole_denominator
+    # Compute contrast
+    planet_intensity = output['camera'].intensity
+    planet_core_area = np.where(planet_intensity>=planet_intensity.max/2.0
+                                , 1, 0).sum()
+    t0 = time.time()
+    output = coronagraph(hci.Wavefront(coronagraph.pupil_field
+                                       , coronagraph.wvl))
+    print('Propagation took {} s'.format(time.time()-t0))
+    ### Coding paused here
     return whole_throughput, np.array(throughputs)
 
 
@@ -159,7 +174,8 @@ def _test_wvfrnt_annls_cnj():
     coronagraph = sli.import_pars()
     print('Coronagraph initialized')
     output = coronagraph(wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
-                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_field.grid
                          , coronagraph.wvl))  
     print('Propagation complete')
     subplot_seq = 1
@@ -192,10 +208,12 @@ def _test_annls_offaxis():
     print('Coronagraph initialized')
     field = (
                  (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
-                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field  
                 + (wvfrnt_off_axis(3.0, np.pi/4.0, 1.0
-                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field
                 )  
     wavefront = hci.Wavefront(field, coronagraph.wvl)
@@ -226,7 +244,7 @@ def _test_throughput():
     coronagraph = sli.import_pars()
     print('Coronagraph initialized')
     output = throughput(coronagraph, inner_radius, outer_radius
-                        , pars['pupil_dia']
+                        , coronagraph.pupil_diamtr
                        ) 
     print("Average throughput over entire annulus:  {}".format(output[0]))
     print("Throughput in 1 lambda/D bands")
