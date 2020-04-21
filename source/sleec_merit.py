@@ -72,7 +72,7 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
 
 
 def throughput(coronagraph, inner_radius, outer_radius, amplitude1
-               , off_axis_locatn, azimuthal_positn, amplitude2):
+               , insert_planet, **kwargs):
     """
     Return throughput in an annular area in the image.  
 
@@ -83,9 +83,18 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
     inner_radius : float
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
-        Outer radius of the annulus in units of wvl/pupil_dia 
-    pupil_dia : float
-        Diameter of the pupil 
+        Outer radius of the annulus in units of wvl/pupil_dia
+    amplitude1 : float  
+        Amplitude factor of annular illumination
+    insert_planet : boolean 
+        If `True` an offset PSF is generated in the image, and the keyword 
+        arguments below are required
+    off_axis_locatn : float
+        Off-axis displacement in the image in units of wvl/pupil_dia
+    azimuthal_locatn : float
+        Azimuthal location in radians
+    amplitude2 : float
+        Field amplitude factor
 
     Returns:
     -------
@@ -96,7 +105,10 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
         1 lambda/D in width, starting from the inner radius. If 
         (outer_radius - inner_radius) is not a whole number, the last band is
         a fractional band; only part of the band is illuminated but the 
-        averaging is over the entire 1 lambda/D annulus.  
+        averaging is over the entire 1 lambda/D annulus. 
+    planet_core_area : scalar  
+        Number of pixels in the half-maximum encircled area of the planet's 
+        final PSF 
 
     Notes
     -----
@@ -105,16 +117,21 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
     """
     # Synthesize sum pupil wavefront to produce annular illumination and an 
     # off-axis PSF in the focal plane
-    field = (
-                 (wvfrnt_annls_cnj(inner_radius, outer_radiua, amplitude1,
+    field = ( 
+                  (wvfrnt_annls_cnj(inner_radius, outer_radius, amplitude1
                                    , coronagraph.pupil_diamtr
                                    , coronagraph.pupil_field.grid
-                                   , coronagraph.wvl)).electric_field  
-                + (wvfrnt_off_axis(off_axis_locatn, azimuthal_positn
-                                   , amplitude2, coronagraph.pupil_diamtr
-                                   , coronagraph.pupil_field.grid
-                                   , coronagraph.wvl)).electric_field
-                )  
+                                   , coronagraph.wvl)).electric_field 
+            ) 
+    if insert_planet:  
+        field +=  (           
+                     (wvfrnt_off_axis(kwargs['off_axis_locatn']
+                                      , kwargs['azimuthal_locatn']
+                                      , kwargs['amplitude2']
+                                      , coronagraph.pupil_diamtr
+                                      , coronagraph.pupil_field.grid
+                                      , coronagraph.wvl)).electric_field
+                  ) 
     wavefront = hci.Wavefront(field, coronagraph.wvl)
     t0 = time.time()
     output = coronagraph(wavefront)
@@ -147,16 +164,18 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
                                                   *coronagraph.wvl) 
                                                        )])
     whole_throughput = whole_numerator/whole_denominator
-    # Compute contrast
-    planet_intensity = output['camera'].intensity
-    planet_core_area = np.where(planet_intensity>=planet_intensity.max/2.0
-                                , 1, 0).sum()
-    t0 = time.time()
+    if insert_planet:
+        planet_intensity = output['camera'].intensity
+        planet_core_area = np.where(planet_intensity>=planet_intensity.max()/2.0
+                                    , 1, 0).sum()
+    else:  
+        planet_core_area = None 
+    return whole_throughput, np.array(throughputs), planet_core_area
+
+
+def contrast():
     output = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                        , coronagraph.wvl))
-    print('Propagation took {} s'.format(time.time()-t0))
-    ### Coding paused here
-    return whole_throughput, np.array(throughputs)
 
 
 def _test_wvfrnt_annls_cnj():
@@ -238,15 +257,24 @@ def _test_throughput():
     import sleec_input as sli
     inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
     outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
+    planet = input('Insert planet? (y/n):  ')
     with open('sleec_pars.yml', 'r') as f:
         pars = yml.full_load(f)
     print('Loaded parameters from .yml file')
     coronagraph = sli.import_pars()
     print('Coronagraph initialized')
-    output = throughput(coronagraph, inner_radius, outer_radius
-                        , coronagraph.pupil_diamtr
-                       ) 
+    if planet == 'y':
+        output = throughput(coronagraph, inner_radius, outer_radius
+                            , 1.0, True
+                            , off_axis_locatn=9.0
+                            , azimuthal_locatn=np.pi/4, amplitude2=1.0
+                           )
+    else: 
+        output = throughput(coronagraph, inner_radius, outer_radius
+                            , 1.0, False 
+                           ) 
     print("Average throughput over entire annulus:  {}".format(output[0]))
+    print("Number of pixels in planet core:  {}".format(output[2]))
     print("Throughput in 1 lambda/D bands")
     for i in range(len(output[1])):
         print('Band {}:  {}'.format(i+1, output[1][i]))
@@ -254,5 +282,5 @@ def _test_throughput():
 
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
-#    _test_throughput()
-    _test_annls_offaxis()
+    _test_throughput()
+#    _test_annls_offaxis()

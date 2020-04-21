@@ -73,7 +73,7 @@ f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
 fpm_dia: 6.0  # Diameter of the focal-plane mask in units of 
     # f_num/wvl
-oversmpl: 4  # No. of pixles per resolution width
+oversmpl: 6  # No. of pixles per resolution width
 fpm_type: dot
 
     
