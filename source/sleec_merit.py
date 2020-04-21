@@ -3,7 +3,8 @@ from scipy.special import jv
 import hcipy as hci
 
 
-def wvfrnt_annls_cnj(inner_radius, outer_radius, pupil_dia, grid, wvl):
+def wvfrnt_annls_cnj(inner_radius, outer_radius, amplitude
+                     , pupil_dia, grid, wvl):
     """
     Return a pupil wavefront that generates an annulus in the image.  
     
@@ -13,6 +14,8 @@ def wvfrnt_annls_cnj(inner_radius, outer_radius, pupil_dia, grid, wvl):
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia 
+    amplitude : float
+        Field amplitude factor
     pupil_dia : float
         Diameter of the pupil 
     grid : `hcipy.grid`  
@@ -20,15 +23,63 @@ def wvfrnt_annls_cnj(inner_radius, outer_radius, pupil_dia, grid, wvl):
     wvl : float
         Wavelength of light
 
+    Returns
+    -------
+    return : hcipy.Wavefront
+        Modulated wavefront illuminating the annuluar area in the image plane.
+
     """ 
     polar_grid = grid.as_('polar')
     argument = 2*np.pi*(outer_radius/pupil_dia)*polar_grid.r
     field1 = (outer_radius**2)*jv(1, argument)/argument 
     argument = 2*np.pi*(inner_radius/pupil_dia)*polar_grid.r
     field2 = (inner_radius**2)*jv(1, argument)/argument
-    return hci.Wavefront(hci.Field((field1-field2), grid), wvl) 
+    return hci.Wavefront(hci.Field(amplitude*(field1-field2), grid), wvl) 
 
 
+def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
+                   , grid, wvl): 
+    """
+    Return a pupil wavefront to generate an off-axis PSF.  
+
+    Parameters
+    ----------
+    off_axis_locatn : float
+        Off-axis displacement in the image in units of wvl/pupil_dia
+    azimuthal_locatn : float
+        Azimuthal location in radians
+    amplitude : float
+        Field amplitude factor
+    pupil_dia : float
+        Pupil diameter
+    grid : 'hcipy.grid'
+        Pupil grid
+    wvl : float
+        Wavelength of light
+
+    Returns
+    -------
+    return : hcipy.Wavefront 
+        Modulated wavefront producing an off-axis PSF in the image plane 
+    
+    """ 
+    polar_grid = grid.as_('polar')
+    field = hci.Field(amplitude*np.exp(-1j*2*np.pi*(polar_grid.r/pupil_dia)
+                             *off_axis_locatn
+                             *np.cos(azimuthal_locatn-polar_grid.theta)), grid)
+    return hci.Wavefront(field, wvl)
+
+
+# def thrghpt_off_axis(corngrph, ref_img, r, theta=np.radians(60)
+#                      , ampltd=0.1/(2*np.pi)):
+#     cgrid = corngrph.pupil_field.grid
+#     cartsn_to_polar = hci.field.polar_grid._cartesian_to_polar
+#     pgrid = cartsn_to_polar(cgrid)
+#     value = ampltd*np.exp(-1j*2*np.pi*pgrid.r*r*np.cos(theta-pgrid.theta))
+#     field = corngrph.pupil_field*(1.0+hci.Field(value, cgrid))
+#     wavefront = hci.Wavefront(field)
+#     img = corngrph(wavefront)['on_fpm'].intensity
+#     return hci.get_strehl_from_focal(img, ref_img)
 def throughput(coronagraph, inner_radius, outer_radius, pupil_dia):
     """
     Return throughput in an annular area in the image.  
@@ -108,9 +159,48 @@ def _test_wvfrnt_annls_cnj():
     print('Loaded parameters from .yml file')
     coronagraph = sli.import_pars()
     print('Coronagraph initialized')
-    output = coronagraph(wvfrnt_annls_cnj(pars['IWA'], pars['OWA']
+    output = coronagraph(wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
                          , pars['pupil_dia'], coronagraph.pupil_field.grid
                          , coronagraph.wvl))  
+    print('Propagation complete')
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in coronagraph.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(coronagraph.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap=turbo)
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+
+
+def _test_annls_offaxis():
+    import matplotlib.pyplot as plt
+    import yaml as yml
+    from matplotlib.colors import ListedColormap
+    from turbo_colormap import turbo_colormap_data
+    import sleec_input as sli
+
+    turbo = ListedColormap(turbo_colormap_data)
+
+    with open('sleec_pars.yml', 'r') as f:
+        pars = yml.full_load(f)
+    print('Loaded parameters from .yml file')
+    coronagraph = sli.import_pars()
+    print('Coronagraph initialized')
+    field = (
+                 (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
+                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.wvl)).electric_field  
+                + (wvfrnt_off_axis((pars['IWA']+pars['OWA'])/2.0, np.pi/4.0, 1.0
+                         , pars['pupil_dia'], coronagraph.pupil_field.grid
+                         , coronagraph.wvl)).electric_field
+                )  
+    wavefront = hci.Wavefront(field, coronagraph.wvl)
+    output = coronagraph(wavefront)
     print('Propagation complete')
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
@@ -146,5 +236,6 @@ def _test_throughput():
 
 
 if __name__ == '__main__': 
-    _test_wvfrnt_annls_cnj()
+#    _test_wvfrnt_annls_cnj()
 #    _test_throughput()
+    _test_annls_offaxis()
