@@ -110,10 +110,6 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
         Number of pixels in the half-maximum encircled area of the planet's 
         final PSF 
 
-    Notes
-    -----
-    - Need to implement propagation with clear pupil to compute denominators.  
-
     """
     # Synthesize sum pupil wavefront to produce annular illumination and an 
     # off-axis PSF in the focal plane
@@ -133,9 +129,7 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
                                       , coronagraph.wvl)).electric_field
                   ) 
     wavefront = hci.Wavefront(field, coronagraph.wvl)
-    t0 = time.time()
     output = coronagraph(wavefront)
-    print('Propagation took {} s'.format(time.time()-t0))
     # Compute throughputs
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
     bounds = ( np.arange(inner_radius, outer_radius+1)
@@ -175,6 +169,40 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
 
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty, 
              planet_core_area=None):
+    """
+    Return contrast in an annular area in the image.  
+
+    Parameters:
+    ----------
+    coronagraph :  `sleec_optics.Coronagraph`
+        The coronagraph obejct for optical propagation
+    inner_radius : float
+        Inner radius of the annulus in units of wvl/pupil_dia
+    outer_radius : float
+        Outer radius of the annulus in units of wvl/pupil_dia
+    area_penalty : boolean
+        If `True`, multiplies the raw contrast by the ratio of the number 
+        pixels in the planet's half-intensity core to the number of pixels in 
+        the stellar PSF core.  
+    planet_core_area : scalar  
+        If `area_penalty` is `True`, this is th number of pixels in the 
+        planet's half-intensity core (in the final image plane).  Otherwise, 
+        it can be `None`.  
+
+    Returns:
+    -------
+    whole_contrast : float
+        Contrast averaged over the entire annulus  
+    band_throughputs : ndarray 
+        An array of contrast values.  Each averaged over an annular band 
+        1 lambda/D in width, starting from the inner radius. If 
+        (outer_radius - inner_radius) is not a whole number, the last band is
+        a fractional band; only part of the band is illuminated but the 
+        averaging is over the entire 1 lambda/D annulus. 
+    penalty : float
+        The penalty factor associated with `area_penalty`.  
+
+    """
     output = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                        , coronagraph.wvl))
     psf = output['on_fpm'].intensity
@@ -198,6 +226,61 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty,
         penalty = planet_core_area/psf_core_area
         whole_contrast *= penalty
     return whole_contrast, np.array(contrasts), penalty
+
+
+def merit(coronagraph, inner_radius, outer_radius, amplitude1
+         , area_penalty, off_axis_locatn, azimuthal_locatn, amplitude2
+         , flux_ratio):
+    """
+    Return a merit value, throughputs, and contrasts
+
+    Parameters:
+    ----------
+    coronagraph :  `sleec_optics.Coronagraph`
+        The coronagraph obejct for optical propagation
+    inner_radius : float
+        Inner radius of the annulus in units of wvl/pupil_dia
+    outer_radius : float
+        Outer radius of the annulus in units of wvl/pupil_dia
+    amplitude1 : float  
+        Amplitude factor of annular illumination
+    area_penalty : boolean
+        If `True`, multiplies the raw contrast by the ratio of the number 
+        pixels in the planet's half-intensity core to the number of pixels in 
+        the stellar PSF core.  
+    off_axis_locatn : float
+        Off-axis displacement in the image in units of wvl/pupil_dia
+    azimuthal_locatn : float
+        Azimuthal location in radians
+    amplitude2 : float
+        Field amplitude factor
+    flux_ratio : float
+        Planet-to-star flux ratio
+
+    Returns
+    -------
+    merit : float
+        Merit value
+    throughput_output : tuple
+        Outputs from the `throughput()` function
+    contrast_output : tuple
+        Outputs from the `contrast()` function 
+
+    """
+
+    throughput_output = throughput(coronagraph, inner_radius, outer_radius
+                                   , amplitude1, insert_planet=True
+                                   , off_axis_locatn=off_axis_locatn
+                                   , azimuthal_locatn=azimuthal_locatn
+                                   , amplitude2 = amplitude2)
+    contrast_output = contrast(coronagraph, inner_radius, outer_radius
+                               , area_penalty
+                               , planet_core_area=throughput_output[2])
+    eta = throughput_output[0]
+    C = contrast_output[0]
+    epsilon = flux_ratio
+    merit = eta/np.sqrt(eta+C/epsilon)
+    return merit, throughput_output, contrast_output
 
 
 def _test_wvfrnt_annls_cnj():
@@ -320,8 +403,29 @@ def _test_contrast():
         print('Band {}:  {}'.format(i+1, output[1][i]))
 
 
+def _test_merit():
+    import yaml as yml
+    import sleec_input as sli
+    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
+    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
+    with open('sleec_pars.yml', 'r') as f:
+        pars = yml.full_load(f)
+    print('Loaded parameters from .yml file')
+    coronagraph = sli.import_pars()
+    print('Coronagraph initialized')
+    off_axis_locatn = (inner_radius+outer_radius)/2.0
+    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1
+         , area_penalty=True, off_axis_locatn=off_axis_locatn
+         , azimuthal_locatn=2*np.pi/7
+         , amplitude2=1, flux_ratio=1e-10)
+    print("Merit value = {}".format(m[0]))
+    print("Throughput = {}".format(m[1][0]))
+    print("Contrast = {}".format(m[2][0]))
+
+
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
 #    _test_throughput()
 #    _test_annls_offaxis()
-    _test_contrast()
+#    _test_contrast()
+    _test_merit()
