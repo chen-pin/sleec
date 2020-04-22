@@ -173,9 +173,31 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
     return whole_throughput, np.array(throughputs), planet_core_area
 
 
-def contrast():
+def contrast(coronagraph, inner_radius, outer_radius, area_penalty, 
+             planet_core_area=None):
     output = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                        , coronagraph.wvl))
+    psf = output['on_fpm'].intensity
+    radii = output['on_fpm'].electric_field.grid.as_('polar').r  
+    bounds = ( np.arange(inner_radius, outer_radius+1)
+              *coronagraph.f_num*coronagraph.wvl )
+    contrasts = [] 
+    for i in range(len(bounds)-1):
+        mask = np.where((bounds[i] <= radii) & (radii < bounds[i+1]), 1, 0)
+        avg_background = ( np.sum(output['camera'].intensity[np.where(mask)])
+                       /mask.sum() )
+        contrasts.append(avg_background/psf.max())
+    mask = np.where((inner_radius*coronagraph.f_num*coronagraph.wvl <= radii)
+                    & (radii < outer_radius*coronagraph.f_num*coronagraph.wvl)
+                    , 1, 0)
+    whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
+                       /mask.sum() )
+    whole_contrast = whole_background/psf.max() 
+    if area_penalty:
+        psf_core_area = np.where(psf>=psf.max()/2.0, 1, 0).sum()
+        penalty = planet_core_area/psf_core_area
+        whole_contrast *= penalty
+    return whole_contrast, np.array(contrasts), penalty
 
 
 def _test_wvfrnt_annls_cnj():
@@ -280,7 +302,26 @@ def _test_throughput():
         print('Band {}:  {}'.format(i+1, output[1][i]))
 
 
+def _test_contrast():
+    import yaml as yml
+    import sleec_input as sli
+    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
+    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
+    with open('sleec_pars.yml', 'r') as f:
+        pars = yml.full_load(f)
+    print('Loaded parameters from .yml file')
+    coronagraph = sli.import_pars()
+    print('Coronagraph initialized')
+    output = contrast(coronagraph, inner_radius, outer_radius, True, 54)
+    print("Average contrast over entire annulus:  {}".format(output[0]))
+    print("Core-footprint penalty:  {}".format(output[2]))
+    print("Contrast in 1 lambda/D bands")
+    for i in range(len(output[1])):
+        print('Band {}:  {}'.format(i+1, output[1][i]))
+
+
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
-    _test_throughput()
+#    _test_throughput()
 #    _test_annls_offaxis()
+    _test_contrast()
