@@ -88,13 +88,17 @@ def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid
     D : float
         Optical aperture diameter
     grid : hcipy.Grid
-        The hcipy `Grid` object supporting the output function values.  
+        The hcipy `Grid` object supporting the output function values. 
+    num_dense_pts : int
+        Dense sampling points for computing the Slepians.  Higher order 
+        functions require dense sampling due to high order Bessel functions 
+        used in the computation.   
     
     Returns
     -------
     return : `hci.ModeBasis`
         A list of the user specified Slepian functions evaluated on the input 
-        grid. 
+        grid (interpolated from the densely sampled computation). 
 
     Notes
     -----
