@@ -48,7 +48,8 @@ from oct2py import octave as oct
 import hcipy as hci
 
 
-def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid):
+def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid
+                   , num_dense_pts=4096):
     """
     Compute radial Slepian functions concentratted to a circular domain.  See 
     documentation in <swdisk.m> by F. Simons for details.  
@@ -104,7 +105,6 @@ def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid):
     r = 2.0*polar_grid.r/D 
     # Compute the Slepian functions on a dense grid, which will then be used 
     # for interpolation onto the input grid.   
-    num_dense_pts = 1024 
     r_dense_min = 0.0
     r_dense_max = 2.0 
     r_dense = np.linspace(r_dense_min, r_dense_max, num_dense_pts)
