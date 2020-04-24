@@ -9,9 +9,7 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 
 ## Project Status  
 ### To Do List  
-* Cost function  
 * Function to do <emcee> optimization.  
-* Run logging     
 
 ## Getting Started
 
