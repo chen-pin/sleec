@@ -1,3 +1,5 @@
+"""<sleec_merit>.  Module to compute merit/cost functions."""
+
 import time
 import numpy as np  
 from scipy.special import jv

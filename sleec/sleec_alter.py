@@ -1,23 +1,11 @@
+"""<sleec_alter>:  Module for applying changes to (evolving the state of) 
+a coronagraph."""
+
 import os
 import math
 import pickle as pkl
 import numpy as np
 import hcipy as hci
-
-
-def fpm_dot(fpm_wid, corngrph, num_airy=28, field_stop=True):
-    fpm_opacity = hci.circular_aperture(fpm_wid)
-    if field_stop:
-        fpm_transm = (
-            (1.0 - fpm_opacity(corngrph.fpm_field.grid))
-            *hci.circular_aperture(
-                num_airy*corngrph.f_num*corngrph.wvl
-                )(corngrph.fpm_field.grid)
-        )
-    else:
-        fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
-    update_fpm(fpm_transm, corngrph)
-    return corngrph
 
 
 def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
@@ -38,15 +26,15 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
     filename : str
         If `file_exitsts` = `True`, it is the name of the existing mode-basis 
         file.  Othewise, it is the name of the save file.  
-    m : int
+    m : int | None (if `file_exists` = `True`)
         The fixed order of the eigenvalue problem.  It is analogous to the 
         subscript n for Bessel functions J_n.
-    n2d : float
+    n2d : float | None (if `file_exists` = `True`)
         The two-dimensional Shannon number.  For a Fraunhofer propagation, 
         n2d = (pi*N/4)^2, where N is the number of cycles across the 
         aperture. For example, if we are solving for a pupil-apodizing 
         function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
-    k : int
+    k : int | None (if `file_exists` = `True`)
         The number of functions to output.  For example, k=3, the output 
         contains 3 Slepain functions g_1, g_2, g_3.  The g_k functions have 
         increasing frequencies with increasing k.  Examining a small number 
@@ -55,22 +43,21 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
         signifies the number of significant eigenfunctions (Slepians) that 
         can simultaneously be concentrated into the defined spatio-spectral 
         domain.
-    L : The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
+    L : int | None (if `file_exists` = `True`)
+        The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
         or else the maximum polynomial degree for which GL wil be exact. 
         Simons states that increasing `L` is almost always a good idea,
         presumably because it increases accuracy.  However, P. Chen found that 
         computations can fail for high `L` values.
-    method : str
+    method : str | None (if `file_exists` = `True`)
         'DV' compute by the method of De Villiers
         'SE' by Slepian "extension" [the default method]
         'GL' by direct Gauss-Legendre integration
-    orthgnlty : int
+    orthgnlty : int|None (if `file_exists` = `True`)
         1 Scales the solution for weightless orthogonality
         0 Scales the solution for orthogonality with weight r
-    D : float
-        Optical aperture diameter
-    grid : hcipy.Grid
-        The hcipy `Grid` object supporting the output function values.  
+    num_dense_pts : int | None (if `file_exists` = `True`)
+        Number of densly sampled points in the Slepian computation
     
     Returns
     -------
@@ -107,8 +94,23 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
     return update_pupil(pupil_field, corngrph) 
         
 
-def lyot_circ_clear(lyot_wid, corngrph):
-    lyot_transm = hci.circular_aperture(lyot_wid)(corngrph.lyot_field.grid)
+def fpm_dot(fpm_dia, corngrph, num_airy=28, field_stop=True):
+    fpm_opacity = hci.circular_aperture(fpm_dia)
+    if field_stop:
+        fpm_transm = (
+            (1.0 - fpm_opacity(corngrph.fpm_field.grid))
+            *hci.circular_aperture(
+                num_airy*corngrph.f_num*corngrph.wvl
+                )(corngrph.fpm_field.grid)
+        )
+    else:
+        fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
+    update_fpm(fpm_transm, corngrph)
+    return corngrph
+
+
+def lyot_circ_clear(lyot_dia, corngrph):
+    lyot_transm = hci.circular_aperture(lyot_dia)(corngrph.lyot_field.grid)
     return update_lyot(lyot_transm, corngrph)
 
 

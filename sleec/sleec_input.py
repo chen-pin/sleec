@@ -1,17 +1,14 @@
-"""Module to provide input arguments for coro_sleec.Coronagraph."""
+"""<sleec_input>.  Module to load parameters and generate input 
+arguments to initialize a coronagraph."""
 
 import os
 import time
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
 import yaml as yml
 import astropy.io.fits as fits
-from turbo_colormap import turbo_colormap_data
 import hcipy as hci
 import sleec_optics as sop
 
-turbo = ListedColormap(turbo_colormap_data)
 
 def import_pars():
     """Parse <sleec_pars.yml> and return an initialized coronagraph.  
@@ -27,6 +24,7 @@ def import_pars():
     print('The following parameters have been loaded from ' + f.name)  
     for key, value in pars.items():  
         print("{}:  {}".format(key, value))
+    
  
     # PUPIL	
     pupil_grid = hci.make_pupil_grid(dims=pars['num_pxl_across'], 
@@ -178,6 +176,10 @@ def ini_corngrph(args):
 
 
 def _demo():
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import ListedColormap
+    from turbo_colormap import turbo_colormap_data
+    turbo = ListedColormap(turbo_colormap_data)
     t0 = time.time()   
     corngrph = import_pars()
     output = corngrph(hci.Wavefront(corngrph.pupil_field, corngrph.wvl))

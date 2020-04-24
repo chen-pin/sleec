@@ -1,4 +1,5 @@
-"""Module for modeling a coronagraph using HCIPy as the propagation code.
+"""<sleec_optics>.  Module for modeling a coronagraph using HCIPy as the 
+propagation code.
 
 Notes   
 -----
