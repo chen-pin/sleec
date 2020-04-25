@@ -95,23 +95,18 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
         
 
 def fpm_dot(fpm_dia, corngrph, num_airy=28, field_stop=True):
-    fpm_opacity = hci.circular_aperture(fpm_dia)
-    if field_stop:
-        fpm_transm = (
-            (1.0 - fpm_opacity(corngrph.fpm_field.grid))
-            *hci.circular_aperture(
-                num_airy*corngrph.f_num*corngrph.wvl
-                )(corngrph.fpm_field.grid)
-        )
-    else:
-        fpm_transm = 1.0 - fpm_opacity(corngrph.fpm_field.grid)
-    update_fpm(fpm_transm, corngrph)
+    fpm_opacity = hci.circular_aperture(fpm_dia*corngrph.f_num*corngrph.wvl)
+    fpm_field = ( (1.0 - fpm_opacity(corngrph.fpm_field.grid))
+                   *hci.circular_aperture(num_airy*corngrph.f_num*corngrph.wvl)
+                                         (corngrph.fpm_field.grid)
+                 )
     return corngrph
 
 
 def lyot_circ_clear(lyot_dia, corngrph):
-    lyot_transm = hci.circular_aperture(lyot_dia)(corngrph.lyot_field.grid)
-    return update_lyot(lyot_transm, corngrph)
+    lyot_field = ( hci.circular_aperture(lyot_dia*corngrph.pupil_diamtr)
+                                      (corngrph.lyot_field.grid) )
+    return update_lyot(lyot_field, corngrph)
 
 
 def update_pupil(pupil_field, corngrph):
