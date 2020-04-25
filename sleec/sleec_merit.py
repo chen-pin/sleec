@@ -279,12 +279,12 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
                                , area_penalty
                                , planet_core_area=throughput_output[2])
     eta = throughput_output[0]
-    print("eta = {}".format(eta))
     C = contrast_output[0]
-    print("C = {}".format(C))
     epsilon = flux_ratio
-    print("epsilon = {}".format(epsilon))
     merit = eta/np.sqrt(eta+C/epsilon)
+    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}\n".format(eta, C
+                                                                 , epsilon
+                                                                 , merit))
     return merit, throughput_output, contrast_output
 
 

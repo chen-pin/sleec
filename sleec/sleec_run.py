@@ -1,4 +1,6 @@
 """<sleec_run>:  Module for running optimizations."""
+import os
+from multiprocessing import Pool
 import yaml as yml
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,9 +16,19 @@ def ln_prior(design_parameters, input_pars):
     Retrun log probability of design parameters
     
     """
-    coefs = np.array(design_parameters[0])
-    fpm_dia = design_parameters[1]
-    lyot_dia = design_parameters[2]
+    coefs = design_parameters[:(input_pars['k'])]
+    fpm_dia = design_parameters[input_pars['k']]
+    lyot_dia = design_parameters[input_pars['k']+1]
+    if (
+        input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
+            <= input_pars['optmz_pupil_coefs'][2]):
+        print("Coefs OK") 
+    if ( input_pars['optmz_fpm_dia'][1] <= fpm_dia 
+            <= input_pars['optmz_fpm_dia'][2]):
+        print("fpm_dia OK")
+    if ( input_pars['optmz_lyot_dia'][1] <= lyot_dia 
+            <= input_pars['optmz_lyot_dia'][2]):
+        print("lyot_dia OK")
     if (
         input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
             <= input_pars['optmz_pupil_coefs'][2] 
@@ -24,6 +36,7 @@ def ln_prior(design_parameters, input_pars):
             <= input_pars['optmz_fpm_dia'][2]
         and input_pars['optmz_lyot_dia'][1] <= lyot_dia 
             <= input_pars['optmz_lyot_dia'][2]):
+        print("Parameter priors passed")
         return 0.0
     return -np.inf
  
@@ -33,7 +46,7 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     Return log probability for optimization using EMCEE.  
     
     """
-    print("design_parameters:  {}".format(design_parameters))
+    print("\ndesign_parameters:  {}".format(design_parameters))
     coefs = design_parameters[:(input_pars['k'])]
     sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
@@ -51,21 +64,23 @@ def ln_probability(design_parameters, coronagraph, input_pars):
                       , off_axis_locatn=off_axis
                       , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
                       , flux_ratio=float(input_pars['flux_ratio']))[0]
-    # Impose limits on the pupil field and FPM field
-    if (np.real(coronagraph.pupil_field).min()>=0.0 
-        and np.real(coronagraph.pupil_field).max()<=1.0 
-        and np.real(coronagraph.fpm_field).min()>=0.0
-        and np.real(coronagraph.fpm_field).max()<=1.0):
-        return 0.0
-    else:  
-        ln_prl = -np.inf
     ln_prr = ln_prior(design_parameters, input_pars)
     if not np.isfinite(ln_prr):
-        return -np.inf 
-    return lnprl + ln_prr + np.log(mrt) 
+        return -np.inf
+    ln_prob = ln_prr + np.log(mrt)
+    print("ln probability = {}".format(ln_prob))
+    return ln_prob  
     
 
 def run_emcee():
+    save = input("Save EMCEE run to a file?  [y/n]:  ")
+    if save == 'y':
+        filename = input("Enter filename for saving EMCEE run:  ")
+        path = os.path.join('..', '..', filename)
+        backend = emc.backends.HDFBackend(path)
+        backend.reset(input_pars['nwalkers'], input_pars['ndim'])
+    else:
+        backend = None
     with open('sleec_pars.yml', 'r') as f:
         input_pars = yml.full_load(f)
     print("Loaded input parameters from user configuration file")
@@ -80,6 +95,7 @@ def run_emcee():
                         , method='SE', orthgnlty=0, num_dense_pts=4096)
     print("Slepian file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
+
     for i in range(input_pars['k']):
         par_range = 1e-3*(input_pars['optmz_pupil_coefs'][2]
                           - input_pars['optmz_pupil_coefs'][1])
@@ -97,12 +113,35 @@ def run_emcee():
         + 1e-3*(input_pars['optmz_lyot_dia'][2]-input_pars['optmz_lyot_dia'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
+
+
+#    for q in range(input_pars['nwalkers']):
+#        for i in range(input_pars['k']):
+#            maximum = input_pars['optmz_pupil_coefs'][2]
+#            minimum = input_pars['optmz_pupil_coefs'][1]
+#            ini_positns[q, i] = np.random.uniform(minimum, maximum)
+#        ini_positns[q, input_pars['k']] = ( 
+#            np.random.uniform(input_pars['optmz_fpm_dia'][1]
+#                              , input_pars['optmz_fpm_dia'][2])
+#                                          )
+#        ini_positns[q, input_pars['k']+1] = ( 
+#            np.random.uniform(input_pars['optmz_lyot_dia'][1]
+#                              , input_pars['optmz_lyot_dia'][2])
+#                                            )
     print("Initial parameter values (walker positions) set")
     sampler = emc.EnsembleSampler(input_pars['nwalkers'], input_pars['ndim']
-                                    , ln_probability, args=(coronagraph
-                                                          , input_pars))
-    print("Ensemble Sampler instantiated.  Will start optimization run now.")
-    sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True)
+                                    , ln_probability, backend=backend 
+                                    , args=(coronagraph, input_pars))
+    print("Ensemble Sampler instantiated.  Starting optimization run now.")
+    sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True
+                     , skip_initial_state_check=False)
+#    os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's parallelization
+#    with Pool() as pool:
+#        sampler = emc.EnsembleSampler(input_pars['nwalkers'], input_pars['ndim']
+#                                        , ln_probability, pool=pool
+#                                        , args=(coronagraph, input_pars))
+#        print("Ensemble Sampler instantiated.  Starting optimization run now.")
+#        sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True)
 
 
 if __name__ == '__main__':  

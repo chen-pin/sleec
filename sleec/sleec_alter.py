@@ -91,6 +91,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
             output['slepians'] = slepians
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
+    pupil_field /= pupil_field.max()
     return update_pupil(pupil_field, corngrph) 
         
 
