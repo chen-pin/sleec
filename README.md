@@ -8,11 +8,12 @@ performance by optimizing the complex transmission functions of all the major
 optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.  
 
 ## Project Status  
+
 ### To Do List  
-* Function to do <emcee> optimization.  
+* Test <run_emcee()>  
+* Write plotting and other utility functions for viewing EMCEE results  
 
-## Getting Started
-
+## Getting Started  
 Stay tuned.
 
 ### Prerequisites  
