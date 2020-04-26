@@ -24,9 +24,7 @@ pupil_type: circular_clear  # Geometric type of the pupil
 pupil_dia: 48.0e-3  # Pupil diameter 
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-m: 1  # The fixed order of the Slepian eigenvalue problem
-n2d: 10  # 2-D Shannon number
-k: 10  # Number of functions to produce
+n2d: [4, 8, 13, 18, 22]  # 2-D Shannon numbers.  Must be inteters.
 
 
 # DM Parameters

@@ -70,7 +70,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, n2d, L=170
         os.chdir('slepian')
         from slepian.gen_slepians import gen_slepians_r as gsl
         for n2d_i in n2d: 
-            slepians[n2d_i, :] = gsl(0, n2d, 1, L, method, orthgnlty
+            slepians[n2d_i, :] = gsl(0, n2d_i, 1, L, method, orthgnlty
                                      , corngrph.pupil_diamtr
                                      , corngrph.pupil_field.grid, num_dense_pts)
         os.chdir(cwd)

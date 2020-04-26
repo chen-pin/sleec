@@ -48,10 +48,71 @@ from oct2py import octave as oct
 import hcipy as hci
 
 
-def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid
+def gen_slepians_r(n2d, L, method, orthgnlty, D, grid, num_dense_pts=4096):
+    """
+    Return a mode basis of radial Slepian functions concentrated to a 
+    circular domain.  Assume m = 0 and k=1.  Slepians corresponding to all 
+    elements of 'n2d' is computed.  See documentation in <swdisk.m> by 
+    F. Simons for details.  
+
+    Parameters
+    ----------
+    n2d : array-like or integer
+        The two-dimensional Shannon number.  For a Fraunhofer propagation, 
+        n2d = (pi*N/4)^2, where N is the number of cycles across the 
+        aperture. For example, if we are solving for a pupil-apodizing 
+        function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
+    L : The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
+        or else the maximum polynomial degree for which GL wil be exact. 
+        Simons states that increasing `L` is almost always a good idea,
+        presumably because it increases accuracy.  However, P. Chen found that 
+        computations can fail for high `L` values.
+    method : str
+        'DV' compute by the method of De Villiers
+        'SE' by Slepian "extension" [the default method]
+        'GL' by direct Gauss-Legendre integration
+    orthgnlty : int
+        1 Scales the solution for weightless orthogonality
+        0 Scales the solution for orthogonality with weight r
+    D : float
+        Optical aperture diameter
+    grid : hcipy.Grid
+        The hcipy `Grid` object supporting the output function values. 
+    num_dense_pts : int
+        Dense sampling points for computing the Slepians.  Higher order 
+        functions require dense sampling due to high order Bessel functions 
+        used in the computation.   
+    
+    Returns
+    -------
+    return : `hci.ModeBasis`
+        A list of the user specified Slepian functions evaluated on the input 
+        grid (interpolated from the densely sampled computation). 
+
+    Notes
+    -----
+    An `hcipy.ModeBasis` object is a list of `hcipy.Field` objects.  
+
+    """
+    polar_grid = grid.as_('polar')
+    r = 2.0*polar_grid.r/D 
+    # Compute the Slepian functions on a dense grid, which will then be used 
+    # for interpolation onto the input grid.   
+    r_dense_min = 0.0
+    r_dense_max = 2.0 
+    r_dense = np.linspace(r_dense_min, r_dense_max, num_dense_pts)
+    for n2d_i in n2d:
+        slp_dense = oct.swdisk(0, n2d_i, 1, L, r_dense, method, orthgnlty)
+        modes = [hci.Field(np.interp(r, r_dense, slp_dense[:, i]), grid) 
+                       for i in range(k)]
+    return hci.ModeBasis(modes, grid)
+
+
+def gen_slepians_r_k(m, n2d, k, L, method, orthgnlty, D, grid
                    , num_dense_pts=4096):
     """
-    Compute radial Slepian functions concentratted to a circular domain.  See 
+    Return a mode basis of `k` radial Slepian functions for fixed, 
+    user-specified `m` and `n2d` values.  Functions are computed See 
     documentation in <swdisk.m> by F. Simons for details.  
 
     Parameters
@@ -99,11 +160,9 @@ def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid
     return : `hci.ModeBasis`
         A list of the user specified Slepian functions evaluated on the input 
         grid (interpolated from the densely sampled computation). 
-
     Notes
     -----
     An `hcipy.ModeBasis` object is a list of `hcipy.Field` objects.  
-
     """
     polar_grid = grid.as_('polar')
     r = 2.0*polar_grid.r/D 
@@ -116,6 +175,9 @@ def gen_slepians_r(m, n2d, k, L, method, orthgnlty, D, grid
     modes = [hci.Field(np.interp(r, r_dense, slp_dense[:, i]), grid) 
                    for i in range(k)]
     return hci.ModeBasis(modes, grid)
+
+
+
 
 
 
