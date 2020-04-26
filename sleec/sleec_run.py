@@ -72,7 +72,7 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     return ln_prob  
     
 
-def run_emcee():
+def run_emcee(parallel=False):
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
         filename = input("Enter filename for saving EMCEE run:  ")
@@ -113,8 +113,6 @@ def run_emcee():
         + 1e-3*(input_pars['optmz_lyot_dia'][2]-input_pars['optmz_lyot_dia'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
-
-
 #    for q in range(input_pars['nwalkers']):
 #        for i in range(input_pars['k']):
 #            maximum = input_pars['optmz_pupil_coefs'][2]
@@ -129,19 +127,26 @@ def run_emcee():
 #                              , input_pars['optmz_lyot_dia'][2])
 #                                            )
     print("Initial parameter values (walker positions) set")
-    sampler = emc.EnsembleSampler(input_pars['nwalkers'], input_pars['ndim']
-                                    , ln_probability, backend=backend 
-                                    , args=(coronagraph, input_pars))
-    print("Ensemble Sampler instantiated.  Starting optimization run now.")
-    sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True
-                     , skip_initial_state_check=False)
-#    os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's parallelization
-#    with Pool() as pool:
-#        sampler = emc.EnsembleSampler(input_pars['nwalkers'], input_pars['ndim']
-#                                        , ln_probability, pool=pool
-#                                        , args=(coronagraph, input_pars))
-#        print("Ensemble Sampler instantiated.  Starting optimization run now.")
-#        sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True)
+    if parallel:
+        os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's 
+            # parallelization
+        with Pool() as pool:
+            sampler = emc.EnsembleSampler(
+                          input_pars['nwalkers'], input_pars['ndim']
+                          , ln_probability, pool=pool
+                          , args=(coronagraph, input_pars)
+                                         )
+            print("Ensemble Sampler instantiated.  
+                   Starting optimization run now.")
+            sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True)
+     else:
+         sampler = emc.EnsembleSampler(input_pars['nwalkers']
+                                         , input_pars['ndim']
+                                         , ln_probability, backend=backend 
+                                         , args=(coronagraph, input_pars))
+         print("Ensemble Sampler instantiated.  Starting optimization run now.")
+         sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True
+                          , skip_initial_state_check=False)
 
 
 if __name__ == '__main__':  
