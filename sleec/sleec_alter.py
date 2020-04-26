@@ -69,16 +69,13 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, n2d, L=170
         slepians = np.empty((len(n2d), grid_pts))
         os.chdir('slepian')
         from slepian.gen_slepians import gen_slepians_r as gsl
-        for n2d_i in n2d: 
-            slepians[n2d_i, :] = gsl(0, n2d_i, 1, L, method, orthgnlty
-                                     , corngrph.pupil_diamtr
-                                     , corngrph.pupil_field.grid, num_dense_pts)
+        slepians = gsl(n2d, L, method, orthgnlty
+                       , corngrph.pupil_diamtr
+                       , corngrph.pupil_field.grid, num_dense_pts)
         os.chdir(cwd)
         with  open(filename, 'wb') as f:
             output = {}
-            output['m'] = m
             output['n2d'] = n2d
-            output['k'] = k
             output['L'] = L
             output['orthgnlty'] = orthgnlty
             output['D'] = corngrph.pupil_diamtr

@@ -101,10 +101,10 @@ def gen_slepians_r(n2d, L, method, orthgnlty, D, grid, num_dense_pts=4096):
     r_dense_min = 0.0
     r_dense_max = 2.0 
     r_dense = np.linspace(r_dense_min, r_dense_max, num_dense_pts)
+    modes = []
     for n2d_i in n2d:
         slp_dense = oct.swdisk(0, n2d_i, 1, L, r_dense, method, orthgnlty)
-        modes = [hci.Field(np.interp(r, r_dense, slp_dense[:, i]), grid) 
-                       for i in range(k)]
+        modes.append(hci.Field(np.interp(r, r_dense, slp_dense[:, 0]), grid))
     return hci.ModeBasis(modes, grid)
 
 

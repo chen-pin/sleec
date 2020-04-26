@@ -127,6 +127,7 @@ def run_emcee(parallel=False):
 #                              , input_pars['optmz_lyot_dia'][2])
 #                                            )
     print("Initial parameter values (walker positions) set")
+    print(ini_positns)  # debug
     if parallel:
         os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's 
             # parallelization
