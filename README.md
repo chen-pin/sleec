@@ -10,7 +10,6 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 ## Project Status  
 
 ### To Do List  
-* Test <run_emcee()>  
 * Write plotting and other utility functions for viewing EMCEE results  
 
 ## Getting Started  
@@ -40,6 +39,5 @@ Stay tuned.
     * $ python sleec_input.py
 
 ### Break down into end to end tests
-
 Stay tuned.
 
