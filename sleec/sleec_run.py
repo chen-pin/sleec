@@ -21,16 +21,6 @@ def ln_prior(design_parameters, input_pars):
     lyot_dia = design_parameters[len(input_pars['n2d'])+1]
     if (
         input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
-            <= input_pars['optmz_pupil_coefs'][2]):
-        print("Coefs OK") 
-    if ( input_pars['optmz_fpm_dia'][1] <= fpm_dia 
-            <= input_pars['optmz_fpm_dia'][2]):
-        print("fpm_dia OK")
-    if ( input_pars['optmz_lyot_dia'][1] <= lyot_dia 
-            <= input_pars['optmz_lyot_dia'][2]):
-        print("lyot_dia OK")
-    if (
-        input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
             <= input_pars['optmz_pupil_coefs'][2] 
         and input_pars['optmz_fpm_dia'][1] <= fpm_dia 
             <= input_pars['optmz_fpm_dia'][2]
@@ -38,7 +28,9 @@ def ln_prior(design_parameters, input_pars):
             <= input_pars['optmz_lyot_dia'][2]):
         print("Parameter priors passed")
         return 0.0
-    return -np.inf
+    else:
+        print("Parameter priors FAILED")
+        return -np.inf
  
 
 def ln_probability(design_parameters, coronagraph, input_pars):
@@ -46,14 +38,15 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     Return log probability for optimization using EMCEE.  
     
     """
-    print("\ndesign_parameters:  {}".format(design_parameters))
+    print("design_parameters:  {}".format(design_parameters))
     coefs = design_parameters[:(len(input_pars['n2d']))]
     sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
                         , file_exists=True, filename=input_pars['filename']
                         , n2d=None, L=None, method=None
                         , orthgnlty=None, num_dense_pts=None)
-    sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])], corngrph=coronagraph
+    sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])]
+                , corngrph=coronagraph
                 , num_airy=input_pars['num_airy'], field_stop=True)
     sla.lyot_circ_clear(lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)
@@ -67,12 +60,18 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     ln_prr = ln_prior(design_parameters, input_pars)
     if not np.isfinite(ln_prr):
         return -np.inf
-    ln_prob = ln_prr + np.log(mrt)
-    print("ln probability = {}".format(ln_prob))
+    if (0.0 <= coronagraph.pupil_field.all() <= 1.0):
+        print("Pupil field within limits")
+        ln_pupil_pr = 0.0
+    else:
+        print("Pupil field EXCEEDS LIMITS")
+        return -np.inf
+    ln_prob = ln_prr + np.log(mrt) + ln_pupil_pr
+    print("*** ln probability = {} ***\n************\n\n\n".format(ln_prob))
     return ln_prob  
     
 
-def run_emcee(parallel=False):
+def run_emcee(spread_factor=0.5, parallel=False):
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
         filename = input("Enter filename for saving EMCEE run:  ")
@@ -97,7 +96,7 @@ def run_emcee(parallel=False):
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
 
     for i in range(len(input_pars['n2d'])):
-        par_range = 1e-3*(input_pars['optmz_pupil_coefs'][2]
+        par_range = spread_factor*(input_pars['optmz_pupil_coefs'][2]
                           - input_pars['optmz_pupil_coefs'][1])
         ini_positns[:, i] = ( 
                              input_pars['optmz_pupil_coefs'][0] 
@@ -105,12 +104,14 @@ def run_emcee(parallel=False):
                                *np.random.randn(input_pars['nwalkers'])                             )
     ini_positns[:, len(input_pars['n2d'])] = ( 
         input_pars['optmz_fpm_dia'][0] 
-        + 1e-3*(input_pars['optmz_fpm_dia'][2]-input_pars['optmz_fpm_dia'][1])
+        + spread_factor*(input_pars['optmz_fpm_dia'][2]
+                         -input_pars['optmz_fpm_dia'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
     ini_positns[:, len(input_pars['n2d'])+1] = ( 
         input_pars['optmz_lyot_dia'][0] 
-        + 1e-3*(input_pars['optmz_lyot_dia'][2]-input_pars['optmz_lyot_dia'][1])
+        + spread_factor*(input_pars['optmz_lyot_dia'][2]
+        -input_pars['optmz_lyot_dia'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
 #    for q in range(input_pars['nwalkers']):
