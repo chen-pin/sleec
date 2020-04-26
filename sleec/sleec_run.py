@@ -71,18 +71,18 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     return ln_prob  
     
 
-def run_emcee(spread_factor=0.375, parallel=False):
+def run_emcee(spread_factor=0.01, parallel=False):
+    with open('sleec_pars.yml', 'r') as f:
+        input_pars = yml.full_load(f)
+    print("Loaded input parameters from user configuration file")
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
         filename = input("Enter filename for saving EMCEE run:  ")
-        path = os.path.join('..', '..', filename)
+        path = os.path.join('..', '..', 'sleec_out', filename)
         backend = emc.backends.HDFBackend(path)
         backend.reset(input_pars['nwalkers'], input_pars['ndim'])
     else:
         backend = None
-    with open('sleec_pars.yml', 'r') as f:
-        input_pars = yml.full_load(f)
-    print("Loaded input parameters from user configuration file")
     coronagraph = sli.import_pars()
     output0 = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                         , coronagraph.wvl))
@@ -152,7 +152,7 @@ def run_emcee(spread_factor=0.375, parallel=False):
 
 
 if __name__ == '__main__':  
-    run_emcee()
+    run_emcee(parallel=True)
 
 
 
