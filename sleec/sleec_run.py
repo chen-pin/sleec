@@ -16,13 +16,13 @@ def ln_prior(design_parameters, input_pars):
     Retrun log probability of design parameters
     
     """
-    coefs = design_parameters[:(len(input_pars['n2d']))]
+#    coefs = design_parameters[:(len(input_pars['n2d']))]
     fpm_dia = design_parameters[len(input_pars['n2d'])]
     lyot_dia = design_parameters[len(input_pars['n2d'])+1]
     if (
-        input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
-            <= input_pars['optmz_pupil_coefs'][2] 
-        and input_pars['optmz_fpm_dia'][1] <= fpm_dia 
+#        input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
+#            <= input_pars['optmz_pupil_coefs'][2] 
+        input_pars['optmz_fpm_dia'][1] <= fpm_dia 
             <= input_pars['optmz_fpm_dia'][2]
         and input_pars['optmz_lyot_dia'][1] <= lyot_dia 
             <= input_pars['optmz_lyot_dia'][2]):
@@ -38,7 +38,7 @@ def ln_probability(design_parameters, coronagraph, input_pars):
     Return log probability for optimization using EMCEE.  
     
     """
-    print("design_parameters:  {}".format(design_parameters))
+    print("\n\n************\ndesign_parameters:  {}".format(design_parameters))
     coefs = design_parameters[:(len(input_pars['n2d']))]
     sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
@@ -67,11 +67,11 @@ def ln_probability(design_parameters, coronagraph, input_pars):
         print("Pupil field EXCEEDS LIMITS")
         return -np.inf
     ln_prob = ln_prr + np.log(mrt) + ln_pupil_pr
-    print("*** ln probability = {} ***\n************\n\n\n".format(ln_prob))
+    print("*** ln probability = {} ***".format(ln_prob))
     return ln_prob  
     
 
-def run_emcee(spread_factor=0.5, parallel=False):
+def run_emcee(spread_factor=0.375, parallel=False):
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
         filename = input("Enter filename for saving EMCEE run:  ")

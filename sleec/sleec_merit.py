@@ -282,7 +282,7 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
     C = contrast_output[0]
     epsilon = flux_ratio
     merit = eta/np.sqrt(eta+C/epsilon)
-    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}\n".format(eta, C
+    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
                                                                  , epsilon
                                                                  , merit))
     return merit, throughput_output, contrast_output
