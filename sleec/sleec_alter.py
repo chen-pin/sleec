@@ -8,11 +8,13 @@ import numpy as np
 import hcipy as hci
 
 
-def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
-                  , method='SE', orthgnlty=0, num_dense_pts=4096):
+def pupil_slepian_r(coefs, corngrph, file_exists, filename, n2d, L=170
+                    , method='SE', orthgnlty=0, num_dense_pts=4096):
+
     """
     Return a coronagraph with pupil amplitude/apodization contructed by a 
-    superposition of radial Slepian functions.  
+    superposition of radial Slepian functions.  Assume m, the fixed 
+    (azimuthal order) is 0 and k (the radial order is 1), while N2D varies.    
 
     Parameters
     ----------
@@ -26,23 +28,11 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
     filename : str
         If `file_exitsts` = `True`, it is the name of the existing mode-basis 
         file.  Othewise, it is the name of the save file.  
-    m : int | None (if `file_exists` = `True`)
-        The fixed order of the eigenvalue problem.  It is analogous to the 
-        subscript n for Bessel functions J_n.
-    n2d : float | None (if `file_exists` = `True`)
+    n2d : array_like | None (if `file_exists` = `True`)
         The two-dimensional Shannon number.  For a Fraunhofer propagation, 
         n2d = (pi*N/4)^2, where N is the number of cycles across the 
         aperture. For example, if we are solving for a pupil-apodizing 
         function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
-    k : int | None (if `file_exists` = `True`)
-        The number of functions to output.  For example, k=3, the output 
-        contains 3 Slepain functions g_1, g_2, g_3.  The g_k functions have 
-        increasing frequencies with increasing k.  Examining a small number 
-        examples suggest the number of zeros in the range [0, 1] equals k-1. 
-        Note that k > n2d would not make much sense because the Shannon number  
-        signifies the number of significant eigenfunctions (Slepians) that 
-        can simultaneously be concentrated into the defined spatio-spectral 
-        domain.
     L : int | None (if `file_exists` = `True`)
         The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
         or else the maximum polynomial degree for which GL wil be exact. 
@@ -75,10 +65,14 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
             slepians = pkl.load(f)['slepians']
     else:
         cwd = os.getcwd()
+        grid_pts = len(corngrph.pupil_field.grid.x)
+        slepians = np.empty((len(n2d), grid_pts))
         os.chdir('slepian')
         from slepian.gen_slepians import gen_slepians_r as gsl
-        slepians = gsl(m, n2d, k, L, method, orthgnlty, corngrph.pupil_diamtr
-                       , corngrph.pupil_field.grid, num_dense_pts)
+        for n2d_i in n2d: 
+            slepians[n2d_i, :] = gsl(0, n2d, 1, L, method, orthgnlty
+                                     , corngrph.pupil_diamtr
+                                     , corngrph.pupil_field.grid, num_dense_pts)
         os.chdir(cwd)
         with  open(filename, 'wb') as f:
             output = {}
@@ -91,7 +85,6 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d, k, L=170
             output['slepians'] = slepians
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
-    pupil_field /= pupil_field.max()
     return update_pupil(pupil_field, corngrph) 
         
 
