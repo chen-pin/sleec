@@ -135,7 +135,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
         with Pool() as pool:
             sampler = emc.EnsembleSampler(
                           input_pars['nwalkers'], input_pars['ndim']
-                          , ln_probability, pool=pool
+                          , ln_probability, backend=backend, pool=pool
                           , args=(coronagraph, input_pars)
                                          )
             print("Ensemble Sampler instantiated.")  
