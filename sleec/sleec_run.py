@@ -56,19 +56,29 @@ def ln_probability(design_parameters, coronagraph, input_pars):
                       , area_penalty=input_pars['area_penalty']
                       , off_axis_locatn=off_axis
                       , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
-                      , flux_ratio=float(input_pars['flux_ratio']))[0]
+                      , flux_ratio=float(input_pars['flux_ratio']))
     ln_prr = ln_prior(design_parameters, input_pars)
-    if not np.isfinite(ln_prr):
-        return -np.inf
+#    if not np.isfinite(ln_prr):
+#        return -np.inf
     if (0.0 <= coronagraph.pupil_field.all() <= 1.0):
         print("Pupil field within limits")
         ln_pupil_pr = 0.0
     else:
         print("Pupil field EXCEEDS LIMITS")
-        return -np.inf
-    ln_prob = ln_prr + np.log(mrt) + ln_pupil_pr
+#        return -np.inf
+        ln_pupil_pr = -np.inf
+    if not (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
+        ln_prob = -np.inf
+    else:
+        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
     print("*** ln probability = {} ***".format(ln_prob))
-    return ln_prob  
+    whole_throughput, throughputs, planet_core_area = mrt[1]
+    throughputs = throughputs.tolist
+    whole_contrast, contrasts, area_penalty = mrt[2]
+    contrasts = contrasts.tolist
+    
+    return (ln_prob, whole_throughput, planet_core_area
+            , whole_contrast, area_penalty)
     
 
 def run_emcee(spread_factor=0.01, parallel=False):
@@ -129,6 +139,10 @@ def run_emcee(spread_factor=0.01, parallel=False):
 #                                            )
     print("Initial parameter values (walker positions) set")
     print(ini_positns)  # debug
+    dtype = [("whole_throughput", float) 
+             , ("planet_core_area", float), ("whole_contrast", float)
+             , ("area_penalty", float)]
+
     if parallel:
         os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's 
             # parallelization
@@ -136,7 +150,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
             sampler = emc.EnsembleSampler(
                           input_pars['nwalkers'], input_pars['ndim']
                           , ln_probability, backend=backend, pool=pool
-                          , args=(coronagraph, input_pars)
+                          , args=(coronagraph, input_pars), blobs_dtype=dtype
                                          )
             print("Ensemble Sampler instantiated.")  
             print("Starting optimization run now.")
@@ -145,14 +159,15 @@ def run_emcee(spread_factor=0.01, parallel=False):
          sampler = emc.EnsembleSampler(input_pars['nwalkers']
                                          , input_pars['ndim']
                                          , ln_probability, backend=backend 
-                                         , args=(coronagraph, input_pars))
+                                         , args=(coronagraph, input_pars)
+                                         , blobs_dtype=dtype)
          print("Ensemble Sampler instantiated.  Starting optimization run now.")
          sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True
                           , skip_initial_state_check=False)
 
 
 if __name__ == '__main__':  
-    run_emcee(parallel=True)
+    run_emcee(spread_factor=0.375, parallel=True)
 
 
 
