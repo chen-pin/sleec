@@ -12,11 +12,11 @@ def show_run_stats():
     tau = reader.get_autocorr_time(tol=4)
     burnin = int(2 * np.max(tau))
     thin = int(0.5 * np.min(tau))
-#    samples = reader.get_chain(discard=burnin, flat=True, thin=thin)
-    samples = reader.get_chain(discard=burnin, flat=True)
+    samples = reader.get_chain(discard=burnin, flat=True, thin=thin)
+#    samples = reader.get_chain(discard=burnin, flat=True)
     ndim = samples.shape[-1]
-#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True, thin=thin)
-    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
+    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True, thin=thin)
+#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
     log_prob_max = log_prob_samples.max()
     log_prob_max_ndx = np.argmax(log_prob_samples)
     print("burn-in: {0}".format(burnin))
@@ -34,7 +34,6 @@ def show_run_stats():
     labels = list(map(r"$\theta_{{{0}}}$".format, range(1, ndim + 1)))
     labels += ["log prob"]
     corner.corner(all_samples, labels=labels)
-#    corner.corner(all_samples)
     plt.show()
 
 
