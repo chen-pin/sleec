@@ -16,16 +16,17 @@ def ln_prior(design_parameters, input_pars):
     Retrun log probability of design parameters
     
     """
-#    coefs = design_parameters[:(len(input_pars['n2d']))]
+    coefs = design_parameters[:(len(input_pars['n2d']))]
     fpm_dia = design_parameters[len(input_pars['n2d'])]
     lyot_dia = design_parameters[len(input_pars['n2d'])+1]
     if (
- #       input_pars['optmz_pupil_coefs'][1] <= coefs.all() 
- #           <= input_pars['optmz_pupil_coefs'][2] 
-        input_pars['optmz_fpm_dia'][1] <= fpm_dia 
-            <= input_pars['optmz_fpm_dia'][2]
-        and input_pars['optmz_lyot_dia'][1] <= lyot_dia 
-            <= input_pars['optmz_lyot_dia'][2]):
+        (input_pars['optmz_pupil_coefs'][1] <= coefs).all() 
+        and (coefs <= input_pars['optmz_pupil_coefs'][2]).all() 
+        and (input_pars['optmz_fpm_dia'][1] <= fpm_dia 
+            <= input_pars['optmz_fpm_dia'][2])
+        and (input_pars['optmz_lyot_dia'][1] <= lyot_dia 
+            <= input_pars['optmz_lyot_dia'][2])
+       ):
         print("Parameter priors passed")
         return 0.0
     else:
@@ -52,31 +53,36 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative):
     coronagraph = sla.lyot_circ_clear(
                         lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)
-    off_axis = (input_pars['IWA'] + input_pars['OWA'])/2.0
-    mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
-                      , outer_radius=input_pars['OWA'], amplitude1=1.0
-                      , area_penalty=input_pars['area_penalty']
-                      , off_axis_locatn=off_axis
-                      , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
-                      , flux_ratio=float(input_pars['flux_ratio']))
     ln_prr = ln_prior(design_parameters, input_pars)
-#    if ((coronagraph.pupil_field>=0.0).all() 
-#        and (coronagraph.pupil_field <= 1.0).all()):  
-    if ((coronagraph.pupil_field <= 1.0).all()):  
+    if ((coronagraph.pupil_field>=0.0).all() 
+        and (coronagraph.pupil_field <= 1.0).all()):  
+#    if ((coronagraph.pupil_field <= 1.0).all()):  
         print("Pupil field within limits")
         ln_pupil_pr = 0.0
     else:
         print("Pupil field EXCEEDS LIMITS")
         ln_pupil_pr = -np.inf
-    if not (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
-        ln_prob = -np.inf
-    else:
+    if (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
+        off_axis = (input_pars['IWA'] + input_pars['OWA'])/2.0
+        mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
+                          , outer_radius=input_pars['OWA'], amplitude1=1.0
+                          , area_penalty=input_pars['area_penalty']
+                          , off_axis_locatn=off_axis
+                          , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
+                          , flux_ratio=float(input_pars['flux_ratio']))
         ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
+        whole_throughput, throughputs, planet_core_area = mrt[1]
+        throughputs = throughputs.tolist
+        whole_contrast, contrasts, area_penalty = mrt[2]
+        contrasts = contrasts.tolist
+#    if not (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
+    else:
+        ln_prob = -np.inf
+        whole_throughput, throughputs, planet_core_area = [0.0, 0.0, 0.0]
+        whole_contrast, contrasts, area_penalty = [0.0, 0.0, 0.0]
+#    else:
+#        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
     print("*** ln probability = {} ***".format(ln_prob))
-    whole_throughput, throughputs, planet_core_area = mrt[1]
-    throughputs = throughputs.tolist
-    whole_contrast, contrasts, area_penalty = mrt[2]
-    contrasts = contrasts.tolist
     
     return (ln_prob, whole_throughput, planet_core_area
             , whole_contrast, area_penalty)
