@@ -12,11 +12,10 @@ def show_run_stats():
     tau = reader.get_autocorr_time(tol=4)
     burnin = int(2 * np.max(tau))
     thin = int(0.5 * np.min(tau))
-    samples = reader.get_chain(discard=burnin, flat=True, thin=thin)
-#    samples = reader.get_chain(discard=burnin, flat=True)
-    ndim = samples.shape[-1]
-    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True, thin=thin)
-#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
+#    samples = reader.get_chain(discard=burnin, flat=True, thin=thin)
+    samples = reader.get_chain(discard=burnin, flat=True)
+#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True, thin=thin)
+    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
     log_prob_max = log_prob_samples.max()
     log_prob_max_ndx = np.argmax(log_prob_samples)
     print("burn-in: {0}".format(burnin))
@@ -24,10 +23,23 @@ def show_run_stats():
     print("flat chain shape: {0}".format(samples.shape))
     print("flat log prob shape: {0}".format(log_prob_samples.shape))
     print("maximum log prob value:  {}".format(log_prob_max))
-    print("index of max value:  {}".format(log_prob_max_ndx))
-    for i in range(ndim): 
-        print("optimal parameter {} value:  {}"
-              .format(i, samples[log_prob_max_ndx, i]))
+    print("index of max value:  {}\n".format(log_prob_max_ndx))
+    ndim = samples.shape[-1]
+    blob = reader.get_blobs(discard=burnin, flat=True)
+    print("blob shape:  {}: ".format(blob.shape))
+    sortarg = np.flip(np.argsort(log_prob_samples))
+    print("TOP FIVE SAMPLES")
+    for j in range(5):
+        print("sample #  {}".format(sortarg[j]))
+        print("ln probability: {} ".format(log_prob_samples[sortarg[j]]))
+        print("throughput: {} ".format(blob['whole_throughput'][sortarg[j]]))
+        print("contrast: {} ".format(blob['whole_contrast'][sortarg[j]]))
+        print("planet core area: {} ".format(blob['planet_core_area']
+                                               [sortarg[j]]))
+        print("area penalty: {} ".format(blob['area_penalty'][sortarg[j]]))
+        for i in range(ndim): 
+            print("parameter {} value:  {}"
+                  .format(i, samples[sortarg[j], i]))
     all_samples = np.concatenate(
         (samples, log_prob_samples[:, None]), axis=1
                                 )
