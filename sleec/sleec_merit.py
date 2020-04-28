@@ -221,15 +221,15 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty,
         mask = np.where((bounds[i] <= radii) & (radii < bounds[i+1]), 1, 0)
         avg_background = ( np.sum(output['camera'].intensity[np.where(mask)])
                        /mask.sum() )
-        contrasts.append(avg_background/psf.max())
+        contrasts.append(avg_background/psf0)
     mask = np.where((inner_radius*coronagraph.f_num*coronagraph.wvl <= radii)
                     & (radii < outer_radius*coronagraph.f_num*coronagraph.wvl)
                     , 1, 0)
     whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
                        /mask.sum() )
-    whole_contrast = whole_background/psf.max() 
+    whole_contrast = whole_background/psf0 
     if area_penalty:
-        psf_core_area = np.where(psf>=psf.max()/2.0, 1, 0).sum()
+        psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
         penalty = planet_core_area/psf_core_area
         whole_contrast *= penalty
     return whole_contrast, np.array(contrasts), penalty
