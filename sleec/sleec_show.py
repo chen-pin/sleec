@@ -18,6 +18,7 @@ def show_run_stats():
     log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
     log_prob_max = log_prob_samples.max()
     log_prob_max_ndx = np.argmax(log_prob_samples)
+    print("auto-correlation times:  {}".format(tau))
     print("burn-in: {0}".format(burnin))
     print("thin: {0}".format(thin))
     print("flat chain shape: {0}".format(samples.shape))

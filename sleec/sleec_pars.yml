@@ -5,12 +5,12 @@
  
 
 # Optimization Parameters [ini, min, max] 
-optmz_pupil_coefs: [0.1, 0.000, 1.0]  # Basis coefficients  
+optmz_pupil_coefs: [0.15, -0.1, 1.0]  # Basis coefficients  
 optmz_fpm_dia: [5.8, 1.8, 8.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
-nwalkers: 28
-ndim: 7 
-nsteps: 150 
+nwalkers: 20
+ndim: 5 
+nsteps: 2000 
 
 
 # Basic Parameters  
@@ -24,7 +24,7 @@ pupil_type: circular_clear  # Geometric type of the pupil
 pupil_dia: 48.0e-3  # Pupil diameter 
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-n2d: [2, 12, 21, 30, 40]  # 2-D Shannon numbers.  Must be inteters.
+n2d: [2, 21, 40]  # 2-D Shannon numbers.  Must be inteters.
 
 
 # DM Parameters
