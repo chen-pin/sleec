@@ -1,8 +1,10 @@
 import os
+import yaml as yml
 import numpy as np
 import matplotlib.pyplot as plt
 import corner
 import emcee as emc
+import sleec_run as slr
 
 
 def show_run_stats():
@@ -48,6 +50,18 @@ def show_run_stats():
     labels += ["log prob"]
     corner.corner(all_samples, labels=labels)
     plt.show()
+
+
+def reconstruct(filename, sample_number):  
+    path = os.path.join('..', '..', 'sleec_out', filename)
+    reader = emc.backends.HDFBackend(path)
+    pars = reader.get_chain(flat=True)
+    
+    (coronagraph, ln_prob, whole_throughput, throughputs
+     , planet_core_area, whole_contrast, contrasts, area_penalty 
+     = slr.ln_probability(design_parameters=pars, coronagraph)
+    
+    
 
 
 if __name__ == "__main__":

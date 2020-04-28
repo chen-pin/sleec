@@ -8,7 +8,7 @@ import numpy as np
 import hcipy as hci
 
 
-def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
+def pupil_slepian_r(coefs, corngrph, file_exists, filename 
                     , n2d, L=170, method='SE', orthgnlty=0, num_dense_pts=4096):
 
     """
@@ -28,8 +28,6 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
     filename : str
         If `file_exitsts` = `True`, it is the name of the existing mode-basis 
         file.  Othewise, it is the name of the save file.  
-    non_negative : boolean
-        If `true`, set non_negative values to zero.
     n2d : array_like | None (if `file_exists` = `True`)
         The two-dimensional Shannon number.  For a Fraunhofer propagation, 
         n2d = (pi*N/4)^2, where N is the number of cycles across the 
@@ -84,10 +82,6 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
             output['slepians'] = slepians
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
-    if non_negative:
-        grid = pupil_field.grid 
-        pupil_field = hci.Field(np.where(pupil_field>=0.0, pupil_field, 0.0)
-                                , grid)        
     return update_pupil(pupil_field, corngrph) 
         
 
