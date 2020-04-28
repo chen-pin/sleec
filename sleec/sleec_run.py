@@ -52,6 +52,21 @@ def ln_probability(design_parameters, coronagraph, input_pars, reconstruct):
     coronagraph = sla.lyot_circ_clear(
                         lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)
+    if reconstruct:
+        wavefronts = mrt[2][3]
+        mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
+                          , outer_radius=input_pars['OWA'], amplitude1=1.0
+                          , area_penalty=input_pars['area_penalty']
+                          , off_axis_locatn=off_axis
+                          , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
+                          , flux_ratio=float(input_pars['flux_ratio'])
+                          , output_wavefronts=True)
+        whole_throughput, throughputs, planet_core_area = mrt[1]
+        whole_contrast, contrasts, area_penalty, wavefronts = mrt[2]
+        ln_prob = np.log(mrt[0])
+        return (ln_prob, whole_throughput, planet_core_area, whole_contrast
+                , area_penalty
+                , coronagraph, wavefronts, throughputs, contrasts)
     ln_prr = ln_prior(design_parameters, input_pars)
     if ((coronagraph.pupil_field>=0.0).all() 
         and (coronagraph.pupil_field <= 1.0).all()):  
@@ -68,7 +83,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, reconstruct):
                           , area_penalty=input_pars['area_penalty']
                           , off_axis_locatn=off_axis
                           , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
-                          , flux_ratio=float(input_pars['flux_ratio']))
+                          , flux_ratio=float(input_pars['flux_ratio'])
+                          , output_wavefronts=False)
         ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
         whole_throughput, throughputs, planet_core_area = mrt[1]
         throughputs = throughputs.tolist
@@ -82,12 +98,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, reconstruct):
 #    else:
 #        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
     print("*** ln probability = {} ***".format(ln_prob))
-    if reconstruct:
-        return (coronagraph, ln_prob, whole_throughput, throughputs
-                , planet_core_area, whole_contrast, contrasts, area_penalty)
-    else:
-        return (ln_prob, whole_throughput, planet_core_area
-                , whole_contrast, area_penalty)
+    return (ln_prob, whole_throughput, planet_core_area
+            , whole_contrast, area_penalty)
     
 
 def run_emcee(spread_factor=0.01, parallel=False):

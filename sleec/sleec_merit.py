@@ -169,8 +169,8 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
     return whole_throughput, np.array(throughputs), planet_core_area
 
 
-def contrast(coronagraph, inner_radius, outer_radius, area_penalty, 
-             planet_core_area=None):
+def contrast(coronagraph, inner_radius, outer_radius, area_penalty
+             , output_wavefronts, planet_core_area=None):
     """
     Return contrast in an annular area in the image.  
 
@@ -185,7 +185,9 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty,
     area_penalty : boolean
         If `True`, multiplies the raw contrast by the ratio of the number 
         pixels in the planet's half-intensity core to the number of pixels in 
-        the stellar PSF core.  
+        the stellar PSF core. 
+    out_wavefronts : boolean
+        If `True`, return propagated wavefronts.   
     planet_core_area : scalar  
         If `area_penalty` is `True`, this is th number of pixels in the 
         planet's half-intensity core (in the final image plane).  Otherwise, 
@@ -232,12 +234,15 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty,
         psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
         penalty = planet_core_area/psf_core_area
         whole_contrast *= penalty
-    return whole_contrast, np.array(contrasts), penalty
+    if output_wavefronts:
+        return whole_contrast, np.array(contrasts), penalty, wavefronts 
+    else:
+        return whole_contrast, np.array(contrasts), penalty
 
 
 def merit(coronagraph, inner_radius, outer_radius, amplitude1
          , area_penalty, off_axis_locatn, azimuthal_locatn, amplitude2
-         , flux_ratio):
+         , flux_ratio, output_wavefronts):
     """
     Return a merit value, throughputs, and contrasts
 
@@ -263,6 +268,8 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
         Field amplitude factor
     flux_ratio : float
         Planet-to-star flux ratio
+    out_wavefronts : boolean
+        If `True`, return propagated wavefronts.   
 
     Returns
     -------
@@ -282,6 +289,7 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
                                    , amplitude2 = amplitude2)
     contrast_output = contrast(coronagraph, inner_radius, outer_radius
                                , area_penalty
+                               , output_wavefronts=output_wavefronts
                                , planet_core_area=throughput_output[2])
     eta = throughput_output[0]
     C = contrast_output[0]
