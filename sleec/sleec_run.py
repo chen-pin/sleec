@@ -201,7 +201,7 @@ def run_emcee(non_negative, spread_factor=0.001, parallel=False):
 
 
 if __name__ == '__main__':  
-    run_emcee(non_negative=True, spread_factor=1.001, parallel=True)
+    run_emcee(non_negative=True, spread_factor=0.001, parallel=True)
 
 
 

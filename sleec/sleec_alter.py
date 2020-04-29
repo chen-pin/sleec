@@ -85,7 +85,9 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
     if non_negative:
-        pupil_field = np.where(pupil_field>=0.0, pupil_field, 0.0)
+        grid = pupil_field.grid
+        pupil_field = hci.Field(np.where(pupil_field>=0.0, pupil_field, 0.0)
+                                , grid)
     return update_pupil(pupil_field, corngrph) 
         
 
