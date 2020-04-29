@@ -36,7 +36,7 @@ def ln_prior(design_parameters, input_pars):
         return -np.inf
  
 
-def ln_probability(design_parameters, coronagraph, input_pars
+def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                    , reconstruct=False):
     """
     Return log probability for optimization using EMCEE.  
@@ -47,6 +47,7 @@ def ln_probability(design_parameters, coronagraph, input_pars
     coronagraph = sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
                         , file_exists=True, filename=input_pars['filename']
+                        , non_negative=non_negative
                         , n2d=None, L=None, method=None
                         , orthgnlty=None, num_dense_pts=None)
     coronagraph = sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])]
@@ -105,7 +106,7 @@ def ln_probability(design_parameters, coronagraph, input_pars
             , whole_contrast, area_penalty)
     
 
-def run_emcee(spread_factor=0.01, parallel=False):
+def run_emcee(non_negative, spread_factor=0.001, parallel=False):
     with open('sleec_pars.yml', 'r') as f:
         input_pars = yml.full_load(f)
     print("Loaded input parameters from user configuration file")
@@ -129,6 +130,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
     sla.pupil_slepian_r(coefs=np.ones(len(input_pars['n2d']))
                         , corngrph=coronagraph, file_exists=False
                         , filename=input_pars['filename']
+                        , non_negative=True
                         , n2d=input_pars['n2d'], L=170
                         , method='SE', orthgnlty=0, num_dense_pts=4096)
     print("Slepian file created")
@@ -179,7 +181,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
             sampler = emc.EnsembleSampler(
                           input_pars['nwalkers'], input_pars['ndim']
                           , ln_probability, backend=backend, pool=pool
-                          , args=(coronagraph, input_pars)
+                          , args=(coronagraph, input_pars, non_negative)
                           , blobs_dtype=dtype
                                          )
             print("Ensemble Sampler instantiated.")  
@@ -190,6 +192,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
                                          , input_pars['ndim']
                                          , ln_probability, backend=backend 
                                          , args=(coronagraph, input_pars
+                                         , non_negative
                                                  )
                                          , blobs_dtype=dtype)
          print("Ensemble Sampler instantiated.  Starting optimization run now.")
@@ -198,7 +201,7 @@ def run_emcee(spread_factor=0.01, parallel=False):
 
 
 if __name__ == '__main__':  
-    run_emcee(spread_factor=0.001, parallel=True)
+    run_emcee(non_negative=True, spread_factor=1.001, parallel=True)
 
 
 
