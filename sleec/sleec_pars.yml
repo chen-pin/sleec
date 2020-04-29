@@ -17,6 +17,7 @@ nsteps: 2000
 wvl: 600.0e-9  # wavelength
 area_penalty: True  # Whether or not to apply penalty for PSF spread
 flux_ratio: 1e-10  # Planet-to-star flux ratio
+non_negative: True  # If `True`, set negative pupil field values to zero
 
 
 # Pupil Parameters    
