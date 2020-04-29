@@ -60,16 +60,20 @@ def show_run_stats():
     plt.show()
 
 
-def reconstruct(filename, sample_number):  
-    path = os.path.join('..', '..', 'sleec_out', filename)
-    reader = emc.backends.HDFBackend(path)
-    pars = reader.get_chain(flat=True)
-    with open('sleec_pars.yml', 'r') as f:
+def reconstruct(fn_prefix, sample_number):  
+    path = os.path.join('..', '..', 'sleec_out')
+    file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
+    file_path_slp = os.path.join(path, fn_prefix+'.pkl')
+    file_path_yml = os.path.join(path, fn_prefix+'.yml')
+    reader = emc.backends.HDFBackend(file_path_hdf)
+    pars = reader.get_chain(flat=True)[sample_number]
+    with open(file_path_yml, 'r') as f:
         input_pars = yml.full_load(f)
-    coronagraph = sli.import_pars()
+    coronagraph = sli.import_pars(file_path_yml)
     (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
      , coronagraph, wavefronts, throughputs, contrasts) \
      = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
+                          , non_negative=False
                           , input_pars=input_pars, reconstruct=True) 
     contrast_map = (wavefronts['camera'].intensity
                     /wavefronts['on_fpm'].intensity.max())
@@ -99,4 +103,5 @@ def reconstruct(filename, sample_number):
     
 
 if __name__ == "__main__":
-    show_run_stats()    
+#    show_run_stats()    
+    reconstruct('20200428t1402', 18630)

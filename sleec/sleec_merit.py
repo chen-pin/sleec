@@ -235,7 +235,7 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
         penalty = planet_core_area/psf_core_area
         whole_contrast *= penalty
     if output_wavefronts:
-        return whole_contrast, np.array(contrasts), penalty, wavefronts 
+        return whole_contrast, np.array(contrasts), penalty, output
     else:
         return whole_contrast, np.array(contrasts), penalty
 
@@ -295,6 +295,8 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
     C = contrast_output[0]
     epsilon = flux_ratio
     merit = eta/np.sqrt(eta+C/epsilon)
+    if output_wavefronts:
+        return merit, throughput_output, contrast_output, contrast_output[3]
     print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
                                                                  , epsilon
                                                                  , merit))

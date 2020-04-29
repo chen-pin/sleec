@@ -10,7 +10,7 @@ import hcipy as hci
 import sleec_optics as sop
 
 
-def import_pars():
+def import_pars(filename='sleec_pars.yml'):
     """Parse <sleec_pars.yml> and return an initialized coronagraph.  
     
     Returns
@@ -19,7 +19,7 @@ def import_pars():
         Coronagraph object prescribed by <sleec_pars.yml>
 
     """
-    with open('sleec_pars.yml', 'r') as f:    
+    with open(filename, 'r') as f:    
         pars = yml.full_load(f)
     print('The following parameters have been loaded from ' + f.name)  
     for key, value in pars.items():  

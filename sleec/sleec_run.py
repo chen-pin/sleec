@@ -44,6 +44,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     """
     print("\n\n************\ndesign_parameters:  {}".format(design_parameters))
     coefs = design_parameters[:(len(input_pars['n2d']))]
+    off_axis = (input_pars['IWA'] + input_pars['OWA'])/2.0
     coronagraph = sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
                         , file_exists=True, filename=input_pars['filename']
@@ -57,7 +58,6 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                         lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)
     if reconstruct:
-        wavefronts = mrt[2][3]
         mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
                           , outer_radius=input_pars['OWA'], amplitude1=1.0
                           , area_penalty=input_pars['area_penalty']
@@ -81,7 +81,6 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         print("Pupil field EXCEEDS LIMITS")
         ln_pupil_pr = -np.inf
     if (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
-        off_axis = (input_pars['IWA'] + input_pars['OWA'])/2.0
         mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
                           , outer_radius=input_pars['OWA'], amplitude1=1.0
                           , area_penalty=input_pars['area_penalty']
