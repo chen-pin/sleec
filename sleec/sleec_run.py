@@ -36,7 +36,8 @@ def ln_prior(design_parameters, input_pars):
         return -np.inf
  
 
-def ln_probability(design_parameters, coronagraph, input_pars, reconstruct):
+def ln_probability(design_parameters, coronagraph, input_pars
+                   , reconstruct=False):
     """
     Return log probability for optimization using EMCEE.  
     
