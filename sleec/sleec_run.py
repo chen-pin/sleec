@@ -117,8 +117,8 @@ def run_emcee(spread_factor=0.01, parallel=False):
         file_path_yml = os.path.join(path, fn_prefix+'.yml')
         backend = emc.backends.HDFBackend(file_path_hdf)
         backend.reset(input_pars['nwalkers'], input_pars['ndim'])
-        stl.copyfile(input_pars['filename'], file_path_slp]    
-        stl.copyfile('sleec_pars.yml', file_path_yml]    
+        stl.copyfile(input_pars['filename'], file_path_slp)    
+        stl.copyfile('sleec_pars.yml', file_path_yml)    
     else:
         backend = None
     coronagraph = sli.import_pars()
