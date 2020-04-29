@@ -1,5 +1,7 @@
 """<sleec_run>:  Module for running optimizations."""
 import os
+import shutil as stl
+import pickle as pkl
 from multiprocessing import Pool
 import yaml as yml
 import numpy as np
@@ -108,10 +110,15 @@ def run_emcee(spread_factor=0.01, parallel=False):
     print("Loaded input parameters from user configuration file")
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
-        filename = input("Enter filename for saving EMCEE run:  ")
-        path = os.path.join('..', '..', 'sleec_out', filename)
-        backend = emc.backends.HDFBackend(path)
+        fn_prefix = input("Enter filename prefix for saving EMCEE run:  ")
+        path = os.path.join('..', '..', 'sleec_out')
+        file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
+        file_path_slp = os.path.join(path, fn_prefix+'.pkl')
+        file_path_yml = os.path.join(path, fn_prefix+'.yml')
+        backend = emc.backends.HDFBackend(file_path_hdf)
         backend.reset(input_pars['nwalkers'], input_pars['ndim'])
+        stl.copyfile(input_pars['filename'], file_path_slp]    
+        stl.copyfile('sleec_pars.yml', file_path_yml]    
     else:
         backend = None
     coronagraph = sli.import_pars()
