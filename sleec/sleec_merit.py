@@ -214,7 +214,7 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
         psf0 = psf.max()
     else:
         print("Invalid `psf0` value, set it to `10*np.finfo(float).eps`")
-        psf0 = 10.0*np.finfo(float).eps
+        psf0 = np.finfo(float).eps
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
     bounds = ( np.arange(inner_radius, outer_radius+1)
               *coronagraph.f_num*coronagraph.wvl )
@@ -232,7 +232,11 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
     whole_contrast = whole_background/psf0 
     if area_penalty:
         psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
-        penalty = planet_core_area/psf_core_area
+        if (np.isfinite(psf_core_area) and psf_core_area != 0):
+            penalty = planet_core_area/psf_core_area
+        else:
+            print("Invalid `psf0' value, set `psf_core_area` to unity")
+            psf_core_area = 1
         whole_contrast *= penalty
     if output_wavefronts:
         return whole_contrast, np.array(contrasts), penalty, output
