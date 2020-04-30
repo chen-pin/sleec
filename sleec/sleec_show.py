@@ -17,40 +17,44 @@ def show_run_stats():
     path = os.path.join('..', '..', 'sleec_out', filename)
     reader = emc.backends.HDFBackend(path)
     tau = reader.get_autocorr_time(tol=4)
-    burnin = int(2 * np.max(tau))
-    thin = int(0.5 * np.min(tau))
-#    samples = reader.get_chain(discard=burnin, flat=True, thin=thin)
-#    samples = reader.get_chain(discard=burnin, flat=True)
     samples = reader.get_chain(flat=True)
-#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True, thin=thin)
-#    log_prob_samples = reader.get_log_prob(discard=burnin, flat=True)
     log_prob_samples = reader.get_log_prob(flat=True)
     log_prob_max = log_prob_samples.max()
     log_prob_max_ndx = np.argmax(log_prob_samples)
     print("auto-correlation times:  {}".format(tau))
-#    print("burn-in: {0}".format(burnin))
-#    print("thin: {0}".format(thin))
     print("flat chain shape: {0}".format(samples.shape))
     print("flat log prob shape: {0}".format(log_prob_samples.shape))
     print("maximum log prob value:  {}".format(log_prob_max))
     print("index of max value:  {}\n".format(log_prob_max_ndx))
     ndim = samples.shape[-1]
-#    blob = reader.get_blobs(discard=burnin, flat=True)
     blob = reader.get_blobs(flat=True)
     print("blob shape:  {}: ".format(blob.shape))
     sortarg = np.flip(np.argsort(log_prob_samples))
-    print("TOP FIVE SAMPLES")
-    for j in range(15):
-        print("\nsample #  {}".format(sortarg[j]))
-        print("ln probability: {} ".format(log_prob_samples[sortarg[j]]))
-        print("throughput: {} ".format(blob['whole_throughput'][sortarg[j]]))
-        print("contrast: {} ".format(blob['whole_contrast'][sortarg[j]]))
+    ndx = [sortarg[0]]
+    count = 0 
+    prev_log_prob = log_prob_samples[sortarg[0]]
+    for n in sortarg[1:]:
+        log_prob = log_prob_samples[n]
+        if (log_prob != prev_log_prob and count<=3):
+            ndx.append(n)
+            prev_log_prob = log_prob
+            count += 1
+        elif count>3:
+            break
+        else:
+            continue
+    print("\nTOP FIVE SAMPLES")
+    for j in ndx:
+        print("\nsample #  {}".format(j))
+        print("ln probability: {} ".format(log_prob_samples[j]))
+        print("throughput: {} ".format(blob['whole_throughput'][j]))
+        print("contrast: {} ".format(blob['whole_contrast'][j]))
         print("planet core area: {} ".format(blob['planet_core_area']
-                                               [sortarg[j]]))
-        print("area penalty: {} ".format(blob['area_penalty'][sortarg[j]]))
+                                               [j]))
+        print("area penalty: {} ".format(blob['area_penalty'][j]))
         for i in range(ndim): 
             print("parameter {} value:  {}"
-                  .format(i+1, samples[sortarg[j], i]))
+                  .format(i+1, samples[j, i]))
     all_samples = np.concatenate(
         (samples, log_prob_samples[:, None]), axis=1
                                 )
@@ -58,7 +62,14 @@ def show_run_stats():
     labels += ["log prob"]
     corner.corner(all_samples, labels=labels)
     plt.show()
-
+    log_prob_samples = reader.get_log_prob(flat=False)
+    iterations = log_prob_samples.shape[0]
+    walkers = log_prob_samples.shape[1]
+    x = [i for i in range(iterations)]
+    for walker in range(walkers): 
+        plt.plot(x, log_prob_samples[:, walker])
+    plt.show()
+    
 
 def reconstruct(fn_prefix, sample_number, airy_scale=True):  
     path = os.path.join('..', '..', 'sleec_out')
@@ -100,13 +111,12 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     plt.colorbar()
     plt.show()
     hci.imshow_field(np.log10(contrast_map), cmap=turbo
-                     ,vmax=0.0, grid_units=grid_scale)
+                     ,vmax=0.0, vmin=-12.0, grid_units=grid_scale)
     plt.title('LOG CONTRAST')
     plt.colorbar()
     plt.show()
-    
 
 
 if __name__ == "__main__":
 #    show_run_stats()    
-    reconstruct('20200429t0004', 818)
+    reconstruct('20200429t1836', 6032)
