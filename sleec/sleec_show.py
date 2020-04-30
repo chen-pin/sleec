@@ -118,5 +118,5 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-#    show_run_stats()    
-    reconstruct('20200429t1836', 6032)
+    show_run_stats()    
+#    reconstruct('20200429t1836', 6032)

@@ -84,6 +84,9 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
             output['slepians'] = slepians
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
+    aperture = ( hci.circular_aperture(corngrph.pupil_diamtr)
+                                      (corngrph.pupil_field.grid) )
+    pupil_field *= aperture
     if non_negative:
         grid = pupil_field.grid
         pupil_field = hci.Field(np.where(pupil_field>=0.0, pupil_field, 0.0)
