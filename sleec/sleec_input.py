@@ -118,7 +118,7 @@ def import_pars(filename='sleec_pars.yml'):
                                             *pars['f_num']*pars['wvl'])
         fpm_field = ( (1.0 - fpm_opacity(focal_grid))
                        *hci.circular_aperture(
-                                pars['num_airy']*pars['f_num']*pars['wvl']
+                                2*pars['num_airy']*pars['f_num']*pars['wvl']
                                              )(focal_grid)
                      )
     

@@ -53,7 +53,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                         , orthgnlty=None, num_dense_pts=None)
     coronagraph = sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])]
                 , corngrph=coronagraph
-                , num_airy=input_pars['num_airy'], field_stop=True)
+                , num_airy=input_pars['num_airy'])
     coronagraph = sla.lyot_circ_clear(
                         lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)

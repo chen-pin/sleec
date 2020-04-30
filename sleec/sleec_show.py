@@ -99,7 +99,8 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     plt.title('LYOT FIELD')
     plt.colorbar()
     plt.show()
-    hci.imshow_field(np.log10(contrast_map), cmap=turbo, grid_units=grid_scale)
+    hci.imshow_field(np.log10(contrast_map), cmap=turbo
+                     ,vmax=0.0, grid_units=grid_scale)
     plt.title('LOG CONTRAST')
     plt.colorbar()
     plt.show()
