@@ -60,7 +60,7 @@ def show_run_stats():
     plt.show()
 
 
-def reconstruct(fn_prefix, sample_number):  
+def reconstruct(fn_prefix, sample_number, airy_scale=True):  
     path = os.path.join('..', '..', 'sleec_out')
     file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
     file_path_slp = os.path.join(path, fn_prefix+'.pkl')
@@ -73,7 +73,7 @@ def reconstruct(fn_prefix, sample_number):
     (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
      , coronagraph, wavefronts, throughputs, contrasts) \
      = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
-                          , non_negative=False
+                          , non_negative=input_pars['non_negative']
                           , input_pars=input_pars, reconstruct=True) 
     contrast_map = (wavefronts['camera'].intensity
                     /wavefronts['on_fpm'].intensity.max())
@@ -84,24 +84,28 @@ def reconstruct(fn_prefix, sample_number):
     print("overall contrast:  {}".format(whole_contrast))
     print("throughput in each airy band {}".format(throughputs))
     print("contrast in each airy band {}".format(contrasts))
-    hci.imshow_field(coronagraph.pupil_field, cmap=turbo)
+    grid_scale = input_pars['f_num']*input_pars['wvl']
+    hci.imshow_field(coronagraph.pupil_field, cmap=turbo
+                     , grid_units=input_pars['pupil_dia'])
     plt.title('PUPIL FIELD')
     plt.colorbar()
     plt.show()
-    hci.imshow_field(coronagraph.fpm_field, cmap=turbo)
+    hci.imshow_field(coronagraph.fpm_field, cmap=turbo, grid_units=grid_scale)
     plt.title('FPM FIELD')
     plt.colorbar()
     plt.show()
-    hci.imshow_field(coronagraph.lyot_field, cmap=turbo)
+    hci.imshow_field(coronagraph.lyot_field, cmap=turbo
+                     , grid_units=input_pars['pupil_dia'])
     plt.title('LYOT FIELD')
     plt.colorbar()
     plt.show()
-    hci.imshow_field(contrast_map, cmap=turbo)
-    plt.title('CONTRAST')
+    hci.imshow_field(np.log10(contrast_map), cmap=turbo, grid_units=grid_scale)
+    plt.title('LOG CONTRAST')
     plt.colorbar()
     plt.show()
     
 
+
 if __name__ == "__main__":
 #    show_run_stats()    
-    reconstruct('20200428t1402', 18630)
+    reconstruct('20200429t0004', 818)

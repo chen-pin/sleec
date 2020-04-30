@@ -36,7 +36,7 @@ def ln_prior(design_parameters, input_pars):
         return -np.inf
  
 
-def ln_probability(design_parameters, coronagraph, input_pars
+def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                    , reconstruct=False):
     """
     Return log probability for optimization using EMCEE.  
@@ -48,7 +48,7 @@ def ln_probability(design_parameters, coronagraph, input_pars
     coronagraph = sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
                         , file_exists=True, filename=input_pars['filename']
-                        , non_negative=input_pars['non_negative']
+                        , non_negative=non_negative
                         , n2d=None, L=None, method=None
                         , orthgnlty=None, num_dense_pts=None)
     coronagraph = sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])]
@@ -122,6 +122,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
         stl.copyfile('sleec_pars.yml', file_path_yml)    
     else:
         backend = None
+    non_negative = input_pars['non_negative']
     coronagraph = sli.import_pars()
     output0 = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                         , coronagraph.wvl))
@@ -129,7 +130,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
     sla.pupil_slepian_r(coefs=np.ones(len(input_pars['n2d']))
                         , corngrph=coronagraph, file_exists=False
                         , filename=input_pars['filename']
-                        , non_negative=input_pars['non_negative']
+                        , non_negative=non_negative
                         , n2d=input_pars['n2d'], L=170
                         , method='SE', orthgnlty=0, num_dense_pts=4096)
     print("Slepian file created")
@@ -180,7 +181,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
             sampler = emc.EnsembleSampler(
                           input_pars['nwalkers'], input_pars['ndim']
                           , ln_probability, backend=backend, pool=pool
-                          , args=(coronagraph, input_pars)
+                          , args=(coronagraph, input_pars, non_negative)
                           , blobs_dtype=dtype
                                          )
             print("Ensemble Sampler instantiated.")  
@@ -190,7 +191,8 @@ def run_emcee(spread_factor=0.001, parallel=False):
          sampler = emc.EnsembleSampler(input_pars['nwalkers']
                                          , input_pars['ndim']
                                          , ln_probability, backend=backend 
-                                         , args=(coronagraph, input_pars)
+                                         , args=(coronagraph, input_pars
+                                                 , non_negative)
                                          , blobs_dtype=dtype)
          print("Ensemble Sampler instantiated.  Starting optimization run now.")
          sampler.run_mcmc(ini_positns, input_pars['nsteps'], progress=True
