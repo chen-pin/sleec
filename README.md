@@ -10,7 +10,8 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 ## Project Status  
 
 ### To Do List  
-* Write plotting and other utility functions for viewing EMCEE results  
+* Write plotting and other utility functions for viewing EMCEE results.  
+* Validate throughput computations.    
 
 ## Getting Started  
 Stay tuned.
