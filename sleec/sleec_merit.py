@@ -213,8 +213,8 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
     if (np.isfinite(psf.max()) and psf.max()!=0.0):
         psf0 = psf.max()
     else:
-        print("Invalid `psf0` value, set it to `np.finfo(float).eps`")
-        psf0 = np.finfo(float).eps
+        print("Invalid `psf0` value, set it to `10*np.finfo(float).eps`")
+        psf0 = 10.0*np.finfo(float).eps
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
     bounds = ( np.arange(inner_radius, outer_radius+1)
               *coronagraph.f_num*coronagraph.wvl )
