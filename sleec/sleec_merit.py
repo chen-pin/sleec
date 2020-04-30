@@ -146,6 +146,13 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
                                                np.where((bounds[i] <= radii) 
                                                        & (radii < bounds[i+1])) 
                                               ])
+        if (np.isfinite(denominator) and denominator != 0.0):
+            pass
+        else:
+            print(
+                  "Invalid `denominator` value, set it to `np.finfo(float).eps`"
+                 )
+            denominator = np.finfo(float).eps
         throughputs.append(numerator/denominator)
     whole_denominator = np.sum(output['on_fpm'].intensity[np.where(
                                        (inner_radius*coronagraph.f_num
@@ -153,6 +160,13 @@ def throughput(coronagraph, inner_radius, outer_radius, amplitude1
                                        & (radii < outer_radius*coronagraph.f_num
                                                   *coronagraph.wvl) 
                                                        )])
+    if (np.isfinite(whole_denominator) and whole_denominator != 0.0):
+        pass
+    else:
+        print(
+          "Invalid `whole_denominator` value, set it to `np.finfo(float).eps`"
+             )
+        whole_denominator = np.finfo(float).eps
     whole_numerator = np.sum(output['camera'].intensity[np.where(
                                        (inner_radius*coronagraph.f_num
                                        *coronagraph.wvl <= radii)
@@ -213,7 +227,7 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
     if (np.isfinite(psf.max()) and psf.max()!=0.0):
         psf0 = psf.max()
     else:
-        print("Invalid `psf0` value, set it to `10*np.finfo(float).eps`")
+        print("Invalid `psf0` value, set it to `np.finfo(float).eps`")
         psf0 = np.finfo(float).eps
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
     bounds = ( np.arange(inner_radius, outer_radius+1)
@@ -235,8 +249,8 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
         if (np.isfinite(psf_core_area) and psf_core_area != 0):
             penalty = planet_core_area/psf_core_area
         else:
-            print("Invalid `psf0' value, set `psf_core_area` to unity")
-            psf_core_area = 1
+            print("Invalid `psf0' value, set `penalty` to 1E15")
+            penalty = 1e15
         whole_contrast *= penalty
     if output_wavefronts:
         return whole_contrast, np.array(contrasts), penalty, output
@@ -298,7 +312,11 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
     eta = throughput_output[0]
     C = contrast_output[0]
     epsilon = flux_ratio
-    merit = eta/np.sqrt(eta+C/epsilon)
+    if (np.isfinite(eta) and np.isfinite(C) and eta!=0.0 and C!=0.0):
+        merit = eta/np.sqrt(eta+C/epsilon)
+    else:
+        print("Invalid values for computing `merit`, set it to machine eps")
+        merit = np.finfo(float).eps
     if output_wavefronts:
         return merit, throughput_output, contrast_output, contrast_output[3]
     print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
