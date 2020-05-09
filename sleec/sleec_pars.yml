@@ -23,7 +23,8 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 # Pupil Parameters    
 pupil_type: circular_clear  # Geometric type of the pupil
 pupil_dia: 48.0e-3  # Pupil diameter 
-num_pxl_across: 512  # No. of pixels across the pupil diameter
+grid_oversize: 1.05  # Ratio of grid width to pupil diameter
+num_pxl_across: 512  # No. of pixels across the pupil grid
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
 n2d: [4, 10, 22]  # 2-D Shannon numbers.  Must be integers.
 

@@ -28,7 +28,8 @@ def import_pars(filename='sleec_pars.yml'):
  
     # PUPIL	
     pupil_grid = hci.make_pupil_grid(dims=pars['num_pxl_across'], 
-                                     diameter=pars['pupil_dia'])
+                                     diameter=pars['pupil_dia']
+                                              *pars['grid_oversize'])
     if pars['pupil_type'] == 'circular_clear':  
         pupil_field = ( hci.circular_aperture(diameter=pars['pupil_dia'])
                                            (pupil_grid) )
