@@ -10,7 +10,7 @@ optmz_fpm_dia: [4.0, 2.5, 6.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
 nwalkers: 20
 ndim: 5 
-nsteps: 2000 
+nsteps: 5000 
 
 
 # Basic Parameters  
@@ -23,8 +23,8 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 # Pupil Parameters    
 pupil_type: circular_clear  # Geometric type of the pupil
 pupil_dia: 48.0e-3  # Pupil diameter 
-grid_oversize: 1.05  # Ratio of grid width to pupil diameter
-num_pxl_across: 512  # No. of pixels across the pupil grid
+grid_oversize: 1.05  # Inserted ad hoc to test new code
+num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
 n2d: [4, 10, 22]  # 2-D Shannon numbers.  Must be integers.
 
