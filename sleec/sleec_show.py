@@ -129,4 +129,4 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 if __name__ == "__main__":
 #    show_run_stats()    
-    reconstruct('20200430t0032', 13991)
+    reconstruct('20200508t1759', 35937)
