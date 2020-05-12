@@ -9,7 +9,8 @@ import hcipy as hci
 
 
 def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative 
-                    , n2d, L=170, method='SE', orthgnlty=0, num_dense_pts=4096):
+                    , n2d, L=170, method='SE', orthgnlty=0, num_dense_pts=4096
+                    , diameter=None, grid=None):
 
     """
     Return a coronagraph with pupil amplitude/apodization contructed by a 
@@ -30,17 +31,17 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
         file.  Othewise, it is the name of the save file.  
     non_negative : boolean
         If `True`, set negative output values to zero.  
-    n2d : array_like | None (if `file_exists` = `True`)
-        The two-dimensional Shannon number.  For a Fraunhofer propagation, 
-        n2d = (pi*N/4)^2, where N is the number of cycles across the 
+    n2d : int array_like | None (if `file_exists` = `True`)
+        The two-dimensional Shannon number.  For Fraunhofer propagation, 
+        n2d = (pi*N/2)^2, where N is the number of cycles across the 
         aperture. For example, if we are solving for a pupil-apodizing 
-        function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
+        function to limit energy in a 3wvl/D (radius) zone, n2d = 22.   
     L : int | None (if `file_exists` = `True`)
         The maximum degree in the Jacobi/Bessel expansion (default:  2*n2d),  
         or else the maximum polynomial degree for which GL wil be exact. 
         Simons states that increasing `L` is almost always a good idea,
         presumably because it increases accuracy.  However, P. Chen found that 
-        computations can fail for high `L` values.
+        computations fail for L > 170.
     method : str | None (if `file_exists` = `True`)
         'DV' compute by the method of De Villiers
         'SE' by Slepian "extension" [the default method]
@@ -50,6 +51,10 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
         0 Scales the solution for orthogonality with weight r
     num_dense_pts : int | None (if `file_exists` = `True`)
         Number of densly sampled points in the Slepian computation
+    diameter : float or None
+        If `coronagraph` = None, user must input diameter and grid
+    grid : `hcipy.Grid` or None
+        If `coronagraph` = None, user must input diameter and grid
     
     Returns
     -------
@@ -62,36 +67,41 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
     An `hcipy.ModeBasis` object is a list of `hcipy.Field` objects.  
 
     """
+    if corngrph != None:
+        diameter = corngrph.pupil_diamtr
+        grid = corngrph.pupil_field.grid
     if file_exists: 
         with open(filename, 'rb') as f:
             slepians = pkl.load(f)['slepians']
     else:
         cwd = os.getcwd()
-        grid_pts = len(corngrph.pupil_field.grid.x)
+        grid_pts = len(grid.x)
         slepians = np.empty((len(n2d), grid_pts))
         os.chdir('slepian')
         from slepian.gen_slepians import gen_slepians_r as gsl
         slepians = gsl(n2d, L, method, orthgnlty
-                       , corngrph.pupil_diamtr
-                       , corngrph.pupil_field.grid, num_dense_pts)
+                       , diameter 
+                       , grid, num_dense_pts)
         os.chdir(cwd)
         with  open(filename, 'wb') as f:
             output = {}
             output['n2d'] = n2d
             output['L'] = L
             output['orthgnlty'] = orthgnlty
-            output['D'] = corngrph.pupil_diamtr
+            output['D'] = diameter
             output['slepians'] = slepians
             pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
-    aperture = ( hci.circular_aperture(corngrph.pupil_diamtr)
-                                      (corngrph.pupil_field.grid) )
+    aperture = ( hci.circular_aperture(diameter)
+                                      (grid) )
     pupil_field *= aperture
     if non_negative:
-        grid = pupil_field.grid
         pupil_field = hci.Field(np.where(pupil_field>=0.0, pupil_field, 0.0)
                                 , grid)
-    return update_pupil(pupil_field, corngrph) 
+    if corngrph == None:
+        return pupil_field
+    else:
+        return update_pupil(pupil_field, corngrph) 
         
 
 def fpm_dot(fpm_dia, corngrph, num_airy):

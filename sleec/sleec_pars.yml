@@ -21,7 +21,9 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 
 
 # Pupil Parameters    
-pupil_type: circular_clear  # Geometric type of the pupil
+# pupil_type: circular_clear  # Geometric/functional type of the pupil
+pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.05  # Inserted ad hoc to test new code
 num_pxl_across: 512  # No. of pixels across the pupil diameter
@@ -70,6 +72,7 @@ dm1_vmap: null  # Either `null` or a `.fits` filename (the path prefix is hard
 dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
     # coded as <../../sleec_in>).  If the value is `null` AND `dm2_surfc` = 
     # `null` then the voltage map is set to an array of zeros.  
+
 
 # Focal Plane Parameters  
 f_num:  30.0  # f/#
