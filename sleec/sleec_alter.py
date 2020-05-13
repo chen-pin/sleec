@@ -296,27 +296,21 @@ def _test_pupil_slepian_r():
     turbo = ListedColormap(turbo_colormap_data)
     import sleec_input as sli
 
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    corngrph = sli.import_pars()
+    corngrph, pars = sli.import_pars()
     print('Coronagraph initialized')
     iwa = pars['fpm_dia']/2.0
     print('IWA = {}'.format(iwa))
-    n2d = (np.pi*iwa/2.0)**2
+    n2d = [(np.pi*iwa/2.0)**2]
     print('N2D = {}'.format(n2d))
-    m = 0
-    k = int(math.ceil(n2d))
-#    k = 1
-    print('k = {}'.format(k))
-    coefs = np.random.random(k)
-#    coefs = [1.0]
+    coefs = np.random.random(1)
     print('Coefficients = {}'.format(coefs)) 
     file_exists = False
     filename = '../../sleec_out/slepians.pkl'
-    corngrph = pupil_slepian_r(coefs, corngrph, file_exists, filename, m, n2d
-                                 , k, L=170, method='SE', orthgnlty=0
-                                 , num_dense_pts=4096)
+    non_negative = True
+    corngrph = pupil_slepian_r(coefs, corngrph, file_exists, filename
+                               , non_negative, n2d
+                               , L=170, method='SE', orthgnlty=0
+                               , num_dense_pts=4096, diameter=None, grid=None)
     aperture = ( hci.circular_aperture(corngrph.pupil_diamtr)
                                     (corngrph.pupil_field.grid) )
     input_field= (

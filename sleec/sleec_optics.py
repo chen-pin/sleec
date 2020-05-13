@@ -695,28 +695,28 @@ class Coronagraph(hci.OpticalElement):
         return prop_to_camera
       
 
-def demo_coronagraph():
-    """Sample routine to demonstrate coronagraph propagation"""
-    import matplotlib.pyplot as plt
-    import sleec_input as sli
-    corngrph = sli.ini_corngrph(sli.default_args())
-    print(corngrph.names)
-    wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
-                                    , wavelength=corngrph.wvl)
-    output0 = corngrph(wf0)
-    subplot_seq = 1
-    plt.figure(figsize=(15, 5))
-    for key in corngrph.names:
-        print(key)
-        wf = output0[key]
-        print(wf)
-        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
-        hci.imshow_field(wf.intensity, cmap=turbo)
-        plt.colorbar()
-        subplot_seq += 1
-    plt.show()
-    plt.close()
+#def demo_coronagraph():
+#    """Sample routine to demonstrate coronagraph propagation"""
+#    import matplotlib.pyplot as plt
+#    import sleec_input as sli
+#    corngrph = sli.ini_corngrph(sli.default_args())
+#    print(corngrph.names)
+#    wf0 = hci.Wavefront(electric_field=corngrph.pupil_field
+#                                    , wavelength=corngrph.wvl)
+#    output0 = corngrph(wf0)
+#    subplot_seq = 1
+#    plt.figure(figsize=(15, 5))
+#    for key in corngrph.names:
+#        print(key)
+#        wf = output0[key]
+#        print(wf)
+#        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+#        hci.imshow_field(wf.intensity, cmap=turbo)
+#        plt.colorbar()
+#        subplot_seq += 1
+#    plt.show()
+#    plt.close()
  
 
-if __name__ == '__main__':
-    demo_coronagraph()
+#if __name__ == '__main__':
+#    demo_coronagraph()

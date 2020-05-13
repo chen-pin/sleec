@@ -151,8 +151,9 @@ def import_pars(filename='sleec_pars.yml'):
     args['inflnc_ftn'] = inflnc_ftn
     args['dm_seprtn'] = pars['dm_seprtn']  
     args['f_num'] = pars['f_num'] 
+    coronagraph = ini_corngrph(args)
  
-    return ini_corngrph(args)
+    return coronagraph, pars
 
 
 def ini_corngrph(args):
@@ -204,6 +205,14 @@ def _demo():
         hci.imshow_field(wf.intensity, cmap=turbo)
         plt.colorbar()
         subplot_seq += 1
+    plt.show()
+    plt.close()
+    contrast_map = (output['camera'].intensity
+                    /output['on_fpm'].intensity.max())
+    hci.imshow_field(np.log10(contrast_map), cmap=turbo
+                     ,vmax=0.0, vmin=-12.0, grid_units=grid_scale)
+    plt.title('LOG CONTRAST')
+    plt.colorbar()
     plt.show()
     plt.close()
 
