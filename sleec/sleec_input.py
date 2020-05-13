@@ -192,7 +192,7 @@ def _demo():
     from turbo_colormap import turbo_colormap_data
     turbo = ListedColormap(turbo_colormap_data)
     t0 = time.time()   
-    corngrph = import_pars()
+    corngrph, pars = import_pars()
     output = corngrph(hci.Wavefront(corngrph.pupil_field, corngrph.wvl))
     print("ini_corngrph & propagation took {} s".format(time.time()-t0))
     subplot_seq = 1
@@ -209,6 +209,7 @@ def _demo():
     plt.close()
     contrast_map = (output['camera'].intensity
                     /output['on_fpm'].intensity.max())
+    grid_scale = pars['f_num']*pars['wvl']
     hci.imshow_field(np.log10(contrast_map), cmap=turbo
                      ,vmax=0.0, vmin=-12.0, grid_units=grid_scale)
     plt.title('LOG CONTRAST')

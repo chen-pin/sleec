@@ -77,7 +77,7 @@ dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
 # Focal Plane Parameters  
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
-fpm_dia: 6.0  # Diameter of the focal-plane mask in units of 
+fpm_dia: 4.796258  # Diameter of the focal-plane mask in units of 
     # f_num/wvl
 oversmpl: 6  # No. of pixles per resolution width
 fpm_type: dot
@@ -85,7 +85,7 @@ fpm_type: dot
     
 # Lyot Plane Parameters   
 lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
-lyot_dia: 1.0  # Lyot aperture diameter, as a fraction of pupil 
+lyot_dia: 0.5984470  # Lyot aperture diameter, as a fraction of pupil 
     # diameter.  
 
     
