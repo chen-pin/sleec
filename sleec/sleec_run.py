@@ -106,8 +106,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     
 
 def run_emcee(spread_factor=0.001, parallel=False):
-    with open('sleec_pars.yml', 'r') as f:
-        input_pars = yml.full_load(f)
+    coronagraph, input_pars = sli.import_pars()
     print("Loaded input parameters from user configuration file")
     save = input("Save EMCEE run to a file?  [y/n]:  ")
     if save == 'y':
@@ -123,7 +122,6 @@ def run_emcee(spread_factor=0.001, parallel=False):
     else:
         backend = None
     non_negative = input_pars['non_negative']
-    coronagraph = sli.import_pars()
     output0 = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                         , coronagraph.wvl))
     print("Initialized coronagraph")
