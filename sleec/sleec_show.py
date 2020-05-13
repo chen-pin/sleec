@@ -88,9 +88,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     file_path_yml = os.path.join(path, fn_prefix+'.yml')
     reader = emc.backends.HDFBackend(file_path_hdf)
     pars = reader.get_chain(flat=True)[sample_number]
-    with open(file_path_yml, 'r') as f:
-        input_pars = yml.full_load(f)
-    coronagraph = sli.import_pars(file_path_yml)
+    coronagraph, input_pars = sli.import_pars(file_path_yml)
     (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
      , coronagraph, wavefronts, throughputs, contrasts) \
      = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
