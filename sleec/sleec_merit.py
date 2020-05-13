@@ -334,10 +334,7 @@ def _test_wvfrnt_annls_cnj():
 
     turbo = ListedColormap(turbo_colormap_data)
 
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    coronagraph = sli.import_pars()
+    coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     output = coronagraph(wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
                          , coronagraph.pupil_diamtr
@@ -367,10 +364,8 @@ def _test_annls_offaxis():
 
     turbo = ListedColormap(turbo_colormap_data)
 
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    coronagraph = sli.import_pars()
+    coronagraph, pars = sli.import_pars()
+    print('Coronagraph initialized')
     print('Coronagraph initialized')
     field = (
                  (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
@@ -405,10 +400,7 @@ def _test_throughput():
     inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
     outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
     planet = input('Insert planet? (y/n):  ')
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    coronagraph = sli.import_pars()
+    coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     if planet == 'y':
         output = throughput(coronagraph, inner_radius, outer_radius
@@ -432,10 +424,7 @@ def _test_contrast():
     import sleec_input as sli
     inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
     outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    coronagraph = sli.import_pars()
+    coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     output = contrast(coronagraph, inner_radius, outer_radius, True, 54)
     print("Average contrast over entire annulus:  {}".format(output[0]))
@@ -450,10 +439,7 @@ def _test_merit():
     import sleec_input as sli
     inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
     outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
-    with open('sleec_pars.yml', 'r') as f:
-        pars = yml.full_load(f)
-    print('Loaded parameters from .yml file')
-    coronagraph = sli.import_pars()
+    coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     off_axis_locatn = (inner_radius+outer_radius)/2.0
     m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1
