@@ -120,8 +120,8 @@ def import_pars(filename='sleec_pars.yml'):
     focal_grid = hci.make_focal_grid(
                                      q=pars['oversmpl']
                                      , num_airy=pars['num_airy']
-                                     , f_number=pars['f_num']
-                                     , reference_wavelength=pars['wvl']
+                                     , spatial_resolution
+                                       =pars['f_num']*pars['wvl']
                                      )
     if pars['fpm_type'] == 'dot':
         fpm_opacity = hci.circular_aperture(pars['fpm_dia']
