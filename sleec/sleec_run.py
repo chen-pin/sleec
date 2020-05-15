@@ -61,6 +61,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
                           , outer_radius=input_pars['OWA'], amplitude1=1.0
                           , area_penalty=input_pars['area_penalty']
+                          , contrast_weights=input_pars['contrast_weights']
                           , off_axis_locatn=off_axis
                           , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
                           , flux_ratio=float(input_pars['flux_ratio'])
@@ -84,6 +85,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
                           , outer_radius=input_pars['OWA'], amplitude1=1.0
                           , area_penalty=input_pars['area_penalty']
+                          , contrast_weights=input_pars['contrast_weights']
                           , off_axis_locatn=off_axis
                           , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
                           , flux_ratio=float(input_pars['flux_ratio'])

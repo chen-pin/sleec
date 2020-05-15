@@ -259,8 +259,8 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
 
 
 def merit(coronagraph, inner_radius, outer_radius, amplitude1
-         , area_penalty, off_axis_locatn, azimuthal_locatn, amplitude2
-         , flux_ratio, output_wavefronts):
+         , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
+         , amplitude2, flux_ratio, output_wavefronts):
     """
     Return a merit value, throughputs, and contrasts
 
@@ -278,6 +278,9 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
         If `True`, multiplies the raw contrast by the ratio of the number 
         pixels in the planet's half-intensity core to the number of pixels in 
         the stellar PSF core.  
+    contrast_weights : `None` or array_like
+        Weights to be applied to each airy band of contrast.  If `None`, 
+        use `whole_contrast`.  
     off_axis_locatn : float
         Off-axis displacement in the image in units of wvl/pupil_dia
     azimuthal_locatn : float
@@ -310,7 +313,10 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
                                , output_wavefronts=output_wavefronts
                                , planet_core_area=throughput_output[2])
     eta = throughput_output[0]
-    C = contrast_output[0]
+    if contrast_weights == None:
+        C = contrast_output[0]
+    else:
+        C = (contrast_output[1]*contrast_weights).mean()
     epsilon = flux_ratio
     if (np.isfinite(eta) and np.isfinite(C) and eta!=0.0 and C!=0.0):
         merit = eta/np.sqrt(eta+C/epsilon)
