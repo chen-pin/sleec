@@ -73,114 +73,112 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
     return hci.Wavefront(field, wvl)
 
 
-def throughput(coronagraph, inner_radius, outer_radius, amplitude1
-               , insert_planet, **kwargs):
+def throughput(coronagraph, inner_radius, outer_radius):
     """
-    Return throughput in an annular area in the image.  
+    Return throughput for a planet in an annular area in the image.  The 
+    planet's image position is randomly generated within the annular zone 
+    between the inner_radius and outer_radius.   
 
-    Parameters:
+    Parameters
     ----------
     coronagraph :  `sleec_optics.Coronagraph`
         The coronagraph obejct for optical propagation
     inner_radius : float
-        Inner radius of the annulus in units of wvl/pupil_dia
+        Inner radius of the annulus in airy units (wvl/pupil_dia)
     outer_radius : float
-        Outer radius of the annulus in units of wvl/pupil_dia
-    amplitude1 : float  
-        Amplitude factor of annular illumination
-    insert_planet : boolean 
-        If `True` an offset PSF is generated in the image, and the keyword 
-        arguments below are required
-    off_axis_locatn : float
-        Off-axis displacement in the image in units of wvl/pupil_dia
-    azimuthal_locatn : float
-        Azimuthal location in radians
-    amplitude2 : float
-        Field amplitude factor
+        Outer radius of the annulus in airy units (wvl/pupil_dia)
 
-    Returns:
+    Returns
     -------
-    whole_throughput : float
-        Throughput averaged over the entire annulus  
-    band_throughputs : ndarray 
-        An array of throughput values.  Each averaged over an annular band 
-        1 lambda/D in width, starting from the inner radius. If 
-        (outer_radius - inner_radius) is not a whole number, the last band is
-        a fractional band; only part of the band is illuminated but the 
-        averaging is over the entire 1 lambda/D annulus. 
+    throughput : float
+        Throughput  
     planet_core_area : scalar  
         Number of pixels in the half-maximum encircled area of the planet's 
         final PSF 
 
+    Notes
+    -----
+    - Throughput here is defined as the ratio of the intensity in the final 
+      'camera' plane to the intensity incident on the first focal plane 
+      (fpm).  Both intensities are integrated over the half-maximum core area 
+      defined in the *camera plane*.  Therefore, decreasing the Lyot-stop 
+      diameter incurrs a double penalty, from the smaller aperture area AND 
+      from spreading out the planet image in the camera plane vs. that in 
+      the fpm plane.  
     """
-    # Synthesize sum pupil wavefront to produce annular illumination and an 
-    # off-axis PSF in the focal plane
-    field = ( 
-                  (wvfrnt_annls_cnj(inner_radius, outer_radius, amplitude1
-                                   , coronagraph.pupil_diamtr
-                                   , coronagraph.pupil_field.grid
-                                   , coronagraph.wvl)).electric_field 
-            ) 
-    if insert_planet:  
-        field +=  (           
-                     (wvfrnt_off_axis(kwargs['off_axis_locatn']
-                                      , kwargs['azimuthal_locatn']
-                                      , kwargs['amplitude2']
-                                      , coronagraph.pupil_diamtr
-                                      , coronagraph.pupil_field.grid
-                                      , coronagraph.wvl)).electric_field
-                  ) 
+    r = inner_radius + (outer_radius-inner_radius)*np.random.random()
+    theta = 2.0*np.pi*np.random.random()
+    field =  (           
+                 (wvfrnt_off_axis(off_axis_locatn=r
+                                  , azimuthal_locatn=theta
+                                  , amplitude=1.0
+                                  , pupil_dia=coronagraph.pupil_diamtr
+                                  , grid=coronagraph.pupil_field.grid
+                                  , wvl=coronagraph.wvl)).electric_field
+             ) 
     wavefront = hci.Wavefront(field, coronagraph.wvl)
     output = coronagraph(wavefront)
     # Compute throughputs
-    radii = output['on_fpm'].electric_field.grid.as_('polar').r  
-    bounds = ( np.arange(inner_radius, outer_radius+1)
-              *coronagraph.f_num*coronagraph.wvl )
-    throughputs = [] 
-    for i in range(len(bounds)-1):
-        denominator = np.sum(output['on_fpm'].intensity[
-                                               np.where((bounds[i] <= radii) 
-                                                       & (radii < bounds[i+1])) 
-                                              ])
-        numerator = np.sum(output['camera'].intensity[
-                                               np.where((bounds[i] <= radii) 
-                                                       & (radii < bounds[i+1])) 
-                                              ])
-        if (np.isfinite(denominator) and denominator != 0.0):
-            pass
-        else:
-            print(
-                  "Invalid `denominator` value, set it to `np.finfo(float).eps`"
-                 )
-            denominator = np.finfo(float).eps
-        throughputs.append(numerator/denominator)
-    whole_denominator = np.sum(output['on_fpm'].intensity[np.where(
-                                       (inner_radius*coronagraph.f_num
-                                       *coronagraph.wvl <= radii)
-                                       & (radii < outer_radius*coronagraph.f_num
-                                                  *coronagraph.wvl) 
-                                                       )])
-    if (np.isfinite(whole_denominator) and whole_denominator != 0.0):
-        pass
-    else:
-        print(
-          "Invalid `whole_denominator` value, set it to `np.finfo(float).eps`"
-             )
-        whole_denominator = np.finfo(float).eps
-    whole_numerator = np.sum(output['camera'].intensity[np.where(
-                                       (inner_radius*coronagraph.f_num
-                                       *coronagraph.wvl <= radii)
-                                       & (radii < outer_radius*coronagraph.f_num
-                                                  *coronagraph.wvl) 
-                                                       )])
-    whole_throughput = whole_numerator/whole_denominator
-    if insert_planet:
-        planet_intensity = output['camera'].intensity
-        planet_core_area = np.where(planet_intensity>=planet_intensity.max()/2.0
-                                    , 1, 0).sum()
-    else:  
-        planet_core_area = None 
-    return whole_throughput, np.array(throughputs), planet_core_area
+#    radii = output['on_fpm'].electric_field.grid.as_('polar').r  
+#    bounds = ( np.arange(inner_radius, outer_radius+1)
+#              *coronagraph.f_num*coronagraph.wvl )
+#    throughputs = [] 
+#    for i in range(len(bounds)-1):
+#        denominator = np.sum(output['on_fpm'].intensity[
+#                                               np.where((bounds[i] <= radii) 
+#                                                       & (radii < bounds[i+1])) 
+#                                              ])
+#        numerator = np.sum(output['camera'].intensity[
+#                                               np.where((bounds[i] <= radii) 
+#                                                       & (radii < bounds[i+1])) 
+#                                              ])
+#        if (np.isfinite(denominator) and denominator != 0.0):
+#            pass
+#        else:
+#            print(
+#                  "Invalid `denominator` value, set it to `np.finfo(float).eps`"
+#                 )
+#            denominator = np.finfo(float).eps
+#        throughputs.append(numerator/denominator)
+#    whole_denominator = np.sum(output['on_fpm'].intensity[np.where(
+#                                       (inner_radius*coronagraph.f_num
+#                                       *coronagraph.wvl <= radii)
+#                                       & (radii < outer_radius*coronagraph.f_num
+#                                                  *coronagraph.wvl) 
+#                                                       )])
+
+    camera_intensity = output['camera'].intensity
+    planet_core_ndx = np.where(camera_intensity>=camera_intensity.max()/2.0)
+    planet_core_area = np.zeros_like(camera_intensity)
+    planet_core_area[planet_core_ndx] = 1
+    planet_core_area = planet_core_area.sum()
+    numerator = np.sum(camera_intensity[planet_core_ndx])
+    on_fpm_intensity = output['on_fpm'].intensity
+    denominator = np.sum(on_fpm_intensity[planet_core_ndx])
+#    if (np.isfinite(denominator) and denominator != 0.0):
+#        pass
+#    else:
+#        print(
+#          "Invalid `denominator` value, set it to `np.finfo(float).eps`"
+#             )
+#        denominator = np.finfo(float).eps
+    throughput = numerator/denominator
+
+#    import matplotlib.pyplot as plt
+#    subplot_seq = 1
+#    plt.figure(figsize=(15, 5))
+#    for key in coronagraph.names:
+#        print(key)
+#        wf = output[key]
+#        print(wf)
+#        plt.subplot(2, len(coronagraph.names)//2, subplot_seq)
+#        hci.imshow_field(wf.intensity)
+#        plt.colorbar()
+#        subplot_seq += 1
+#    plt.show()
+#    plt.close()
+
+    return throughput, planet_core_area
 
 
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
@@ -311,7 +309,7 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
     contrast_output = contrast(coronagraph, inner_radius, outer_radius
                                , area_penalty
                                , output_wavefronts=output_wavefronts
-                               , planet_core_area=throughput_output[2])
+                               , planet_core_area=throughput_output[1])
     eta = throughput_output[0]
     if contrast_weights == None:
         C = contrast_output[0]
@@ -404,16 +402,9 @@ def _test_throughput():
     import sleec_input as sli
     coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
-    output = throughput(coronagraph, pars['IWA'], pars['OWA']
-                        , 1.0, True
-                        , off_axis_locatn=9.0
-                        , azimuthal_locatn=np.pi/4, amplitude2=1.0
-                       )
+    output = throughput(coronagraph, pars['IWA'], pars['OWA'])
     print("Average throughput over entire annulus:  {}".format(output[0]))
-    print("Number of pixels in planet core:  {}".format(output[2]))
-    print("Throughput in 1 lambda/D bands")
-    for i in range(len(output[1])):
-        print('Band {}:  {}'.format(i+1, output[1][i]))
+    print("Number of pixels in planet core:  {}".format(output[1]))
 
 
 def _test_contrast():
