@@ -401,23 +401,14 @@ def _test_annls_offaxis():
 
 
 def _test_throughput():
-    import yaml as yml
     import sleec_input as sli
-    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
-    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
-    planet = input('Insert planet? (y/n):  ')
     coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
-    if planet == 'y':
-        output = throughput(coronagraph, inner_radius, outer_radius
-                            , 1.0, True
-                            , off_axis_locatn=9.0
-                            , azimuthal_locatn=np.pi/4, amplitude2=1.0
-                           )
-    else: 
-        output = throughput(coronagraph, inner_radius, outer_radius
-                            , 1.0, False 
-                           ) 
+    output = throughput(coronagraph, pars['IWA'], pars['OWA']
+                        , 1.0, True
+                        , off_axis_locatn=9.0
+                        , azimuthal_locatn=np.pi/4, amplitude2=1.0
+                       )
     print("Average throughput over entire annulus:  {}".format(output[0]))
     print("Number of pixels in planet core:  {}".format(output[2]))
     print("Throughput in 1 lambda/D bands")
@@ -448,7 +439,7 @@ def _test_merit():
     coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     off_axis_locatn = (inner_radius+outer_radius)/2.0
-    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1
+    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1.0
          , area_penalty=True, off_axis_locatn=off_axis_locatn
          , azimuthal_locatn=2*np.pi/7
          , amplitude2=1, flux_ratio=1e-10)
@@ -459,7 +450,7 @@ def _test_merit():
 
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
-#    _test_throughput()
+    _test_throughput()
 #    _test_annls_offaxis()
 #    _test_contrast()
-    _test_merit()
+#    _test_merit()
