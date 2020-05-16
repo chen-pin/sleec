@@ -301,11 +301,7 @@ def merit(coronagraph, inner_radius, outer_radius, amplitude1
 
     """
 
-    throughput_output = throughput(coronagraph, inner_radius, outer_radius
-                                   , amplitude1, insert_planet=True
-                                   , off_axis_locatn=off_axis_locatn
-                                   , azimuthal_locatn=azimuthal_locatn
-                                   , amplitude2 = amplitude2)
+    throughput_output = throughput(coronagraph, inner_radius, outer_radius)
     contrast_output = contrast(coronagraph, inner_radius, outer_radius
                                , area_penalty
                                , output_wavefronts=output_wavefronts

@@ -66,12 +66,12 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
                           , flux_ratio=float(input_pars['flux_ratio'])
                           , output_wavefronts=True)
-        whole_throughput, throughputs, planet_core_area = mrt[1]
+        whole_throughput, planet_core_area = mrt[1]
         whole_contrast, contrasts, area_penalty, wavefronts = mrt[2]
         ln_prob = np.log(mrt[0])
         return (ln_prob, whole_throughput, planet_core_area, whole_contrast
                 , area_penalty
-                , coronagraph, wavefronts, throughputs, contrasts)
+                , coronagraph, wavefronts, contrasts)
     ln_prr = ln_prior(design_parameters, input_pars)
     if ((coronagraph.pupil_field>=0.0).all() 
         and (coronagraph.pupil_field <= 1.0).all()):  
@@ -91,14 +91,13 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           , flux_ratio=float(input_pars['flux_ratio'])
                           , output_wavefronts=False)
         ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
-        whole_throughput, throughputs, planet_core_area = mrt[1]
-        throughputs = throughputs.tolist
+        whole_throughput, planet_core_area = mrt[1]
         whole_contrast, contrasts, area_penalty = mrt[2]
         contrasts = contrasts.tolist
 #    if not (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
     else:
         ln_prob = -np.inf
-        whole_throughput, throughputs, planet_core_area = [0.0, 0.0, 0.0]
+        whole_throughput, planet_core_area = [0.0, 0.0]
         whole_contrast, contrasts, area_penalty = [0.0, 0.0, 0.0]
 #    else:
 #        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr

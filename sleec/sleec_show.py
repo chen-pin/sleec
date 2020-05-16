@@ -90,7 +90,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     pars = reader.get_chain(flat=True)[sample_number]
     coronagraph, input_pars = sli.import_pars(file_path_yml)
     (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
-     , coronagraph, wavefronts, throughputs, contrasts) \
+     , coronagraph, wavefronts, contrasts) \
      = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
                           , non_negative=input_pars['non_negative']
                           , input_pars=input_pars, reconstruct=True) 
@@ -101,7 +101,6 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     print("# of pixels in planet core:  {}".format(planet_core_area))
     print("(planet cors)/(PSF core):  {}".format(whole_contrast))
     print("overall contrast:  {}".format(whole_contrast))
-    print("throughput in each airy band {}".format(throughputs))
     print("contrast in each airy band {}".format(contrasts))
     grid_scale = input_pars['f_num']*input_pars['wvl']
     hci.imshow_field(coronagraph.pupil_field, cmap=turbo
