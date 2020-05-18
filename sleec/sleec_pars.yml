@@ -40,7 +40,7 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 # Pupil Parameters    
 pupil_type: circular_clear  # Geometric/functional type of the pupil
 # pupil_type: slepian_n2d  # Geometric/functional type of the pupil
-n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
+# n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter

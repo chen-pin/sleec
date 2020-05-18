@@ -118,7 +118,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     plt.colorbar()
     plt.show()
     hci.imshow_field(np.log10(contrast_map), cmap=turbo
-                     ,vmax=0.0, vmin=-12.0, grid_units=grid_scale)
+                     ,vmax=0.0, vmin=-15.0, grid_units=grid_scale)
     plt.title('LOG CONTRAST')
     plt.colorbar()
     plt.show()
@@ -126,4 +126,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 if __name__ == "__main__":
 #    show_run_stats()    
-    reconstruct('20200508t1759', 35937)
+#    reconstruct('20200508t1759', 35937)
+#    reconstruct('20200516t0007', 10712)
+    reconstruct('20200516t0007', 10732)
+#    reconstruct('20200516t0007', 27391)
