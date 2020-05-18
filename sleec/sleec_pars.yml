@@ -6,11 +6,11 @@
 
 # Optimization Parameters [ini, min, max] 
 optmz_pupil_coefs: [0.1, -1.0, 2.0]  # Basis coefficients  
-optmz_fpm_dia: [4.0, 2.5, 6.0]  # Airy units
+optmz_fpm_dia: [4.0, 1.0, 12.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
 nwalkers: 20
 ndim: 5 
-nsteps: 5000 
+nsteps: 1000 
 
 
 # Basic Parameters  
