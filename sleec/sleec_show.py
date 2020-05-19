@@ -99,7 +99,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     print("ln probability:  {}".format(ln_prob))
     print("overall throughput:  {}".format(whole_throughput))
     print("# of pixels in planet core:  {}".format(planet_core_area))
-    print("(planet cors)/(PSF core):  {}".format(whole_contrast))
+    print("(planet core)/(PSF core):  {}".format(area_penalty))
     print("overall contrast:  {}".format(whole_contrast))
     print("contrast in each airy band {}".format(contrasts))
     grid_scale = input_pars['f_num']*input_pars['wvl']
@@ -128,5 +128,6 @@ if __name__ == "__main__":
 #    show_run_stats()    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
-    reconstruct('20200516t0007', 10732)
+#    reconstruct('20200516t0007', 10732)
 #    reconstruct('20200516t0007', 27391)
+    reconstruct('20200518t0951', 7211)

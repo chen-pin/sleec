@@ -73,7 +73,129 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
     return hci.Wavefront(field, wvl)
 
 
-def throughput(coronagraph, inner_radius, outer_radius):
+def throughput_annul(coronagraph, inner_radius, outer_radius, amplitude1
+               , throughputs=False, insert_planet=True, **kwargs):
+    """
+    Return throughput in an annular area in the image.  
+
+    Parameters:
+    ----------
+    coronagraph :  `sleec_optics.Coronagraph`
+        The coronagraph obejct for optical propagation
+    inner_radius : float
+        Inner radius of the annulus in units of wvl/pupil_dia
+    outer_radius : float
+        Outer radius of the annulus in units of wvl/pupil_dia
+    amplitude1 : float  
+        Amplitude factor of annular illumination
+    insert_planet : boolean 
+        If `True` an offset PSF is generated in the image, and the keyword 
+        arguments below are required
+    throughputs : boolean
+        If `True`, compute and return throughputs in each airy band.
+    off_axis_locatn : float
+        Off-axis displacement in the image in units of wvl/pupil_dia
+    azimuthal_locatn : float
+        Azimuthal location in radians
+    amplitude2 : float
+        Field amplitude factor
+
+    Returns:
+    -------
+    whole_throughput : float
+        Throughput averaged over the entire annulus  
+    band_throughputs : ndarray 
+        An array of throughput values.  Each averaged over an annular band 
+        1 lambda/D in width, starting from the inner radius. If 
+        (outer_radius - inner_radius) is not a whole number, the last band is
+        a fractional band; only part of the band is illuminated but the 
+        averaging is over the entire 1 lambda/D annulus. 
+    planet_core_area : scalar  
+        Number of pixels in the half-maximum encircled area of the planet's 
+        final PSF 
+
+    """
+    # Synthesize sum pupil wavefront to produce annular illumination and an 
+    # off-axis PSF in the focal plane
+    field = ( 
+                  (wvfrnt_annls_cnj(inner_radius, outer_radius, amplitude1
+                                   , coronagraph.pupil_diamtr
+                                   , coronagraph.pupil_field.grid
+                                   , coronagraph.wvl)).electric_field 
+            ) 
+    if insert_planet:  
+        field +=  (           
+                     (wvfrnt_off_axis(kwargs['off_axis_locatn']
+                                      , kwargs['azimuthal_locatn']
+                                      , kwargs['amplitude2']
+                                      , coronagraph.pupil_diamtr
+                                      , coronagraph.pupil_field.grid
+                                      , coronagraph.wvl)).electric_field
+                  ) 
+    wavefront = hci.Wavefront(field, coronagraph.wvl)
+    output = coronagraph(wavefront)
+    # Compute throughputs
+    radii = output['on_fpm'].electric_field.grid.as_('polar').r  
+    bounds = ( np.arange(inner_radius, outer_radius+1)
+              *coronagraph.f_num*coronagraph.wvl )
+    whole_denominator = np.sum(output['on_fpm'].intensity[np.where(
+                                       (inner_radius*coronagraph.f_num
+                                       *coronagraph.wvl <= radii)
+                                       & (radii < outer_radius*coronagraph.f_num
+                                                  *coronagraph.wvl) 
+                                                       )])
+    if (np.isfinite(whole_denominator) and whole_denominator != 0.0):
+        pass
+    else:
+        print(
+          "Invalid `whole_denominator` value, set it to `np.finfo(float).eps`"
+             )
+        whole_denominator = np.finfo(float).eps
+    whole_numerator = np.sum(output['camera'].intensity[np.where(
+                                       (inner_radius*coronagraph.f_num
+                                       *coronagraph.wvl <= radii)
+                                       & (radii < outer_radius*coronagraph.f_num
+                                                  *coronagraph.wvl) 
+                                                       )])
+    whole_throughput = whole_numerator/whole_denominator
+    if insert_planet:
+        planet_intensity = output['camera'].intensity
+        planet_core_area = np.where(planet_intensity>=planet_intensity.max()/2.0
+                                    , 1, 0).sum()
+    else:  
+        planet_core_area = None 
+    if throughputs:
+        throughputs = [] 
+        for i in range(len(bounds)-1):
+            denominator = np.sum(output['on_fpm'].intensity[
+                                                   np.where(
+                                                       (bounds[i] <= radii) 
+                                                        & (radii < bounds[i+1])
+                                                           )
+                                                           ]
+                                )
+            numerator = np.sum(
+                               output['camera'].intensity[
+                                                   np.where(
+                                                       (bounds[i] <= radii) 
+                                                        & (radii < bounds[i+1])
+                                                           ) 
+                                                         ]
+                              )
+            if (np.isfinite(denominator) and denominator != 0.0):
+                pass
+            else:
+                print(
+                  "Invalid `denominator` value, set it to `np.finfo(float).eps`"
+                     )
+                denominator = np.finfo(float).eps
+            throughputs.append(numerator/denominator)
+        return whole_throughput, np.array(throughputs), planet_core_area
+    else:
+        return whole_throughput, planet_core_area
+
+
+def throughput_rand(coronagraph, inner_radius, outer_radius):
     """
     Return throughput for a planet in an annular area in the image.  The 
     planet's image position is randomly generated within the annular zone 
