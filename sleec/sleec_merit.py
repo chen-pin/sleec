@@ -73,7 +73,7 @@ def wvfrnt_off_axis(off_axis_locatn, azimuthal_locatn, amplitude, pupil_dia
     return hci.Wavefront(field, wvl)
 
 
-def throughput_annul(coronagraph, inner_radius, outer_radius, amplitude1
+def throughput_annls(coronagraph, inner_radius, outer_radius, amplitude1
                , throughputs=False, insert_planet=True, **kwargs):
     """
     Return throughput in an annular area in the image.  
@@ -303,6 +303,26 @@ def throughput_rand(coronagraph, inner_radius, outer_radius):
     return throughput, planet_core_area
 
 
+def throughput_masks(coronagraph):
+    """
+    Return throughput computed as a product of FPM and Lyot-stop intensity 
+    transmissions.
+
+    Parameters
+    ----------
+    coronagraph : `sleec_optics.Coronagraph`
+        The coronagraph object for optical propagation
+
+    Returns
+    -------
+    throughput : float
+        Throughput  
+    planet_core_area : scalar  
+        Number of pixels in the half-maximum encircled area of the planet's 
+        final PSF 
+    """
+
+
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
              , output_wavefronts, planet_core_area=None):
     """
@@ -311,7 +331,7 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
     Parameters:
     ----------
     coronagraph :  `sleec_optics.Coronagraph`
-        The coronagraph obejct for optical propagation
+        The coronagraph object for optical propagation
     inner_radius : float
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
