@@ -328,6 +328,31 @@ def pupil_transmit(coronagraph):
     return pupil_transmit
 
 
+def lyot_transmit(coronagraph):
+    """
+    Return Lyot-stop intensity transmittance.
+
+    Parameters
+    ----------
+    coronagraph : `sleec_optics.Coronagraph`
+        The coronagraph object for optical propagation
+
+    Returns
+    -------
+    return : float
+        Intensity transmittance of the coronagraph's Lyot-stop field
+    """
+    lyot_r = coronagraph.lyot_field.grid.as_('polar').r
+    ndx = np.where(lyot_r<=(coronagraph.pupil_diameter/2.0))
+    lyot_transmit = (
+                      np.sum(
+                            np.square(np.absolute(coronagraph.lyot_field[ndx]))
+                            )
+                      / np.sum(np.ones_like(coronagraph.pupil_field)[ndx])
+                     )
+    return lyot_transmit
+
+
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
              , output_wavefronts, planet_core_area=None):
     """
@@ -554,16 +579,32 @@ def _test_pupil_transmit():
     import sleec_input as sli
     import sleec_alter as sla
     coronagraph, pars = sli.import_pars()
+    grid = coronagraph.pupil_field.grid
+    field = hci.circular_aperture(coronagraph.pupil_diameter)(grid)
+    sla.update_pupil(field, coronagraph)
     output1 = pupil_transmit(coronagraph)
     print("Transmittance of full-aperture pupil:  {}".format(output1))
-    grid = coronagraph.pupil_field.grid
     new_field = hci.circular_aperture(coronagraph.pupil_diameter/2.0)(grid)
     sla.update_pupil(new_field, coronagraph)
     output2 = pupil_transmit(coronagraph)
     print("Transmittance of half-diameter pupil:  {}".format(output2))
     
                                                       
-
+def _test_lyot_transmit():
+    import sleec_input as sli
+    import sleec_alter as sla
+    coronagraph, pars = sli.import_pars()
+    grid = coronagraph.lyot_field.grid
+    field = hci.circular_aperture(coronagraph.pupil_diameter)(grid)
+    sla.update_lyot(field, coronagraph)
+    output1 = lyot_transmit(coronagraph)
+    print("Transmittance of full-aperture Lyot stop:  {}".format(output1))
+    new_field = hci.circular_aperture(coronagraph.pupil_diameter/2.0)(grid)
+    sla.update_lyot(new_field, coronagraph)
+    output2 = lyot_transmit(coronagraph)
+    print("Transmittance of half-diameter Lyot stop:  {}".format(output2))
+    
+                                                      
 def _test_contrast():
     import yaml as yml
     import sleec_input as sli
@@ -602,4 +643,5 @@ if __name__ == '__main__':
 #    _test_annls_offaxis()
 #    _test_contrast()
 #    _test_merit()
-    _test_pupil_transmit()
+#    _test_pupil_transmit()
+    _test_lyot_transmit()
