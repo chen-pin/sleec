@@ -321,6 +321,8 @@ def throughput_masks(coronagraph):
         Number of pixels in the half-maximum encircled area of the planet's 
         final PSF 
     """
+    pupil_transm = coronagraph.pupil_field.intensity
+    return pupil_field.intensity
 
 
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
@@ -545,6 +547,13 @@ def _test_throughput():
     print("Number of pixels in planet core:  {}".format(output[1]))
 
 
+def _test_throughput_masks():
+    import sleec_input as sli
+    coronagraph, pars = sli.import_pars()
+    output = throughput_masks(coronagraph)
+    print(output)
+
+
 def _test_contrast():
     import yaml as yml
     import sleec_input as sli
@@ -583,3 +592,4 @@ if __name__ == '__main__':
 #    _test_annls_offaxis()
 #    _test_contrast()
 #    _test_merit()
+#    _test_throughput_masks()
