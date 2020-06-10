@@ -119,7 +119,7 @@ def throughput_annls(coronagraph, inner_radius, outer_radius, amplitude1
     # off-axis PSF in the focal plane
     field = ( 
                   (wvfrnt_annls_cnj(inner_radius, outer_radius, amplitude1
-                                   , coronagraph.pupil_diamtr
+                                   , coronagraph.pupil_diameter
                                    , coronagraph.pupil_field.grid
                                    , coronagraph.wvl)).electric_field 
             ) 
@@ -128,7 +128,7 @@ def throughput_annls(coronagraph, inner_radius, outer_radius, amplitude1
                      (wvfrnt_off_axis(kwargs['off_axis_locatn']
                                       , kwargs['azimuthal_locatn']
                                       , kwargs['amplitude2']
-                                      , coronagraph.pupil_diamtr
+                                      , coronagraph.pupil_diameter
                                       , coronagraph.pupil_field.grid
                                       , coronagraph.wvl)).electric_field
                   ) 
@@ -195,7 +195,8 @@ def throughput_annls(coronagraph, inner_radius, outer_radius, amplitude1
         return whole_throughput, planet_core_area
 
 
-def throughput_rand(coronagraph, inner_radius, outer_radius):
+#def throughput_rand(coronagraph, inner_radius, outer_radius):
+def throughput(coronagraph, inner_radius, outer_radius):
     """
     Return throughput for a planet in an annular area in the image.  The 
     planet's image position is randomly generated within the annular zone 
@@ -234,7 +235,7 @@ def throughput_rand(coronagraph, inner_radius, outer_radius):
                  (wvfrnt_off_axis(off_axis_locatn=r
                                   , azimuthal_locatn=theta
                                   , amplitude=1.0
-                                  , pupil_dia=coronagraph.pupil_diamtr
+                                  , pupil_dia=coronagraph.pupil_diameter
                                   , grid=coronagraph.pupil_field.grid
                                   , wvl=coronagraph.wvl)).electric_field
              ) 
@@ -481,7 +482,7 @@ def _test_wvfrnt_annls_cnj():
     coronagraph, pars = sli.import_pars()
     print('Coronagraph initialized')
     output = coronagraph(wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
-                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_diameter
                          , coronagraph.pupil_field.grid
                          , coronagraph.wvl))  
     print('Propagation complete')
@@ -513,11 +514,11 @@ def _test_annls_offaxis():
     print('Coronagraph initialized')
     field = (
                  (wvfrnt_annls_cnj(pars['IWA'], pars['OWA'], 1.0
-                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_diameter
                          , coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field  
                 + (wvfrnt_off_axis(3.0, np.pi/4.0, 1.0
-                         , coronagraph.pupil_diamtr
+                         , coronagraph.pupil_diameter
                          , coronagraph.pupil_field.grid
                          , coronagraph.wvl)).electric_field
                 )  

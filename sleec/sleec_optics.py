@@ -205,7 +205,7 @@ class InflncFtn(object):
     save_filnm : str
         Filename for storing/loading array of influence functions in NPZ 
         format.  
-    dm_diamtr: int
+    dm_diameter: int
         Physical diameter of the DM pupil.  
     acttr_spacing : float
         Physical spacing between adjacent actuators on the DM.
@@ -239,12 +239,12 @@ class InflncFtn(object):
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
                                            , 'sleec_out', 'inflnc_ftns.pkl')
-                 , dm_diamtr=1.0, acttr_spacing=1.0/48
+                 , dm_diameter=1.0, acttr_spacing=1.0/48
                  , acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
         self.acttr_filnm = acttr_filnm
         self.save_filnm = save_filnm 
-        self.dm_diamtr = dm_diamtr
+        self.dm_diameter = dm_diameter
         self.acttr_spacing = acttr_spacing
         self.acttr_pxl_spacing = acttr_pxl_spacing
     
@@ -261,8 +261,8 @@ class InflncFtn(object):
         - For use with resampling/interpolation.
  
         """  
-        extent = self.dm_diamtr
-        return hci.make_uniform_grid(self.dm_diamtr/self.acttr_spacing
+        extent = self.dm_diameter
+        return hci.make_uniform_grid(self.dm_diameter/self.acttr_spacing
                                      , [extent]*2)
 
     def make_intrpltr(self, field, grid=None, fill_value=np.nan
@@ -466,7 +466,7 @@ class Coronagraph(hci.OpticalElement):
     ----------
     wvl : float
         Wavelength
-    pupil_diamtr : float
+    pupil_diameter : float
         Diameter of the entrance pupil
     pupil_field : hci.Field
         Field at the entrance pupil
@@ -522,13 +522,13 @@ class Coronagraph(hci.OpticalElement):
     - <load_elements> method imports <sleec_inp.py> to initialize the coronagraph.
 
     """
-    def __init__(self, wvl=None, pupil_diamtr=None, pupil_field=None
+    def __init__(self, wvl=None, pupil_diameter=None, pupil_field=None
                  , fpm_field=None , lyot_field=None 
                  , dm1_surfc=None, dm2_surfc=None 
                  , dm1_vmap=None, dm2_vmap=None, inflnc_ftn=None
                  , dm_seprtn=None , f_num=None, optical_elements=[]):
         self.wvl = wvl
-        self.pupil_diamtr = pupil_diamtr
+        self.pupil_diameter = pupil_diameter
         self.pupil_field = pupil_field
         self.fpm_field = fpm_field
         self.lyot_field = lyot_field
@@ -659,7 +659,7 @@ class Coronagraph(hci.OpticalElement):
     # Focal length
     @property
     def focal_length(self):
-        return self.pupil_diamtr*self.f_num
+        return self.pupil_diameter*self.f_num
     # Propagator to Focal Plane
     @property
     def on_fpm(self):

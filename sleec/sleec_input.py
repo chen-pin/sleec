@@ -171,7 +171,7 @@ def ini_corngrph(args):
     """ 
     corngrph = sop.Coronagraph()
     corngrph.wvl = args['wvl']
-    corngrph.pupil_diamtr = args['pupil_dia']
+    corngrph.pupil_diameter = args['pupil_dia']
     corngrph.pupil_field = args['pupil_field']
     corngrph.fpm_field = args['fpm_field']
     corngrph.lyot_field = args['lyot_field']

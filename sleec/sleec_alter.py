@@ -68,7 +68,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
 
     """
     if corngrph != None:
-        diameter = corngrph.pupil_diamtr
+        diameter = corngrph.pupil_diameter
         grid = corngrph.pupil_field.grid
     if file_exists: 
         with open(filename, 'rb') as f:
@@ -115,7 +115,7 @@ def fpm_dot(fpm_dia, corngrph, num_airy):
 
 
 def lyot_circ_clear(lyot_dia, corngrph):
-    lyot_field = ( hci.circular_aperture(lyot_dia*corngrph.pupil_diamtr)
+    lyot_field = ( hci.circular_aperture(lyot_dia*corngrph.pupil_diameter)
                                       (corngrph.lyot_field.grid) )
     return update_lyot(lyot_field, corngrph)
 
@@ -192,11 +192,11 @@ def update_lyot(lyot_field, corngrph):
     return corngrph
 
 
-#def sphrcl_vmap(shape, focal_length, diamtr):
+#def sphrcl_vmap(shape, focal_length, diameter):
 #    grid = hci.make_uniform_grid(dims=shape, extent=1)
 #    pgrid = grid.as_('polar')
 #    roc = focal_length*2.0
-#    dist_from_ctr = np.sqrt(roc**2 - (diamtr/2.0)**2)
+#    dist_from_ctr = np.sqrt(roc**2 - (diameter/2.0)**2)
 #    height = np.sqrt(dist_from_ctr**2 + pgrid.r**2) - dist_from_ctr
 #    return height 
 
@@ -243,7 +243,7 @@ def _test_update_dm1():
     plt.show()
     plt.close()
     surfc = hci.Field((coro.wvl/10)
-                *np.cos(2*np.pi*(5/coro.pupil_diamtr)*coro.pupil_field.grid.x)
+                *np.cos(2*np.pi*(5/coro.pupil_diameter)*coro.pupil_field.grid.x)
                 , coro.pupil_field.grid) 
     update_dm1_surfc(surfc, coro)
     output1 = coro(wf0)
@@ -270,7 +270,7 @@ def _test_update_dm2():
                                     , wavelength=coro.wvl)
     output0 = coro(wf0)
     surfc = hci.Field((coro.wvl/10)
-                *np.cos(2*np.pi*(5/coro.pupil_diamtr)*coro.pupil_field.grid.y)
+                *np.cos(2*np.pi*(5/coro.pupil_diameter)*coro.pupil_field.grid.y)
                 , coro.pupil_field.grid) 
     update_dm2_surfc(surfc, coro)
     output1 = coro(wf0)
@@ -311,7 +311,7 @@ def _test_pupil_slepian_r():
                                , non_negative, n2d
                                , L=170, method='SE', orthgnlty=0
                                , num_dense_pts=4096, diameter=None, grid=None)
-    aperture = ( hci.circular_aperture(corngrph.pupil_diamtr)
+    aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
                                     (corngrph.pupil_field.grid) )
     input_field= (
         hci.Field(np.ones_like(corngrph.pupil_field.grid.x)
