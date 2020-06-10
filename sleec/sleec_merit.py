@@ -195,8 +195,7 @@ def throughput_annls(coronagraph, inner_radius, outer_radius, amplitude1
         return whole_throughput, planet_core_area
 
 
-#def throughput_rand(coronagraph, inner_radius, outer_radius):
-def throughput(coronagraph, inner_radius, outer_radius):
+def throughput_rand(coronagraph, inner_radius, outer_radius):
     """
     Return throughput for a planet in an annular area in the image.  The 
     planet's image position is randomly generated within the annular zone 
@@ -304,10 +303,9 @@ def throughput(coronagraph, inner_radius, outer_radius):
     return throughput, planet_core_area
 
 
-def throughput_masks(coronagraph):
+def pupil_transmit(coronagraph):
     """
-    Return throughput computed as a product of FPM and Lyot-stop intensity 
-    transmissions.
+    Return pupil intensity transmittance.
 
     Parameters
     ----------
@@ -316,14 +314,18 @@ def throughput_masks(coronagraph):
 
     Returns
     -------
-    throughput : float
-        Throughput  
-    planet_core_area : scalar  
-        Number of pixels in the half-maximum encircled area of the planet's 
-        final PSF 
+    return : float
+        Intensity transmittance of the coronagraph's pupil field
     """
-    pupil_transm = coronagraph.pupil_field.intensity
-    return pupil_field.intensity
+    pupil_r = coronagraph.pupil_field.grid.as_('polar').r
+    ndx = np.where(pupil_r<=(coronagraph.pupil_diameter/2.0))
+    pupil_transmit = (
+                      np.sum(
+                            np.square(np.absolute(coronagraph.pupil_field[ndx]))
+                            )
+                      / np.sum(np.ones_like(coronagraph.pupil_field)[ndx])
+                     )
+    return pupil_transmit
 
 
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
@@ -539,21 +541,28 @@ def _test_annls_offaxis():
     plt.close()
 
 
-def _test_throughput():
+#def _test_throughput():
+#    import sleec_input as sli
+#    coronagraph, pars = sli.import_pars()
+#    print('Coronagraph initialized')
+#    output = throughput(coronagraph, pars['IWA'], pars['OWA'])
+#    print("Average throughput over entire annulus:  {}".format(output[0]))
+#    print("Number of pixels in planet core:  {}".format(output[1]))
+
+
+def _test_pupil_transmit():
     import sleec_input as sli
+    import sleec_alter as sla
     coronagraph, pars = sli.import_pars()
-    print('Coronagraph initialized')
-    output = throughput(coronagraph, pars['IWA'], pars['OWA'])
-    print("Average throughput over entire annulus:  {}".format(output[0]))
-    print("Number of pixels in planet core:  {}".format(output[1]))
-
-
-def _test_throughput_masks():
-    import sleec_input as sli
-    coronagraph, pars = sli.import_pars()
-    output = throughput_masks(coronagraph)
-    print(output)
-
+    output1 = pupil_transmit(coronagraph)
+    print("Transmittance of full-aperture pupil:  {}".format(output1))
+    grid = coronagraph.pupil_field.grid
+    new_field = hci.circular_aperture(coronagraph.pupil_diameter/2.0)(grid)
+    sla.update_pupil(new_field, coronagraph)
+    output2 = pupil_transmit(coronagraph)
+    print("Transmittance of half-diameter pupil:  {}".format(output2))
+    
+                                                      
 
 def _test_contrast():
     import yaml as yml
@@ -589,8 +598,8 @@ def _test_merit():
 
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
-    _test_throughput()
+#    _test_throughput()
 #    _test_annls_offaxis()
 #    _test_contrast()
 #    _test_merit()
-#    _test_throughput_masks()
+    _test_pupil_transmit()
