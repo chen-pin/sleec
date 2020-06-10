@@ -353,6 +353,36 @@ def lyot_transmit(coronagraph):
     return lyot_transmit
 
 
+def fpm_transmit(coronagraph, iwa, owa):
+    """
+    Return FPM transmittance in the science zone.
+
+    Parameters
+    ----------
+    coronagraph : `sleec_optics.Coronagraph`
+        The coronagraph object for optical propagation
+
+    Returns
+    -------
+    return : float
+        Intensity transmittance of the coronagraph's FPM in the defined image 
+        zone.
+
+    """
+    rho = coronagraph.fpm_field.grid.as_('polar').r
+    rho_min = iwa*coronagraph.f_num*coronagraph.wvl
+    rho_max = owa*coronagraph.f_num*coronagraph.wvl
+    ndx = np.where((rho_min<=rho) & (rho<=rho_max))
+    fpm_transmit = (
+                      np.sum(
+                            np.square(np.absolute(coronagraph.fpm_field[ndx]))
+                            )
+                      / np.sum(np.ones_like(coronagraph.fpm_field)[ndx])
+                     )
+    return fpm_transmit
+    
+
+
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
              , output_wavefronts, planet_core_area=None):
     """
@@ -603,6 +633,13 @@ def _test_lyot_transmit():
     sla.update_lyot(new_field, coronagraph)
     output2 = lyot_transmit(coronagraph)
     print("Transmittance of half-diameter Lyot stop:  {}".format(output2))
+
+
+def _test_fpm_transmit():
+    import sleec_input as sli
+    coronagraph, pars = sli.import_pars()
+    output = fpm_transmit(coronagraph, pars['IWA'], pars['OWA'])
+    print("FPM transmittance:  {}".format(output))
     
                                                       
 def _test_contrast():
@@ -644,4 +681,5 @@ if __name__ == '__main__':
 #    _test_contrast()
 #    _test_merit()
 #    _test_pupil_transmit()
-    _test_lyot_transmit()
+#    _test_lyot_transmit()
+    _test_fpm_transmit()
