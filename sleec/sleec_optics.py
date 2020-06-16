@@ -590,7 +590,8 @@ class Coronagraph(hci.OpticalElement):
             self.wavefronts[self.names[::-1][i]] = wf
         return self.wavefronts
     
-    def get_transformation_matrix_forward(self, wavelength=1, load_elements=True):
+    def get_transformation_matrix_forward(self, wavelength=1
+                                          , load_elements=True):
         matrix = 1
         if load_elements:
             self.load_elements()
@@ -601,7 +602,8 @@ class Coronagraph(hci.OpticalElement):
                            )
         return matrix
     
-    def get_transformation_matrix_backward(self, wavelength=1, load_elements=True):
+    def get_transformation_matrix_backward(self, wavelength=1
+                                           , load_elements=True):
         matrix = 1
         if load_elements:   
             self.load_elements()
@@ -663,10 +665,10 @@ class Coronagraph(hci.OpticalElement):
     # Propagator to Focal Plane
     @property
     def on_fpm(self):
-    #    prop_to_focal = hci.propagation.fraunhofer.FraunhoferPropagatorMonochromatic(self.pupil_field.grid
-        prop_to_focal = hci.FraunhoferPropagator(self.pupil_field.grid
-                                                , self.fpm_field.grid
-                                                , focal_length=self.focal_length)
+        prop_to_focal = hci.FraunhoferPropagator(
+                                self.pupil_field.grid
+                                , self.fpm_field.grid
+                                , focal_length=self.focal_length)
         return prop_to_focal
     # Focal-Plane Mask
     @property
