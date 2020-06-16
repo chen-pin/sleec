@@ -380,11 +380,10 @@ def fpm_transmit(coronagraph, iwa, owa):
                       / np.sum(np.ones_like(coronagraph.fpm_field)[ndx])
                      )
     return fpm_transmit
-    
 
 
 def contrast(coronagraph, inner_radius, outer_radius, area_penalty
-             , output_wavefronts, planet_core_area=None):
+             , output_wavefronts):
     """
     Return contrast in an annular area in the image.  
 
@@ -421,8 +420,12 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
         The penalty factor associated with `area_penalty`.  
 
     """
-    output = coronagraph(hci.Wavefront(coronagraph.pupil_field
-                                       , coronagraph.wvl))
+    input_field = (
+                   hci.circular_aperture(coronagraph.pupil_diameter)
+                                        (coronagraph.pupil_field.grid)
+                  )
+    wf = hci.Wavefront(input_field, coronagraph.wvl)
+    output = coronagraph(wf)
     psf = output['on_fpm'].intensity
     if (np.isfinite(psf.max()) and psf.max()!=0.0):
         psf0 = psf.max()
@@ -445,13 +448,26 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
                        /mask.sum() )
     whole_contrast = whole_background/psf0 
     if area_penalty:
-        psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
-        if (np.isfinite(psf_core_area) and psf_core_area != 0):
-            penalty = planet_core_area/psf_core_area
-        else:
-            print("Invalid `psf0' value, set `penalty` to 1E15")
-            penalty = 1e15
+        x = output['on_fpm'].grid.x
+        y = output['on_fpm'].grid.y
+        psf_width = np.sum(psf*(x**2+y**2))
+        print("PSF width:  {}".format(psf_width))
+        wf_lyot = coronagraph.lyot.forward(wf)
+        intensity = coronagraph.camera(wf_lyot).intensity
+        x_i = output['camera'].electric_field.grid.x
+        y_i = output['camera'].electric_field.grid.y
+        width = np.sqrt((np.sum(intensity*(x_i**2+y_i**2)))**2 + psf_width**2)
+        print("planet width:  {}".format(width))
+        penalty = (width/psf_width)**2
+#        psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
+#        if (np.isfinite(psf_core_area) and psf_core_area != 0):
+#            penalty = planet_core_area/psf_core_area
+#        else:
+#            print("Invalid `psf0' value, set `penalty` to 1E15")
+#            penalty = 1e15
         whole_contrast *= penalty
+    else:
+        pentalty = 1.0
     if output_wavefronts:
         return whole_contrast, np.array(contrasts), penalty, output
     else:
@@ -645,9 +661,11 @@ def _test_fpm_transmit():
 def _test_contrast():
     import yaml as yml
     import sleec_input as sli
-    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
-    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
+#    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
+#    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
     coronagraph, pars = sli.import_pars()
+    inner_radius = pars['IWA']
+    outer_radius = pars['OWA']
     print('Coronagraph initialized')
     output = contrast(coronagraph, inner_radius, outer_radius, True, 54)
     print("Average contrast over entire annulus:  {}".format(output[0]))
@@ -682,4 +700,5 @@ if __name__ == '__main__':
 #    _test_merit()
 #    _test_pupil_transmit()
 #    _test_lyot_transmit()
-    _test_fpm_transmit()
+#    _test_fpm_transmit()
+    _test_contrast()
