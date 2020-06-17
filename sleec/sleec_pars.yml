@@ -103,7 +103,7 @@ fpm_type: dot
     
 # Lyot Plane Parameters   
 lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
-lyot_dia:  0.5  # Lyot aperture diameter, as a fraction of pupil 
+lyot_dia:  0.7071  # Lyot aperture diameter, as a fraction of pupil 
     # diameter.  
 
     

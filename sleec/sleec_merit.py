@@ -395,10 +395,14 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, area_penalty
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
+    num_airy : int or `None`
+        If `area_penalty` is `True`, field stop radius in airy units to be 
+        applied to the `camera` plane.  It must be the same value as that 
+        applied to the (first) focal plane. 
     area_penalty : boolean
-        If `True`, multiplies the raw contrast by the ratio of the number 
-        pixels in the planet's half-intensity core to the number of pixels in 
-        the stellar PSF core. 
+        If `True`, estimate widths of PSF (on FPM) and planet PSF (in final 
+        image) using the second moment of intensity.  The penalty is the 
+        ratio of the widths squared.  
     out_wavefronts : boolean
         If `True`, return propagated wavefronts.   
     planet_core_area : scalar  
@@ -466,21 +470,10 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, area_penalty
         m_0 = np.sum(intensity)
         mean = np.sum((x+y)*intensity)/m_0
         lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean
-#        planet_variance = psf_variance + lc_variance
-        print("Lyot conjugate variance:  {}".format(lc_variance))
-#        print("planet variance:  {}".format(planet_variance))
         if lc_variance <= psf_variance:
             penalty = 1.0
         else:
             penalty = (lc_variance/psf_variance)**2
-        
-#        psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
-#        if (np.isfinite(psf_core_area) and psf_core_area != 0):
-#            penalty = planet_core_area/psf_core_area
-#        else:
-#            print("Invalid `psf0' value, set `penalty` to 1E15")
-#            penalty = 1e15
-        whole_contrast *= penalty
     else:
         pentalty = 1.0
     if output_wavefronts:
