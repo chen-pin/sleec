@@ -382,7 +382,7 @@ def fpm_transmit(coronagraph, iwa, owa):
     return fpm_transmit
 
 
-def contrast(coronagraph, inner_radius, outer_radius, area_penalty
+def contrast(coronagraph, inner_radius, outer_radius, num_airy, area_penalty
              , output_wavefronts):
     """
     Return contrast in an annular area in the image.  
@@ -448,17 +448,32 @@ def contrast(coronagraph, inner_radius, outer_radius, area_penalty
                        /mask.sum() )
     whole_contrast = whole_background/psf0 
     if area_penalty:
+        resel = coronagraph.f_num*coronagraph.wvl
         x = output['on_fpm'].grid.x
         y = output['on_fpm'].grid.y
-        psf_width = np.sum(psf*(x**2+y**2))
-        print("PSF width:  {}".format(psf_width))
+        m_0 = np.sum(psf)
+        mean = np.sum((x+y)*psf)/m_0
+        psf_variance = np.sum(psf*(x**2+y**2))/m_0 - mean**2
+        print("PSF variance:  {}".format(psf_variance))
         wf_lyot = coronagraph.lyot.forward(wf)
-        intensity = coronagraph.camera(wf_lyot).intensity
-        x_i = output['camera'].electric_field.grid.x
-        y_i = output['camera'].electric_field.grid.y
-        width = np.sqrt((np.sum(intensity*(x_i**2+y_i**2)))**2 + psf_width**2)
-        print("planet width:  {}".format(width))
-        penalty = (width/psf_width)**2
+        intensity = (
+            coronagraph.camera(wf_lyot).intensity
+            *hci.circular_aperture(2.0*num_airy*resel)
+             (output['camera'].grid)
+                    )
+        x = output['camera'].electric_field.grid.x
+        y = output['camera'].electric_field.grid.y
+        m_0 = np.sum(intensity)
+        mean = np.sum((x+y)*intensity)/m_0
+        lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean
+#        planet_variance = psf_variance + lc_variance
+        print("Lyot conjugate variance:  {}".format(lc_variance))
+#        print("planet variance:  {}".format(planet_variance))
+        if lc_variance <= psf_variance:
+            penalty = 1.0
+        else:
+            penalty = (lc_variance/psf_variance)**2
+        
 #        psf_core_area = np.where(psf>=psf0/2.0, 1, 0).sum()
 #        if (np.isfinite(psf_core_area) and psf_core_area != 0):
 #            penalty = planet_core_area/psf_core_area
@@ -667,7 +682,8 @@ def _test_contrast():
     inner_radius = pars['IWA']
     outer_radius = pars['OWA']
     print('Coronagraph initialized')
-    output = contrast(coronagraph, inner_radius, outer_radius, True, 54)
+    output = contrast(coronagraph, inner_radius, outer_radius 
+                      , pars['num_airy'], True, 54)
     print("Average contrast over entire annulus:  {}".format(output[0]))
     print("Core-footprint penalty:  {}".format(output[2]))
     print("Contrast in 1 lambda/D bands")

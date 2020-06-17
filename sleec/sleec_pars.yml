@@ -45,8 +45,8 @@ pupil_type: circular_clear  # Geometric/functional type of the pupil
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
-filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-n2d: [4, 10, 22]  # 2-D Shannon numbers.  Must be integers.
+# filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
+# n2d: [4, 10, 22]  # 2-D Shannon numbers.  Must be integers.
 
 
 # DM Parameters
@@ -103,7 +103,7 @@ fpm_type: dot
     
 # Lyot Plane Parameters   
 lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
-lyot_dia: 0.7071  # Lyot aperture diameter, as a fraction of pupil 
+lyot_dia:  0.5  # Lyot aperture diameter, as a fraction of pupil 
     # diameter.  
 
     
