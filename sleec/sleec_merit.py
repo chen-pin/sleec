@@ -482,6 +482,148 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, area_penalty
         return whole_contrast, np.array(contrasts), penalty
 
 
+def cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw):
+    """
+    Return the planetary photon count rate.  
+    
+    Parameters
+    ----------
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    delta_mag : float
+        contrast magnitude of dimmest detectable planet
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    encircled_psf : float
+        The fraction of the PSF contained within an defined encirclement
+    throughput : float
+        Throughput
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+
+    Returns
+    -------
+    return : float
+        Planetary photon count rate [photon/s]
+
+    Reference
+    ---------
+        Stark et al. (2014) ApJ
+    
+    """
+    return ( F_0*10**(-0.4*(m_v+delta_mag))*(np.pi*D**2/4.0)
+             *encircled_psf*throughput*wvl_bw )
+
+
+def cr_b_star(contrast, F_0, m_v, X, D, throughput, wvl_bw):
+    """
+    Return the residual stellar photon count rate.  
+    
+    Parameters
+    ----------
+    contrast : float
+        Coronagraphic contrast
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    X : float
+        Radius of PSF encirclement [wvl/D]
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    throughput : float
+        Throughput
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+
+    Returns
+    -------
+    return : float
+        Stellar photon count rate [photon/s]
+
+    Reference
+    ---------
+        Stark et al. (2014) ApJ
+    
+    """
+    return ( F_0*10**(-0.4*m_v)*contrast*((np.pi**2)*(X**2)/4.0)
+             *(np.pi*D**2/4.0)*throughput*wvl_bw )
+
+
+def cr_b_zodi(z, F_0, X, D, wvl, throughput, wvl_bw):
+    """
+    Return the local zodiacal photon count rate.  
+    
+    Parameters
+    ----------
+    z : float
+        Surface brightness of zodiacal light [mag/arcsec^2]
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    X : float
+        Radius of PSF encirclement [wvl/D]
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    throughput : float
+        Throughput
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+
+    Returns
+    -------
+    return : float
+        Zodiacal photon count rate [photon/s]
+
+    Reference
+    ---------
+        Stark et al. (2014) ApJ
+    
+    """
+    return ( F_0*10**(-0.4*(z-26.572))*((np.pi**2)*(X**2)/4.0)*wvl**2
+             *throughput*wvl_bw )
+
+
+def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
+    """
+    Return the exozodiacal  photon count rate.  
+    
+    Parameters
+    ----------
+    x : float
+        Surface brightness of 1 zodi of exo zodiacal light [mag/arcsec^2]
+    n : float
+        The assumed number of zodis 
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    X : float
+        Radius of PSF encirclement [wvl/D]
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    throughput : float
+        Throughput
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+
+    Returns
+    -------
+    return : float
+        Exozodiacal photon count rate [photon/s]
+
+    Reference
+    ---------
+        Stark et al. (2014) ApJ
+    
+    """
+    return ( F_0*n*10**(-0.4*(x-26.572))*((np.pi**2)*(X**2)/4.0)*wvl**2
+             *throughput*wvl_bw )
+
+
 def merit(coronagraph, inner_radius, outer_radius, amplitude1
          , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
          , amplitude2, flux_ratio, output_wavefronts):
