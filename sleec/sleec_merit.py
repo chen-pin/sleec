@@ -353,14 +353,18 @@ def lyot_transmit(coronagraph):
     return lyot_transmit
 
 
-def fpm_transmit(coronagraph, iwa, owa):
+def fpm_transmit(coronagraph, inner_radius, outer_radius):
     """
-    Return FPM transmittance in the science zone.
+    Return FPM transmittance in an annular image area.
 
     Parameters
     ----------
     coronagraph : `sleec_optics.Coronagraph`
         The coronagraph object for optical propagation
+    inner_radius : float
+        Inner radius of the annulus in Airy units (wvl/pupil_dia)
+    outer_radius : float
+        Outer radius of the annulus in Airy units
 
     Returns
     -------
@@ -370,9 +374,9 @@ def fpm_transmit(coronagraph, iwa, owa):
 
     """
     rho = coronagraph.fpm_field.grid.as_('polar').r
-    rho_min = iwa*coronagraph.f_num*coronagraph.wvl
-    rho_max = owa*coronagraph.f_num*coronagraph.wvl
-    ndx = np.where((rho_min<=rho) & (rho<=rho_max))
+    rho_min = inner_radius*coronagraph.f_num*coronagraph.wvl
+    rho_max = outer_radius*coronagraph.f_num*coronagraph.wvl
+    ndx = np.where((rho_min<=rho) & (rho<rho_max))
     fpm_transmit = (
                       np.sum(
                             np.square(np.absolute(coronagraph.fpm_field[ndx]))
@@ -380,6 +384,38 @@ def fpm_transmit(coronagraph, iwa, owa):
                       / np.sum(np.ones_like(coronagraph.fpm_field)[ndx])
                      )
     return fpm_transmit
+
+
+def transmit_all(coronagraph, inner_radius, outer_radius):
+    """
+    Return coronagraph end-to-end transmittance in annular image bands, 
+    each of one Airy unit width.
+
+    Parameters
+    ----------
+    coronagraph : `sleec_optics.Coronagraph`
+        The coronagraph object for optical propagation
+    inner_radius : float
+        Inner working angle in Airy units
+    outer_radius : float 
+        Outer working angle in Airy units
+
+    Returns
+    -------
+    return : array
+        The coronagraph's end-to-end transmittance in each Airy band between 
+        `inner_radius` and `outer_radius`.
+
+    """
+    bounds = np.arange(inner_radius, outer_radius+1)
+    transmittances = []
+    for i in range(len(bounds)-1):
+        transmittance = ( pupil_transmit(coronagraph)
+                          *fpm_transmit(coronagraph, bounds[i], bounds[i+1])
+                          *lyot_transmit(coronagraph) )
+        transmittances.append(transmittance)
+    return np.array(transmittances)
+    
 
 
 def contrast(coronagraph, inner_radius, outer_radius, num_airy, area_penalty
@@ -806,6 +842,13 @@ def _test_fpm_transmit():
     coronagraph, pars = sli.import_pars()
     output = fpm_transmit(coronagraph, pars['IWA'], pars['OWA'])
     print("FPM transmittance:  {}".format(output))
+
+
+def _test_transmit_all():
+    import sleec_input as sli
+    coronagraph, pars = sli.import_pars()
+    output = transmit_all(coronagraph, pars['IWA'], pars['OWA'])
+    print("overall transmittance:  {}".format(output))
     
                                                       
 def _test_contrast():
@@ -852,4 +895,5 @@ if __name__ == '__main__':
 #    _test_pupil_transmit()
 #    _test_lyot_transmit()
 #    _test_fpm_transmit()
-    _test_contrast()
+#    _test_contrast()
+    _test_transmit_all()

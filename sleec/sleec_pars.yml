@@ -122,7 +122,7 @@ lyot_dia:  0.7071  # Lyot aperture diameter, as a fraction of pupil
     
 # Image Plane Parameters
 dark_zone_type: 'annular_full'
-IWA: 3.0  # Inner working angle (for contrast calculation).  
+IWA: 2.0  # Inner working angle (for contrast calculation).  
     # In units of f_num*wvl
-OWA: 4.0  # Outer working angle.  
+OWA: 9.0  # Outer working angle.  
     # In units of f_num*wvl
