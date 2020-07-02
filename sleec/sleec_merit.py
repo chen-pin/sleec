@@ -431,11 +431,9 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy):
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
     num_airy : int or `None`
-        If `area_penalty` is `True`, field stop radius in airy units to be 
+        Field stop radius in airy units to be 
         applied to the `camera` plane.  It must be the same value as that 
         applied to the (first) focal plane. 
-    out_wavefronts : boolean
-        If `True`, return propagated wavefronts.   
 
     Returns:
     -------
@@ -627,6 +625,8 @@ def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
         Radius of PSF encirclement [wvl/D]
     D : float
         Telescope diameter (separate from coronagraph pupil diameter)
+    wvl : float
+        Wavelength
     throughput : float
         Throughput
     wvl_bw : float
@@ -644,6 +644,58 @@ def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
     """
     return ( F_0*n*10**(-0.4*(x-26.572))*((np.pi**2)*(X**2)/4.0)*wvl**2
              *throughput*wvl_bw )
+
+
+def exposure_time(coronagraph, inner_radius, outer_radius, num_airy, snr	
+                  , F_0, m_v, delta_mag, D, X, wvl, wvl_bw, z, x, n):  
+    """
+    Return required exposure time for exoplanet detection.
+
+    Parameters
+    ----------
+    coronagraph :  `sleec_optics.Coronagraph`
+        The coronagraph obejct for optical propagation
+    inner_radius : float
+        Inner radius of the annulus in units of wvl/pupil_dia
+    outer_radius : float
+        Outer radius of the annulus in units of wvl/pupil_dia
+    num_airy : int or `None`
+        Field stop radius in airy units to be 
+        applied to the `camera` plane.  It must be the same value as that 
+        applied to the (first) focal plane. 
+    snr : floate
+        S/N required for detection
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    delta_mag : float
+        contrast magnitude of dimmest detectable planet
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    X : float
+        Radius of PSF encirclement [wvl/D]
+    wvl : float
+        Wavelength
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+    z : float
+        Surface brightness of zodiacal light [mag/arcsec^2]
+    x : float
+        Surface brightness of 1 zodi of exo zodiacal light [mag/arcsec^2]
+    n : float
+        The assumed number of zodis 
+    
+    Returns
+    -------
+    return : array
+        Required exposure time in each Airy annular band
+    
+    """
+    throughput = transmit_all(coronagraph, inner_radius, outer_radius)
+    whole_contrast, band_contrast, footprint_ratio, wavefronts = (
+        contrast(coronagraph, inner_radius, outer_radius, num_airy) )
+    
 
 
 def merit(coronagraph, inner_radius, outer_radius, amplitude1
