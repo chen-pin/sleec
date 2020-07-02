@@ -417,7 +417,7 @@ def transmit_all(coronagraph, inner_radius, outer_radius):
     return np.array(transmittances)
 
 
-def psf0_footprint(coronagraph, num_airy):
+def psf0_variance(coronagraph, num_airy):
     """
     Return the PSF footprint (variance) associated with a clear 
     circular aperture
@@ -452,7 +452,7 @@ def psf0_footprint(coronagraph, num_airy):
     return variance
     
 
-def contrast(coronagraph, inner_radius, outer_radius, num_airy):
+def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
     """
     Return contrast in an annular area in the image.  
 
@@ -468,6 +468,8 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy):
         Field stop radius in airy units to be 
         applied to the `camera` plane.  It must be the same value as that 
         applied to the (first) focal plane. 
+    psf0_variance : float
+        Variance footprint of a clear-aperture PSF
     
     Returns:
     -------
@@ -529,9 +531,9 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy):
     mean = np.sum((x+y)*intensity)/m_0
     lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean
     if lc_variance <= psf_variance:
-        penalty = 1.0
+        penalty = (psf_variance/psf0_variance)**2
     else:
-        penalty = (lc_variance/psf_variance)**2
+        penalty = (lc_variance/psf0_variance)**2
     ###
     return whole_contrast, np.array(contrasts), penalty, output
 
