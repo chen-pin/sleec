@@ -90,7 +90,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     pars = reader.get_chain(flat=True)[sample_number]
     coronagraph, input_pars = sli.import_pars(file_path_yml)
     (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
-     , coronagraph, wavefronts, throughputs, contrasts) \
+     , coronagraph, wavefronts, contrasts) \
      = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
                           , non_negative=input_pars['non_negative']
                           , input_pars=input_pars, reconstruct=True) 
@@ -99,9 +99,8 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     print("ln probability:  {}".format(ln_prob))
     print("overall throughput:  {}".format(whole_throughput))
     print("# of pixels in planet core:  {}".format(planet_core_area))
-    print("(planet cors)/(PSF core):  {}".format(whole_contrast))
+    print("(planet core)/(PSF core):  {}".format(area_penalty))
     print("overall contrast:  {}".format(whole_contrast))
-    print("throughput in each airy band {}".format(throughputs))
     print("contrast in each airy band {}".format(contrasts))
     grid_scale = input_pars['f_num']*input_pars['wvl']
     hci.imshow_field(coronagraph.pupil_field, cmap=turbo
@@ -119,7 +118,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     plt.colorbar()
     plt.show()
     hci.imshow_field(np.log10(contrast_map), cmap=turbo
-                     ,vmax=0.0, vmin=-12.0, grid_units=grid_scale)
+                     ,vmax=0.0, vmin=-15.0, grid_units=grid_scale)
     plt.title('LOG CONTRAST')
     plt.colorbar()
     plt.show()
@@ -127,4 +126,8 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 if __name__ == "__main__":
 #    show_run_stats()    
-    reconstruct('20200508t1759', 35937)
+#    reconstruct('20200508t1759', 35937)
+#    reconstruct('20200516t0007', 10712)
+#    reconstruct('20200516t0007', 10732)
+#    reconstruct('20200516t0007', 27391)
+    reconstruct('20200518t0951', 7211)
