@@ -415,8 +415,42 @@ def transmit_all(coronagraph, inner_radius, outer_radius):
                           *lyot_transmit(coronagraph) )
         transmittances.append(transmittance)
     return np.array(transmittances)
-    
 
+
+def psf0_footprint(coronagraph, num_airy):
+    """
+    Return the PSF footprint (variance) associated with a clear 
+    circular aperture
+
+    Parameters
+    ----------
+    coronagraph :  `sleec_optics.Coronagraph`
+        The coronagraph object for optical propagation
+    num_airy : int 
+        Field stop radius in airy units to be 
+        applied to the `camera` plane.  It must be the same value as that 
+        applied to the (first) focal plane. 
+    
+    Returns
+    -------
+    return : float
+        Variance of the PSF [m^2] 
+    """
+    wf0 = hci.Wavefront(
+              hci.circular_aperture(coronagraph.pupil_diameter)
+                                   (coronagraph.pupil_field.grid)
+              , coronagraph.wvl
+                       )
+    wf_psf = coronagraph.on_fpm(wf0)
+    intensity = (                                                                       wf_psf.intensity                                                                *hci.circular_aperture(2.0*num_airy*coronagraph.f_num*coronagraph.wvl)                                              (wf_psf.grid)
+                )
+    x = wf_psf.grid.x
+    y = wf_psf.grid.y
+    m_0 = np.sum(intensity)
+    mean = np.sum((x+y)*intensity)/m_0
+    variance = float(np.sum((x**2+y**2)*intensity)/m_0 - mean)
+    return variance
+    
 
 def contrast(coronagraph, inner_radius, outer_radius, num_airy):
     """
@@ -430,11 +464,11 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy):
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
-    num_airy : int or `None`
+    num_airy : int 
         Field stop radius in airy units to be 
         applied to the `camera` plane.  It must be the same value as that 
         applied to the (first) focal plane. 
-
+    
     Returns:
     -------
     whole_contrast : float
