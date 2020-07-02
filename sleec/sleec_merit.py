@@ -448,7 +448,7 @@ def psf0_variance(coronagraph, num_airy):
     y = wf_psf.grid.y
     m_0 = np.sum(intensity)
     mean = np.sum((x+y)*intensity)/m_0
-    variance = float(np.sum((x**2+y**2)*intensity)/m_0 - mean)
+    variance = float(np.sum((x**2+y**2)*intensity)/m_0 - mean**2)
     return variance
     
 
@@ -529,11 +529,11 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
     y = output['camera'].electric_field.grid.y
     m_0 = np.sum(intensity)
     mean = np.sum((x+y)*intensity)/m_0
-    lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean
-    if lc_variance <= psf_variance:
-        penalty = (psf_variance/psf0_variance)**2
+    lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean**2
+    if lc_variance > psf_variance:
+        penalty = lc_variance/psf0_variance
     else:
-        penalty = (lc_variance/psf0_variance)**2
+        penalty = psf_variance/psf0_variance
     ###
     return whole_contrast, np.array(contrasts), penalty, output
 
