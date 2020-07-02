@@ -526,7 +526,7 @@ class Coronagraph(hci.OpticalElement):
                  , fpm_field=None , lyot_field=None 
                  , dm1_surfc=None, dm2_surfc=None 
                  , dm1_vmap=None, dm2_vmap=None, inflnc_ftn=None
-                 , dm_seprtn=None , f_num=None, optical_elements=[]):
+                 , dm_seprtn=None , f_num=None):
         self.wvl = wvl
         self.pupil_diameter = pupil_diameter
         self.pupil_field = pupil_field
