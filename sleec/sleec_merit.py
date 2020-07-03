@@ -449,7 +449,7 @@ def psf0_encircle(coronagraph, encircle_radius):
     return float(np.sum(wf_psf.intensity[ndx])/m_0)
     
 
-def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
+def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
     """
     Return contrast in an annular area in the image.  
 
@@ -461,12 +461,8 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
-    num_airy : int 
-        Field stop radius in airy units to be 
-        applied to the `camera` plane.  It must be the same value as that 
-        applied to the (first) focal plane. 
-    psf0_variance : float
-        Variance footprint of a clear-aperture PSF
+    encircle_radius : float 
+        Radius of encirclement in Airy units 
     
     Returns:
     -------
@@ -505,35 +501,14 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
     whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
                        /mask.sum() )
     whole_contrast = whole_background/psf0 
-    # Area Penalty
-    resel = coronagraph.f_num*coronagraph.wvl
-    x = output['on_fpm'].grid.x
-    y = output['on_fpm'].grid.y
-    m_0 = np.sum(psf)
-    mean = np.sum((x+y)*psf)/m_0
-    psf_variance = np.sum(psf*(x**2+y**2))/m_0 - mean**2
-    input_field = (
-                   hci.circular_aperture(coronagraph.pupil_diameter)
-                                        (coronagraph.pupil_field.grid)
-                  )
-    wf = hci.Wavefront(input_field, coronagraph.wvl)
-    wf_lyot = coronagraph.lyot.forward(wf)
-    intensity = (
-        coronagraph.camera(wf_lyot).intensity
-        *hci.circular_aperture(2.0*num_airy*resel)
-         (output['camera'].grid)
-                )
-    x = output['camera'].electric_field.grid.x
-    y = output['camera'].electric_field.grid.y
+    wf_1 = coronagraph.lyot.forward(output['relay_pupil'])
+    intensity = coronagraph.camera(wf_1).intensity
     m_0 = np.sum(intensity)
-    mean = np.sum((x+y)*intensity)/m_0
-    lc_variance = np.sum((x**2+y**2)*intensity)/m_0 - mean**2
-    if lc_variance > psf_variance:
-        penalty = lc_variance/psf0_variance
-    else:
-        penalty = psf_variance/psf0_variance
-    ###
-    return whole_contrast, np.array(contrasts), penalty, output
+    r = output['camera'].grid.as_('polar').r
+    resel = coronagraph.f_num*coronagraph.wvl
+    ndx = np.where(r<=encircle_radius*resel)
+    encircle_energy = float(np.sum(intensity[ndx])/m_0)
+    return whole_contrast, np.array(contrasts), encircle_energy, output
 
 
 def cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw):
