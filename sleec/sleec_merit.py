@@ -417,7 +417,7 @@ def transmit_all(coronagraph, inner_radius, outer_radius):
     return np.array(transmittances)
 
 
-def psf0_variance(coronagraph, num_airy):
+def psf0_encircle(coronagraph, encircle_radius):
     """
     Return the PSF footprint (variance) associated with a clear 
     circular aperture
@@ -426,30 +426,27 @@ def psf0_variance(coronagraph, num_airy):
     ----------
     coronagraph :  `sleec_optics.Coronagraph`
         The coronagraph object for optical propagation
-    num_airy : int 
-        Field stop radius in airy units to be 
-        applied to the `camera` plane.  It must be the same value as that 
-        applied to the (first) focal plane. 
+    encircle_radius : float 
+        Radius of encirclement in Airy units 
     
     Returns
     -------
     return : float
-        Variance of the PSF [m^2] 
+        Encircled PSF energy 
     """
     wf0 = hci.Wavefront(
               hci.circular_aperture(coronagraph.pupil_diameter)
                                    (coronagraph.pupil_field.grid)
               , coronagraph.wvl
                        )
-    wf_psf = coronagraph.on_fpm(wf0)
-    intensity = (                                                                       wf_psf.intensity                                                                *hci.circular_aperture(2.0*num_airy*coronagraph.f_num*coronagraph.wvl)                                              (wf_psf.grid)
-                )
-    x = wf_psf.grid.x
-    y = wf_psf.grid.y
-    m_0 = np.sum(intensity)
-    mean = np.sum((x+y)*intensity)/m_0
-    variance = float(np.sum((x**2+y**2)*intensity)/m_0 - mean**2)
-    return variance
+    wf_psf = hci.FraunhoferPropagator(coronagraph.pupil_field.grid
+                                      , coronagraph.fpm_field.grid
+                                      , coronagraph.focal_length)(wf0)
+    m_0 = np.sum(wf_psf.intensity)
+    r = coronagraph.fpm_field.grid.as_('polar').r
+    resel = coronagraph.f_num*coronagraph.wvl
+    ndx = np.where(r<=encircle_radius*resel)
+    return float(np.sum(wf_psf.intensity[ndx])/m_0)
     
 
 def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):

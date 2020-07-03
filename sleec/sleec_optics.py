@@ -519,7 +519,8 @@ class Coronagraph(hci.OpticalElement):
     - Need optimizable attributes to be modifiable from one iteration to the 
       next; i.e. a function outside of this class manipulates the attributes.
     - Use @property to define those attributes.  
-    - <load_elements> method imports <sleec_inp.py> to initialize the coronagraph.
+    - <load_elements> method imports <sleec_inp.py> to initialize the 
+      coronagraph.
 
     """
     def __init__(self, wvl=None, pupil_diameter=None, pupil_field=None
