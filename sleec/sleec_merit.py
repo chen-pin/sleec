@@ -716,13 +716,6 @@ def exposure_time(coronagraph, inner_radius, outer_radius
         print("Cr_p elements with indices {} are zero.  Set them to eps"
               .format(ndx))
         Cr_p[ndx] = np.finfo(float).eps
-    print("encircled_psf:  {}".format(encircle_psf))
-    print("throughput:  {}".format(throughput))
-    print("band_contrast:  {}".format(band_contrast))
-    print("cr_p:  {}".format(Cr_p))
-    print("cr_b_star:  {}".format(Cr_b_star))
-    print("cr_b_zodi:  {}".format(Cr_b_zodi))
-    print("cr_b_exozodi:  {}".format(Cr_b_exozodi))
     tau = snr**2*((Cr_p+2*Cr_b)/Cr_p**2)
     return tau
 
