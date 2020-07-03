@@ -466,17 +466,12 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
     
     Returns:
     -------
-    whole_contrast : float
-        Contrast averaged over the entire annulus  
-    band_throughputs : ndarray 
-        An array of contrast values.  Each averaged over an annular band 
-        1 lambda/D in width, starting from the inner radius. If 
-        (outer_radius - inner_radius) is not a whole number, the last band is
-        a fractional band; only part of the band is illuminated but the 
-        averaging is over the entire 1 lambda/D annulus. 
-    penalty : float
-        The ratio of the planetary image's footprint (in the 'camera' plane) 
-        to the PSF footprint (incident on the FPM)
+    contrasts : ndarray
+        Contrast in each Airy band
+    encircle_energy : float
+        Fraction of PSF (w/o FPM) encircled within `encircle_radius`
+    output : hcipy.Wavefront
+        Propagated wavefronts
     """
     output = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                        , coronagraph.wvl))
@@ -495,12 +490,12 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
         avg_background = ( np.sum(output['camera'].intensity[np.where(mask)])
                        /mask.sum() )
         contrasts.append(avg_background/psf0)
-    mask = np.where((inner_radius*coronagraph.f_num*coronagraph.wvl <= radii)
-                    & (radii < outer_radius*coronagraph.f_num*coronagraph.wvl)
-                    , 1, 0)
-    whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
-                       /mask.sum() )
-    whole_contrast = whole_background/psf0 
+#    mask = np.where((inner_radius*coronagraph.f_num*coronagraph.wvl <= radii)
+#                    & (radii < outer_radius*coronagraph.f_num*coronagraph.wvl)
+#                    , 1, 0)
+#    whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
+#                       /mask.sum() )
+#    whole_contrast = whole_background/psf0 
     wf_1 = coronagraph.lyot.forward(output['relay_pupil'])
     intensity = coronagraph.camera(wf_1).intensity
     m_0 = np.sum(intensity)
@@ -508,7 +503,7 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
     resel = coronagraph.f_num*coronagraph.wvl
     ndx = np.where(r<=encircle_radius*resel)
     encircle_energy = float(np.sum(intensity[ndx])/m_0)
-    return whole_contrast, np.array(contrasts), encircle_energy, output
+    return np.array(contrasts), encircle_energy, output
 
 
 def cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw):
@@ -701,7 +696,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius
     
     """
     throughputs = transmit_all(coronagraph, inner_radius, outer_radius)
-    whole_contrast, band_contrasts, encircle_psf, wavefronts = (
+    band_contrasts, encircle_psf, wavefronts = (
         contrast(coronagraph, inner_radius, outer_radius, encircle_radius)
                                                               )
     Cr_p = cr_p(F_0, m_v, delta_mag, D, encircle_psf, throughputs, wvl_bw)
@@ -717,7 +712,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius
               .format(ndx))
         Cr_p[ndx] = np.finfo(float).eps
     tau = snr**2*((Cr_p+2*Cr_b)/Cr_p**2)
-    return (tau, throughputs, whole_contrast, band_contrasts, encircle_psf
+    return (tau, throughputs, band_contrasts, encircle_psf
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) 
 
 
@@ -768,14 +763,14 @@ def merit(coronagraph, weights, inner_radius, outer_radius
     return : float
         Merit value
     """
-    (tau, throughputs, whole_contrast, band_contrasts, encircle_psf
+    (tau, throughputs, band_contrasts, encircle_psf
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) = exposure_time(
         coronagraph, inner_radius, outer_radius 
         , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
         , wvl, wvl_bw, z, x, n
                                                                              ) 
     merit = np.sum((1.0/tau)*weights)/np.sum(weights)
-    return ( merit, tau, throughputs, whole_contrast, band_contrasts
+    return ( merit, tau, throughputs, band_contrasts
              , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) 
 
     
@@ -1046,7 +1041,7 @@ def _test_merit():
     z = pars['z']
     x = pars['x']
     n = pars['n']
-    ( Merit, tau, throughputs, whole_contrast, band_contrasts
+    ( Merit, tau, throughputs, band_contrasts
       , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) = merit(
               coronagraph, weights, inner_radius, outer_radius 
               , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag, D
@@ -1056,7 +1051,6 @@ def _test_merit():
     print("Merit value:  {}".format(Merit))
     print("Required exposure time in each Airy band:  {}".format(tau))
     print("Throughputs:  {}".format(throughputs))
-    print("whole contrast:  {}".format(whole_contrast))
     print("contrasts in Airy bands:  {}".format(band_contrasts))
     print("Encircled PSF:  {}".format(encircle_psf))
     print("Planet count rate:  {}".format(Cr_p))
