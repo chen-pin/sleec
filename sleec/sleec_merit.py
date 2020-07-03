@@ -655,8 +655,8 @@ def cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughput, wvl_bw):
              *wvl**2*throughput*wvl_bw )
 
 
-def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
-                  , encircle_radius, encircled_psf, snr, F_0, m_v, delta_mag, D
+def exposure_time(coronagraph, inner_radius, outer_radius 
+                  , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
                   , wvl, wvl_bw, z, x, n):  
     """
     Return required exposure time for exoplanet detection.
@@ -669,10 +669,6 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
-    num_airy : int or `None`
-        Field stop radius in airy units to be 
-        applied to the `camera` plane.  It must be the same value as that 
-        applied to the (first) focal plane. 
     snr : floate
         S/N required for detection
     F_0 : float
@@ -685,6 +681,8 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
         Telescope diameter (separate from coronagraph pupil diameter)
     encircle_radius : float
         Radius of PSF encirclement [wvl/D]
+    psf0_encircle : float
+        Fraction of clear-aperture PSF within `encircle_radius`
     wvl : float
         Wavelength
     wvl_bw : float
@@ -703,12 +701,10 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
     
     """
     throughput = transmit_all(coronagraph, inner_radius, outer_radius)
-    psf0_var = psf0_variance(coronagraph, num_airy)
-    whole_contrast, band_contrast, footprint_ratio, wavefronts = (
-        contrast(coronagraph, inner_radius, outer_radius, num_airy
-                 , psf0_var) )
-    encircled_psf = encircled_psf/footprint_ratio
-    Cr_p = cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw)
+    whole_contrast, band_contrast, encircle_psf, wavefronts = (
+        contrast(coronagraph, inner_radius, outer_radius, encircle_radius)
+                                                              )
+    Cr_p = cr_p(F_0, m_v, delta_mag, D, encircle_psf, throughput, wvl_bw)
     Cr_b_star = cr_b_star(band_contrast, F_0, m_v, encircle_radius, D
                           , throughput, wvl_bw)
     Cr_b_zodi = cr_b_zodi(z, F_0, encircle_radius, D, wvl, throughput, wvl_bw)
@@ -720,8 +716,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
         print("Cr_p elements with indices {} are zero.  Set them to eps"
               .format(ndx))
         Cr_p[ndx] = np.finfo(float).eps
-    print("footprint_ratio:  {}".format(footprint_ratio))
-    print("encircled_psf:  {}".format(encircled_psf))
+    print("encircled_psf:  {}".format(encircle_psf))
     print("throughput:  {}".format(throughput))
     print("band_contrast:  {}".format(band_contrast))
     print("cr_p:  {}".format(Cr_p))
@@ -963,21 +958,20 @@ def _test_exposure_time():
     coronagraph, pars = sli.import_pars()
     inner_radius = pars['IWA']
     outer_radius = pars['OWA']
-    num_airy = pars['num_airy']
     snr = pars['snr']
     F_0 = pars['F_0']
     m_v = pars['m_v']
     delta_mag = pars['delta_mag']
     D = pars['D']
     encircle_radius = pars['encircle_radius']
-    encircled_psf = pars['encircled_psf']
+    enc_psf0 = psf0_encircle(coronagraph, encircle_radius)
     wvl = coronagraph.wvl
     wvl_bw = pars['wvl_bw']
     z = pars['z']
     x = pars['x']
     n = pars['n']
-    tau = exposure_time(coronagraph, inner_radius, outer_radius, num_airy
-                  , encircle_radius, encircled_psf, snr, F_0, m_v, delta_mag, D
+    tau = exposure_time(coronagraph, inner_radius, outer_radius 
+                  , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag, D
                   , wvl, wvl_bw, z, x, n)  
     print("Required exposure time in each Airy band:  {}".format(tau))
           
