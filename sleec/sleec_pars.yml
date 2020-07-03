@@ -39,7 +39,7 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 
 
 # Astronomical Parameters (ref. Stark et al. 2014)  
-F_0: 9500.0e13  # V-band, zero-magnitude flux [photon/(m^3 s)]
+F_0: 9500.0e+13  # V-band, zero-magnitude flux [photon/(m^3 s)]
 m_v: 5.0  # apparent magnitude
 delta_mag: 25  # contrast magnitude of faintest detectable planet
 wvl_bw: 55.0e-9  # wavelength bandwidth [m]
@@ -47,8 +47,9 @@ z: 23  # surface brightness of zodiacal light [mag/arcsec^2]
 x: 22  # surface brightness of 1 zodi of exozodiacal dust [mag/arcsec^2]
 n: 3  # number of zodis 
 D: 4.0  # Telescope diameter
-X: 0.7  # Radius of PSF encirclement
-snr_req: 7.0  # required SNR
+encircle_radius: 0.7  # Radius of PSF encirclement
+encircled_psf: 0.69  # Radius of PSF encirclement
+snr: 7.0  # SNR requirement
  
 
 # Pupil Parameters    

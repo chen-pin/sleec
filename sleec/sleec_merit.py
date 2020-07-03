@@ -573,7 +573,7 @@ def cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw):
              *encircled_psf*throughput*wvl_bw )
 
 
-def cr_b_star(contrast, F_0, m_v, X, D, throughput, wvl_bw):
+def cr_b_star(contrast, F_0, m_v, encircle_radius, D, throughput, wvl_bw):
     """
     Return the residual stellar photon count rate.  
     
@@ -585,7 +585,7 @@ def cr_b_star(contrast, F_0, m_v, X, D, throughput, wvl_bw):
         Zero-magnitude flux [photon/(m^2 m s)]
     m_V : float
         Apparent magnitude
-    X : float
+    encircle_radius : float
         Radius of PSF encirclement [wvl/D]
     D : float
         Telescope diameter (separate from coronagraph pupil diameter)
@@ -604,11 +604,11 @@ def cr_b_star(contrast, F_0, m_v, X, D, throughput, wvl_bw):
         Stark et al. (2014) ApJ
     
     """
-    return ( F_0*10**(-0.4*m_v)*contrast*((np.pi**2)*(X**2)/4.0)
+    return ( F_0*10**(-0.4*m_v)*contrast*((np.pi**2)*(encircle_radius**2)/4.0)
              *(np.pi*D**2/4.0)*throughput*wvl_bw )
 
 
-def cr_b_zodi(z, F_0, X, D, wvl, throughput, wvl_bw):
+def cr_b_zodi(z, F_0, encircle_radius, D, wvl, throughput, wvl_bw):
     """
     Return the local zodiacal photon count rate.  
     
@@ -620,7 +620,7 @@ def cr_b_zodi(z, F_0, X, D, wvl, throughput, wvl_bw):
         Zero-magnitude flux [photon/(m^2 m s)]
     m_V : float
         Apparent magnitude
-    X : float
+    encircle_radius : float
         Radius of PSF encirclement [wvl/D]
     D : float
         Telescope diameter (separate from coronagraph pupil diameter)
@@ -639,11 +639,11 @@ def cr_b_zodi(z, F_0, X, D, wvl, throughput, wvl_bw):
         Stark et al. (2014) ApJ
     
     """
-    return ( F_0*10**(-0.4*(z-26.572))*((np.pi**2)*(X**2)/4.0)*wvl**2
-             *throughput*wvl_bw )
+    return ( F_0*10**(-0.4*(z-26.572))*((np.pi**2)*(encircle_radius**2)/4.0)
+             *wvl**2*throughput*wvl_bw )
 
 
-def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
+def cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughput, wvl_bw):
     """
     Return the exozodiacal  photon count rate.  
     
@@ -657,7 +657,7 @@ def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
         Zero-magnitude flux [photon/(m^2 m s)]
     m_V : float
         Apparent magnitude
-    X : float
+    encircle_radius : float
         Radius of PSF encirclement [wvl/D]
     D : float
         Telescope diameter (separate from coronagraph pupil diameter)
@@ -678,12 +678,13 @@ def cr_b_exozodi(x, n, F_0, X, D, wvl, throughput, wvl_bw):
         Stark et al. (2014) ApJ
     
     """
-    return ( F_0*n*10**(-0.4*(x-26.572))*((np.pi**2)*(X**2)/4.0)*wvl**2
-             *throughput*wvl_bw )
+    return ( F_0*n*10**(-0.4*(x-26.572))*((np.pi**2)*(encircle_radius**2)/4.0)
+             *wvl**2*throughput*wvl_bw )
 
 
-def exposure_time(coronagraph, inner_radius, outer_radius, num_airy, snr	
-                  , F_0, m_v, delta_mag, D, X, wvl, wvl_bw, z, x, n):  
+def exposure_time(coronagraph, inner_radius, outer_radius, num_airy
+                  , encircle_radius, encircled_psf, snr, F_0, m_v, delta_mag, D
+                  , wvl, wvl_bw, z, x, n):  
     """
     Return required exposure time for exoplanet detection.
 
@@ -709,7 +710,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy, snr
         contrast magnitude of dimmest detectable planet
     D : float
         Telescope diameter (separate from coronagraph pupil diameter)
-    X : float
+    encircle_radius : float
         Radius of PSF encirclement [wvl/D]
     wvl : float
         Wavelength
@@ -729,11 +730,35 @@ def exposure_time(coronagraph, inner_radius, outer_radius, num_airy, snr
     
     """
     throughput = transmit_all(coronagraph, inner_radius, outer_radius)
+    psf0_var = psf0_variance(coronagraph, num_airy)
     whole_contrast, band_contrast, footprint_ratio, wavefronts = (
-        contrast(coronagraph, inner_radius, outer_radius, num_airy) )
+        contrast(coronagraph, inner_radius, outer_radius, num_airy
+                 , psf0_var) )
+    encircled_psf = encircled_psf/footprint_ratio
+    Cr_p = cr_p(F_0, m_v, delta_mag, D, encircled_psf, throughput, wvl_bw)
+    Cr_b_star = cr_b_star(band_contrast, F_0, m_v, encircle_radius, D
+                          , throughput, wvl_bw)
+    Cr_b_zodi = cr_b_zodi(z, F_0, encircle_radius, D, wvl, throughput, wvl_bw)
+    Cr_b_exozodi = cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughput
+                                , wvl_bw)
+    Cr_b = Cr_b_star + Cr_b_zodi + Cr_b_exozodi
+    if not(Cr_p.all()):
+        ndx = np.where(Cr_p==0.0)
+        print("Cr_p elements with indices {} are zero.  Set them to eps"
+              .format(ndx))
+        Cr_p[ndx] = np.finfo(float).eps
+    print("footprint_ratio:  {}".format(footprint_ratio))
+    print("encircled_psf:  {}".format(encircled_psf))
+    print("throughput:  {}".format(throughput))
+    print("band_contrast:  {}".format(band_contrast))
+    print("cr_p:  {}".format(Cr_p))
+    print("cr_b_star:  {}".format(Cr_b_star))
+    print("cr_b_zodi:  {}".format(Cr_b_zodi))
+    print("cr_b_exozodi:  {}".format(Cr_b_exozodi))
+    tau = snr**2*((Cr_p+2*Cr_b)/Cr_p**2)
+    return tau
+
     
-
-
 def merit(coronagraph, inner_radius, outer_radius, amplitude1
          , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
          , amplitude2, flux_ratio, output_wavefronts):
@@ -960,6 +985,31 @@ def _test_merit():
     print("Contrast = {}".format(m[2][0]))
 
 
+def _test_exposure_time():
+    import sleec_input as sli
+    coronagraph, pars = sli.import_pars()
+    inner_radius = pars['IWA']
+    outer_radius = pars['OWA']
+    num_airy = pars['num_airy']
+    snr = pars['snr']
+    F_0 = pars['F_0']
+    m_v = pars['m_v']
+    delta_mag = pars['delta_mag']
+    D = pars['D']
+    encircle_radius = pars['encircle_radius']
+    encircled_psf = pars['encircled_psf']
+    wvl = coronagraph.wvl
+    wvl_bw = pars['wvl_bw']
+    z = pars['z']
+    x = pars['x']
+    n = pars['n']
+    tau = exposure_time(coronagraph, inner_radius, outer_radius, num_airy
+                  , encircle_radius, encircled_psf, snr, F_0, m_v, delta_mag, D
+                  , wvl, wvl_bw, z, x, n)  
+    print("Required exposure time in each Airy band:  {}".format(tau))
+          
+
+
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
 #    _test_throughput()
@@ -970,4 +1020,5 @@ if __name__ == '__main__':
 #    _test_lyot_transmit()
 #    _test_fpm_transmit()
 #    _test_contrast()
-    _test_transmit_all()
+#    _test_transmit_all()
+    _test_exposure_time()
