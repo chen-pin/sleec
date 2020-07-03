@@ -485,12 +485,8 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
         The ratio of the planetary image's footprint (in the 'camera' plane) 
         to the PSF footprint (incident on the FPM)
     """
-    input_field = (
-                   hci.circular_aperture(coronagraph.pupil_diameter)
-                                        (coronagraph.pupil_field.grid)
-                  )
-    wf = hci.Wavefront(input_field, coronagraph.wvl)
-    output = coronagraph(wf)
+    output = coronagraph(hci.Wavefront(coronagraph.pupil_field
+                                       , coronagraph.wvl))
     psf = output['on_fpm'].intensity
     if (np.isfinite(psf.max()) and psf.max()!=0.0):
         psf0 = psf.max()
@@ -519,6 +515,11 @@ def contrast(coronagraph, inner_radius, outer_radius, num_airy, psf0_variance):
     m_0 = np.sum(psf)
     mean = np.sum((x+y)*psf)/m_0
     psf_variance = np.sum(psf*(x**2+y**2))/m_0 - mean**2
+    input_field = (
+                   hci.circular_aperture(coronagraph.pupil_diameter)
+                                        (coronagraph.pupil_field.grid)
+                  )
+    wf = hci.Wavefront(input_field, coronagraph.wvl)
     wf_lyot = coronagraph.lyot.forward(wf)
     intensity = (
         coronagraph.camera(wf_lyot).intensity
