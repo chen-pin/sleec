@@ -712,7 +712,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius
               .format(ndx))
         Cr_p[ndx] = np.finfo(float).eps
     tau = snr**2*((Cr_p+2*Cr_b)/Cr_p**2)
-    return (tau, throughputs, band_contrasts, encircle_psf
+    return (tau, throughputs, band_contrasts, encircle_psf, wavefronts
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) 
 
 
@@ -763,7 +763,7 @@ def merit(coronagraph, weights, inner_radius, outer_radius
     return : float
         Merit value
     """
-    (tau, throughputs, band_contrasts, encircle_psf
+    (tau, throughputs, band_contrasts, encircle_psf, wavefronts
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) = exposure_time(
         coronagraph, inner_radius, outer_radius 
         , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
@@ -771,7 +771,8 @@ def merit(coronagraph, weights, inner_radius, outer_radius
                                                                              ) 
     merit = np.sum((1.0/tau)*weights)/np.sum(weights)
     return ( merit, tau, throughputs, band_contrasts
-             , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) 
+             , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+             , Cr_b_exozodi, Cr_b ) 
 
     
 #def merit(coronagraph, inner_radius, outer_radius, amplitude1
@@ -1042,11 +1043,12 @@ def _test_merit():
     x = pars['x']
     n = pars['n']
     ( Merit, tau, throughputs, band_contrasts
-      , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) = merit(
-              coronagraph, weights, inner_radius, outer_radius 
-              , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag, D
-              , wvl, wvl_bw, z, x, n  
-                                                                              )
+      , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi
+      , Cr_b ) = merit(
+                       coronagraph, weights, inner_radius, outer_radius 
+                       , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag
+                       , D, wvl, wvl_bw, z, x, n  
+                      )
     print("\nPRINTING RESULTS")
     print("Merit value:  {}".format(Merit))
     print("Required exposure time in each Airy band:  {}".format(tau))
