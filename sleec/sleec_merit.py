@@ -700,15 +700,15 @@ def exposure_time(coronagraph, inner_radius, outer_radius
         Required exposure time in each Airy annular band
     
     """
-    throughput = transmit_all(coronagraph, inner_radius, outer_radius)
-    whole_contrast, band_contrast, encircle_psf, wavefronts = (
+    throughputs = transmit_all(coronagraph, inner_radius, outer_radius)
+    whole_contrast, band_contrasts, encircle_psf, wavefronts = (
         contrast(coronagraph, inner_radius, outer_radius, encircle_radius)
                                                               )
-    Cr_p = cr_p(F_0, m_v, delta_mag, D, encircle_psf, throughput, wvl_bw)
-    Cr_b_star = cr_b_star(band_contrast, F_0, m_v, encircle_radius, D
-                          , throughput, wvl_bw)
-    Cr_b_zodi = cr_b_zodi(z, F_0, encircle_radius, D, wvl, throughput, wvl_bw)
-    Cr_b_exozodi = cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughput
+    Cr_p = cr_p(F_0, m_v, delta_mag, D, encircle_psf, throughputs, wvl_bw)
+    Cr_b_star = cr_b_star(band_contrasts, F_0, m_v, encircle_radius, D
+                          , throughputs, wvl_bw)
+    Cr_b_zodi = cr_b_zodi(z, F_0, encircle_radius, D, wvl, throughputs, wvl_bw)
+    Cr_b_exozodi = cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughputs
                                 , wvl_bw)
     Cr_b = Cr_b_star + Cr_b_zodi + Cr_b_exozodi
     if not(Cr_p.all()):
@@ -717,76 +717,135 @@ def exposure_time(coronagraph, inner_radius, outer_radius
               .format(ndx))
         Cr_p[ndx] = np.finfo(float).eps
     tau = snr**2*((Cr_p+2*Cr_b)/Cr_p**2)
-    return tau
+    return (tau, throughputs, whole_contrast, band_contrasts, encircle_psf
+            , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) 
 
-    
-def merit(coronagraph, inner_radius, outer_radius, amplitude1
-         , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
-         , amplitude2, flux_ratio, output_wavefronts):
+
+def merit(coronagraph, weights, inner_radius, outer_radius 
+                  , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
+                  , wvl, wvl_bw, z, x, n):  
     """
-    Return a merit value, throughputs, and contrasts
+    Return merit value
 
-    Parameters:
+    Parameters
     ----------
     coronagraph :  `sleec_optics.Coronagraph`
         The coronagraph obejct for optical propagation
+    weights : array_like 
+        An array of weighting coefficients, one for each Airy band, used in 
+        computing the merit value
     inner_radius : float
         Inner radius of the annulus in units of wvl/pupil_dia
     outer_radius : float
         Outer radius of the annulus in units of wvl/pupil_dia
-    amplitude1 : float  
-        Amplitude factor of annular illumination
-    area_penalty : boolean
-        If `True`, multiplies the raw contrast by the ratio of the number 
-        pixels in the planet's half-intensity core to the number of pixels in 
-        the stellar PSF core.  
-    contrast_weights : `None` or array_like
-        Weights to be applied to each airy band of contrast.  If `None`, 
-        use `whole_contrast`.  
-    off_axis_locatn : float
-        Off-axis displacement in the image in units of wvl/pupil_dia
-    azimuthal_locatn : float
-        Azimuthal location in radians
-    amplitude2 : float
-        Field amplitude factor
-    flux_ratio : float
-        Planet-to-star flux ratio
-    out_wavefronts : boolean
-        If `True`, return propagated wavefronts.   
-
+    snr : floate
+        S/N required for detection
+    F_0 : float
+        Zero-magnitude flux [photon/(m^2 m s)]
+    m_V : float
+        Apparent magnitude
+    delta_mag : float
+        contrast magnitude of dimmest detectable planet
+    D : float
+        Telescope diameter (separate from coronagraph pupil diameter)
+    encircle_radius : float
+        Radius of PSF encirclement [wvl/D]
+    psf0_encircle : float
+        Fraction of clear-aperture PSF within `encircle_radius`
+    wvl : float
+        Wavelength
+    wvl_bw : float
+        Wavelength bandwidth [m].   
+    z : float
+        Surface brightness of zodiacal light [mag/arcsec^2]
+    x : float
+        Surface brightness of 1 zodi of exo zodiacal light [mag/arcsec^2]
+    n : float
+        The assumed number of zodis 
+    
     Returns
     -------
-    merit : float
+    return : float
         Merit value
-    throughput_output : tuple
-        Outputs from the `throughput()` function
-    contrast_output : tuple
-        Outputs from the `contrast()` function 
-
     """
+    (tau, throughputs, whole_contrast, band_contrasts, encircle_psf
+            , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) = exposure_time(
+        coronagraph, inner_radius, outer_radius 
+        , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
+        , wvl, wvl_bw, z, x, n
+                                                                             ) 
+    merit = np.sum((1.0/tau)*weights)/np.sum(weights)
+    return ( merit, tau, throughputs, whole_contrast, band_contrasts
+             , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) 
 
-    throughput_output = throughput(coronagraph, inner_radius, outer_radius)
-    contrast_output = contrast(coronagraph, inner_radius, outer_radius
-                               , area_penalty
-                               , output_wavefronts=output_wavefronts
-                               , planet_core_area=throughput_output[1])
-    eta = throughput_output[0]
-    if contrast_weights == None:
-        C = contrast_output[0]
-    else:
-        C = (contrast_output[1]*contrast_weights).mean()
-    epsilon = flux_ratio
-    if (np.isfinite(eta) and np.isfinite(C) and eta!=0.0 and C!=0.0):
-        merit = eta/np.sqrt(eta+C/epsilon)
-    else:
-        print("Invalid values for computing `merit`, set it to machine eps")
-        merit = np.finfo(float).eps
-    if output_wavefronts:
-        return merit, throughput_output, contrast_output, contrast_output[3]
-    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
-                                                                 , epsilon
-                                                                 , merit))
-    return merit, throughput_output, contrast_output
+    
+#def merit(coronagraph, inner_radius, outer_radius, amplitude1
+#         , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
+#         , amplitude2, flux_ratio, output_wavefronts):
+#    """
+#    Return a merit value, throughputs, and contrasts
+#
+#    Parameters:
+#    ----------
+#    coronagraph :  `sleec_optics.Coronagraph`
+#        The coronagraph obejct for optical propagation
+#    inner_radius : float
+#        Inner radius of the annulus in units of wvl/pupil_dia
+#    outer_radius : float
+#        Outer radius of the annulus in units of wvl/pupil_dia
+#    amplitude1 : float  
+#        Amplitude factor of annular illumination
+#    area_penalty : boolean
+#        If `True`, multiplies the raw contrast by the ratio of the number 
+#        pixels in the planet's half-intensity core to the number of pixels in 
+#        the stellar PSF core.  
+#    contrast_weights : `None` or array_like
+#        Weights to be applied to each airy band of contrast.  If `None`, 
+#        use `whole_contrast`.  
+#    off_axis_locatn : float
+#        Off-axis displacement in the image in units of wvl/pupil_dia
+#    azimuthal_locatn : float
+#        Azimuthal location in radians
+#    amplitude2 : float
+#        Field amplitude factor
+#    flux_ratio : float
+#        Planet-to-star flux ratio
+#    out_wavefronts : boolean
+#        If `True`, return propagated wavefronts.   
+#
+#    Returns
+#    -------
+#    merit : float
+#        Merit value
+#    throughput_output : tuple
+#        Outputs from the `throughput()` function
+#    contrast_output : tuple
+#        Outputs from the `contrast()` function 
+#
+#    """
+#
+#    throughput_output = throughput(coronagraph, inner_radius, outer_radius)
+#    contrast_output = contrast(coronagraph, inner_radius, outer_radius
+#                               , area_penalty
+#                               , output_wavefronts=output_wavefronts
+#                               , planet_core_area=throughput_output[1])
+#    eta = throughput_output[0]
+#    if contrast_weights == None:
+#        C = contrast_output[0]
+#    else:
+#        C = (contrast_output[1]*contrast_weights).mean()
+#    epsilon = flux_ratio
+#    if (np.isfinite(eta) and np.isfinite(C) and eta!=0.0 and C!=0.0):
+#        merit = eta/np.sqrt(eta+C/epsilon)
+#    else:
+#        print("Invalid values for computing `merit`, set it to machine eps")
+#        merit = np.finfo(float).eps
+#    if output_wavefronts:
+#        return merit, throughput_output, contrast_output, contrast_output[3]
+#    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
+#                                                                 , epsilon
+#                                                                 , merit))
+#    return merit, throughput_output, contrast_output
 
 
 def _test_wvfrnt_annls_cnj():
@@ -929,21 +988,21 @@ def _test_contrast():
         print('Band {}:  {}'.format(i+1, output[1][i]))
 
 
-def _test_merit():
-    import yaml as yml
-    import sleec_input as sli
-    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
-    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
-    coronagraph, pars = sli.import_pars()
-    print('Coronagraph initialized')
-    off_axis_locatn = (inner_radius+outer_radius)/2.0
-    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1.0
-         , area_penalty=True, off_axis_locatn=off_axis_locatn
-         , azimuthal_locatn=2*np.pi/7
-         , amplitude2=1, flux_ratio=1e-10)
-    print("Merit value = {}".format(m[0]))
-    print("Throughput = {}".format(m[1][0]))
-    print("Contrast = {}".format(m[2][0]))
+#def _test_merit():
+#    import yaml as yml
+#    import sleec_input as sli
+#    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
+#    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
+#    coronagraph, pars = sli.import_pars()
+#    print('Coronagraph initialized')
+#    off_axis_locatn = (inner_radius+outer_radius)/2.0
+#    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1.0
+#         , area_penalty=True, off_axis_locatn=off_axis_locatn
+#         , azimuthal_locatn=2*np.pi/7
+#         , amplitude2=1, flux_ratio=1e-10)
+#    print("Merit value = {}".format(m[0]))
+#    print("Throughput = {}".format(m[1][0]))
+#    print("Contrast = {}".format(m[2][0]))
 
 
 def _test_exposure_time():
@@ -969,16 +1028,53 @@ def _test_exposure_time():
     print("Required exposure time in each Airy band:  {}".format(tau))
           
 
+def _test_merit():
+    import sleec_input as sli
+    coronagraph, pars = sli.import_pars()
+    weights = pars['weights']
+    inner_radius = pars['IWA']
+    outer_radius = pars['OWA']
+    snr = pars['snr']
+    F_0 = pars['F_0']
+    m_v = pars['m_v']
+    delta_mag = pars['delta_mag']
+    D = pars['D']
+    encircle_radius = pars['encircle_radius']
+    enc_psf0 = psf0_encircle(coronagraph, encircle_radius)
+    wvl = coronagraph.wvl
+    wvl_bw = pars['wvl_bw']
+    z = pars['z']
+    x = pars['x']
+    n = pars['n']
+    ( Merit, tau, throughputs, whole_contrast, band_contrasts
+      , encircle_psf, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b ) = merit(
+              coronagraph, weights, inner_radius, outer_radius 
+              , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag, D
+              , wvl, wvl_bw, z, x, n  
+                                                                              )
+    print("\nPRINTING RESULTS")
+    print("Merit value:  {}".format(Merit))
+    print("Required exposure time in each Airy band:  {}".format(tau))
+    print("Throughputs:  {}".format(throughputs))
+    print("whole contrast:  {}".format(whole_contrast))
+    print("contrasts in Airy bands:  {}".format(band_contrasts))
+    print("Encircled PSF:  {}".format(encircle_psf))
+    print("Planet count rate:  {}".format(Cr_p))
+    print("Residual stellar count rate:  {}".format(Cr_b_star))
+    print("Local zodiacal count rate:  {}".format(Cr_b_zodi))
+    print("Exozodiacal count rate:  {}".format(Cr_b_exozodi))
+    print("Total background count rate:  {}".format(Cr_b))
+          
 
 if __name__ == '__main__': 
 #    _test_wvfrnt_annls_cnj()
 #    _test_throughput()
 #    _test_annls_offaxis()
 #    _test_contrast()
-#    _test_merit()
+    _test_merit()
 #    _test_pupil_transmit()
 #    _test_lyot_transmit()
 #    _test_fpm_transmit()
 #    _test_contrast()
 #    _test_transmit_all()
-    _test_exposure_time()
+#    _test_exposure_time()

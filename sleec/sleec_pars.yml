@@ -16,24 +16,13 @@ nsteps: 1000
 # Basic Parameters  
 wvl: 550.0e-9  # wavelength
 area_penalty: True  # Whether or not to apply penalty for PSF spread
-contrast_weights: null
-#contrast_weights: 
-#    # {array_like or 'null'}.  Weights to be applied to 
-#    # contrast values in each Airy band.  If 'null' (which translates to 
-#    # `None` in Python), simple averaging over the entire dark zone is used.  
-#    - 1.000E+00
-#    - 6.049E-01
-#    - 4.050E-01
-#    - 2.899E-01
-#    - 2.178E-01
-#    - 1.696E-01
-#    - 1.357E-01
-#    - 1.111E-01
-#    - 9.263E-02
-#    - 7.840E-02
-#    - 6.722E-02
-#    - 5.826E-02
-#    - 5.099E-02
+weights: 
+    # {array_like or 'null'}.  Weights to be applied to 
+    # merit values in each Airy band.  
+    - 1.000E+00
+    - 1.000E+00
+    - 1.000E+00
+    - 1.000E+00
 flux_ratio: 1e-10  # Planet-to-star flux ratio
 non_negative: True  # If `True`, set negative pupil field values to zero
 
@@ -48,7 +37,6 @@ x: 22  # surface brightness of 1 zodi of exozodiacal dust [mag/arcsec^2]
 n: 3  # number of zodis 
 D: 4.0  # Telescope diameter
 encircle_radius: 0.7  # Radius of PSF encirclement
-encircled_psf: 0.69  # Radius of PSF encirclement
 snr: 7.0  # SNR requirement
  
 
@@ -125,5 +113,5 @@ lyot_dia:  0.7071 # Lyot aperture diameter, as a fraction of pupil
 dark_zone_type: 'annular_full'
 IWA: 2.0  # Inner working angle (for contrast calculation).  
     # In units of f_num*wvl
-OWA: 9.0  # Outer working angle.  
+OWA: 6.0  # Outer working angle.  
     # In units of f_num*wvl
