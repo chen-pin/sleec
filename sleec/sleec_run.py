@@ -120,17 +120,19 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                                 *band_centers)/np.sum(band_centers)
     else:
         ln_prob = -np.inf
-        whole_throughput = np.zeros_like(band_centers)
-        whole_contrast = np.zeros_like(band_centers)
+        whole_throughput = 0.0
+        whole_contrast = 0.0
         encircle_psf = 0.0
     print("*** ln probability = {} ***".format(ln_prob))
+    print("avg contrast = {}".format(whole_contrast))
+    print("avg throughput = {}".format(whole_throughput))
     return ln_prob, whole_throughput, whole_contrast, encircle_psf
     
 
 def run_emcee(spread_factor=0.001, parallel=False):
     coronagraph, input_pars = sli.import_pars()
     print("Loaded input parameters from user configuration file")
-    save = input("Save EMCEE run to a file?  [y/n]:  ")
+    save = input("Save EMCEE run to a file?  (y/[n]):  ")
     if save == 'y':
         fn_prefix = input("Enter filename prefix for saving EMCEE run:  ")
         path = os.path.join('..', '..', 'sleec_out')

@@ -10,7 +10,7 @@ optmz_fpm_dia: [4.0, 1.0, 12.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
 nwalkers: 20
 ndim: 5 
-nsteps: 1000 
+nsteps: 3000 
 
 
 # Basic Parameters  
@@ -97,7 +97,7 @@ dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
 # Focal Plane Parameters  
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
-fpm_dia: 7.0  # Diameter of the focal-plane mask in units of 
+fpm_dia: 4.0  # Diameter of the focal-plane mask in units of 
     # f_num/wvl
 oversmpl: 12  # No. of pixles per resolution width
 fpm_type: dot
