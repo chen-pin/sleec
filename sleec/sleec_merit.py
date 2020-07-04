@@ -651,7 +651,7 @@ def cr_b_exozodi(x, n, F_0, encircle_radius, D, wvl, throughput, wvl_bw):
 
 
 def exposure_time(coronagraph, inner_radius, outer_radius 
-                  , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
+                  , encircle_radius, snr, F_0, m_v, delta_mag, D
                   , wvl, wvl_bw, z, x, n):  
     """
     Return required exposure time for exoplanet detection.
@@ -676,8 +676,6 @@ def exposure_time(coronagraph, inner_radius, outer_radius
         Telescope diameter (separate from coronagraph pupil diameter)
     encircle_radius : float
         Radius of PSF encirclement [wvl/D]
-    psf0_encircle : float
-        Fraction of clear-aperture PSF within `encircle_radius`
     wvl : float
         Wavelength
     wvl_bw : float
@@ -717,7 +715,7 @@ def exposure_time(coronagraph, inner_radius, outer_radius
 
 
 def merit(coronagraph, weights, inner_radius, outer_radius 
-                  , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
+                  , encircle_radius, snr, F_0, m_v, delta_mag, D
                   , wvl, wvl_bw, z, x, n):  
     """
     Return merit value
@@ -745,8 +743,6 @@ def merit(coronagraph, weights, inner_radius, outer_radius
         Telescope diameter (separate from coronagraph pupil diameter)
     encircle_radius : float
         Radius of PSF encirclement [wvl/D]
-    psf0_encircle : float
-        Fraction of clear-aperture PSF within `encircle_radius`
     wvl : float
         Wavelength
     wvl_bw : float
@@ -766,7 +762,7 @@ def merit(coronagraph, weights, inner_radius, outer_radius
     (tau, throughputs, band_contrasts, encircle_psf, wavefronts
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) = exposure_time(
         coronagraph, inner_radius, outer_radius 
-        , encircle_radius, psf0_encircle, snr, F_0, m_v, delta_mag, D
+        , encircle_radius, snr, F_0, m_v, delta_mag, D
         , wvl, wvl_bw, z, x, n
                                                                              ) 
     merit = np.sum((1.0/tau)*weights)/np.sum(weights)
@@ -1012,14 +1008,13 @@ def _test_exposure_time():
     delta_mag = pars['delta_mag']
     D = pars['D']
     encircle_radius = pars['encircle_radius']
-    enc_psf0 = psf0_encircle(coronagraph, encircle_radius)
     wvl = coronagraph.wvl
     wvl_bw = pars['wvl_bw']
     z = pars['z']
     x = pars['x']
     n = pars['n']
     tau = exposure_time(coronagraph, inner_radius, outer_radius 
-                  , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag, D
+                  , encircle_radius, snr, F_0, m_v, delta_mag, D
                   , wvl, wvl_bw, z, x, n)  
     print("Required exposure time in each Airy band:  {}".format(tau))
           
@@ -1036,7 +1031,6 @@ def _test_merit():
     delta_mag = pars['delta_mag']
     D = pars['D']
     encircle_radius = pars['encircle_radius']
-    enc_psf0 = psf0_encircle(coronagraph, encircle_radius)
     wvl = coronagraph.wvl
     wvl_bw = pars['wvl_bw']
     z = pars['z']
@@ -1046,7 +1040,7 @@ def _test_merit():
       , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi
       , Cr_b ) = merit(
                        coronagraph, weights, inner_radius, outer_radius 
-                       , encircle_radius, enc_psf0, snr, F_0, m_v, delta_mag
+                       , encircle_radius, snr, F_0, m_v, delta_mag
                        , D, wvl, wvl_bw, z, x, n  
                       )
     print("\nPRINTING RESULTS")
