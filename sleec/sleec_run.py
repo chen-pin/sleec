@@ -44,7 +44,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     """
     print("\n\n************\ndesign_parameters:  {}".format(design_parameters))
     coefs = design_parameters[:(len(input_pars['n2d']))]
-    off_axis = (input_pars['IWA'] + input_pars['OWA'])/2.0
+    band_centers = np.arange(input_pars['IWA']+0.5, input_pars['OWA']+0.5)
     coronagraph = sla.pupil_slepian_r(coefs=coefs
                         , corngrph=coronagraph
                         , file_exists=True, filename=input_pars['filename']
@@ -58,20 +58,33 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                         lyot_dia=design_parameters[len(input_pars['n2d'])+1]
                         , corngrph=coronagraph)
     if reconstruct:
-        mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
-                          , outer_radius=input_pars['OWA'], amplitude1=1.0
-                          , area_penalty=input_pars['area_penalty']
-                          , contrast_weights=input_pars['contrast_weights']
-                          , off_axis_locatn=off_axis
-                          , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
-                          , flux_ratio=float(input_pars['flux_ratio'])
-                          , output_wavefronts=True)
-        whole_throughput, planet_core_area = mrt[1]
-        whole_contrast, contrasts, area_penalty, wavefronts = mrt[2]
-        ln_prob = np.log(mrt[0])
-        return (ln_prob, whole_throughput, planet_core_area, whole_contrast
-                , area_penalty
-                , coronagraph, wavefronts, contrasts)
+        ( merit_val, tau, throughputs, band_contrasts
+             , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+             , Cr_b_exozodi, Cr_b ) = slm.merit(
+                        coronagraph=coronagraph
+                        , weights=input_pars['weights']
+                        , inner_radius=input_pars['IWA']
+                        , outer_radius=input_pars['OWA']
+                        , encircle_radius=input_pars['encircle_radius']
+                        , snr=input_pars['snr']
+                        , F_0=input_pars['F_0']
+                        , m_v=input_pars['m_v']
+                        , delta_mag=input_pars['delta_mag']
+                        , D=input_pars['D']
+                        , wvl=input_pars['wvl']
+                        , wvl_bw=input_pars['wvl_bw']
+                        , z=input_pars['z']
+                        , x=input_pars['x']
+                        , n=input_pars['n']    )
+        ln_prob = np.log(merit_val)
+        whole_throughput = np.sum(throughputs
+                                *band_centers)/np.sum(band_centers)
+        whole_contrast = np.sum(band_contrasts
+                                *band_centers)/np.sum(band_centers)
+        return ( merit_val, tau, whole_throughput, throughputs
+             , whole_contrast, band_contrasts
+             , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+             , Cr_b_exozodi, Cr_b ) 
     ln_prr = ln_prior(design_parameters, input_pars)
     if ((coronagraph.pupil_field>=0.0).all() 
         and (coronagraph.pupil_field <= 1.0).all()):  
@@ -82,28 +95,36 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         print("Pupil field EXCEEDS LIMITS")
         ln_pupil_pr = -np.inf
     if (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
-        mrt = slm.merit(coronagraph=coronagraph, inner_radius=input_pars['IWA']
-                          , outer_radius=input_pars['OWA'], amplitude1=1.0
-                          , area_penalty=input_pars['area_penalty']
-                          , contrast_weights=input_pars['contrast_weights']
-                          , off_axis_locatn=off_axis
-                          , azimuthal_locatn=2*np.pi/7, amplitude2=1.0
-                          , flux_ratio=float(input_pars['flux_ratio'])
-                          , output_wavefronts=False)
-        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
-        whole_throughput, planet_core_area = mrt[1]
-        whole_contrast, contrasts, area_penalty = mrt[2]
-        contrasts = contrasts.tolist
-#    if not (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
+        ( merit_val, tau, throughputs, band_contrasts
+             , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+             , Cr_b_exozodi, Cr_b ) = slm.merit(
+                        coronagraph=coronagraph
+                        , weights=input_pars['weights']
+                        , inner_radius=input_pars['IWA']
+                        , outer_radius=input_pars['OWA']
+                        , encircle_radius=input_pars['encircle_radius']
+                        , snr=input_pars['snr']
+                        , F_0=input_pars['F_0']
+                        , m_v=input_pars['m_v']
+                        , delta_mag=input_pars['delta_mag']
+                        , D=input_pars['D']
+                        , wvl=input_pars['wvl']
+                        , wvl_bw=input_pars['wvl_bw']
+                        , z=input_pars['z']
+                        , x=input_pars['x']
+                        , n=input_pars['n']    )
+        ln_prob = ln_prr + np.log(merit_val) + ln_pupil_pr
+        whole_throughput = np.sum(throughputs
+                                *band_centers)/np.sum(band_centers)
+        whole_contrast = np.sum(band_contrasts
+                                *band_centers)/np.sum(band_centers)
     else:
         ln_prob = -np.inf
-        whole_throughput, planet_core_area = [0.0, 0.0]
-        whole_contrast, contrasts, area_penalty = [0.0, 0.0, 0.0]
-#    else:
-#        ln_prob = ln_prr + np.log(mrt[0]) + ln_pupil_pr
+        whole_throughput = np.zeros_like(band_centers)
+        whole_contrast = np.zeros_like(band_centers)
+        encircle_psf = 0.0
     print("*** ln probability = {} ***".format(ln_prob))
-    return (ln_prob, whole_throughput, planet_core_area
-            , whole_contrast, area_penalty)
+    return ln_prob, whole_throughput, whole_contrast, encircle_psf
     
 
 def run_emcee(spread_factor=0.001, parallel=False):
@@ -154,24 +175,11 @@ def run_emcee(spread_factor=0.001, parallel=False):
         -input_pars['optmz_lyot_dia'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
-#    for q in range(input_pars['nwalkers']):
-#        for i in range(len(input_pars['n2d'])):
-#            maximum = input_pars['optmz_pupil_coefs'][2]
-#            minimum = input_pars['optmz_pupil_coefs'][1]
-#            ini_positns[q, i] = np.random.uniform(minimum, maximum)
-#        ini_positns[q, len(input_pars['n2d'])] = ( 
-#            np.random.uniform(input_pars['optmz_fpm_dia'][1]
-#                              , input_pars['optmz_fpm_dia'][2])
-#                                          )
-#        ini_positns[q, len(input_pars['n2d'])+1] = ( 
-#            np.random.uniform(input_pars['optmz_lyot_dia'][1]
-#                              , input_pars['optmz_lyot_dia'][2])
-#                                            )
     print("Initial parameter values (walker positions) set")
     print(ini_positns)  # debug
     dtype = [("whole_throughput", float) 
-             , ("planet_core_area", float), ("whole_contrast", float)
-             , ("area_penalty", float)]
+             , ("whole_contrast", float)
+             , ("encircle_psf", float)]
 
     if parallel:
         os.environ["OMP_NUM_THREADS"] = "1"  # Disable Anaconda's 
