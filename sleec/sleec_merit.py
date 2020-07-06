@@ -499,6 +499,9 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
     wf_1 = coronagraph.lyot.forward(output['relay_pupil'])
     intensity = coronagraph.camera(wf_1).intensity
     m_0 = np.sum(intensity)
+    if m_0 == 0.0:  
+        print("Zero `m_0` value, set it to eps.")
+        m_0 = np.finfo(float).eps
     r = output['camera'].grid.as_('polar').r
     resel = coronagraph.f_num*coronagraph.wvl
     ndx = np.where(r<=encircle_radius*resel)
