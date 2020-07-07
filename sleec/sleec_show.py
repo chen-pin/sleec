@@ -88,19 +88,21 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     reader = emc.backends.HDFBackend(file_path_hdf)
     pars = reader.get_chain(flat=True)[sample_number]
     coronagraph, input_pars = sli.import_pars(file_path_yml)
-    (ln_prob, whole_throughput, planet_core_area, whole_contrast, area_penalty
-     , coronagraph, wavefronts, contrasts) \
-     = slr.ln_probability(design_parameters=pars, coronagraph=coronagraph
-                          , non_negative=input_pars['non_negative']
-                          , input_pars=input_pars, reconstruct=True) 
+    (merit_val, tau, whole_throughput, throughputs, whole_contrast
+     , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+     , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
+                                 , coronagraph=coronagraph
+                                 , non_negative=input_pars['non_negative']
+                                 , input_pars=input_pars, reconstruct=True) 
     contrast_map = (wavefronts['camera'].intensity
                     /wavefronts['on_fpm'].intensity.max())
-    print("ln probability:  {}".format(ln_prob))
+    print("merit value:  {}".format(merit_val))
+    print("required exposure time:  {}".format(tau))
     print("overall throughput:  {}".format(whole_throughput))
-    print("# of pixels in planet core:  {}".format(planet_core_area))
-    print("(planet core)/(PSF core):  {}".format(area_penalty))
+    print("throughput each Airy band:  {}".format(throughputs))
     print("overall contrast:  {}".format(whole_contrast))
-    print("contrast in each airy band {}".format(contrasts))
+    print("contrast in each Airy band:  {}".format(band_contrasts))
+    print("encircled PSF energy {}".format(encircle_psf))
     grid_scale = input_pars['f_num']*input_pars['wvl']
     hci.imshow_field(coronagraph.pupil_field, cmap=turbo
                      , grid_units=input_pars['pupil_dia'])
@@ -124,9 +126,10 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-    show_run_stats()    
+#    show_run_stats()    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
 #    reconstruct('20200516t0007', 27391)
 #    reconstruct('20200518t0951', 7211)
+    reconstruct('20200706t2300', 12922)
