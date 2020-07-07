@@ -6,7 +6,7 @@
 
 # Optimization Parameters [ini, min, max] 
 optmz_pupil_coefs: [0.1, -1.0, 2.0]  # Basis coefficients  
-optmz_fpm_dia: [4.0, 1.0, 12.0]  # Airy units
+optmz_fpm_dia: [5.0, 4.0, 6.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
 nwalkers: 20
 ndim: 5 
@@ -14,12 +14,10 @@ nsteps: 3000
 
 
 # Basic Parameters  
-wvl: 550.0e-9  # wavelength
-area_penalty: True  # Whether or not to apply penalty for PSF spread
+wvl: 570.0e-9  # wavelength
 weights: 
     # {array_like or 'null'}.  Weights to be applied to 
     # merit values in each Airy band.  
-    - 1.000E+00
     - 1.000E+00
     - 1.000E+00
     - 1.000E+00
@@ -31,7 +29,7 @@ non_negative: True  # If `True`, set negative pupil field values to zero
 F_0: 9500.0e+13  # V-band, zero-magnitude flux [photon/(m^3 s)]
 m_v: 5.0  # apparent magnitude
 delta_mag: 25  # contrast magnitude of faintest detectable planet
-wvl_bw: 55.0e-9  # wavelength bandwidth [m]
+wvl_bw: 1.7e-8  # wavelength bandwidth [m]
 z: 23  # surface brightness of zodiacal light [mag/arcsec^2]
 x: 22  # surface brightness of 1 zodi of exozodiacal dust [mag/arcsec^2]
 n: 3  # number of zodis 
@@ -48,7 +46,7 @@ pupil_dia: 48.0e-3  # Pupil diameter
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-n2d: [4, 10, 22]  # 2-D Shannon numbers.  Must be integers.
+n2d: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
 
 
 # DM Parameters
@@ -111,7 +109,7 @@ lyot_dia:  0.7071 # Lyot aperture diameter, as a fraction of pupil
     
 # Image Plane Parameters
 dark_zone_type: 'annular_full'
-IWA: 2.0  # Inner working angle (for contrast calculation).  
+IWA: 2.5  # Inner working angle (for contrast calculation).  
     # In units of f_num*wvl
-OWA: 6.0  # Outer working angle.  
+OWA: 5.5  # Outer working angle.  
     # In units of f_num*wvl

@@ -49,9 +49,8 @@ def show_run_stats():
         print("ln probability: {} ".format(log_prob_samples[j]))
         print("throughput: {} ".format(blob['whole_throughput'][j]))
         print("contrast: {} ".format(blob['whole_contrast'][j]))
-        print("planet core area: {} ".format(blob['planet_core_area']
+        print("encircled PSF energy: {} ".format(blob['encircle_psf']
                                                [j]))
-        print("area penalty: {} ".format(blob['area_penalty'][j]))
         for i in range(ndim): 
             print("parameter {} value:  {}"
                   .format(i+1, samples[j, i]))
@@ -62,7 +61,7 @@ def show_run_stats():
     labels += ["log prob"]
     corner.corner(all_samples, labels=labels)
     plt.show()
-    save = input("Save figure? [y/n]:  ")
+    save = input("Save figure? (y/[n]):  ")
     if save == 'y':
         filename = input("Enter filename:  ")
         path = os.path.join('..', '..', 'sleec_out', filename)
@@ -74,7 +73,7 @@ def show_run_stats():
     for walker in range(walkers): 
         plt.plot(x, log_prob_samples[:, walker])
     plt.show()
-    save = input("Save figure? [y/n]:  ")
+    save = input("Save figure? (y/[n]):  ")
     if save == 'y':
         filename = input("Enter filename:  ")
         path = os.path.join('..', '..', 'sleec_out', filename)
@@ -125,9 +124,9 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-#    show_run_stats()    
+    show_run_stats()    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
 #    reconstruct('20200516t0007', 27391)
-    reconstruct('20200518t0951', 7211)
+#    reconstruct('20200518t0951', 7211)
