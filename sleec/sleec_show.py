@@ -78,6 +78,45 @@ def show_run_stats():
         filename = input("Enter filename:  ")
         path = os.path.join('..', '..', 'sleec_out', filename)
         plt.savefig(path)
+
+
+def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
+              , im_vmin=None, im_vmax=None):
+    intensity = (np.abs(field))**2
+    if np.iscomplexobj(field):
+        phase = np.angle(field)
+    else:
+        phase = np.zeros_like(field)
+    plt.figure(figsize=(15, 12))
+    plt.suptitle(suptitle)
+    plt.subplot(221)
+    plt.title('intensity')
+    hci.imshow_psf(intensity, scale=scale1, normalization='none'
+                   , cmap=turbo, vmin=im_vmin, vmax=im_vmax
+                   , spatial_resolution=grid_scale)
+    plt.subplot(223)
+    plt.title('phase [pi]')
+    hci.imshow_psf(phase/np.pi, scale='linear', normalization='none'
+                   , cmap=turbo, vmax=1.0, vmin=-1.0
+                   , spatial_resolution=grid_scale)
+    plt.subplot(222)
+    side_dim = int(np.sqrt(len(field)))
+    ctr_ndx = side_dim//2
+    plt.title('Horizontal Center Cross-Section:  Intensity')
+    abscissa = ( field.grid.x.reshape(side_dim, side_dim)
+                                                     [ctr_ndx, :] )/grid_scale
+    plt.plot( abscissa 
+              , intensity.reshape(side_dim, side_dim)[ctr_ndx,:] )
+    plt.xlabel(grid_label)
+    plt.ylabel('amplitude')
+    plt.subplot(224)
+    plt.title('Horizontal Center Cross-Section:  Phase')
+    plt.plot( abscissa 
+              , phase.reshape(side_dim, side_dim)[ctr_ndx,:]/np.pi )
+    plt.xlabel(grid_label)
+    plt.ylabel('phase [pi]')
+    plt.show()
+    
     
 
 def reconstruct(fn_prefix, sample_number, airy_scale=True):  
@@ -94,8 +133,6 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
                                  , coronagraph=coronagraph
                                  , non_negative=input_pars['non_negative']
                                  , input_pars=input_pars, reconstruct=True) 
-    contrast_map = (wavefronts['camera'].intensity
-                    /wavefronts['on_fpm'].intensity.max())
     print("merit value:  {}".format(merit_val))
     print("required exposure time:  {}".format(tau))
     print("overall throughput:  {}".format(whole_throughput))
@@ -103,26 +140,35 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     print("overall contrast:  {}".format(whole_contrast))
     print("contrast in each Airy band:  {}".format(band_contrasts))
     print("encircled PSF energy {}".format(encircle_psf))
-    grid_scale = input_pars['f_num']*input_pars['wvl']
-    hci.imshow_field(coronagraph.pupil_field, cmap=turbo
-                     , grid_units=input_pars['pupil_dia'])
-    plt.title('PUPIL FIELD')
-    plt.colorbar()
-    plt.show()
-    hci.imshow_field(coronagraph.fpm_field, cmap=turbo, grid_units=grid_scale)
-    plt.title('FPM FIELD')
-    plt.colorbar()
-    plt.show()
-    hci.imshow_field(coronagraph.lyot_field, cmap=turbo
-                     , grid_units=input_pars['pupil_dia'])
-    plt.title('LYOT FIELD')
-    plt.colorbar()
-    plt.show()
-    hci.imshow_field(np.log10(contrast_map), cmap=turbo
-                     ,vmax=0.0, vmin=-15.0, grid_units=grid_scale)
-    plt.title('LOG CONTRAST')
-    plt.colorbar()
-    plt.show()
+    # Show PUPIL
+    field = coronagraph.pupil_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]') 
+    # Show ON_FPM
+    field = wavefronts['on_fpm'].electric_field
+    grid_scale = coronagraph.f_num*coronagraph.wvl
+    quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, 'lambda/D')
+    # Show FPM
+    field = coronagraph.fpm_field
+    grid_scale = coronagraph.f_num*coronagraph.wvl
+    quad_plot(field, 'FPM', grid_scale, '[lambda/D]') 
+    # Show ON_LYOT
+    field = wavefronts['on_lyot'].electric_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'FIELD INCIDENT ON THE LYOT PUPIL', grid_scale
+              , 'x [pupil diameter]') 
+    # Show LYOT APERTURE
+    field = coronagraph.lyot_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]') 
+    # Show CONTRAST	
+    field = ( np.abs(wavefronts['camera'].electric_field)
+              /np.abs(wavefronts['on_fpm'].electric_field.max()) )
+    scale_max = 10**(np.ceil(np.log10(field.max()**2)))
+    scale_min = 1e-13
+    grid_scale = coronagraph.f_num*coronagraph.wvl
+    quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]', 'log'
+              , im_vmin=scale_min, im_vmax=scale_max) 
 
 
 if __name__ == "__main__":
@@ -132,4 +178,4 @@ if __name__ == "__main__":
 #    reconstruct('20200516t0007', 10732)
 #    reconstruct('20200516t0007', 27391)
 #    reconstruct('20200518t0951', 7211)
-    reconstruct('20200706t2300', 12922)
+    reconstruct('20200706t2300', 12942)
