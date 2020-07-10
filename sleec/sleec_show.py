@@ -140,6 +140,50 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     print("overall contrast:  {}".format(whole_contrast))
     print("contrast in each Airy band:  {}".format(band_contrasts))
     print("encircled PSF energy {}".format(encircle_psf))
+    # Check Contrast
+    iwa = input_pars['IWA']
+    owa = input_pars['OWA']
+    resel = coronagraph.f_num*coronagraph.wvl
+#    r = coronagraph.fpm_field.grid.as_('polar').r
+#    ndx = np.where((iwa*resel <= r)*( r  < owa*resel))
+#    print("\nndx sum:  {}".format(np.sum(np.ones_like(r)[ndx])))
+#
+#    field = ( np.abs(wavefronts['camera'].electric_field)
+#              /np.abs(wavefronts['on_fpm'].electric_field.max()) )
+#    denom = np.abs(wavefronts['on_fpm'].electric_field)
+#    truth = np.where((denom>=0.0)*(np.isreal(denom)), 1, 0).reshape(
+#                int(np.sqrt(451584)), int(np.sqrt(451584)))
+#    print("truth sum:  {}".format(truth.sum()))
+#    print("denominator:  {}:".format(
+#                        np.abs(wavefronts['on_fpm'].electric_field.max())
+#                                      ))
+#    print("denominator^2:  {}:".format(
+#                        np.abs(wavefronts['on_fpm'].electric_field.max())**2
+#                                      ))
+#    contrast_1 = (np.abs(field))**2
+#    contrast_zone = contrast_1[ndx].mean()
+#    print("contrast_1:  {}".format(contrast_1))
+#    print("Mean contrast_1 in target zone:  {:E}".format(contrast_zone))
+#
+#    field = np.abs(wavefronts['camera'].electric_field)**2
+#    norm = (np.abs(wavefronts['on_fpm'].electric_field)**2).max() 
+#    print("\nnorm:  {}".format(norm))
+#    contrast_2 = (field/norm)
+#    contrast_zone = contrast_2[ndx].mean()
+#    print("contrast_2:  {}".format(contrast_2))
+#    print("Mean contrast_2 in target zone:  {:E}".format(contrast_zone))
+#
+    psf = wavefronts['on_fpm'].intensity
+    psf0 = psf.max()
+#    print("\npsf0:  {}".format(psf0))
+    radii = wavefronts['on_fpm'].electric_field.grid.as_('polar').r
+    mask = np.where((iwa*resel <= radii) & (radii < owa*resel), 1, 0)
+#    print("mask sum:  {}".format(mask.sum()))
+#    avg_background = ( np.sum(wavefronts['camera'].intensity[np.where(mask)])
+#                       /mask.sum() )
+    avg_background = wavefronts['camera'].intensity[np.where(mask)].mean()
+    contrast_r = avg_background/psf0
+    print("recomputed contrast:  {:E}".format(contrast_r))
     # Show PUPIL
     field = coronagraph.pupil_field
     grid_scale = coronagraph.pupil_diameter
@@ -163,7 +207,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]') 
     # Show CONTRAST	
     field = ( np.abs(wavefronts['camera'].electric_field)
-              /np.abs(wavefronts['on_fpm'].electric_field.max()) )
+              /np.abs(wavefronts['on_fpm'].electric_field).max() )
     scale_max = 10**(np.ceil(np.log10(field.max()**2)))
     scale_min = 1e-13
     grid_scale = coronagraph.f_num*coronagraph.wvl
@@ -172,10 +216,10 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-#    show_run_stats()    
+    show_run_stats()    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
 #    reconstruct('20200516t0007', 27391)
 #    reconstruct('20200518t0951', 7211)
-    reconstruct('20200706t2300', 12942)
+#    reconstruct('20200706t2300', 12942)

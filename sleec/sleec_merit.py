@@ -476,14 +476,14 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
     output = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                        , coronagraph.wvl))
     psf = output['on_fpm'].intensity
+    resel = coronagraph.f_num*coronagraph.wvl
     if (np.isfinite(psf.max()) and psf.max()!=0.0):
         psf0 = psf.max()
     else:
         print("Invalid `psf0` value, set it to `np.finfo(float).eps`")
         psf0 = np.finfo(float).eps
     radii = output['on_fpm'].electric_field.grid.as_('polar').r  
-    bounds = ( np.arange(inner_radius, outer_radius+1)
-              *coronagraph.f_num*coronagraph.wvl )
+    bounds = np.arange(inner_radius, outer_radius+1)*resel 
     contrasts = [] 
     for i in range(len(bounds)-1):
         mask = np.where((bounds[i] <= radii) & (radii < bounds[i+1]), 1, 0)
@@ -503,7 +503,6 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
         print("Zero `m_0` value, set it to eps.")
         m_0 = np.finfo(float).eps
     r = output['camera'].grid.as_('polar').r
-    resel = coronagraph.f_num*coronagraph.wvl
     ndx = np.where(r<=encircle_radius*resel)
     encircle_energy = float(np.sum(intensity[ndx])/m_0)
     return np.array(contrasts), encircle_energy, output
