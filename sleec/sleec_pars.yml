@@ -8,8 +8,8 @@
 optmz_pupil_coefs: [0.1, -1.0, 2.0]  # Basis coefficients  
 optmz_fpm_dia: [5.0, 4.0, 6.0]  # Airy units
 optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
-nwalkers: 20
-ndim: 5 
+nwalkers: 16
+ndim: 4 
 nsteps: 3000 
 
 
@@ -41,12 +41,12 @@ snr: 7.0  # SNR requirement
 # Pupil Parameters    
 # pupil_type: circular_clear  # Geometric/functional type of the pupil
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
-n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
+n2d_coefs: [0.8278258, -0.1336567]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-n2d: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
+n2d: [10, 15]  # 2-D Shannon numbers.  Must be integers.
 
 
 # DM Parameters
