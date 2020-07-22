@@ -114,6 +114,13 @@ def fpm_dot(fpm_dia, corngrph, num_airy):
     return update_fpm(fpm_field, corngrph)
 
 
+def fpm_supergauss(A, sigma, N, coronagraph, num_airy):
+    grid = coronagraph.fpm_field.grid
+    r = grid.as_('polar').r
+    fpm_field = hci.Field(A*np.exp(-(r/sigma)**N), grid)
+    return update_fpm(fpm_field, coronagraph)
+
+
 def lyot_circ_clear(lyot_dia, corngrph):
     lyot_field = ( hci.circular_aperture(lyot_dia*corngrph.pupil_diameter)
                                       (corngrph.lyot_field.grid) )
