@@ -4,10 +4,14 @@
 # All parameters are in mks units unless otherwise noted.  
  
 
-# Optimization Parameters [ini, min, max] 
-optmz_pupil_coefs: [0.1, -1.0, 2.0]  # Basis coefficients  
-optmz_fpm_dia: [5.0, 4.0, 6.0]  # Airy units
-optmz_lyot_dia: [0.706, 0.300, 1.000]  # fraction of pupil diameter
+# Bounds on Optimization Parameters [ini, min, max] 
+## Slepian Coefficients
+bounds_pupil_pars: 
+    -    [0.1, -1.0, 2.0]
+    -    [0.1, -1.0, 2.0]
+    -    [0.1, -1.0, 2.0]
+bounds_fpm_pars: [5.0, 4.0, 6.0]  # Airy units
+bounds_lyot_pars: [0.706, 0.300, 1.000]  # fraction of pupil diameter
 nwalkers: 20
 ndim: 5 
 nsteps: 3000 
@@ -18,9 +22,9 @@ wvl: 570.0e-9  # wavelength
 weights: 
     # {array_like or 'null'}.  Weights to be applied to 
     # merit values in each Airy band.  
-    - 1.000E+00
-    - 1.000E+00
-    - 1.000E+00
+    -    1.000E+00
+    -    1.000E+00
+    -    1.000E+00
 flux_ratio: 1e-10  # Planet-to-star flux ratio
 non_negative: True  # If `True`, set negative pupil field values to zero
 

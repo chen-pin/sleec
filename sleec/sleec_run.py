@@ -22,12 +22,12 @@ def ln_prior(design_parameters, input_pars):
     fpm_dia = design_parameters[len(input_pars['n2d'])]
     lyot_dia = design_parameters[len(input_pars['n2d'])+1]
     if (
-        (input_pars['optmz_pupil_coefs'][1] <= coefs).all() 
-        and (coefs <= input_pars['optmz_pupil_coefs'][2]).all() 
-        and (input_pars['optmz_fpm_dia'][1] <= fpm_dia 
-            <= input_pars['optmz_fpm_dia'][2])
-        and (input_pars['optmz_lyot_dia'][1] <= lyot_dia 
-            <= input_pars['optmz_lyot_dia'][2])
+        (input_pars['bounds_pupil_pars'][1] <= coefs).all() 
+        and (coefs <= input_pars['bounds_pupil_pars'][2]).all() 
+        and (input_pars['bounds_fpm_pars'][1] <= fpm_dia 
+            <= input_pars['bounds_fpm_pars'][2])
+        and (input_pars['bounds_lyot_pars'][1] <= lyot_dia 
+            <= input_pars['bounds_lyot_pars'][2])
        ):
         print("Parameter priors passed")
         return 0.0
@@ -159,22 +159,22 @@ def run_emcee(spread_factor=0.001, parallel=False):
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
 
     for i in range(len(input_pars['n2d'])):
-        par_range = spread_factor*(input_pars['optmz_pupil_coefs'][2]
-                          - input_pars['optmz_pupil_coefs'][1])
+        par_range = spread_factor*(input_pars['bounds_pupil_pars'][2]
+                          - input_pars['bounds_pupil_pars'][1])
         ini_positns[:, i] = ( 
-                             input_pars['optmz_pupil_coefs'][0] 
+                             input_pars['bounds_pupil_pars'][0] 
                              + par_range
                                *np.random.randn(input_pars['nwalkers'])                             )
     ini_positns[:, len(input_pars['n2d'])] = ( 
-        input_pars['optmz_fpm_dia'][0] 
-        + spread_factor*(input_pars['optmz_fpm_dia'][2]
-                         -input_pars['optmz_fpm_dia'][1])
+        input_pars['bounds_fpm_pars'][0] 
+        + spread_factor*(input_pars['bounds_fpm_pars'][2]
+                         -input_pars['bounds_fpm_pars'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
     ini_positns[:, len(input_pars['n2d'])+1] = ( 
-        input_pars['optmz_lyot_dia'][0] 
-        + spread_factor*(input_pars['optmz_lyot_dia'][2]
-        -input_pars['optmz_lyot_dia'][1])
+        input_pars['bounds_lyot_pars'][0] 
+        + spread_factor*(input_pars['bounds_lyot_pars'][2]
+        -input_pars['bounds_lyot_pars'][1])
           *np.random.randn(input_pars['nwalkers'])
                                    ) 
     print("Initial parameter values (walker positions) set")
