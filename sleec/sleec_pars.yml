@@ -6,12 +6,13 @@
 
 # Bounds on Optimization Parameters [ini, min, max] 
 ## Slepian Coefficients
-bounds_pupil_pars: 
-    -    [0.1, -1.0, 2.0]
-    -    [0.1, -1.0, 2.0]
-    -    [0.1, -1.0, 2.0]
-bounds_fpm_pars: [5.0, 4.0, 6.0]  # Airy units
-bounds_lyot_pars: [0.706, 0.300, 1.000]  # fraction of pupil diameter
+bounds_pars: 
+    -    [0.1, -1.0, 2.0]  # Slepian coefficient
+    -    [0.1, -1.0, 2.0]  # Slepian coefficient
+    -    [0.1, -1.0, 2.0]  # Slepian coefficient 
+    -    [5.0, 4.0, 6.0]  # FPM diameter [wvl/D]
+    -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
+                                # diameter]
 nwalkers: 20
 ndim: 5 
 nsteps: 3000 
