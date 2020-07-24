@@ -46,6 +46,7 @@ snr: 7.0  # SNR requirement
 # Pupil Parameters    
 # pupil_type: circular_clear  # Geometric/functional type of the pupil
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+num_pupil_pars: 3  # Number of pupil design parameters
 n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
@@ -98,6 +99,7 @@ dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
 
 
 # Focal Plane Parameters  
+num_fpm_pars:  1  # Number of FPM design parameters
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
 fpm_dia: 4.0  # Diameter of the focal-plane mask in units of 
@@ -108,6 +110,7 @@ fpm_type: dot
     
 # Lyot Plane Parameters   
 lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
+num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 lyot_dia:  0.7071 # Lyot aperture diameter, as a fraction of pupil 
     # diameter.  
 

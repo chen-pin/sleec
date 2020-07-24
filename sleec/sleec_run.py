@@ -13,29 +13,6 @@ import sleec_alter as sla
 import sleec_merit as slm
 
 
-#def ln_prior(design_parameters, input_pars):
-#    """
-#    Retrun log probability of design parameters
-#    
-#    """
-#    coefs = design_parameters[:(len(input_pars['n2d']))]
-#    fpm_dia = design_parameters[len(input_pars['n2d'])]
-#    lyot_dia = design_parameters[len(input_pars['n2d'])+1]
-#    if (
-#        (input_pars['bounds_pupil_pars'][1] <= coefs).all() 
-#        and (coefs <= input_pars['bounds_pupil_pars'][2]).all() 
-#        and (input_pars['bounds_fpm_pars'][1] <= fpm_dia 
-#            <= input_pars['bounds_fpm_pars'][2])
-#        and (input_pars['bounds_lyot_pars'][1] <= lyot_dia 
-#            <= input_pars['bounds_lyot_pars'][2])
-#       ):
-#        print("Parameter priors passed")
-#        return 0.0
-#    else:
-#        print("Parameter priors FAILED")
-#        return -np.inf
- 
-
 def ln_prior(design_parameters, input_pars):
     """
     Retrun log probability of design parameters
@@ -58,20 +35,30 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     
     """
     print("\n\n************\ndesign_parameters:  {}".format(design_parameters))
-    coefs = design_parameters[:(len(input_pars['n2d']))]
+    pupil_pars = design_parameters[:input_pars['num_pupil_pars']]
+    if input_pars['pupil_type'] == 'slepian_n2d':
+        coronagraph = sla.pupil_slepian_r(coefs=pupil_pars
+                          , corngrph=coronagraph
+                          , file_exists=True, filename=input_pars['filename']
+                          , non_negative=non_negative
+                          , n2d=None, L=None, method=None
+                          , orthgnlty=None, num_dense_pts=None)
+    ndx0 = input_pars['num_pupil_pars']
+    ndx1 = ndx0 + input_pars['num_fpm_pars']
+    fpm_pars = design_parameters[ndx0 : ndx1]
+    if input_pars['fpm_type'] == 'dot':
+        coronagraph = sla.fpm_dot(
+                          fpm_dia=fpm_pars
+                          , corngrph=coronagraph
+                          , num_airy=input_pars['num_airy'])
+    ndx0 = ndx1
+    ndx1 = ndx0 + input_pars['num_lyot_pars']
+    lyot_pars = design_parameters[ndx0 : ndx1]
+    if input_pars['lyot_type'] == 'circular_clear':
+        coronagraph = sla.lyot_circ_clear(
+                          lyot_dia=lyot_pars
+                          , corngrph=coronagraph)
     band_centers = np.arange(input_pars['IWA']+0.5, input_pars['OWA']+0.5)
-    coronagraph = sla.pupil_slepian_r(coefs=coefs
-                        , corngrph=coronagraph
-                        , file_exists=True, filename=input_pars['filename']
-                        , non_negative=non_negative
-                        , n2d=None, L=None, method=None
-                        , orthgnlty=None, num_dense_pts=None)
-    coronagraph = sla.fpm_dot(fpm_dia=design_parameters[len(input_pars['n2d'])]
-                , corngrph=coronagraph
-                , num_airy=input_pars['num_airy'])
-    coronagraph = sla.lyot_circ_clear(
-                        lyot_dia=design_parameters[len(input_pars['n2d'])+1]
-                        , corngrph=coronagraph)
     if reconstruct:
         ( merit_val, tau, throughputs, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
@@ -103,7 +90,6 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     ln_prr = ln_prior(design_parameters, input_pars)
     if ((coronagraph.pupil_field>=0.0).all() 
         and (coronagraph.pupil_field <= 1.0).all()):  
-#    if ((coronagraph.pupil_field <= 1.0).all()):  
         print("Pupil field within limits")
         ln_pupil_pr = 0.0
     else:
