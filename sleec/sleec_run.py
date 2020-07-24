@@ -20,8 +20,8 @@ def ln_prior(design_parameters, input_pars):
     """
     count = 0
     for par in design_parameters:
-        if par < input_pars['bounds_pars'][count][1] 
-            or par > input_pars['bounds_pars'][count][2]:
+        if ( par < input_pars['bounds_pars'][count][1] 
+             or par > input_pars['bounds_pars'][count][2] ):
             print("Parameter {} out of bound".format(count)) 
             return -np.inf
         count += 1
