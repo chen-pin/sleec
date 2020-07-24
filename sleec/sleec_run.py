@@ -150,34 +150,22 @@ def run_emcee(spread_factor=0.001, parallel=False):
     output0 = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                         , coronagraph.wvl))
     print("Initialized coronagraph")
-    sla.pupil_slepian_r(coefs=np.ones(len(input_pars['n2d']))
-                        , corngrph=coronagraph, file_exists=False
-                        , filename=input_pars['filename']
-                        , non_negative=non_negative
-                        , n2d=input_pars['n2d'], L=170
-                        , method='SE', orthgnlty=0, num_dense_pts=4096)
-    print("Slepian file created")
+    if input_pars['pupil_type'] == 'slepian_n2d':
+        sla.pupil_slepian_r(coefs=np.ones(input_pars['num_pupil_pars'])
+                            , corngrph=coronagraph, file_exists=False
+                            , filename=input_pars['filename']
+                            , non_negative=non_negative
+                            , n2d=input_pars['n2d'], L=170
+                            , method='SE', orthgnlty=0, num_dense_pts=4096)
+        print("Slepian file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
-
-    for i in range(len(input_pars['n2d'])):
-        par_range = spread_factor*(input_pars['bounds_pupil_pars'][2]
-                          - input_pars['bounds_pupil_pars'][1])
-        ini_positns[:, i] = ( 
-                             input_pars['bounds_pupil_pars'][0] 
-                             + par_range
-                               *np.random.randn(input_pars['nwalkers'])                             )
-    ini_positns[:, len(input_pars['n2d'])] = ( 
-        input_pars['bounds_fpm_pars'][0] 
-        + spread_factor*(input_pars['bounds_fpm_pars'][2]
-                         -input_pars['bounds_fpm_pars'][1])
-          *np.random.randn(input_pars['nwalkers'])
-                                   ) 
-    ini_positns[:, len(input_pars['n2d'])+1] = ( 
-        input_pars['bounds_lyot_pars'][0] 
-        + spread_factor*(input_pars['bounds_lyot_pars'][2]
-        -input_pars['bounds_lyot_pars'][1])
-          *np.random.randn(input_pars['nwalkers'])
-                                   ) 
+    i = 0
+    for row in input_pars['bounds_pars']:
+        par_range = spread_factor*(row[2]-row[1])
+        ini_positns[:, i] = (row[0] 
+                             + par_range*np.random.randn(input_pars['nwalkers'])
+                            )
+        i += 1
     print("Initial parameter values (walker positions) set")
     print(ini_positns)  # debug
     dtype = [("whole_throughput", float) 
