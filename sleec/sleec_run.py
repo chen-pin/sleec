@@ -13,27 +13,42 @@ import sleec_alter as sla
 import sleec_merit as slm
 
 
+#def ln_prior(design_parameters, input_pars):
+#    """
+#    Retrun log probability of design parameters
+#    
+#    """
+#    coefs = design_parameters[:(len(input_pars['n2d']))]
+#    fpm_dia = design_parameters[len(input_pars['n2d'])]
+#    lyot_dia = design_parameters[len(input_pars['n2d'])+1]
+#    if (
+#        (input_pars['bounds_pupil_pars'][1] <= coefs).all() 
+#        and (coefs <= input_pars['bounds_pupil_pars'][2]).all() 
+#        and (input_pars['bounds_fpm_pars'][1] <= fpm_dia 
+#            <= input_pars['bounds_fpm_pars'][2])
+#        and (input_pars['bounds_lyot_pars'][1] <= lyot_dia 
+#            <= input_pars['bounds_lyot_pars'][2])
+#       ):
+#        print("Parameter priors passed")
+#        return 0.0
+#    else:
+#        print("Parameter priors FAILED")
+#        return -np.inf
+ 
+
 def ln_prior(design_parameters, input_pars):
     """
     Retrun log probability of design parameters
     
     """
-    coefs = design_parameters[:(len(input_pars['n2d']))]
-    fpm_dia = design_parameters[len(input_pars['n2d'])]
-    lyot_dia = design_parameters[len(input_pars['n2d'])+1]
-    if (
-        (input_pars['bounds_pupil_pars'][1] <= coefs).all() 
-        and (coefs <= input_pars['bounds_pupil_pars'][2]).all() 
-        and (input_pars['bounds_fpm_pars'][1] <= fpm_dia 
-            <= input_pars['bounds_fpm_pars'][2])
-        and (input_pars['bounds_lyot_pars'][1] <= lyot_dia 
-            <= input_pars['bounds_lyot_pars'][2])
-       ):
-        print("Parameter priors passed")
-        return 0.0
-    else:
-        print("Parameter priors FAILED")
-        return -np.inf
+    count = 0
+    for par in design_parameters:
+        if par < input_pars['bounds_pars'][count][1] 
+            or par > input_pars['bounds_pars'][count][2]:
+            print("Parameter {} out of bound".format(count)) 
+            return -np.inf
+        count += 1
+    return 0.0
  
 
 def ln_probability(design_parameters, coronagraph, input_pars, non_negative
