@@ -116,7 +116,7 @@ def fpm_dot(fpm_dia, corngrph, num_airy):
 
 def fpm_supergauss(A, sigma, N, corngrph, num_airy):
     grid = corngrph.fpm_field.grid
-    r = grid.as_('polar').r
+    r = grid.as_('polar').r/(corngrph.f_num*corngrph.wvl)
     fpm_field = hci.Field(1.0 - A*np.exp(-(r/sigma)**N), grid)
     return update_fpm(fpm_field, corngrph)
 

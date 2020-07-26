@@ -61,11 +61,11 @@ def show_run_stats():
     labels += ["log prob"]
     corner.corner(all_samples, labels=labels)
     plt.show()
-    save = input("Save figure? (y/[n]):  ")
-    if save == 'y':
-        filename = input("Enter filename:  ")
-        path = os.path.join('..', '..', 'sleec_out', filename)
-        plt.savefig(path)
+#    save = input("Save figure? (y/[n]):  ")
+#    if save == 'y':
+#        filename = input("Enter filename:  ")
+#        path = os.path.join('..', '..', 'sleec_out', filename)
+#        plt.savefig(path)
     log_prob_samples = reader.get_log_prob(flat=False)
     iterations = log_prob_samples.shape[0]
     walkers = log_prob_samples.shape[1]
@@ -73,11 +73,11 @@ def show_run_stats():
     for walker in range(walkers): 
         plt.plot(x, log_prob_samples[:, walker])
     plt.show()
-    save = input("Save figure? (y/[n]):  ")
-    if save == 'y':
-        filename = input("Enter filename:  ")
-        path = os.path.join('..', '..', 'sleec_out', filename)
-        plt.savefig(path)
+#    save = input("Save figure? (y/[n]):  ")
+#    if save == 'y':
+#        filename = input("Enter filename:  ")
+#        path = os.path.join('..', '..', 'sleec_out', filename)
+#        plt.savefig(path)
 
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
@@ -223,3 +223,4 @@ if __name__ == "__main__":
 #    reconstruct('20200516t0007', 27391)
 #    reconstruct('20200518t0951', 7211)
 #    reconstruct('20200706t2300', 12942)
+#    reconstruct('20200726t0120', 24095)
