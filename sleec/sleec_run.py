@@ -51,6 +51,10 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           fpm_dia=fpm_pars
                           , corngrph=coronagraph
                           , num_airy=input_pars['num_airy'])
+    if input_pars['fpm_type'] == 'super_gaussian':
+        coronagraph = sla.fpm_supergauss(A=fpm_pars[0], sigma=fpm_pars[1]
+                                         , N=fpm_pars[2], corngrph=coronagraph
+                                         , num_airy=input_pars['num_airy'])
     ndx0 = ndx1
     ndx1 = ndx0 + input_pars['num_lyot_pars']
     lyot_pars = design_parameters[ndx0 : ndx1]

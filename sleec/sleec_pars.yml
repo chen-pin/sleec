@@ -4,21 +4,30 @@
 # All parameters are in mks units unless otherwise noted.  
  
 
-# Bounds on Optimization Parameters [ini, min, max] 
-## Slepian Coefficients
+# OPTIMIZATION PARAMETERS
+pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+num_pupil_pars: 3  # Number of pupil design parameters
+#fpm_type: dot
+fpm_type: super_gaussian
+num_fpm_pars:  3  # Number of FPM design parameters
+lyot_type:  circular_clear  # Geometric type of the Lyot aperture   
+num_lyot_pars:  1  # Number of Lyot-pupil design parameters
+
+## Bounds on Optimization Parameters [ini, min, max] 
 bounds_pars: 
     -    [0.1, -1.0, 2.0]  # Slepian coefficient
     -    [0.1, -1.0, 2.0]  # Slepian coefficient
     -    [0.1, -1.0, 2.0]  # Slepian coefficient 
-    -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
+#    -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
+    -    [1.0, 0.0, 1.0]  # A: FPM peak amplitude opacity
+    -    [1.3, 0.2, 5.0]  # sigma: FPM super-Gaussian width parameter
+    -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 20
-ndim: 5 
+nwalkers: 28
+ndim: 7 
 nsteps: 3000 
 
-
-# Basic Parameters  
 wvl: 570.0e-9  # wavelength
 weights: 
     # {array_like or 'null'}.  Weights to be applied to 
@@ -30,7 +39,7 @@ flux_ratio: 1e-10  # Planet-to-star flux ratio
 non_negative: True  # If `True`, set negative pupil field values to zero
 
 
-# Astronomical Parameters (ref. Stark et al. 2014)  
+# ASTRONOMICAL PARAMETERS (ref. Stark et al. 2014)  
 F_0: 9500.0e+13  # V-band, zero-magnitude flux [photon/(m^3 s)]
 m_v: 5.0  # apparent magnitude
 delta_mag: 25  # contrast magnitude of faintest detectable planet
@@ -43,10 +52,9 @@ encircle_radius: 0.7  # Radius of PSF encirclement
 snr: 7.0  # SNR requirement
  
 
-# Pupil Parameters    
+# CORONAGRAPH SETUP/INITIALIZATION PARAMETERS
+## Pupil Parameters    
 # pupil_type: circular_clear  # Geometric/functional type of the pupil
-pupil_type: slepian_n2d  # Geometric/functional type of the pupil
-num_pupil_pars: 3  # Number of pupil design parameters
 n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
@@ -55,7 +63,7 @@ filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
 n2d: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
 
 
-# DM Parameters
+## DM Parameters
 dm_seprtn: 1.0  # Physical distance between the two DMs  
 dm1_surfc: zero  # Must be one of the following values:  
     # A '.fits' filename:  
@@ -98,24 +106,20 @@ dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
     # `null` then the voltage map is set to an array of zeros.  
 
 
-# Focal Plane Parameters  
-num_fpm_pars:  1  # Number of FPM design parameters
+## Focal-Plane Parameters  
 f_num:  30.0  # f/#
 num_airy: 28  # Outer extent in terms of Airy rings
 fpm_dia: 4.0  # Diameter of the focal-plane mask in units of 
     # f_num/wvl
 oversmpl: 12  # No. of pixles per resolution width
-fpm_type: dot
 
     
 # Lyot Plane Parameters   
-lyot_type:  'circular_clear'  # Geometric type of the Lyot aperture   
-num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 lyot_dia:  0.7071 # Lyot aperture diameter, as a fraction of pupil 
     # diameter.  
 
     
-# Image Plane Parameters
+## Camera-Plane Parameters
 dark_zone_type: 'annular_full'
 IWA: 2.5  # Inner working angle (for contrast calculation).  
     # In units of f_num*wvl

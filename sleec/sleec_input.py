@@ -19,6 +19,11 @@ def import_pars(filename='sleec_pars.yml'):
     output : `sleec_optics.coronagraph`
         Coronagraph object prescribed by <sleec_pars.yml>
 
+    Notes
+    -----
+    Currently, it sets up only a classic Lyot coronagraph, with a clear 
+    circular pupil, dot FPM, and a clear circular Lyot stop.
+
     """
     with open(filename, 'r') as f:    
         pars = yml.full_load(f)
@@ -31,17 +36,16 @@ def import_pars(filename='sleec_pars.yml'):
     pupil_grid = hci.make_pupil_grid(dims=pars['num_pxl_across'], 
                                      diameter=pars['pupil_dia']
                                               *pars['grid_oversize'])
-    if pars['pupil_type'] == 'circular_clear':  
-        pupil_field = ( hci.circular_aperture(diameter=pars['pupil_dia'])
+    pupil_field = ( hci.circular_aperture(diameter=pars['pupil_dia'])
                                            (pupil_grid) )
-    elif pars['pupil_type'] == 'slepian_n2d':  
-        pupil_field = sla.pupil_slepian_r( 
-                          coefs = pars['n2d_coefs'], corngrph=None
-                          , file_exists=False, filename=pars['filename']
-                          , non_negative=pars['non_negative']
-                          , n2d=pars['n2d'], diameter=pars['pupil_dia']
-                          , grid=pupil_grid
-                                         )
+#    elif pars['pupil_type'] == 'slepian_n2d':  
+#        pupil_field = sla.pupil_slepian_r( 
+#                          coefs = pars['n2d_coefs'], corngrph=None
+#                          , file_exists=False, filename=pars['filename']
+#                          , non_negative=pars['non_negative']
+#                          , n2d=pars['n2d'], diameter=pars['pupil_dia']
+#                          , grid=pupil_grid
+#                                         )
 
     # DM1
     if pars['dm1_surfc'] == 'zero':
@@ -123,19 +127,26 @@ def import_pars(filename='sleec_pars.yml'):
                                      , spatial_resolution
                                        =pars['f_num']*pars['wvl']
                                      )
-    if pars['fpm_type'] == 'dot':
-        fpm_opacity = hci.circular_aperture(pars['fpm_dia']
-                                            *pars['f_num']*pars['wvl'])
-        fpm_field = ( (1.0 - fpm_opacity(focal_grid))
-                       *hci.circular_aperture(
-                                2*pars['num_airy']*pars['f_num']*pars['wvl']
-                                             )(focal_grid)
-                     )
+#    if pars['fpm_type'] == 'dot':
+#        fpm_opacity = hci.circular_aperture(pars['fpm_dia']
+#                                            *pars['f_num']*pars['wvl'])
+#        fpm_field = ( (1.0 - fpm_opacity(focal_grid))
+#                       *hci.circular_aperture(
+#                                2*pars['num_airy']*pars['f_num']*pars['wvl']
+#                                             )(focal_grid)
+#                     )
     
+    fpm_opacity = hci.circular_aperture(pars['fpm_dia']
+                                        *pars['f_num']*pars['wvl'])
+    fpm_field = ( (1.0 - fpm_opacity(focal_grid))
+                   *hci.circular_aperture(
+                            2*pars['num_airy']*pars['f_num']*pars['wvl']
+                                         )(focal_grid)
+                 )
+
     # LYOT PLANE
-    if pars['lyot_type'] == 'circular_clear':      
-        lyot_field = ( hci.circular_aperture(pars['lyot_dia']*pars['pupil_dia'])
-                                          (pupil_grid) )
+    lyot_field = ( hci.circular_aperture(pars['lyot_dia']*pars['pupil_dia'])
+                                      (pupil_grid) )
     
     # INITIALIZE CORONAGRAPH  
     args = {}
