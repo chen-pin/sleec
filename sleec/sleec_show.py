@@ -216,7 +216,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-    show_run_stats()    
+#    show_run_stats()    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -224,3 +224,4 @@ if __name__ == "__main__":
 #    reconstruct('20200518t0951', 7211)
 #    reconstruct('20200706t2300', 12942)
 #    reconstruct('20200726t0120', 24095)
+    reconstruct('20200726t1539', 33301)
