@@ -41,6 +41,9 @@ pip install -e .
 * By downloading from the Github bug-fix branch
     * Dowload from the zip archive from the branch  
     * Unzip the archive
+    * Locate the 'hcipy' directory under '~/Anaconda3/'.  The following are some path-location examples: 
+        * /home/pinchen/anaconda3/lib/python3.7/site-packages/hcipy
+        * /home/pinchen/anaconda3/envs/dev/lib/python3.8/site-packages/hcipy, if you have an Anaconda environment named "dev."
     * Replace the 'hcipy' directory under '~/Anaconda3/' with the downloaded folder    
 
 ## Running the tests
