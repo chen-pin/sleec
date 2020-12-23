@@ -13093,7 +13093,7 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Decompose-into-Symmetric-and-Antisymmetric-Parts">Decompose into Symmetric and Antisymmetric Parts<a class="anchor-link" href="#Decompose-into-Symmetric-and-Antisymmetric-Parts">&#182;</a></h2><p>$\phi(t) = \phi_S(t) + \phi_A(t)$</p>
+<h2 id="Decompose-$\phi$-into-Symmetric-($\phi_S$)-and-Antisymmetric-($\phi_A$)-Parts">Decompose $\phi$ into Symmetric ($\phi_S$) and Antisymmetric ($\phi_A$) Parts<a class="anchor-link" href="#Decompose-$\phi$-into-Symmetric-($\phi_S$)-and-Antisymmetric-($\phi_A$)-Parts">&#182;</a></h2><p>$\phi(t) \equiv \phi_S(t) + \phi_A(t)$</p>
 
 </div>
 </div>
@@ -13133,7 +13133,7 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Assume-$\phi(t)-&lt;&lt;-1$">Assume $\phi(t) &lt;&lt; 1$<a class="anchor-link" href="#Assume-$\phi(t)-&lt;&lt;-1$">&#182;</a></h2><p>$\widehat{\Phi[f(t)]} = \int{e^{i\omega t}[1 + i\phi_S(t) + i\phi_A(t)]f(t)dt}$</p>
+<h2 id="Special-Case:-$\phi(t)-&lt;&lt;-1$">Special Case: $\phi(t) &lt;&lt; 1$<a class="anchor-link" href="#Special-Case:-$\phi(t)-&lt;&lt;-1$">&#182;</a></h2><p>$\widehat{\Phi[f(t)]} \approx \int{e^{i\omega t}[1 + i\phi_S(t) + i\phi_A(t)]f(t)dt}$</p>
 
 </div>
 </div>
@@ -13149,16 +13149,20 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t) + i\phi_A(t)]f(t)dt}$</p>
-
+\begin{equation}
+\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t) + i\phi_A(t)]f(t)dt} 
+\tag{10} 
+\end{equation}
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Assume-$f(t)-=-1$">Assume $f(t) = 1$<a class="anchor-link" href="#Assume-$f(t)-=-1$">&#182;</a></h3><p>$\widehat{\phi(t)} = \delta(0) + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t) + i\phi_A(t)]dt}$</p>
-
+<h2 id="Further-Specialization:-$f(t)-=-1$">Further Specialization: $f(t) = 1$<a class="anchor-link" href="#Further-Specialization:-$f(t)-=-1$">&#182;</a></h2>\begin{equation}
+\widehat{\phi(t)} = \delta(0) + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t) + i\phi_A(t)]dt}
+\tag{20}
+\end{equation}
 </div>
 </div>
 </div>
@@ -13197,7 +13201,7 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Angle-(Phase-Shift)">Angle (Phase Shift)<a class="anchor-link" href="#Angle-(Phase-Shift)">&#182;</a></h3><p>$\theta \equiv \arctan\left[ \frac{\Im(\widehat{\phi(t)})}{\Re(\widehat{\phi(t)})}   \right]$</p>
+<h3 id="Phase-Transform">Phase Transform<a class="anchor-link" href="#Phase-Transform">&#182;</a></h3><p>$\theta \equiv \arctan\left[ \frac{\Im(\widehat{\phi(t)})}{\Re(\widehat{\phi(t)})}   \right]$</p>
 
 </div>
 </div>
@@ -13229,15 +13233,7 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>A small phase modulation to the unity function induces a phase shift in Fourier space that is null at the origin and anti-symmetric elsewhere</strong></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Intensity">Intensity<a class="anchor-link" href="#Intensity">&#182;</a></h3><p>$I(\omega) = [\delta(0) - \widehat{\phi_A(t)} + i\widehat{\phi_S(t)}][\delta(0) - \widehat{\phi_A(t)} - i\widehat{\phi_S(t)}]$</p>
+<h3 id="Power-Transform">Power Transform<a class="anchor-link" href="#Power-Transform">&#182;</a></h3><p>$I(\omega) = [\delta(0) - \widehat{\phi_A(t)} + i\widehat{\phi_S(t)}][\delta(0) - \widehat{\phi_A(t)} - i\widehat{\phi_S(t)}]$</p>
 
 </div>
 </div>
@@ -13269,8 +13265,98 @@ $\Phi[f(t)] = e^{i\phi(t)} f(t)$</p>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Compared to amplitude modulation, small phase modulation adds a $\delta(0)^2$ term with respect to intensity in Fourier space.</strong></p>
+<h2 id="Generalize-to-All-Real-$f(t)$">Generalize to All Real $f(t)$<a class="anchor-link" href="#Generalize-to-All-Real-$f(t)$">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Decompose-$f$-to-symmetric-($f_S$)-and-antisymmetric-($f_A$)-Parts">Decompose $f$ to symmetric ($f_S$) and antisymmetric ($f_A$) Parts<a class="anchor-link" href="#Decompose-$f$-to-symmetric-($f_S$)-and-antisymmetric-($f_A$)-Parts">&#182;</a></h3><p>$f(t) \equiv f_S(t) + f_A(t)$</p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Substitute into Eq. 1 
+$\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t) + i\phi_A(t)][f_S(t) + f_A(t)]dt}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Expand:<br>
+$\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][i\phi_S(t)f_S(t) + i\phi_S(t)f_A(t) + i\phi_A(t)f_S(t)+ i\phi_A(t)f_A(t)]dt}$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Define-new-variables-for-convenience:">Define new variables for convenience:<a class="anchor-link" href="#Define-new-variables-for-convenience:">&#182;</a></h3>\begin{equation}
+g_S(t) \equiv \phi_S(t)f_S(t) + \phi_A(t)f_A(t) 
+\end{equation}<p><br>
+\begin{equation}
+g_A(t) \equiv \phi_S(t)f_A(t) + \phi_A(t)f_S(t)
+\end{equation}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Substitute:<br>
+$\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][ig_S(t) + ig_A(t)]dt}$</p>
+<p>This equation is isomorphic to Eq. 20, with $\phi_S \leftrightarrow g_S$ and $\phi_A \leftrightarrow g_A$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$\therefore$<br>
+$\widehat{\Phi[f(t)]} = \widehat{f(t)} + \int{[\cos(\omega t) + i\sin(\omega t)][ig_S(t) + ig_A(t)]dt}$</p>
+<p>This equation is isomorphic to Eq. 20, with $\phi_S \leftrightarrow g_S$ and $\phi_A \leftrightarrow g_A$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Phase-Transform-(of-Small-Phase-Modulation-on-Real-Function)">Phase Transform (of Small Phase Modulation on Real Function)<a class="anchor-link" href="#Phase-Transform-(of-Small-Phase-Modulation-on-Real-Function)">&#182;</a></h3>\begin{equation}
+\theta(\omega) = \arctan\left[ \frac{\widehat{g_S(t)}}{\delta(0)-\widehat{g_A(t)}} \right]
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Phase-modulation-on-a-real-function-yields-an-antisymmetric-phase-transform">Phase modulation on a real function yields an antisymmetric phase transform<a class="anchor-link" href="#Phase-modulation-on-a-real-function-yields-an-antisymmetric-phase-transform">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Power-Transform-(of-Small-Phase-Modulation-on-Real-Function)">Power Transform (of Small Phase Modulation on Real Function)<a class="anchor-link" href="#Power-Transform-(of-Small-Phase-Modulation-on-Real-Function)">&#182;</a></h3>\begin{equation}
+I(\omega) = \delta(0)^2 + \widehat{g_A(t)}\widehat{g_S(t)}+\widehat{g_A(t)}^2+\widehat{g_S(t)}^2
+\end{equation}
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Compared-to-amplitude-modulation,-small-phase-modulation-adds-a-$\delta(0)^2$-term-to-the-power-transform.">Compared to amplitude modulation, small phase modulation adds a $\delta(0)^2$ term to the power transform.<a class="anchor-link" href="#Compared-to-amplitude-modulation,-small-phase-modulation-adds-a-$\delta(0)^2$-term-to-the-power-transform.">&#182;</a></h1>
 </div>
 </div>
 </div>
