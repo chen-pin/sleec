@@ -29,7 +29,7 @@ mkdir ../../sleec_in
 
 #### How to Install HCIPy Bug-Fix Patches  
 These instructions assume that one uses the Anaconda Python distribution and 
-he Anaconda code directory path is <~/Anaconda3/>.  
+the Anaconda code directory path is <~/Anaconda3/>.  
 
 * Via Github cloning  
 ```  
@@ -41,7 +41,7 @@ pip install -e .
 * By downloading from the Github bug-fix branch
     * Dowload from the zip archive from the branch  
     * Unzip the archive
-    * Replace the </hcipy> directory under <~/Anaconda3/> with the downloaded folder    
+    * Replace the <hcipy> directory under <~/Anaconda3/> with the downloaded folder    
 
 ## Running the tests
 * From the code directory <sleec/source>, enter the following command:
