@@ -23,21 +23,38 @@ Stay tuned.
 * Scipy.sparse
 * Scipy.interpolate
 * Astropy,io.fits
-* HCIPy v0.3.0 w/ bug fix #55 or HCIPy v0.3.1
+* HCIPy v0.3.1 with bug fix #70
 
 
 ### Installing
 * Install prerequisites (see above)  
 * Clone this repository  
 * Recommended: 
-    * From the code directory <sleec/sleec>, enter the following commands ("$" represents the command prompt, do not type it):   
-        * $ mkdir ../../sleec_out
-        * $ mkdir ../../sleec_in
+    * From the code directory <sleec/sleec>, enter the following commands ("$" represents the command prompt, do not type it):  
+```  
+mkdir ../../sleec_out  
+mkdir ../../sleec_in  
+```  
+
+#### How to Install HCIPy Patches  
+These instructions assume that one uses the Anaconda Python distribution and 
+he Anaconda code directory path is <~/Anaconda3/>.  
+
+* Via Github cloning  
+```  
+pip uninstall hcipy  
+git clone https://github.com/ehpor/hcipy  
+cd hcipy  
+pip install -e .  
+```  
+* By downloading from the Github bug-fix branch
+    * Dowload from the branch
+    * Replace the <hcipy> directory under <~/Anaconda3/> with the downloaded
+one  
 
 ## Running the tests
-* From the code directory <sleec/source>, enter the following commands:
-    * $ python sleec_input.py
+* From the code directory <sleec/source>, enter the following command:
+    * To test the propagation code:  `python sleec_input.py`.  This does 
+not run the optimization routine.  
 
-### Break down into end to end tests
-Stay tuned.
 
