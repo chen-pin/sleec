@@ -41,7 +41,7 @@ pip install -e .
 * By downloading from the Github bug-fix branch
     * Dowload from the zip archive from the branch  
     * Unzip the archive
-    * Replace the <hcipy> directory under <~/Anaconda3/> with the downloaded folder    
+    * Replace the </hcipy> directory under <~/Anaconda3/> with the downloaded folder    
 
 ## Running the tests
 * From the code directory <sleec/source>, enter the following command:
