@@ -190,11 +190,12 @@ def gen_slepian_fourier(m_max, n2d, k, L, method, orthgnlty, D, grid
         Maximum absolute `m` value.  A list of `m` values from -`m_max` to 
         `m_max` will be generated.  `m` is the fixed order of the eigenvalue 
         problem.  It is analogous to the subscript n for Bessel functions J_n.
-    n2d : float
-        The two-dimensional Shannon number.  For a Fraunhofer propagation, 
-        n2d = (pi*N/4)^2, where N is the number of cycles across the 
-        aperture. For example, if we are solving for a pupil-apodizing 
-        function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
+    n2d : list
+        A list of N2D (two-dimensional Shannon number) values.  For  
+        Fraunhofer propagation, n2d = (pi*N/4)^2, where N is the number of 
+        cycles across the aperture. For example, if we are solving for a 
+        pupil-apodizing function to limit energy in a 3wvl/D (radius) zone, 
+        n2d = 5.6.   
     k : int
         The number of functions to output.  For example, k=3, the output 
         contains 3 Slepain functions g_1, g_2, g_3.  The g_k functions have 
@@ -230,6 +231,10 @@ def gen_slepian_fourier(m_max, n2d, k, L, method, orthgnlty, D, grid
     return : `hci.ModeBasis`
         A list of the user specified Slepian-Fourier  functions evaluated on 
         the input grid (interpolated from the densely sampled computation). 
+        The nested loops generating the basis elements (mode vectors) iterate 
+        innermost over `k`, then `N2D`, and over `m` in the outermost loop, 
+        from lowest (most negative/least positive) to highest values. 
+
     Notes
     -----
     An `hcipy.ModeBasis` object is a list of `hcipy.Field` objects.  
@@ -260,11 +265,6 @@ def gen_slepian_fourier(m_max, n2d, k, L, method, orthgnlty, D, grid
                     hci.Field(np.interp(r, r_dense, slp_dense[:, i])*fourier
                                    , grid)
                              ) 
-#            modes.append(
-#                    [hci.Field(np.interp(r, r_dense, slp_dense[:, i])*fourier
-#                               , grid) 
-#                         for i in range(k)]
-#                        )
     return hci.ModeBasis(modes, grid)
     
 
