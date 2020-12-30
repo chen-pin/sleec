@@ -191,14 +191,14 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
             output['D'] = diameter
             output['slepian_fourier'] = basis
             pkl.dump(output, f)
-    pupil_field = basis.linear_combination(coefs)
+    field = basis.linear_combination(coefs)
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
-    pupil_field *= aperture
+    field *= aperture
     if corngrph == None:
-        return pupil_field
+        return field
     else:
-        return update_pupil(pupil_field, corngrph) 
+        return update_dm1_surfc(field, corngrph) 
         
 
 def fpm_dot(fpm_dia, corngrph, num_airy):
@@ -437,6 +437,64 @@ def _test_pupil_slepian_r():
     plt.close()
 
 
+def _test_dm1_slepian_2d():
+    import yaml as yml
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import ListedColormap
+    from turbo_colormap import turbo_colormap_data
+    turbo = ListedColormap(turbo_colormap_data)
+    import sleec_input as sli
+
+    corngrph, pars = sli.import_pars()
+    print('Coronagraph initialized')
+    m_max = 2
+    print('m_maX = {}'.format(m_max))
+    n2d = [9.9, 85]
+    print('N2D = {}'.format(n2d))
+    k = 2
+    print('N2D = {}'.format(n2d))
+    coefs = 1e-10*np.random.random((2*m_max+1)*len(n2d)*k)
+    print('Coefficients = {}'.format(coefs)) 
+    file_exists = False
+    filename = '../../sleec_out/slepians_dm1.pkl'
+    corngrph = dm1_slepian_2d(coefs, corngrph, file_exists, filename
+                               , m_max=m_max, n2d=n2d, k=k
+                               , L=170, method='SE', orthgnlty=0
+                               , num_dense_pts=4096, diameter=None, grid=None)
+    aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
+                                    (corngrph.pupil_field.grid) )
+    input_field= (
+        hci.Field(np.ones_like(corngrph.pupil_field.grid.x)
+                  , corngrph.pupil_field.grid)*aperture
+                 )
+    input_wavefront = hci.Wavefront(input_field, corngrph.wvl)
+    output = corngrph(input_wavefront)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in corngrph.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap=turbo)
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+    subplot_seq = 1
+    for key in corngrph.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+        hci.imshow_field(wf.phase, cmap=turbo)
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+
+
+
 if __name__ == '__main__':
-    _test_pupil_slepian_r()
+    _test_dm1_slepian_2d()
 
