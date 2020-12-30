@@ -106,8 +106,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
 
 def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
                    , m_max=None, n2d=None, k=None, L=170, method='SE'
-                   , orthgnlty=0, num_dense_pts=4096
-                   , diameter=None, grid=None):
+                   , orthgnlty=0, num_dense_pts=4096):  
 
     """
     Return a coronagraph with DM1 surface contructed by a 
@@ -166,12 +165,11 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
         Coronagraph with DM1 updated or field representing the DM surface. 
 
     """
-    if corngrph != None:
-        diameter = corngrph.pupil_diameter
-        grid = corngrph.pupil_field.grid
+    diameter = corngrph.pupil_diameter
+    grid = corngrph.pupil_field.grid
     if file_exists: 
         with open(filename, 'rb') as f:
-            basis = pkl.load(f)['slepians_fourier']
+            basis = pkl.load(f)['slepian_fourier']
     else:
         cwd = os.getcwd()
         grid_pts = len(grid.x)
@@ -447,20 +445,21 @@ def _test_dm1_slepian_2d():
 
     corngrph, pars = sli.import_pars()
     print('Coronagraph initialized')
-    m_max = 2
+    m_max = 3
     print('m_maX = {}'.format(m_max))
-    n2d = [9.9, 85]
+    n2d = [40]
     print('N2D = {}'.format(n2d))
-    k = 2
+    k = 5
     print('N2D = {}'.format(n2d))
-    coefs = 1e-10*np.random.random((2*m_max+1)*len(n2d)*k)
+    coefs = 6e-9*np.random.uniform(-1.0, 1.0, (2*m_max+1)*len(n2d)*k)
     print('Coefficients = {}'.format(coefs)) 
     file_exists = False
+#    file_exists = True
     filename = '../../sleec_out/slepians_dm1.pkl'
     corngrph = dm1_slepian_2d(coefs, corngrph, file_exists, filename
                                , m_max=m_max, n2d=n2d, k=k
                                , L=170, method='SE', orthgnlty=0
-                               , num_dense_pts=4096, diameter=None, grid=None)
+                               , num_dense_pts=4096)
     aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
                                     (corngrph.pupil_field.grid) )
     input_field= (
@@ -482,6 +481,7 @@ def _test_dm1_slepian_2d():
     plt.show()
     plt.close()
     subplot_seq = 1
+    plt.figure(figsize=(15, 5))
     for key in corngrph.names:
         print(key)
         wf = output[key]
