@@ -104,6 +104,103 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
         return update_pupil(pupil_field, corngrph) 
         
 
+def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
+                   , m_max=None, n2d=None, k=None, L=170, method='SE'
+                   , orthgnlty=0, num_dense_pts=4096
+                   , diameter=None, grid=None):
+
+    """
+    Return a coronagraph with DM1 surface contructed by a 
+    superposition of Slepian-Fourier functions. If `corngrph` is `None`, return
+    the field.  
+
+    Parameters
+    ----------
+    coefs : array_like
+        Basis function coefficients for the superposition
+    corngrph : `sleec_optics.Coronagraph`
+        The coronagraph object to be altered
+    file_exists : boolean
+        If `True`, use an existing file containing the mode basis of Slepians. 
+        Otherwise, compute the mode basis and save it using `filename`.  
+    filename : str, optional
+        Name of the existing mode-basis 
+        file.  Othewise, it is the name of the save file.  
+    m_max : int, optional
+        Maximum absolute `m` value.  A list of `m` values from -`m_max` to 
+        `m_max` will be geneA list of N2D 
+        (two-dimensional Shannon number) values.  For Fraunhofer propagation, 
+        n2d = (pi*N/4)^2, where N is the number of cycles across the aperture. 
+        For example, if we are solving for a pupil-apodizing function to limit 
+        energy in a 3wvl/D (radius) zone, n2d = 5.6.
+    k : int, optional
+        The number of functions to output.  For example, k=3, the output
+        contains 3 Slepain functions g_1, g_2, g_3.  The g_k functions have
+        increasing frequencies with increasing k.  Examining a small number
+        examples suggest the number of zeros in the range [0, 1] equals k-1.
+        Note that k > n2d would not make much sense because the Shannon number
+        signifies the number of significant eigenfunctions (Slepians) that
+        can simultaneously be concentrated into the defined spatio-spectral
+        domain.
+    L : int, optional
+        The maximum degree in the Jacobi/Bessel expansion,  
+        or else the maximum polynomial degree for which GL wil be exact. 
+        Currently, computations fail for L > 170.
+    method : str, optional
+        'DV' compute by the method of De Villiers
+        'SE' by Slepian "extension" [the default method]
+        'GL' by direct Gauss-Legendre integration
+    orthgnlty : int, optional
+        1 Scales the solution for weightless orthogonality
+        0 Scales the solution for orthogonality with weight r
+    num_dense_pts : int, optional
+        Number of densly sampled points in the Slepian computation
+    diameter : float, optional
+        Pupil diameter.
+    grid : `hcipy.Grid`, optional
+        Pupil grid.
+    
+    Returns
+    -------
+    return : `Coronagraph` or hcipy.Field
+        Coronagraph with DM1 updated or field representing the DM surface. 
+
+    """
+    if corngrph != None:
+        diameter = corngrph.pupil_diameter
+        grid = corngrph.pupil_field.grid
+    if file_exists: 
+        with open(filename, 'rb') as f:
+            basis = pkl.load(f)['slepians_fourier']
+    else:
+        cwd = os.getcwd()
+        grid_pts = len(grid.x)
+        basis = np.empty(((2*m_max+1)*len(n2d)*k, grid_pts))
+        os.chdir('slepian')
+        from slepian.gen_slepians import gen_slepian_fourier as gsf
+        basis = gsf(m_max, n2d, k, L, method, orthgnlty, diameter, grid
+                       , num_dense_pts)
+        os.chdir(cwd)
+        with  open(filename, 'wb') as f:
+            output = {}
+            output['m_max'] = m_max
+            output['n2d'] = n2d
+            output['k'] = k
+            output['L'] = L
+            output['orthgnlty'] = orthgnlty
+            output['D'] = diameter
+            output['slepian_fourier'] = basis
+            pkl.dump(output, f)
+    pupil_field = basis.linear_combination(coefs)
+    aperture = ( hci.circular_aperture(diameter)
+                                      (grid) )
+    pupil_field *= aperture
+    if corngrph == None:
+        return pupil_field
+    else:
+        return update_pupil(pupil_field, corngrph) 
+        
+
 def fpm_dot(fpm_dia, corngrph, num_airy):
     fpm_opacity = hci.circular_aperture(fpm_dia*corngrph.f_num*corngrph.wvl)
     fpm_field = ( (1.0 - fpm_opacity(corngrph.fpm_field.grid))
