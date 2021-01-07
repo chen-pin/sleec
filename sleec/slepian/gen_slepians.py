@@ -122,7 +122,7 @@ def gen_slepians_r_k(m, n2d, k, L, method, orthgnlty, D, grid
         subscript n for Bessel functions J_n.
     n2d : float
         The two-dimensional Shannon number.  For a Fraunhofer propagation, 
-        n2d = (pi*N/4)^2, where N is the number of cycles across the 
+        n2d = (pi*N/2)^2, where N is the number of cycles across the 
         aperture. For example, if we are solving for a pupil-apodizing 
         function to limit energy in a 3wvl/D (radius) zone, n2d = 5.6.   
     k : int
@@ -192,7 +192,7 @@ def gen_slepian_fourier(m_max, n2d, k, L, method, orthgnlty, D, grid
         problem.  It is analogous to the subscript n for Bessel functions J_n.
     n2d : list
         A list of N2D (two-dimensional Shannon number) values.  For  
-        Fraunhofer propagation, n2d = (pi*N/4)^2, where N is the number of 
+        Fraunhofer propagation, n2d = (pi*N/2)^2, where N is the number of 
         cycles across the aperture. For example, if we are solving for a 
         pupil-apodizing function to limit energy in a 3wvl/D (radius) zone, 
         n2d = 5.6.   
