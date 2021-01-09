@@ -46,9 +46,26 @@ pip install -e .
         * /home/pinchen/anaconda3/envs/dev/lib/python3.8/site-packages/hcipy, if you have an Anaconda environment named "dev."
     * Replace the 'hcipy' directory under '~/Anaconda3/' with the downloaded folder    
 
-## Running the tests
+## Running tests
 * From the code directory <sleec/source>, enter the following command:
     * To test the propagation code:  `python sleec_input.py`.  This does 
 not run the optimization routine.  
+* Each module has various test at the bottom of the code, some are obsolete.  
+
+## Instructions for adding a coronagraph optimization feature  
+	• Add function in <sleec_alter.py>.  This is the function that accepts optimization parameters and alters the coronagraph accordingly.  
+	• In <sleec_pars.yml>  
+		○ Add `xxx_type` parameter  
+		○ Add `num_xxx_pars` parameter  
+		○ Add optimization parameters in <sleec_pars.yml>  
+		○ Change `nwalkers` value  
+		○ Change `ndim` value  
+	• In <sleec_run.py>  
+		○ Add "if" block in <ln_probability()>  
+		○ Add "if" block in <run_emcee()>  
+	• If applicable, add code in <sleec_input.py.import_pars()> to implement new DM feature  
+	• If applicable, add code in <sleec_run.ln_prior()> to implement corresponding prior distribution.  
+Commit <46f32b23> is an example of changes made to implement a new basis-set feature for adjusting DM1.  
+
 
 
