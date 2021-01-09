@@ -7,7 +7,7 @@ coronagraph is SLEEC's foundation, and we intend to advance coronagraphic
 performance by optimizing the complex transmission functions of all the major 
 optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.  
 
-### Prerequisites  
+## Prerequisites  
 * Python 3
 * Numpy
 * Matplotlib.pyplot
@@ -17,7 +17,7 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 * HCIPy v0.3.1 with bug fix #70
 
 
-### Installation
+## Installation
 * Install prerequisites (see above)  
 * Clone this repository  
 * Recommended: 
@@ -27,7 +27,7 @@ mkdir ../../sleec_out
 mkdir ../../sleec_in  
 ```  
 
-#### How to Install HCIPy Bug-Fix Patches  
+### How to Install HCIPy Bug-Fix Patches  
 These instructions assume that one uses the Anaconda Python distribution and 
 the Anaconda code directory path is '~/Anaconda3/'.  
 
@@ -53,18 +53,18 @@ not run the optimization routine.
 * Each module has various test at the bottom of the code, some are obsolete.  
 
 ## Instructions for adding a coronagraph optimization feature  
-	• Add function in <sleec_alter.py>.  This is the function that accepts optimization parameters and alters the coronagraph accordingly.  
-	• In <sleec_pars.yml>  
-		○ Add `xxx_type` parameter  
-		○ Add `num_xxx_pars` parameter  
-		○ Add optimization parameters in <sleec_pars.yml>  
-		○ Change `nwalkers` value  
-		○ Change `ndim` value  
-	• In <sleec_run.py>  
-		○ Add "if" block in <ln_probability()>  
-		○ Add "if" block in <run_emcee()>  
-	• If applicable, add code in <sleec_input.py.import_pars()> to implement new DM feature  
-	• If applicable, add code in <sleec_run.ln_prior()> to implement corresponding prior distribution.  
+* Add function in <sleec_alter.py>.  This is the function that accepts optimization parameters and alters the coronagraph accordingly.  
+* In <sleec_pars.yml>  
+    * Add `xxx_type` parameter  
+    * Add `num_xxx_pars` parameter  
+    * Add optimization parameters in <sleec_pars.yml>  
+    * Change `nwalkers` value  
+    * Change `ndim` value  
+* In <sleec_run.py>  
+    * Add "if" block in <ln_probability()>  
+    * Add "if" block in <run_emcee()>  
+    * If applicable, add code in <sleec_input.py.import_pars()> to implement new DM feature  
+    * If applicable, add code in <sleec_run.ln_prior()> to implement corresponding prior distribution.  
 Commit <46f32b23> is an example of changes made to implement a new basis-set feature for adjusting DM1.  
 
 
