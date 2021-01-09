@@ -65,6 +65,7 @@ not run the optimization routine.
     * Add "if" block in <run_emcee()>  
     * If applicable, add code in <sleec_input.py.import_pars()> to implement new DM feature  
     * If applicable, add code in <sleec_run.ln_prior()> to implement corresponding prior distribution.  
+    
 Commit <46f32b23> is an example of changes made to implement a new basis-set feature for adjusting DM1.  
 
 
