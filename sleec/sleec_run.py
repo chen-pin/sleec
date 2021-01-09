@@ -159,7 +159,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
                             , corngrph=coronagraph, file_exists=False
                             , filename=input_pars['filename']
                             , non_negative=non_negative
-                            , n2d=input_pars['n2d'], L=170
+                            , n2d=input_pars['n2d_pupil'], L=170
                             , method='SE', orthgnlty=0, num_dense_pts=4096)
         print("Slepian file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))

@@ -85,7 +85,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative
         os.chdir(cwd)
         with  open(filename, 'wb') as f:
             output = {}
-            output['n2d'] = n2d
+            output['n2d_pupil'] = n2d
             output['L'] = L
             output['orthgnlty'] = orthgnlty
             output['D'] = diameter
@@ -182,7 +182,7 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
         with  open(filename, 'wb') as f:
             output = {}
             output['m_max'] = m_max
-            output['n2d'] = n2d
+            output['n2d_pupil'] = n2d
             output['k'] = k
             output['L'] = L
             output['orthgnlty'] = orthgnlty

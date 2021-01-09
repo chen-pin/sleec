@@ -55,12 +55,11 @@ snr: 7.0  # SNR requirement
 # CORONAGRAPH SETUP/INITIALIZATION PARAMETERS
 ## Pupil Parameters    
 # pupil_type: circular_clear  # Geometric/functional type of the pupil
-n2d_coefs: [0.8278258, -0.1336567, 0.0125898]
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-n2d: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
+n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
 
 
 ## DM Parameters

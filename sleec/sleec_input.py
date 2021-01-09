@@ -38,14 +38,6 @@ def import_pars(filename='sleec_pars.yml'):
                                               *pars['grid_oversize'])
     pupil_field = ( hci.circular_aperture(diameter=pars['pupil_dia'])
                                            (pupil_grid) )
-#    elif pars['pupil_type'] == 'slepian_n2d':  
-#        pupil_field = sla.pupil_slepian_r( 
-#                          coefs = pars['n2d_coefs'], corngrph=None
-#                          , file_exists=False, filename=pars['filename']
-#                          , non_negative=pars['non_negative']
-#                          , n2d=pars['n2d'], diameter=pars['pupil_dia']
-#                          , grid=pupil_grid
-#                                         )
 
     # DM1
     if pars['dm1_surfc'] == 'zero':
