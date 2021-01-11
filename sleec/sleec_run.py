@@ -58,6 +58,20 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           , method=None
                           , orthgnlty=None, num_dense_pts=None)
     ndx0 = ndx1
+    ndx1 = ndx0 + input_pars['num_dm2_pars']
+    dm2_pars = design_parameters[ndx0 : ndx1]
+    if input_pars['dm2_type'] == 'slepian_fourier':
+        coronagraph = sla.dm2_slepian_2d(coefs=dm2_pars
+                          , corngrph=coronagraph
+                          , file_exists=True
+                          , filename=input_pars['dm2_filename']
+                          , m_max=None
+                          , n2d=None
+                          , k=None
+                          , L=None
+                          , method=None
+                          , orthgnlty=None, num_dense_pts=None, oppose_dm1=True)
+    ndx0 = ndx1
     ndx1 = ndx0 + input_pars['num_fpm_pars']
     fpm_pars = design_parameters[ndx0 : ndx1]
     if input_pars['fpm_type'] == 'dot':
@@ -175,20 +189,33 @@ def run_emcee(spread_factor=0.001, parallel=False):
                             , non_negative=non_negative
                             , n2d=input_pars['n2d_pupil'], L=170
                             , method='SE', orthgnlty=0, num_dense_pts=4096)
-        print("Slepian file created")
+        print("Pupil Slepian file created")
     if input_pars['dm1_type'] == 'slepian_fourier':
         sla.dm1_slepian_2d(coefs=np.ones(input_pars['num_dm1_pars'])
                             , corngrph=coronagraph
                             , file_exists=False
                             , filename=input_pars['dm1_filename']
                             , m_max=input_pars['m_dm1']
-                            , n2d=input_pars['n2d_pupil']
+                            , n2d=input_pars['n2d_dm1']
                             , k=input_pars['k_dm1']
                             , L=170
                             , method='SE'
                             , orthgnlty=0
                             , num_dense_pts=4096)
-        print("Slepian file created")
+        print("DM1 Slepian-Fourier file created")
+    if input_pars['dm2_type'] == 'slepian_fourier':
+        sla.dm2_slepian_2d(coefs=np.ones(input_pars['num_dm2_pars'])
+                            , corngrph=coronagraph
+                            , file_exists=False
+                            , filename=input_pars['dm2_filename']
+                            , m_max=input_pars['m_dm2']
+                            , n2d=input_pars['n2d_dm2']
+                            , k=input_pars['k_dm2']
+                            , L=170
+                            , method='SE'
+                            , orthgnlty=0
+                            , num_dense_pts=4096)
+        print("DM2 Slepian-Fourier file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
     i = 0
     for row in input_pars['bounds_pars']:
