@@ -270,6 +270,29 @@ def update_dm2_surfc(surfc, corngrph):
     return corngrph
 
 
+def update_dm2dm1_surfc(surfc, corngrph):
+    """Return the coronagraph with a DM2 surface-figure update and an 
+    opposing DM1 surface update1.
+
+    Parameters
+    ----------
+    surfc : hcipy.Field
+        DM surface figure
+    corngrph : sleec_opt.Coronagraph
+        The coronagraph to be updated
+
+    Returns
+    ------
+    return : sleec_opt.Coronagraph
+        The coronagraph with its DM1 updated
+
+    """
+    corngrph.dm2_surfc = surfc
+    corngrph.optical_elements[3] = corngrph.dm2
+    update_dm1_surfc(-surfc, corngrph)
+    return corngrph
+
+
 def update_dm1_vmap(vmap, corngrph):
     corngrph.dm1_vmap = vmap
     corngrph.optical_elements[1] = corngrph.dm1
