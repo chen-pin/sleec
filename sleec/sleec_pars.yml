@@ -7,8 +7,10 @@
 # OPTIMIZATION PARAMETERS
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
 num_pupil_pars: 3  # Number of pupil design parameters
-dm1_type: slepian_fourier
-num_dm1_pars: 3
+# dm1_type: slepian_fourier
+# num_dm1_pars: 3
+dm1_type: null
+num_dm1_pars: 0
 dm2_type: slepian_fourier
 num_dm2_pars: 3
 #fpm_type: dot
@@ -22,20 +24,20 @@ bounds_pars:
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm1 coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm1 coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm1 coefficient 
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm2 coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm2 coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian-Fourier dm2 coefficient 
+#    -    [0.0, -6.0E-09, 6.0E-09]  # Slepian-Fourier dm1 coefficient
+#    -    [0.0, -6.0E-09, 6.0E-09]  # Slepian-Fourier dm1 coefficient
+#    -    [0.0, -6.0E-09, 6.0E-09]  # Slepian-Fourier dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm2 coefficient
 #    -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
     -    [0.5, 0.0, 1.0]  # A: FPM peak amplitude opacity
     -    [1.3, 0.2, 5.0]  # sigma: FPM super-Gaussian width parameter
     -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 26
-ndim: 13 
+nwalkers: 20
+ndim: 10 
 nsteps: 3000 
 
 wvl: 570.0e-9  # wavelength
@@ -75,9 +77,9 @@ n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
 
 
 ## DM Parameters
-n2d_dm1: [10, 15, 22]
-k_dm1: 1
-m_dm1: 0
+# n2d_dm1: [10, 15, 22]
+# k_dm1: 1
+# m_dm1: 0
 n2d_dm2: [10, 15, 22]
 k_dm2: 1
 m_dm2: 0

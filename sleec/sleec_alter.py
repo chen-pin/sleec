@@ -8,9 +8,9 @@ import numpy as np
 import hcipy as hci
 
 
-def pupil_slepian_r(coefs, corngrph, file_exists, filename, non_negative 
-                    , n2d, L=170, method='SE', orthgnlty=0, num_dense_pts=4096
-                    , diameter=None, grid=None):
+def pupil_slepian_r(coefs, corngrph, file_exists, filename
+                    , non_negative , n2d, L=170, method='SE', orthgnlty=0
+                    , num_dense_pts=4096):
 
     """
     Return a coronagraph with pupil amplitude/apodization contructed by a 
@@ -154,10 +154,6 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
         0 Scales the solution for orthogonality with weight r
     num_dense_pts : int, optional
         Number of densly sampled points in the Slepian computation
-    diameter : float, optional
-        Pupil diameter.
-    grid : `hcipy.Grid`, optional
-        Pupil grid.
     
     Returns
     -------
