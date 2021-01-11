@@ -57,9 +57,10 @@ not run the optimization routine.
 * In <sleec_pars.yml>  
     * Add `xxx_type` parameter  
     * Add `num_xxx_pars` parameter  
-    * Add optimization parameters in <sleec_pars.yml>  
-    * Change `nwalkers` value  
-    * Change `ndim` value  
+    * Add row(s) in `bound_pars`  
+    * Update `nwalkers` value  
+    * Update `ndim` value
+    * If applicable, add initialization parameter(s)
 * In <sleec_run.py>  
     * Add "if" block in <ln_probability()>  
     * Add "if" block in <run_emcee()>  
