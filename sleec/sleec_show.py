@@ -188,6 +188,22 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     field = coronagraph.pupil_field
     grid_scale = coronagraph.pupil_diameter
     quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]') 
+    # Show DM1
+    field = wavefronts['dm1'].electric_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter')
+    # Show ON_DM2
+    field = wavefronts['on_dm2'].electric_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]') 
+    # Show ON_DM2
+    field = wavefronts['dm2'].electric_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'DM2', grid_scale, 'x [pupil diameter]') 
+    # Show RELAY_PUPIL
+    field = wavefronts['relay_pupil'].electric_field
+    grid_scale = coronagraph.pupil_diameter
+    quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]') 
     # Show ON_FPM
     field = wavefronts['on_fpm'].electric_field
     grid_scale = coronagraph.f_num*coronagraph.wvl
@@ -225,3 +241,4 @@ if __name__ == "__main__":
 #    reconstruct('20200706t2300', 12942)
 #    reconstruct('20200726t0120', 24095)
     reconstruct('20200726t1539', 33301)
+#    reconstruct('20210111t1609', 10419)
