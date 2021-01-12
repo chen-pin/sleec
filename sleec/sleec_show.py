@@ -12,8 +12,9 @@ from turbo_colormap import turbo_colormap_data
 turbo = ListedColormap(turbo_colormap_data)
 
 
-def show_run_stats():
-    filename = input('Enter EMCEE backend filename:  ')
+def show_run_stats(filename=None, long=False, plot=False):
+    if filename==None:
+        filename = input('Enter EMCEE backend filename:  ')
     path = os.path.join('..', '..', 'sleec_out', filename)
     reader = emc.backends.HDFBackend(path)
     tau = reader.get_autocorr_time(tol=4)
@@ -29,55 +30,57 @@ def show_run_stats():
     ndim = samples.shape[-1]
     blob = reader.get_blobs(flat=True)
     print("blob shape:  {}: ".format(blob.shape))
-    sortarg = np.flip(np.argsort(log_prob_samples))
-    ndx = [sortarg[0]]
-    count = 0 
-    prev_log_prob = log_prob_samples[sortarg[0]]
-    for n in sortarg[1:]:
-        log_prob = log_prob_samples[n]
-        if (log_prob != prev_log_prob and count<=3):
-            ndx.append(n)
-            prev_log_prob = log_prob
-            count += 1
-        elif count>3:
-            break
-        else:
-            continue
-    print("\nTOP FIVE SAMPLES")
-    for j in ndx:
-        print("\nsample #  {}".format(j))
-        print("ln probability: {} ".format(log_prob_samples[j]))
-        print("throughput: {} ".format(blob['whole_throughput'][j]))
-        print("contrast: {} ".format(blob['whole_contrast'][j]))
-        print("encircled PSF energy: {} ".format(blob['encircle_psf']
-                                               [j]))
-        for i in range(ndim): 
-            print("parameter {} value:  {}"
-                  .format(i+1, samples[j, i]))
-    all_samples = np.concatenate(
-        (samples, log_prob_samples[:, None]), axis=1
-                                )
-    labels = list(map(r"$\theta_{{{0}}}$".format, range(1, ndim + 1)))
-    labels += ["log prob"]
-    corner.corner(all_samples, labels=labels)
-    plt.show()
-#    save = input("Save figure? (y/[n]):  ")
-#    if save == 'y':
-#        filename = input("Enter filename:  ")
-#        path = os.path.join('..', '..', 'sleec_out', filename)
-#        plt.savefig(path)
-    log_prob_samples = reader.get_log_prob(flat=False)
-    iterations = log_prob_samples.shape[0]
-    walkers = log_prob_samples.shape[1]
-    x = [i for i in range(iterations)]
-    for walker in range(walkers): 
-        plt.plot(x, log_prob_samples[:, walker])
-    plt.show()
-#    save = input("Save figure? (y/[n]):  ")
-#    if save == 'y':
-#        filename = input("Enter filename:  ")
-#        path = os.path.join('..', '..', 'sleec_out', filename)
-#        plt.savefig(path)
+    if long:
+        sortarg = np.flip(np.argsort(log_prob_samples))
+        ndx = [sortarg[0]]
+        count = 0 
+        prev_log_prob = log_prob_samples[sortarg[0]]
+        for n in sortarg[1:]:
+            log_prob = log_prob_samples[n]
+            if (log_prob != prev_log_prob and count<=3):
+                ndx.append(n)
+                prev_log_prob = log_prob
+                count += 1
+            elif count>3:
+                break
+            else:
+                continue
+        print("\nTOP FIVE SAMPLES")
+        for j in ndx:
+            print("\nsample #  {}".format(j))
+            print("ln probability: {} ".format(log_prob_samples[j]))
+            print("throughput: {} ".format(blob['whole_throughput'][j]))
+            print("contrast: {} ".format(blob['whole_contrast'][j]))
+            print("encircled PSF energy: {} ".format(blob['encircle_psf']
+                                                   [j]))
+            for i in range(ndim): 
+                print("parameter {} value:  {}"
+                      .format(i+1, samples[j, i]))
+    if plot:
+        all_samples = np.concatenate(
+            (samples, log_prob_samples[:, None]), axis=1
+                                    )
+        labels = list(map(r"$\theta_{{{0}}}$".format, range(1, ndim + 1)))
+        labels += ["log prob"]
+        corner.corner(all_samples, labels=labels)
+        plt.show()
+    #    save = input("Save figure? (y/[n]):  ")
+    #    if save == 'y':
+    #        filename = input("Enter filename:  ")
+    #        path = os.path.join('..', '..', 'sleec_out', filename)
+    #        plt.savefig(path)
+        log_prob_samples = reader.get_log_prob(flat=False)
+        iterations = log_prob_samples.shape[0]
+        walkers = log_prob_samples.shape[1]
+        x = [i for i in range(iterations)]
+        for walker in range(walkers): 
+            plt.plot(x, log_prob_samples[:, walker])
+        plt.show()
+    #    save = input("Save figure? (y/[n]):  ")
+    #    if save == 'y':
+    #        filename = input("Enter filename:  ")
+    #        path = os.path.join('..', '..', 'sleec_out', filename)
+    #        plt.savefig(path)
 
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
@@ -232,7 +235,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-#    show_run_stats()    
+    show_run_stats(filename='20210111t1609.hdf')    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -240,5 +243,5 @@ if __name__ == "__main__":
 #    reconstruct('20200518t0951', 7211)
 #    reconstruct('20200706t2300', 12942)
 #    reconstruct('20200726t0120', 24095)
-    reconstruct('20200726t1539', 33301)
+#    reconstruct('20200726t1539', 33301)
 #    reconstruct('20210111t1609', 10419)
