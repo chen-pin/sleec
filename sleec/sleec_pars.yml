@@ -107,8 +107,8 @@ pupil_filename: null
 dm1_filename: ../../sleec_out/dm1_slepian2d.pkl
 dm2_filename: ../../sleec_out/dm2_slepian2d.pkl
 n2d_dm1: [15]
-k_dm1: 5
-m_dm1: 1
+k_dm1: 15
+m_dm1: 0
 n2d_dm2: [15]
 k_dm2: 15
 m_dm2: 0
