@@ -194,7 +194,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     # Show DM1
     field = wavefronts['dm1'].electric_field
     grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter')
+    quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]')
     # Show ON_DM2
     field = wavefronts['on_dm2'].electric_field
     grid_scale = coronagraph.pupil_diameter
@@ -235,7 +235,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-    show_run_stats(filename='20210111t1609.hdf')    
+#    show_run_stats(filename='20210111t1609.hdf', plot=False, long=False)    
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -245,3 +245,4 @@ if __name__ == "__main__":
 #    reconstruct('20200726t0120', 24095)
 #    reconstruct('20200726t1539', 33301)
 #    reconstruct('20210111t1609', 10419)
+    reconstruct('20210111t1609', 58536)

@@ -39,7 +39,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     if input_pars['pupil_type'] == 'slepian_n2d':
         coronagraph = sla.pupil_slepian_r(coefs=pupil_pars
                           , corngrph=coronagraph
-                          , file_exists=True, filename=input_pars['filename']
+                          , file_exists=True
+                          , filename=input_pars['pupil_filename']
                           , non_negative=non_negative
                           , n2d=None, L=None, method=None
                           , orthgnlty=None, num_dense_pts=None)
@@ -170,11 +171,18 @@ def run_emcee(spread_factor=0.001, parallel=False):
         fn_prefix = input("Enter filename prefix for saving EMCEE run:  ")
         path = os.path.join('..', '..', 'sleec_out')
         file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
-        file_path_slp = os.path.join(path, fn_prefix+'.pkl')
+        file_path_pupil_slp = os.path.join(path, fn_prefix+'_pupil.pkl')
+        file_path_dm1_slp = os.path.join(path, fn_prefix+'_dm1.pkl')
+        file_path_dm2_slp = os.path.join(path, fn_prefix+'_dm2.pkl')
         file_path_yml = os.path.join(path, fn_prefix+'.yml')
         backend = emc.backends.HDFBackend(file_path_hdf)
         backend.reset(input_pars['nwalkers'], input_pars['ndim'])
-        stl.copyfile(input_pars['filename'], file_path_slp)    
+        if input_pars['pupil_filename'] != None:
+            stl.copyfile(input_pars['pupil_filename'], file_path_pupil_slp)    
+        if input_pars['dm1_filename'] != None:
+            stl.copyfile(input_pars['dm1_filename'], file_path_dm1_slp)    
+        if input_pars['dm2_filename'] != None:
+            stl.copyfile(input_pars['dm2_filename'], file_path_dm2_slp)    
         stl.copyfile('sleec_pars.yml', file_path_yml)    
     else:
         backend = None
