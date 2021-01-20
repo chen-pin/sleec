@@ -193,7 +193,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
     if input_pars['pupil_type'] == 'slepian_n2d':
         sla.pupil_slepian_r(coefs=np.ones(input_pars['num_pupil_pars'])
                             , corngrph=coronagraph, file_exists=False
-                            , filename=input_pars['filename']
+                            , filename=input_pars['pupil_filename']
                             , non_negative=non_negative
                             , n2d=input_pars['n2d_pupil'], L=170
                             , method='SE', orthgnlty=0, num_dense_pts=4096)

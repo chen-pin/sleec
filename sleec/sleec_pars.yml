@@ -5,10 +5,10 @@
  
 
 # OPTIMIZATION PARAMETERS
-# pupil_type: slepian_n2d  # Geometric/functional type of the pupil
-# num_pupil_pars: 3  # Number of pupil design parameters
-pupil_type: null
-num_pupil_pars: 0  # Number of pupil design parameters
+pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+num_pupil_pars: 3  # Number of pupil design parameters
+# pupil_type: null
+# num_pupil_pars: 0  # Number of pupil design parameters
 # dm1_type: slepian_fourier
 # num_dm1_pars: 3
 # dm1_type: null
@@ -25,9 +25,9 @@ num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 
 ## Bounds on Optimization Parameters [ini, min, max] 
 bounds_pars: 
-#    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
-#    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
-#    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
+    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
     -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm1 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm1 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Slepian-Fourier dm1 coefficient
@@ -64,8 +64,8 @@ bounds_pars:
 #    -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 64
-ndim: 32 
+nwalkers: 70
+ndim: 35 
 nsteps: 3000 
 
 wvl: 570.0e-9  # wavelength
@@ -98,9 +98,9 @@ snr: 7.0  # SNR requirement
 pupil_dia: 48.0e-3  # Pupil diameter 
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
-# n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
-# filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-pupil_filename: null
+n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
+pupil_filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
+# pupil_filename: null
 
 
 ## DM Parameters
