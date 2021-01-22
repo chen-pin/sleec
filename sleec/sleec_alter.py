@@ -312,33 +312,43 @@ def lyot_circ_clear(lyot_dia, corngrph):
                                       (corngrph.lyot_field.grid) )
     return update_lyot(lyot_field, corngrph)
 
+
 def lyot_annulus(lyot_dia,inner_dia, corngrph, field=False):
 	'''Give coronagraph annular field or return annular field.
 	
 	Parameters
 	----------
-	lyot_dia: float
-		Outer diameter of annular Lyot field as a proportion of the pupil diameter.
-	inner_dia: float
-		Inner diameter of annular Lyot field as a proportion of the pupil diameter.
+	lyot_dia : float
+            Outer diameter of annular Lyot field as a proportion of the pupil 
+            diameter.
+	inner_dia : float
+            Inner diameter of annular Lyot field as a proportion of the pupil 
+            diameter.
 	corngrph: sleec_optics.Coronagraph()
-		Coronagraph to be modified, provides pupil diameter.
+            Coronagraph to be modified, provides pupil diameter.
 	field: boolean
-		If true, only return annular field without modifying corngrph.
-		If false, modify corngrph to have annular Lyot field.
+            If true, only return annular field without modifying corngrph.
+	    If false, modify corngrph to have annular Lyot field.
 
 	Returns
 	-------
 	return: sleec_optics.Coronagraph() or hci.Field()'''
 
-	outer = circular_aperture(lyot_dia*corngrph.pupil_diameter)(corngrph.lyot_field.grid)
-	inner = circular_aperture(lyot_dia*corngrph.pupil_diameter)(corngrph.lyot_field.grid)
+	outer = (
+                circular_aperture(lyot_dia*corngrph.pupil_diameter)
+                                 (corngrph.lyot_field.grid)
+                )
+	inner = (
+                circular_aperture(lyot_dia*corngrph.pupil_diameter)
+                                 (corngrph.lyot_field.grid)
+                )
 	annular_field = outer - inner
 
 	if field:
 		return annular_field
 	else:
 		return update_lyot(annular_field, corngrph)
+
 
 def update_pupil(pupil_field, corngrph):
     corngrph.pupil_field = pupil_field
