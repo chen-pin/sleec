@@ -1,0 +1,99 @@
+diff --git a/sleec/sleec_pars.yml b/sleec/sleec_pars.yml
+index 0480363..348921d 100755
+--- a/sleec/sleec_pars.yml
++++ b/sleec/sleec_pars.yml
+@@ -7,8 +7,6 @@
+ # OPTIMIZATION PARAMETERS
+ pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+ num_pupil_pars: 3  # Number of pupil design parameters
+-dm1_type: slepian_fourier
+-num_dm1_pars: 3
+ #fpm_type: dot
+ fpm_type: super_gaussian
+ num_fpm_pars:  3  # Number of FPM design parameters
+@@ -17,20 +15,17 @@ num_lyot_pars:  1  # Number of Lyot-pupil design parameters
+ 
+ ## Bounds on Optimization Parameters [ini, min, max] 
+ bounds_pars: 
+-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
+-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
+-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
+-    -    [0.1, -1.0, 2.0]  # Slepian dm1 coefficient
+-    -    [0.1, -1.0, 2.0]  # Slepian dm1 coefficient
+-    -    [0.1, -1.0, 2.0]  # Slepian dm1 coefficient 
++    -    [0.1, -1.0, 2.0]  # Slepian coefficient
++    -    [0.1, -1.0, 2.0]  # Slepian coefficient
++    -    [0.1, -1.0, 2.0]  # Slepian coefficient 
+ #    -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
+     -    [0.5, 0.0, 1.0]  # A: FPM peak amplitude opacity
+     -    [1.3, 0.2, 5.0]  # sigma: FPM super-Gaussian width parameter
+     -    [20, 2, 588]  # N: FPM super-Gaussian order
+     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
+                                 # diameter]
+-nwalkers: 20
+-ndim: 10 
++nwalkers: 28
++ndim: 7 
+ nsteps: 3000 
+ 
+ wvl: 570.0e-9  # wavelength
+@@ -64,14 +59,10 @@ pupil_dia: 48.0e-3  # Pupil diameter
+ grid_oversize: 1.01  # Ratio of grid width to pupil diameter
+ num_pxl_across: 512  # No. of pixels across the pupil diameter
+ filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
+-dm1_filename: ../../sleec_out/dm1_slepian2d.pkl
+ n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
+ 
+ 
+ ## DM Parameters
+-n2d_dm1: [10, 15, 22]
+-k_dm1: 1
+-m_dm1: 0
+ dm_seprtn: 1.0  # Physical distance between the two DMs  
+ dm1_surfc: zero  # Must be one of the following values:  
+     # A '.fits' filename:  
+diff --git a/sleec/sleec_run.py b/sleec/sleec_run.py
+index e60421d..bbbeb45 100755
+--- a/sleec/sleec_run.py
++++ b/sleec/sleec_run.py
+@@ -44,20 +44,6 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
+                           , n2d=None, L=None, method=None
+                           , orthgnlty=None, num_dense_pts=None)
+     ndx0 = input_pars['num_pupil_pars']
+-    ndx1 = ndx0 + input_pars['num_dm1_pars']
+-    dm1_pars = design_parameters[ndx0 : ndx1]
+-    if input_pars['dm1_type'] == 'slepian_fourier':
+-        coronagraph = sla.dm1_slepian_2d(coefs=dm1_pars
+-                          , corngrph=coronagraph
+-                          , file_exists=True
+-                          , filename=input_pars['dm1_filename']
+-                          , m_max=None
+-                          , n2d=None
+-                          , k=None
+-                          , L=None
+-                          , method=None
+-                          , orthgnlty=None, num_dense_pts=None)
+-    ndx0 = ndx1
+     ndx1 = ndx0 + input_pars['num_fpm_pars']
+     fpm_pars = design_parameters[ndx0 : ndx1]
+     if input_pars['fpm_type'] == 'dot':
+@@ -176,19 +162,6 @@ def run_emcee(spread_factor=0.001, parallel=False):
+                             , n2d=input_pars['n2d_pupil'], L=170
+                             , method='SE', orthgnlty=0, num_dense_pts=4096)
+         print("Slepian file created")
+-    if input_pars['dm1_type'] == 'slepian_fourier':
+-        sla.dm1_slepian_2d(coefs=np.ones(input_pars['num_dm1_pars'])
+-                            , corngrph=coronagraph
+-                            , file_exists=False
+-                            , filename=input_pars['dm1_filename']
+-                            , m_max=input_pars['m_dm1']
+-                            , n2d=input_pars['n2d_pupil']
+-                            , k=input_pars['k_dm1']
+-                            , L=170
+-                            , method='SE'
+-                            , orthgnlty=0
+-                            , num_dense_pts=4096)
+-        print("Slepian file created")
+     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
+     i = 0
+     for row in input_pars['bounds_pars']:
