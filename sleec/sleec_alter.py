@@ -1,6 +1,3 @@
-"""<sleec_alter>:  Module for applying changes to (evolving the state of) 
-a coronagraph."""
-
 import os
 import math
 import pickle as pkl
@@ -218,7 +215,9 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
         file.  Othewise, it is the name of the save file.  
     m_max : int, optional
         Maximum absolute `m` value.  A list of `m` values from -`m_max` to 
-        `m_max` will be geneA list of N2D 
+        `m_max` will be generated.  
+    n2d : int, optional
+        A list of N2D 
         (two-dimensional Shannon number) values.  For Fraunhofer propagation, 
         n2d = (pi*N/4)^2, where N is the number of cycles across the aperture. 
         For example, if we are solving for a pupil-apodizing function to limit 
@@ -288,6 +287,72 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
         return update_dm2dm1_surfc(field, corngrph) 
     else:
         return update_dm2_surfc(field, corngrph)
+        
+
+def dm1_disk_harmonic(coefs, corngrph, file_exists, filename=None
+                   , m=None, n_min=None, n_max=None, bc='dirichlet'):  
+
+    """
+    Return a coronagraph with DM1 surface contructed by a 
+    superposition of disk harmonic functions. If `corngrph` is `None`, return
+    the field.  
+
+    Parameters
+    ----------
+    coefs : array_like
+        Basis function coefficients for the superposition
+    corngrph : `sleec_optics.Coronagraph`
+        The coronagraph object to be altered
+    file_exists : boolean
+        If `True`, use an existing file containing the mode basis.
+        Otherwise, compute the mode basis and save it using `filename`.  
+    filename : str, optional
+        Name of the existing mode-basis 
+        file.  Othewise, it is the name of the save file.  
+    m: array_like, optional
+        A list of integer azimuthal order.  
+    n_min, n_max : int, optional
+        A list of minimum `n` (radial order) values and a list of maximum 
+        values.  Each value corresponds to an azimuthal oder `m`.  Therefore, 
+        each list much be the same size as `m`.  Disk harmonic functions 
+        corresponding to radial orders ranging from `n_min` to `m_max` will be 
+        generated for each azimuthal order.  
+    bc : str, optional
+        Boundary condition, this must be either 'dirichilet' or 'neumann'
+    
+    Returns
+    -------
+    return : `Coronagraph` or hcipy.Field
+        Coronagraph with DM1 updated or field representing the DM surface. 
+
+    """
+    diameter = corngrph.pupil_diameter
+    grid = corngrph.pupil_field.grid
+    modes = [[hci.disk_harmonic(n=n, m=m_i, D=diameter, bc=bc, grid=grid) 
+              for n in range(n_min, n_max+1)] for m_i in m]
+    basis = hci.ModeBasis(modes, grid)
+    if file_exists: 
+        with open(filename, 'rb') as f:
+            basis = pkl.load(f)['disk_harmonic']
+    else:
+        orders = []
+
+        with open(filename, 'wb') as f:
+            output = {}
+            output['m'] = m
+            output['n_min'] = n_min
+            output['n_max'] = n_max
+            output['bc'] = bc
+            output['disk_harmonic'] = basis
+            pkl.dump(output, f)
+    field = basis.linear_combination(coefs)
+    aperture = ( hci.circular_aperture(diameter)
+                                      (grid) )
+    field *= aperture
+    if corngrph == None:
+        return field
+    else:
+        return update_dm1_surfc(field, corngrph) 
         
 
 def fpm_dot(fpm_dia, corngrph, num_airy):
@@ -645,7 +710,64 @@ def _test_dm1_slepian_2d():
     plt.close()
 
 
+def _test_dm1_disk_harmonic():
+    import yaml as yml
+    import matplotlib.pyplot as plt
+    from matplotlib.colors import ListedColormap
+    from turbo_colormap import turbo_colormap_data
+    turbo = ListedColormap(turbo_colormap_data)
+    import sleec_input as sli
+    corngrph, pars = sli.import_pars()
+    print('Coronagraph initialized')
+    m = [0, 1, 2]
+    print('m = {}'.format(m))
+    n_min = 3
+    print('n_min = {}'.format(n_min))
+    n_max = 3
+    print('n_max = {}'.format(n_max))
+    bc = 'dirichlet'
+    print('bc = {}'.format(bc))
+    coefs = 6e-9*np.random.uniform(-1.0, 1.0, (n_max+1-n_min))
+    print('Coefficients = {}'.format(coefs)) 
+    file_exists = False
+#    file_exists = True
+    filename = '../../sleec_out/disk_harmonic_dm1.pkl'
+    corngrph = dm1_disk_harmonic(coefs, corngrph, file_exists, filename
+                               , m=m, n_min=n_min, n_max=n_max, bc=bc)
+    aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
+                                    (corngrph.pupil_field.grid) )
+    input_field= (
+        hci.Field(np.ones_like(corngrph.pupil_field.grid.x)
+                  , corngrph.pupil_field.grid)*aperture
+                 )
+    input_wavefront = hci.Wavefront(input_field, corngrph.wvl)
+    output = corngrph(input_wavefront)
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in corngrph.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+        hci.imshow_field(wf.intensity, cmap=turbo)
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+    subplot_seq = 1
+    plt.figure(figsize=(15, 5))
+    for key in corngrph.names:
+        print(key)
+        wf = output[key]
+        print(wf)
+        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+        hci.imshow_field(wf.phase, cmap=turbo)
+        plt.colorbar()
+        subplot_seq += 1
+    plt.show()
+    plt.close()
+
 
 if __name__ == '__main__':
-    _test_dm1_slepian_2d()
+    _test_dm1_disk_harmonic()
 
