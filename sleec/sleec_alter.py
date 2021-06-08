@@ -289,6 +289,55 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
         return update_dm2_surfc(field, corngrph)
         
 
+def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
+                        , bc='dirichlet'):  
+
+    """
+    Create a disk harmonic basis set.
+
+    Parameters
+    ----------
+    m : array_like
+        A list of integer azimuthal order.  
+    n_min, n_max : array_like
+        A list of minimum `n` (radial order) values and a list of maximum 
+        values.  Each value corresponds to an azimuthal oder `m`.  Therefore, 
+        each list much be the same size as `m`.  Disk harmonic functions 
+        corresponding to radial orders ranging from `n_min` to `m_max` will be 
+        generated for each azimuthal order.  
+    grid : hcipy.Grid
+        The grid on which to evaluate the disk harmonic modes.  
+    diameter : float
+        The diameter of the disk
+    filename : str or none, optional
+        Name of the save file.  If `None`, return basis without saving  
+    bc : str, optional
+        Boundary condition, this must be either 'dirichilet' or 'neumann'
+    
+    Returns
+    -------
+    return : hcipy.ModeBasis
+        Coronagraph with DM1 updated or field representing the DM surface. 
+
+    """
+    orders = [(m_i, n) for m_i in m for n in range(n_min, n_max+1)]
+    print(orders)
+    modes = [hci.disk_harmonic(n=order[1], m=order[0], D=diameter, bc=bc
+                                , grid=grid) 
+             for order in orders]
+    basis = hci.ModeBasis(modes, grid)
+    if filename != None:
+        with open(filename, 'wb') as f:
+            output = {}
+            output['m'] = m
+            output['n_min'] = n_min
+            output['n_max'] = n_max
+            output['bc'] = bc
+            output['disk_harmonic'] = basis
+            pkl.dump(output, f)
+    return hci.ModeBasis(modes, grid) 
+        
+
 def dm1_disk_harmonic(coefs, corngrph, file_exists, filename=None
                    , m=None, n_min=None, n_max=None, bc='dirichlet'):  
 
