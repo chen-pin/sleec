@@ -299,10 +299,8 @@ def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
     ----------
     m : array_like
         A list of integer azimuthal order.  
-    n_min, n_max : array_like
-        A list of minimum `n` (radial order) values and a list of maximum 
-        values.  Each value corresponds to an azimuthal oder `m`.  Therefore, 
-        each list much be the same size as `m`.  Disk harmonic functions 
+    n_min, n_max : int 
+        Minimum and maximum `n` (radial order) values.  Disk harmonic functions 
         corresponding to radial orders ranging from `n_min` to `m_max` will be 
         generated for each azimuthal order.  
     grid : hcipy.Grid
@@ -317,8 +315,7 @@ def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
     Returns
     -------
     return : hcipy.ModeBasis
-        Coronagraph with DM1 updated or field representing the DM surface. 
-
+        Basis set of disk-harmonic modes
     """
     orders = [(m_i, n) for m_i in m for n in range(n_min, n_max+1)]
     print(orders)
