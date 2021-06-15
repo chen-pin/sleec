@@ -11,7 +11,7 @@ import sleec_optics as sop
 import sleec_alter as sla
 
 
-def import_pars(filename='sleec_pars.yml'):
+def import_pars(filename='sleec_pars.yml', verbose=True):
     """Parse <sleec_pars.yml> and return an initialized coronagraph.  
     
     Returns
@@ -27,9 +27,10 @@ def import_pars(filename='sleec_pars.yml'):
     """
     with open(filename, 'r') as f:    
         pars = yml.full_load(f)
-    print('The following parameters have been loaded from ' + f.name)  
-    for key, value in pars.items():  
-        print("{}:  {}".format(key, value))
+    if verbose:
+        print('The following parameters have been loaded from ' + f.name)  
+        for key, value in pars.items():  
+            print("{}:  {}".format(key, value))
     
  
     # PUPIL	

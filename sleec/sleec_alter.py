@@ -769,18 +769,27 @@ def _test_dm_disk_harmonic():
     import sleec_input as sli
     corngrph, pars = sli.import_pars()
     print('Coronagraph initialized')
-    m = [6]
+    aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
+                                    (corngrph.pupil_field.grid) )
+    input_field= (
+        hci.Field(np.ones_like(corngrph.pupil_field.grid.x)
+                  , corngrph.pupil_field.grid)*aperture
+                 )
+    input_wavefront = hci.Wavefront(input_field, corngrph.wvl)
+    output0 = corngrph(input_wavefront)
+    m = [0]
     print('m = {}'.format(m))
-    n_min = 14
+    n_min = 12
     print('n_min = {}'.format(n_min))
-    n_max = 14
+    n_max = 12
     print('n_max = {}'.format(n_max))
     bc = 'dirichlet'
     print('bc = {}'.format(bc))
-    coefs = (corngrph.wvl/4)*np.random.uniform(-1.0, 1.0
-                                               , len(m)*(n_max+1-n_min))
+#    coefs = (corngrph.wvl/4)*np.random.uniform(-1.0, 1.0
+#                                               , len(m)*(n_max+1-n_min))
+    coefs = (corngrph.wvl/60)*np.ones(len(m)*(n_max+1-n_min))
     print('Coefficients = {}'.format(coefs)) 
-    dm = 'dm2dm1'
+    dm = 'dm1'
     print('dm = {}'.format(dm))
     file_exists = False
 #    file_exists = True
@@ -793,36 +802,62 @@ def _test_dm_disk_harmonic():
     corngrph = dm_disk_harmonic(coefs=coefs, corngrph=corngrph, dm=dm
                                 , file_exists=file_exists, filename=filename
                                 , m=m, n_min=n_min, n_max=n_max, bc=bc)
-    aperture = ( hci.circular_aperture(corngrph.pupil_diameter)
-                                    (corngrph.pupil_field.grid) )
-    input_field= (
-        hci.Field(np.ones_like(corngrph.pupil_field.grid.x)
-                  , corngrph.pupil_field.grid)*aperture
-                 )
-    input_wavefront = hci.Wavefront(input_field, corngrph.wvl)
     output = corngrph(input_wavefront)
+#    subplot_seq = 1
+#    plt.figure(figsize=(15, 5))
+#    plt.suptitle('Log Intensity')
+#    for key in corngrph.names:
+#        print(key)
+#        wf = output[key]
+#        print(wf)
+#        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+#        hci.imshow_field(np.log10(wf.intensity), cmap=turbo)
+#        plt.title(key)
+#        plt.colorbar()
+#        subplot_seq += 1
+#    plt.show()
+#    plt.close()
+#    subplot_seq = 1
+#    plt.figure(figsize=(15, 5))
+#    plt.suptitle('Phase')
+#    for key in corngrph.names:
+#        print(key)
+#        wf = output[key]
+#        print(wf)
+#        plt.subplot(2, len(corngrph.names)//2, subplot_seq)
+#        hci.imshow_field(wf.phase, cmap=turbo)
+#        plt.title(key)
+#        plt.colorbar()
+#        subplot_seq += 1
+#    plt.show()
+#    plt.close()
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
-    plt.suptitle('Log Intensity')
+    plt.suptitle('Intensity Diff')
     for key in corngrph.names:
         print(key)
+        wf0 = output0[key]
         wf = output[key]
         print(wf)
         plt.subplot(2, len(corngrph.names)//2, subplot_seq)
-        hci.imshow_field(np.log10(wf.intensity), cmap=turbo)
+        hci.imshow_field((wf.intensity-wf0.intensity), cmap=turbo)
+        plt.title(key)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
     plt.close()
     subplot_seq = 1
     plt.figure(figsize=(15, 5))
-    plt.suptitle('Phase')
+    plt.suptitle('Log Intensity')
+    plt.suptitle('Phase Diff [rad]')
     for key in corngrph.names:
         print(key)
+        wf0 = output0[key]
         wf = output[key]
         print(wf)
         plt.subplot(2, len(corngrph.names)//2, subplot_seq)
-        hci.imshow_field(wf.phase, cmap=turbo)
+        hci.imshow_field((wf.phase-wf0.phase), cmap=turbo)
+        plt.title(key)
         plt.colorbar()
         subplot_seq += 1
     plt.show()
