@@ -2,20 +2,16 @@
 
 
 # All parameters are in mks units unless otherwise noted.  
- 
 
 # OPTIMIZATION PARAMETERS
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
 num_pupil_pars: 3  # Number of pupil design parameters
-# pupil_type: null
-# num_pupil_pars: 0  # Number of pupil design parameters
 # dm1_type: slepian_fourier
-# num_dm1_pars: 3
-# dm1_type: null
-# num_dm1_pars: 0
-dm1_type: slepian_fourier
+# dm1_type: slepian_fourier
+dm1_type: disk_harmonic
 num_dm1_pars: 15
-dm2_type: slepian_fourier
+# dm2_type: slepian_fourier
+dm2_type: disk_harmonic
 num_dm2_pars: 15
 fpm_type: dot
 # fpm_type: super_gaussian
