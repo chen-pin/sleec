@@ -47,7 +47,17 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     ndx0 = input_pars['num_pupil_pars']
     ndx1 = ndx0 + input_pars['num_dm1_pars']
     dm1_pars = design_parameters[ndx0 : ndx1]
-    if input_pars['dm1_type'] == 'slepian_fourier':
+    if input_pars['dm1_type'] == 'disk_harmonic':
+        coronagraph = sla.dm_disk_harmonic(coefs=dm1_pars
+                          , corngrph=coronagraph
+                          , dm=dm1
+                          , file_exists=True
+                          , filename=input_pars['dm1_filename']
+                          , m=None
+                          , n_min=None
+                          , n_max=None
+                          , bc=None)
+    elif input_pars['dm1_type'] == 'slepian_fourier':
         coronagraph = sla.dm1_slepian_2d(coefs=dm1_pars
                           , corngrph=coronagraph
                           , file_exists=True
@@ -61,7 +71,17 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     ndx0 = ndx1
     ndx1 = ndx0 + input_pars['num_dm2_pars']
     dm2_pars = design_parameters[ndx0 : ndx1]
-    if input_pars['dm2_type'] == 'slepian_fourier':
+    if input_pars['dm2_type'] == 'disk_harmonic':
+        coronagraph = sla.dm_disk_harmonic(coefs=dm2_pars
+                          , corngrph=coronagraph
+                          , dm=dm2dm1
+                          , file_exists=True
+                          , filename=input_pars['dm2_filename']
+                          , m=None
+                          , n_min=None
+                          , n_max=None
+                          , bc=None)
+    elif input_pars['dm2_type'] == 'slepian_fourier':
         coronagraph = sla.dm2_slepian_2d(coefs=dm2_pars
                           , corngrph=coronagraph
                           , file_exists=True
@@ -80,7 +100,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           fpm_dia=fpm_pars
                           , corngrph=coronagraph
                           , num_airy=input_pars['num_airy'])
-    if input_pars['fpm_type'] == 'super_gaussian':
+    elif input_pars['fpm_type'] == 'super_gaussian':
         coronagraph = sla.fpm_supergauss(A=fpm_pars[0], sigma=fpm_pars[1]
                                          , N=fpm_pars[2], corngrph=coronagraph
                                          , num_airy=input_pars['num_airy'])
