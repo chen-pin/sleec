@@ -9,10 +9,10 @@ num_pupil_pars: 3  # Number of pupil design parameters
 # dm1_type: slepian_fourier
 # dm1_type: slepian_fourier
 dm1_type: disk_harmonic
-num_dm1_pars: 1
+num_dm1_pars: 24
 # dm2_type: slepian_fourier
 dm2_type: disk_harmonic
-num_dm2_pars: 1
+num_dm2_pars: 24
 fpm_type: dot
 # fpm_type: super_gaussian
 num_fpm_pars:  1  # Number of FPM design parameters
@@ -25,6 +25,52 @@ bounds_pars:
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
     -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
 #    -    [0.5, 0.0, 1.0]  # A: FPM peak amplitude opacity
@@ -32,8 +78,8 @@ bounds_pars:
 #    -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 14
-ndim: 7 
+nwalkers: 106
+ndim: 53 
 nsteps: 3000 
 
 wvl: 570.0e-9  # wavelength
@@ -84,13 +130,13 @@ dm1_filename: ../../sleec_out/dm1_diskharmonic.pkl
 dm_dm1:  'dm1'
 m_dm1:  [0]
 n_min_dm1:  1
-n_max_dm1:  1
+n_max_dm1:  24
 bc_dm1:  'dirichlet'
 dm2_filename: ../../sleec_out/dm2_diskharmonic.pkl
 dm_dm2:  'dm2dm1'
 m_dm2:  [0]
 n_min_dm2:  1
-n_max_dm2:  1
+n_max_dm2:  24
 bc_dm2:  'dirichlet'
 dm_seprtn: 1.0  # Physical distance between the two DMs  
 dm1_surfc: zero  # Must be one of the following values:  
