@@ -340,7 +340,7 @@ def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
         
 
 def dm_disk_harmonic(coefs, corngrph, dm, file_exists, filename=None
-                   , m=None, n_min=None, n_max=None, bc='dirichlet'):  
+                     , m=None, n_min=None, n_max=None, bc=None):
 
     """
     Return a coronagraph with DM surface contructed by a 
@@ -396,15 +396,16 @@ def dm_disk_harmonic(coefs, corngrph, dm, file_exists, filename=None
     field *= aperture
     if corngrph == None:
         return field
+    elif dm=='dm1':
+        return update_dm1_surfc(field, corngrph) 
+    elif dm=='dm2':
+        return update_dm2_surfc(field, corngrph) 
+    elif dm=='dm2dm1':
+        return update_dm2dm1_surfc(field, corngrph) 
     else:
-        if dm=='dm1':
-            return update_dm1_surfc(field, corngrph) 
-        elif dm=='dm2':
-            return update_dm2_surfc(field, corngrph) 
-        elif dm=='dm2dm1':
-            return update_dm2dm1_surfc(field, corngrph) 
-        
+        print('<dm_disk_harmonic>: Invalid `dm` or `corngrph` argument value!')
 
+        
 def fpm_dot(fpm_dia, corngrph, num_airy):
     fpm_opacity = hci.circular_aperture(fpm_dia*corngrph.f_num*corngrph.wvl)
     fpm_field = ( (1.0 - fpm_opacity(corngrph.fpm_field.grid))
