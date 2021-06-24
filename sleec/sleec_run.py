@@ -231,6 +231,17 @@ def run_emcee(spread_factor=0.001, parallel=False):
                             , orthgnlty=0
                             , num_dense_pts=4096)
         print("DM1 Slepian-Fourier file created")
+    elif input_pars['dm1_type'] == 'disk_harmonic':
+        sla.disk_harmonic(coefs=np.ones(input_pars['num_dm1_pars'])
+                            , corngrph=coronagraph
+                            , dm='dm1'
+                            , file_exists=False
+                            , filename=input_pars['dm1_filename']
+                            , m=input_pars['m_dm1']
+                            , n2d=input_pars['n_min_dm1']
+                            , k=input_pars['n_max_dm1']
+                            , bc=input_pars['bc'])
+        print("DM1 disk-harmoic file created")
     if input_pars['dm2_type'] == 'slepian_fourier':
         sla.dm2_slepian_2d(coefs=np.ones(input_pars['num_dm2_pars'])
                             , corngrph=coronagraph
@@ -244,6 +255,17 @@ def run_emcee(spread_factor=0.001, parallel=False):
                             , orthgnlty=0
                             , num_dense_pts=4096)
         print("DM2 Slepian-Fourier file created")
+    elif input_pars['dm2_type'] == 'disk_harmonic':
+        sla.disk_harmonic(coefs=np.ones(input_pars['num_dm2_pars'])
+                            , corngrph=coronagraph
+                            , dm='dm2'
+                            , file_exists=False
+                            , filename=input_pars['dm2_filename']
+                            , m=input_pars['m_dm2']
+                            , n2d=input_pars['n_min_dm2']
+                            , k=input_pars['n_max_dm2']
+                            , bc=input_pars['bc'])
+        print("DM2 disk-harmoic file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
     i = 0
     for row in input_pars['bounds_pars']:
