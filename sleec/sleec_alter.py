@@ -391,12 +391,18 @@ def dm_disk_harmonic(coefs, corngrph, dm, file_exists, filename=None
                                     , diameter=diameter, filename=filename
                                     , bc=bc)
     field = basis.linear_combination(coefs)
+    print('coefs:  {}'.format(coefs))
+    print('field all zero?:  {}'.format(field.all()==0))
+    print('field sum:  {}'.format(field.sum()))
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
     field *= aperture
+    print('field all zero?:  {}'.format(field.all()==0))
     if corngrph == None:
         return field
     elif dm=='dm1':
+        print('field all zero?:  {}'.format(field.all()==0))
+        print('field sum:  {}'.format(field.sum()))
         return update_dm1_surfc(field, corngrph) 
     elif dm=='dm2':
         return update_dm2_surfc(field, corngrph) 

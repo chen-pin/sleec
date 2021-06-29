@@ -57,6 +57,9 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           , n_min=None
                           , n_max=None
                           , bc=None)
+        print("I am here!")
+        print("dm1 pars:  {}".format(dm1_pars))
+        print("dm1 surface all zero?:  {}".format(coronagraph.dm1_surfc.all()==0))
     elif input_pars['dm1_type'] == 'slepian_fourier':
         coronagraph = sla.dm1_slepian_2d(coefs=dm1_pars
                           , corngrph=coronagraph
@@ -71,6 +74,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     ndx0 = ndx1
     ndx1 = ndx0 + input_pars['num_dm2_pars']
     dm2_pars = design_parameters[ndx0 : ndx1]
+    print("dm1 surface:  {}".format(coronagraph.dm1_surfc))
+    print("dm1 surface all zero?:  {}".format(coronagraph.dm1_surfc.all()==0))
     if input_pars['dm2_type'] == 'disk_harmonic':
         coronagraph = sla.dm_disk_harmonic(coefs=dm2_pars
                           , corngrph=coronagraph
@@ -136,7 +141,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                                 *band_centers)/np.sum(band_centers)
         whole_contrast = np.sum(band_contrasts
                                 *band_centers)/np.sum(band_centers)
-        return ( merit_val, tau, whole_throughput, throughputs
+        return ( coronagraph, merit_val, tau, whole_throughput, throughputs
              , whole_contrast, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
              , Cr_b_exozodi, Cr_b ) 

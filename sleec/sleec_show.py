@@ -158,9 +158,10 @@ class RunData(emc.backends.HDFBackend):
         file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
         pars = self.samples[sample_number]
         coronagraph, input_pars = sli.import_pars(file_path_yml)
-        (merit_val, tau, whole_throughput, throughputs, whole_contrast
-         , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
-         , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
+        (coronagraph, merit_val, tau, whole_throughput, throughputs
+         , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
+         , Cr_b_star, Cr_b_zodi, Cr_b_exozodi
+         , Cr_b) = slr.ln_probability(design_parameters=pars
                                      , coronagraph=coronagraph
                                      , non_negative=input_pars['non_negative']
                                      , input_pars=input_pars, reconstruct=True)
