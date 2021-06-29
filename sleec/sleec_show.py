@@ -12,76 +12,159 @@ from turbo_colormap import turbo_colormap_data
 turbo = ListedColormap(turbo_colormap_data)
 
 
-def show_run_stats(filename=None, long=False, plot=False):
-    if filename==None:
-        filename = input('Enter EMCEE backend filename:  ')
-    path = os.path.join('..', '..', 'sleec_out', filename)
-    reader = emc.backends.HDFBackend(path)
-    tau = reader.get_autocorr_time(tol=4)
-    samples = reader.get_chain(flat=True)
-    log_prob_samples = reader.get_log_prob(flat=True)
-    log_prob_max = log_prob_samples.max()
-    log_prob_max_ndx = np.argmax(log_prob_samples)
-    print("auto-correlation times:  {}".format(tau))
-    print("flat chain shape: {0}".format(samples.shape))
-    print("flat log prob shape: {0}".format(log_prob_samples.shape))
-    print("maximum log prob value:  {}".format(log_prob_max))
-    print("index of max value:  {}\n".format(log_prob_max_ndx))
-    ndim = samples.shape[-1]
-    blob = reader.get_blobs(flat=True)
-    print("blob shape:  {}: ".format(blob.shape))
-    if long:
-        sortarg = np.flip(np.argsort(log_prob_samples))
+class RunData(emc.backends.HDFBackend):
+    """
+    Retrieve and plot EMCEE run results.  
+
+    Parameters
+    ----------
+    run_id : str
+        Run identifier (e.g. 20210624t1612)  
+    read_only : bool, optional
+        If `True`, the backend will throw a `RuntimeError` if the file is 
+        opened with write access
+    directory : str
+        Base data-directory path
+
+    Attributes
+    ----------
+    run_id : str
+        Run identifier (e.g. 20210624t1612)  
+    read_only : bool, optional
+        If `True`, the backend will throw a `RuntimeError` if the file is 
+        opened with write access
+    directory : str
+        Base data-directory path
+    path : str
+        Full path to the data record
+    samples : ndarray
+        The MCMC samples, array[..., num_walkers, num_dims] of sampled
+        parameter values
+    log_prob_samples : ndarray
+        Array[..., num_walkers] of ln probabilities evaluated at the MCMC 
+        samples
+    blob : ndarray
+        Array[..., num_walkers] of blobs (appended saved info.) for each sample
+    num_walkers : int
+        Number of walkers in the EMCEE run
+    num_dims : int
+        Number of dimensions (parameters) in the EMCEE run
+    num_iters : float
+        Number of iterations executed in the EMCEE run
+
+    """
+    def __init__(self
+                 , run_id, read_only=True
+                 , directory=os.path.join('..', '..', 'sleec_out')):
+        self.run_id = run_id
+        self.read_only = read_only
+        self.directory = directory
+        self.path = os.path.join(directory, self.run_id+'.hdf')
+        super().__init__(filename=self.path, read_only=read_only)
+        self.samples = self.get_chain(flat=True)
+        self.log_prob_samples = self.get_log_prob(flat=True)
+        self.blob = self.get_blobs(flat=True)
+        self.num_walkers = self.shape[0]
+        self.num_dims = self.shape[1]
+        self.num_iters = self.samples.shape[0]/self.num_walkers
+
+    def print_summary(self):
+        """ 
+        Print summary of EMCEE run characteristics
+        """
+        log_prob_max = self.log_prob_samples.max()
+        ndx = np.argmax(self.log_prob_samples)
+        print("number of walkers: {0}".format(self.num_walkers))
+        print("number of dimensions: {0}".format(self.num_dims))
+        print("number of iterations: {0}".format(self.num_iters))
+        print("flat chain shape: {0}".format(self.samples.shape))
+        print("flat log prob shape: {0}".format(self.log_prob_samples.shape))
+        print("maximum log prob value:  {}".format(log_prob_max))
+        print("index of max value:  {}".format(ndx))
+        print("throughput: {} ".format(self.blob['whole_throughput'][ndx]))
+        print("contrast: {} ".format(self.blob['whole_contrast'][ndx]))
+        print("encircled PSF energy: {} "
+              .format(self.blob['encircle_psf'][ndx]))
+        print("auto-correlation times:  \n{}"
+              .format(self.get_autocorr_time(tol=1)))
+
+    def get_top_samples(self, n=5, print_summary=True, print_pars=False):
+        """
+        Return `self.samples` indices of the `n` samples with the highest 
+        ln probability values.  
+
+        """
+        sortarg = np.flip(np.argsort(self.log_prob_samples))
         ndx = [sortarg[0]]
         count = 0 
-        prev_log_prob = log_prob_samples[sortarg[0]]
-        for n in sortarg[1:]:
-            log_prob = log_prob_samples[n]
-            if (log_prob != prev_log_prob and count<=3):
-                ndx.append(n)
-                prev_log_prob = log_prob
-                count += 1
-            elif count>3:
-                break
-            else:
-                continue
-        print("\nTOP FIVE SAMPLES")
-        for j in ndx:
-            print("\nsample #  {}".format(j))
-            print("ln probability: {} ".format(log_prob_samples[j]))
-            print("throughput: {} ".format(blob['whole_throughput'][j]))
-            print("contrast: {} ".format(blob['whole_contrast'][j]))
-            print("encircled PSF energy: {} ".format(blob['encircle_psf']
-                                                   [j]))
+        prev_log_prob = self.log_prob_samples[sortarg[0]]
+        if print_summary:
+            for i in sortarg[1:]:
+                log_prob = self.log_prob_samples[i]
+                if (log_prob != prev_log_prob and count<=n-2):
+                    ndx.append(i)
+                    prev_log_prob = log_prob
+                    count += 1
+                elif count>3:
+                    break
+                else:
+                    continue
+            print("\nSUMMARY OF THE TOP "+str(n)+" SAMPLES")
+            for j in ndx:
+                print("\nsample #  {}".format(j))
+                print("ln probability: {} ".format(self.log_prob_samples[j]))
+                print("throughput: {} "
+                      .format(self.blob['whole_throughput'][j]))
+                print("contrast: {} ".format(self.blob['whole_contrast'][j]))
+                print("encircled PSF energy: {} "
+                      .format(self.blob['encircle_psf']
+                                                       [j]))
+        if print_pars:
             for i in range(ndim): 
                 print("parameter {} value:  {}"
-                      .format(i+1, samples[j, i]))
-    if plot:
+                      .format(i+1, self.samples[j, i]))
+        return ndx[:n]
+
+    def corner_plot(self, save=False):
         all_samples = np.concatenate(
-            (samples, log_prob_samples[:, None]), axis=1
-                                    )
-        labels = list(map(r"$\theta_{{{0}}}$".format, range(1, ndim + 1)))
+            (self.samples, self.log_prob_samples[:, None]), axis=1)
+        labels = list(map(r"$\theta_{{{0}}}$".format
+                      , range(1, self.num_dims + 1)))
         labels += ["log prob"]
         corner.corner(all_samples, labels=labels)
-        plt.show()
-    #    save = input("Save figure? (y/[n]):  ")
-    #    if save == 'y':
-    #        filename = input("Enter filename:  ")
-    #        path = os.path.join('..', '..', 'sleec_out', filename)
-    #        plt.savefig(path)
-        log_prob_samples = reader.get_log_prob(flat=False)
-        iterations = log_prob_samples.shape[0]
-        walkers = log_prob_samples.shape[1]
-        x = [i for i in range(iterations)]
-        for walker in range(walkers): 
-            plt.plot(x, log_prob_samples[:, walker])
-        plt.show()
-    #    save = input("Save figure? (y/[n]):  ")
-    #    if save == 'y':
-    #        filename = input("Enter filename:  ")
-    #        path = os.path.join('..', '..', 'sleec_out', filename)
-    #        plt.savefig(path)
+        if save:
+            filename = self.run_id+'_corner.png'
+            path = os.path.join(self.directory, filename)
+            plt.savefig(path)
+        else:
+            plt.show()
 
+    def track_plot(self, save=False):
+        non_flat_log_probs = self.log_prob_samples.reshape(-1, self.shape[0])
+        x = [i for i in range(int(self.num_iters))]
+        for walker in range(self.num_walkers): 
+            plt.plot(x, non_flat_log_probs[:, walker])
+            plt.xlabel('iteration')
+            plt.ylabel('ln probability')
+        if save:
+            filename = self.run_id+'_tracks.png'
+            path = os.path.join(self.directory, filename)
+            plt.savefig(path)
+        else:
+            plt.show()
+
+    def reconstruct(self, sample_number, airy_scale=True):  
+        file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
+        file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
+        pars = self.samples[sample_number]
+        coronagraph, input_pars = sli.import_pars(file_path_yml)
+        (merit_val, tau, whole_throughput, throughputs, whole_contrast
+         , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
+         , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
+                                     , coronagraph=coronagraph
+                                     , non_negative=input_pars['non_negative']
+                                     , input_pars=input_pars, reconstruct=True)
+        return coronagraph
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
               , im_vmin=None, im_vmax=None):
@@ -235,7 +318,8 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
 
 
 if __name__ == "__main__":
-#    show_run_stats(filename='20210111t1609.hdf', plot=False, long=False)    
+#    show_run_stats(filename='20210624t1612.hdf', plot=False, long=False)    
+    reconstruct('20210624t1612', 309877)
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -245,4 +329,4 @@ if __name__ == "__main__":
 #    reconstruct('20200726t0120', 24095)
 #    reconstruct('20200726t1539', 33301)
 #    reconstruct('20210111t1609', 10419)
-    reconstruct('20210111t1609', 58536)
+#    reconstruct('20210111t1609', 58536)
