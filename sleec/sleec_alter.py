@@ -531,9 +531,10 @@ def update_dm2dm1_surfc(surfc, corngrph):
         The coronagraph with its DM1 updated
 
     """
+    dm1_surfc0 = corngrph.dm1_surfc
     corngrph.dm2_surfc = surfc
     corngrph.optical_elements[3] = corngrph.dm2
-    update_dm1_surfc(-surfc, corngrph)
+    update_dm1_surfc(dm1_surfc0-surfc, corngrph)
     return corngrph
 
 
