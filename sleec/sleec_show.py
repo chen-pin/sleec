@@ -165,7 +165,9 @@ class RunData(emc.backends.HDFBackend):
                                      , coronagraph=coronagraph
                                      , non_negative=input_pars['non_negative']
                                      , input_pars=input_pars, reconstruct=True)
-        return coronagraph
+        return (coronagraph, merit_val, tau, whole_throughput, throughputs
+            , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
+            , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
               , im_vmin=None, im_vmax=None):
