@@ -268,9 +268,24 @@ def run_emcee(spread_factor=0.001, parallel=False):
         print("DM2 disk-harmoic file created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
     i = 0
+    if input_pars['seed_start']:
+        hdf_path = os.path.join(
+                                input_pars['directory']
+                                , input_pars['run_id']+'.hdf')
+        sample = ( 
+                  emc.backends.HDFBackend(filename=hdf_path
+                                         , read_only=True)
+                  .get_chain(flat=True)[input_pars['sample_number'], :]
+                 )
+        dim_num = 0
     for row in input_pars['bounds_pars']:
+        if input_pars['seed_start']:
+            position_0 = sample[dim_num]
+            dim_num += 1
+        else:
+            position_0 = row[0]
         par_range = spread_factor*(row[2]-row[1])
-        ini_positns[:, i] = (row[0] 
+        ini_positns[:, i] = (position_0 
                              + par_range*np.random.randn(input_pars['nwalkers'])
                             )
         i += 1

@@ -19,7 +19,15 @@ num_fpm_pars:  1  # Number of FPM design parameters
 lyot_type:  circular_clear  # Geometric type of the Lyot aperture   
 num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 
-## Bounds on Optimization Parameters [ini, min, max] 
+seed_start: True  # Whether or not to initialize the run with prescribed
+    # walker positions from a sample of a previous run
+directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
+    # directory path of the <.hdf> file
+run_id: '20210624t1612'  # If `seed_start` is `True`, specify the run ID
+sample_number: 15000  # If `seed_start` is `True`, spacify the sample number
+
+## Bounds on Optimization Parameters [ini, min, max].  If `seed_start` is 
+    # `True` the <ini> values will be ignored 
 bounds_pars: 
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
     -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
