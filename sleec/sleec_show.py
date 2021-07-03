@@ -49,8 +49,6 @@ class RunData(emc.backends.HDFBackend):
         Number of walkers in the EMCEE run
     num_dims : int
         Number of dimensions (parameters) in the EMCEE run
-    num_iters : float
-        Number of iterations executed in the EMCEE run
 
     """
     def __init__(self
@@ -76,7 +74,7 @@ class RunData(emc.backends.HDFBackend):
         ndx = np.argmax(self.log_prob_samples)
         print("number of walkers: {0}".format(self.num_walkers))
         print("number of dimensions: {0}".format(self.num_dims))
-        print("number of iterations: {0}".format(self.num_iters))
+        print("number of iterations: {0}".format(self.iteration))
         print("flat chain shape: {0}".format(self.samples.shape))
         print("flat log prob shape: {0}".format(self.log_prob_samples.shape))
         print("maximum log prob value:  {}".format(log_prob_max))
@@ -167,7 +165,10 @@ class RunData(emc.backends.HDFBackend):
                                      , input_pars=input_pars, reconstruct=True)
         return (coronagraph, merit_val, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
-            , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)
+            , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
+        
+    def acceptance_fractn(self):
+        return np.mean(self.accepted/float(self.iteration))
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
               , im_vmin=None, im_vmax=None):
