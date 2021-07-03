@@ -183,9 +183,10 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     return ln_prob, whole_throughput, whole_contrast, encircle_psf
     
 
-def run_emcee(spread_factor=0.001, parallel=False):
+def run_emcee(parallel=False):
     coronagraph, input_pars = sli.import_pars()
     print("Loaded input parameters from user configuration file")
+    spread_factor = input_pars['spread_factor']
     save = input("Save EMCEE run to a file?  (y/[n]):  ")
     if save == 'y':
         fn_prefix = input("Enter filename prefix for saving EMCEE run:  ")
@@ -321,7 +322,7 @@ def run_emcee(spread_factor=0.001, parallel=False):
 
 
 if __name__ == '__main__':  
-    run_emcee(spread_factor=0.001, parallel=True)
+    run_emcee(parallel=True)
 
 
 
