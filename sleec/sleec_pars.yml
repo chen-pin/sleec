@@ -19,13 +19,13 @@ num_fpm_pars:  1  # Number of FPM design parameters
 lyot_type:  circular_clear  # Geometric type of the Lyot aperture   
 num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 
-seed_start: False # Whether or not to initialize the run with prescribed
+seed_start: True  # Whether or not to initialize the run with prescribed
     # walker positions from a sample of a previous run
-#directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
+directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
     # directory path of the <.hdf> file
-#run_id: '20210629t0950'  # If `seed_start` is `True`, specify the run ID
-#sample_number: 84851  # If `seed_start` is `True`, spacify the sample number
-spread_factor: 0.1  # Spread of initial walker positions.  The distribution 
+run_id: '20210701t2239'  # If `seed_start` is `True`, specify the run ID
+sample_number: 18517  # If `seed_start` is `True`, spacify the sample number
+spread_factor: 0.001  # Spread of initial walker positions.  The distribution 
     # of parameter values among walkers is 
     # (p0 + spread_factor*(max-min)*normal_distribution
     # Bounds_pars below specify p0, max, and min.  
