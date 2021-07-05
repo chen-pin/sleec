@@ -75,6 +75,7 @@ class RunData(emc.backends.HDFBackend):
         print("number of walkers: {0}".format(self.num_walkers))
         print("number of dimensions: {0}".format(self.num_dims))
         print("number of iterations: {0}".format(self.iteration))
+        print("acceptance fraction:  {0}".format(self.acceptance_fractn()))
         print("flat chain shape: {0}".format(self.samples.shape))
         print("flat log prob shape: {0}".format(self.log_prob_samples.shape))
         print("maximum log prob value:  {}".format(log_prob_max))
