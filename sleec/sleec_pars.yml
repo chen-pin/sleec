@@ -90,7 +90,7 @@ bounds_pars:
 #    -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 212
+nwalkers: 424
 ndim: 53 
 nsteps: 10000 
 
