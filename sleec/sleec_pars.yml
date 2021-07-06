@@ -23,9 +23,9 @@ seed_start: True  # Whether or not to initialize the run with prescribed
     # walker positions from a sample of a previous run
 directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
     # directory path of the <.hdf> file
-run_id: '20210701t2239'  # If `seed_start` is `True`, specify the run ID
-sample_number: 18517  # If `seed_start` is `True`, spacify the sample number
-spread_factor: 0.001  # Spread of initial walker positions.  The distribution 
+run_id: '20210705t2033'  # If `seed_start` is `True`, specify the run ID
+sample_number: 1963  # If `seed_start` is `True`, spacify the sample number
+spread_factor: 0.0001  # Spread of initial walker positions.  The distribution 
     # of parameter values among walkers is 
     # (p0 + spread_factor*(max-min)*normal_distribution
     # Bounds_pars below specify p0, max, and min.  
