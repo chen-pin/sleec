@@ -4,6 +4,18 @@
 # All parameters are in mks units unless otherwise noted.  
 
 # OPTIMIZATION PARAMETERS
+target_tau: 3.6E+05  # Required-integration-time target for computing merit 
+    # value
+tolerance: 1.8E+05  # Tolerance for computing merit value
+weights: 
+    # {array_like or 'null'}.  Weights to be applied to 
+    # merit values in each Airy band.  
+    -    1.000E+00
+    -    1.000E+00
+    -    1.000E+00
+nwalkers: 44
+ndim: 11 
+nsteps: 10000 
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
 num_pupil_pars: 3  # Number of pupil design parameters
 # dm1_type: slepian_fourier
@@ -48,18 +60,7 @@ bounds_pars:
 #    -    [20, 2, 588]  # N: FPM super-Gaussian order
     -    [0.85783221, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 44
-ndim: 11 
-nsteps: 10000 
-
 wvl: 570.0e-9  # wavelength
-weights: 
-    # {array_like or 'null'}.  Weights to be applied to 
-    # merit values in each Airy band.  
-    -    1.000E+00
-    -    1.000E+00
-    -    1.000E+00
-flux_ratio: 1e-10  # Planet-to-star flux ratio
 non_negative: True  # If `True`, set negative pupil field values to zero
 
 

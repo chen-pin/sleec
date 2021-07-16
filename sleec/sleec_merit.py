@@ -241,10 +241,6 @@ def throughput_rand(coronagraph, inner_radius, outer_radius):
     wavefront = hci.Wavefront(field, coronagraph.wvl)
     output = coronagraph(wavefront)
     # Compute throughputs
-        if save:
-            filename = self.run_id+'_tracks.png'
-            path = os.path.join(self.directory, filename)
-            plt.savefig(path)
     camera_intensity = output['camera'].intensity
     planet_core_ndx = np.where(camera_intensity>=camera_intensity.max()/2.0)
     planet_core_area = np.zeros_like(camera_intensity)
@@ -664,14 +660,18 @@ def exposure_time(coronagraph, inner_radius, outer_radius
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) 
 
 
-def merit(coronagraph, weights, inner_radius, outer_radius 
-                  , encircle_radius, snr, F_0, m_v, delta_mag, D
-                  , wvl, wvl_bw, z, x, n):  
+def merit(target_tau, tolerance, coronagraph, weights, inner_radius
+          , outer_radius, encircle_radius, snr, F_0, m_v, delta_mag, D
+          , wvl, wvl_bw, z, x, n):  
     """
     Return merit value
 
     Parameters
     ----------
+    target_tau : float
+        Target integration time 
+    tolerance : float
+        Tolerance of `target_tau`
     coronagraph :  `sleec_optics.Coronagraph`
         The coronagraph obejct for optical propagation
     weights : array_like 
@@ -706,17 +706,40 @@ def merit(coronagraph, weights, inner_radius, outer_radius
     
     Returns
     -------
-    return : float
-        Merit value
+    ln_merit : float
+        Natural log of merit value
+    tau : ndarray
+        Required integration time in Airy bands
+    throughputs : ndarray
+        Coronagraph end-to-end transmittance in annular image bands
+    band_contrasts : ndarray
+        Contrast in Airy bands
+    encircle_psf : float
+        Fraction of PSF (w/o FPM) encircled within `encircle_radius`
+    wavefronts : list of hcipy.Wavefront objects
+        Coronagraph wavefronts
+    Cr_p : float
+        Planetary photon count rate [photon/s]
+    Cr_b_star : float
+        Residual stellar photon count rate
+    Cr_b_zodi : float
+        Local zodiacal photon count rate
+    Cr_b_exozodi : float
+        Exozodiacal photon count rate
+    Cr_b : float
+        Total background photon count rate
     """
     (tau, throughputs, band_contrasts, encircle_psf, wavefronts
             , Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b) = exposure_time(
         coronagraph, inner_radius, outer_radius 
         , encircle_radius, snr, F_0, m_v, delta_mag, D
         , wvl, wvl_bw, z, x, n
-                                                                             ) 
-    merit = np.sum((1.0/tau)*weights)/np.sum(weights)
-    return ( merit, tau, throughputs, band_contrasts
+                                                                             )
+    ln_merit = (
+        -np.sum(np.square((tau - target_tau)/(tolerance*np.array(weights))))
+        /np.sum(np.square(weights))
+                          )
+    return ( ln_merit, tau, throughputs, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
              , Cr_b_exozodi, Cr_b ) 
 
@@ -875,6 +898,8 @@ def _test_exposure_time():
 def _test_merit():
     import sleec_input as sli
     coronagraph, pars = sli.import_pars()
+    target_tau = pars['target_tau']
+    tolerance = pars['tolerance']
     weights = pars['weights']
     inner_radius = pars['IWA']
     outer_radius = pars['OWA']
@@ -892,12 +917,13 @@ def _test_merit():
     ( Merit, tau, throughputs, band_contrasts
       , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi, Cr_b_exozodi
       , Cr_b ) = merit(
-                       coronagraph, weights, inner_radius, outer_radius 
+                       target_tau, tolerance, coronagraph, weights
+                       , inner_radius, outer_radius 
                        , encircle_radius, snr, F_0, m_v, delta_mag
                        , D, wvl, wvl_bw, z, x, n  
                       )
     print("\nPRINTING RESULTS")
-    print("Merit value:  {}".format(Merit))
+    print("Ln Merit value:  {}".format(Merit))
     print("Required exposure time in each Airy band:  {}".format(tau))
     print("Throughputs:  {}".format(throughputs))
     print("contrasts in Airy bands:  {}".format(band_contrasts))
