@@ -49,6 +49,8 @@ class RunData(emc.backends.HDFBackend):
         Number of walkers in the EMCEE run
     num_dims : int
         Number of dimensions (parameters) in the EMCEE run
+    iteration : int
+        Number of iterations
 
     """
     def __init__(self
@@ -66,7 +68,7 @@ class RunData(emc.backends.HDFBackend):
         self.num_dims = self.shape[1]
         self.num_iters = self.samples.shape[0]/self.num_walkers
 
-    def print_summary(self):
+    def summary(self):
         """ 
         Print summary of EMCEE run characteristics
         """
@@ -87,7 +89,7 @@ class RunData(emc.backends.HDFBackend):
         print("auto-correlation times:  \n{}"
               .format(self.get_autocorr_time(tol=1)))
 
-    def get_top_samples(self, n=5, print_summary=True, print_pars=False):
+    def top_samples(self, n=5, print_summary=True, print_pars=False):
         """
         Return `self.samples` indices of the `n` samples with the highest 
         ln probability values.  
@@ -95,17 +97,17 @@ class RunData(emc.backends.HDFBackend):
         """
         sortarg = np.flip(np.argsort(self.log_prob_samples))
         ndx = [sortarg[0]]
-        count = 0 
+        count = 1 
         prev_log_prob = self.log_prob_samples[sortarg[0]]
         if print_summary:
             for i in sortarg[1:]:
                 log_prob = self.log_prob_samples[i]
-                if (log_prob != prev_log_prob and count<=n-2):
+                if (log_prob != prev_log_prob and count<=n-1):
                     ndx.append(i)
                     prev_log_prob = log_prob
                     count += 1
-                elif count>3:
-                    break
+#                elif count>3:
+#                    break
                 else:
                     continue
             print("\nSUMMARY OF THE TOP "+str(n)+" SAMPLES")
@@ -119,9 +121,9 @@ class RunData(emc.backends.HDFBackend):
                       .format(self.blob['encircle_psf']
                                                        [j]))
         if print_pars:
-            for i in range(ndim): 
-                print("parameter {} value:  {}"
-                      .format(i+1, self.samples[j, i]))
+            for j in ndx:
+               print("\nparameter values:  {}\n"
+                         .format(self.samples[j]))
         return ndx[:n]
 
     def corner_plot(self, save=False):
