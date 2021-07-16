@@ -241,34 +241,10 @@ def throughput_rand(coronagraph, inner_radius, outer_radius):
     wavefront = hci.Wavefront(field, coronagraph.wvl)
     output = coronagraph(wavefront)
     # Compute throughputs
-#    radii = output['on_fpm'].electric_field.grid.as_('polar').r  
-#    bounds = ( np.arange(inner_radius, outer_radius+1)
-#              *coronagraph.f_num*coronagraph.wvl )
-#    throughputs = [] 
-#    for i in range(len(bounds)-1):
-#        denominator = np.sum(output['on_fpm'].intensity[
-#                                               np.where((bounds[i] <= radii) 
-#                                                       & (radii < bounds[i+1])) 
-#                                              ])
-#        numerator = np.sum(output['camera'].intensity[
-#                                               np.where((bounds[i] <= radii) 
-#                                                       & (radii < bounds[i+1])) 
-#                                              ])
-#        if (np.isfinite(denominator) and denominator != 0.0):
-#            pass
-#        else:
-#            print(
-#                  "Invalid `denominator` value, set it to `np.finfo(float).eps`"
-#                 )
-#            denominator = np.finfo(float).eps
-#        throughputs.append(numerator/denominator)
-#    whole_denominator = np.sum(output['on_fpm'].intensity[np.where(
-#                                       (inner_radius*coronagraph.f_num
-#                                       *coronagraph.wvl <= radii)
-#                                       & (radii < outer_radius*coronagraph.f_num
-#                                                  *coronagraph.wvl) 
-#                                                       )])
-
+        if save:
+            filename = self.run_id+'_tracks.png'
+            path = os.path.join(self.directory, filename)
+            plt.savefig(path)
     camera_intensity = output['camera'].intensity
     planet_core_ndx = np.where(camera_intensity>=camera_intensity.max()/2.0)
     planet_core_area = np.zeros_like(camera_intensity)
@@ -277,29 +253,7 @@ def throughput_rand(coronagraph, inner_radius, outer_radius):
     numerator = np.sum(camera_intensity[planet_core_ndx])
     on_fpm_intensity = output['on_fpm'].intensity
     denominator = np.sum(on_fpm_intensity[planet_core_ndx])
-#    if (np.isfinite(denominator) and denominator != 0.0):
-#        pass
-#    else:
-#        print(
-#          "Invalid `denominator` value, set it to `np.finfo(float).eps`"
-#             )
-#        denominator = np.finfo(float).eps
     throughput = numerator/denominator
-
-#    import matplotlib.pyplot as plt
-#    subplot_seq = 1
-#    plt.figure(figsize=(15, 5))
-#    for key in coronagraph.names:
-#        print(key)
-#        wf = output[key]
-#        print(wf)
-#        plt.subplot(2, len(coronagraph.names)//2, subplot_seq)
-#        hci.imshow_field(wf.intensity)
-#        plt.colorbar()
-#        subplot_seq += 1
-#    plt.show()
-#    plt.close()
-
     return throughput, planet_core_area
 
 
@@ -490,12 +444,6 @@ def contrast(coronagraph, inner_radius, outer_radius, encircle_radius):
         avg_background = ( np.sum(output['camera'].intensity[np.where(mask)])
                        /mask.sum() )
         contrasts.append(avg_background/psf0)
-#    mask = np.where((inner_radius*coronagraph.f_num*coronagraph.wvl <= radii)
-#                    & (radii < outer_radius*coronagraph.f_num*coronagraph.wvl)
-#                    , 1, 0)
-#    whole_background = ( np.sum(output['camera'].intensity[np.where(mask)])
-#                       /mask.sum() )
-#    whole_contrast = whole_background/psf0 
     wf_1 = coronagraph.lyot.forward(output['relay_pupil'])
     intensity = coronagraph.camera(wf_1).intensity
     m_0 = np.sum(intensity)
@@ -773,75 +721,6 @@ def merit(coronagraph, weights, inner_radius, outer_radius
              , Cr_b_exozodi, Cr_b ) 
 
     
-#def merit(coronagraph, inner_radius, outer_radius, amplitude1
-#         , area_penalty, contrast_weights, off_axis_locatn, azimuthal_locatn
-#         , amplitude2, flux_ratio, output_wavefronts):
-#    """
-#    Return a merit value, throughputs, and contrasts
-#
-#    Parameters:
-#    ----------
-#    coronagraph :  `sleec_optics.Coronagraph`
-#        The coronagraph obejct for optical propagation
-#    inner_radius : float
-#        Inner radius of the annulus in units of wvl/pupil_dia
-#    outer_radius : float
-#        Outer radius of the annulus in units of wvl/pupil_dia
-#    amplitude1 : float  
-#        Amplitude factor of annular illumination
-#    area_penalty : boolean
-#        If `True`, multiplies the raw contrast by the ratio of the number 
-#        pixels in the planet's half-intensity core to the number of pixels in 
-#        the stellar PSF core.  
-#    contrast_weights : `None` or array_like
-#        Weights to be applied to each airy band of contrast.  If `None`, 
-#        use `whole_contrast`.  
-#    off_axis_locatn : float
-#        Off-axis displacement in the image in units of wvl/pupil_dia
-#    azimuthal_locatn : float
-#        Azimuthal location in radians
-#    amplitude2 : float
-#        Field amplitude factor
-#    flux_ratio : float
-#        Planet-to-star flux ratio
-#    out_wavefronts : boolean
-#        If `True`, return propagated wavefronts.   
-#
-#    Returns
-#    -------
-#    merit : float
-#        Merit value
-#    throughput_output : tuple
-#        Outputs from the `throughput()` function
-#    contrast_output : tuple
-#        Outputs from the `contrast()` function 
-#
-#    """
-#
-#    throughput_output = throughput(coronagraph, inner_radius, outer_radius)
-#    contrast_output = contrast(coronagraph, inner_radius, outer_radius
-#                               , area_penalty
-#                               , output_wavefronts=output_wavefronts
-#                               , planet_core_area=throughput_output[1])
-#    eta = throughput_output[0]
-#    if contrast_weights == None:
-#        C = contrast_output[0]
-#    else:
-#        C = (contrast_output[1]*contrast_weights).mean()
-#    epsilon = flux_ratio
-#    if (np.isfinite(eta) and np.isfinite(C) and eta!=0.0 and C!=0.0):
-#        merit = eta/np.sqrt(eta+C/epsilon)
-#    else:
-#        print("Invalid values for computing `merit`, set it to machine eps")
-#        merit = np.finfo(float).eps
-#    if output_wavefronts:
-#        return merit, throughput_output, contrast_output, contrast_output[3]
-#    print("eta = {}\n C= {}\n epsilon = {}\n merit= {}".format(eta, C
-#                                                                 , epsilon
-#                                                                 , merit))
-#    return merit, throughput_output, contrast_output
-
-
 def _test_wvfrnt_annls_cnj():
     import matplotlib.pyplot as plt
     import yaml as yml
@@ -911,15 +790,6 @@ def _test_annls_offaxis():
     plt.close()
 
 
-#def _test_throughput():
-#    import sleec_input as sli
-#    coronagraph, pars = sli.import_pars()
-#    print('Coronagraph initialized')
-#    output = throughput(coronagraph, pars['IWA'], pars['OWA'])
-#    print("Average throughput over entire annulus:  {}".format(output[0]))
-#    print("Number of pixels in planet core:  {}".format(output[1]))
-
-
 def _test_pupil_transmit():
     import sleec_input as sli
     import sleec_alter as sla
@@ -967,8 +837,6 @@ def _test_transmit_all():
 def _test_contrast():
     import yaml as yml
     import sleec_input as sli
-#    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
-#    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
     coronagraph, pars = sli.import_pars()
     inner_radius = pars['IWA']
     outer_radius = pars['OWA']
@@ -980,23 +848,6 @@ def _test_contrast():
     print("Contrast in 1 lambda/D bands")
     for i in range(len(output[1])):
         print('Band {}:  {}'.format(i+1, output[1][i]))
-
-
-#def _test_merit():
-#    import yaml as yml
-#    import sleec_input as sli
-#    inner_radius = float(input('Enter inner radius in units of lambda/D:  '))
-#    outer_radius = float(input('Enter outer radius in units of lambda/D:  '))
-#    coronagraph, pars = sli.import_pars()
-#    print('Coronagraph initialized')
-#    off_axis_locatn = (inner_radius+outer_radius)/2.0
-#    m = merit(coronagraph, inner_radius, outer_radius, amplitude1=1.0
-#         , area_penalty=True, off_axis_locatn=off_axis_locatn
-#         , azimuthal_locatn=2*np.pi/7
-#         , amplitude2=1, flux_ratio=1e-10)
-#    print("Merit value = {}".format(m[0]))
-#    print("Throughput = {}".format(m[1][0]))
-#    print("Contrast = {}".format(m[2][0]))
 
 
 def _test_exposure_time():
