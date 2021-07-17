@@ -126,9 +126,10 @@ class RunData(emc.backends.HDFBackend):
                          .format(self.samples[j]))
         return ndx[:n]
 
-    def corner_plot(self, save=False):
+    def corner_plot(self, discard=0, save=False):
         all_samples = np.concatenate(
-            (self.samples, self.log_prob_samples[:, None]), axis=1)
+                (self.samples[discard:], self.log_prob_samples[discard:, None])
+                 , axis=1)
         labels = list(map(r"$\theta_{{{0}}}$".format
                       , range(1, self.num_dims + 1)))
         labels += ["log prob"]
