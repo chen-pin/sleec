@@ -4,9 +4,10 @@
 # All parameters are in mks units unless otherwise noted.  
 
 # OPTIMIZATION PARAMETERS
-target_tau: 3.6E+05  # Required-integration-time target for computing merit 
+target_tau: 0.0  # Required-integration-time target for computing merit 
     # value
-tolerance: 1.8E+05  # Tolerance for computing merit value
+tolerance: 72000.  # Tolerance for computing merit value 
+    # (ref. Habex Report Table 5.1-2) 
 weights: 
     # {array_like or 'null'}.  Weights to be applied to 
     # merit values in each Airy band.  
