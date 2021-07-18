@@ -49,6 +49,8 @@ class RunData(emc.backends.HDFBackend):
         Number of walkers in the EMCEE run
     num_dims : int
         Number of dimensions (parameters) in the EMCEE run
+    iteration : int
+        Number of iterations
 
     """
     def __init__(self
@@ -66,7 +68,7 @@ class RunData(emc.backends.HDFBackend):
         self.num_dims = self.shape[1]
         self.num_iters = self.samples.shape[0]/self.num_walkers
 
-    def print_summary(self):
+    def summary(self):
         """ 
         Print summary of EMCEE run characteristics
         """
@@ -75,6 +77,7 @@ class RunData(emc.backends.HDFBackend):
         print("number of walkers: {0}".format(self.num_walkers))
         print("number of dimensions: {0}".format(self.num_dims))
         print("number of iterations: {0}".format(self.iteration))
+        print("acceptance fraction:  {0}".format(self.acceptance_fractn()))
         print("flat chain shape: {0}".format(self.samples.shape))
         print("flat log prob shape: {0}".format(self.log_prob_samples.shape))
         print("maximum log prob value:  {}".format(log_prob_max))
@@ -86,7 +89,7 @@ class RunData(emc.backends.HDFBackend):
         print("auto-correlation times:  \n{}"
               .format(self.get_autocorr_time(tol=1)))
 
-    def get_top_samples(self, n=5, print_summary=True, print_pars=False):
+    def top_samples(self, n=5, print_summary=True, print_pars=False):
         """
         Return `self.samples` indices of the `n` samples with the highest 
         ln probability values.  
@@ -94,17 +97,17 @@ class RunData(emc.backends.HDFBackend):
         """
         sortarg = np.flip(np.argsort(self.log_prob_samples))
         ndx = [sortarg[0]]
-        count = 0 
+        count = 1 
         prev_log_prob = self.log_prob_samples[sortarg[0]]
         if print_summary:
             for i in sortarg[1:]:
                 log_prob = self.log_prob_samples[i]
-                if (log_prob != prev_log_prob and count<=n-2):
+                if (log_prob != prev_log_prob and count<=n-1):
                     ndx.append(i)
                     prev_log_prob = log_prob
                     count += 1
-                elif count>3:
-                    break
+#                elif count>3:
+#                    break
                 else:
                     continue
             print("\nSUMMARY OF THE TOP "+str(n)+" SAMPLES")
@@ -118,14 +121,15 @@ class RunData(emc.backends.HDFBackend):
                       .format(self.blob['encircle_psf']
                                                        [j]))
         if print_pars:
-            for i in range(ndim): 
-                print("parameter {} value:  {}"
-                      .format(i+1, self.samples[j, i]))
+            for j in ndx:
+               print("\nparameter values:  {}\n"
+                         .format(self.samples[j]))
         return ndx[:n]
 
-    def corner_plot(self, save=False):
+    def corner_plot(self, discard=0, save=False):
         all_samples = np.concatenate(
-            (self.samples, self.log_prob_samples[:, None]), axis=1)
+                (self.samples[discard:], self.log_prob_samples[discard:, None])
+                 , axis=1)
         labels = list(map(r"$\theta_{{{0}}}$".format
                       , range(1, self.num_dims + 1)))
         labels += ["log prob"]
@@ -156,14 +160,14 @@ class RunData(emc.backends.HDFBackend):
         file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
         pars = self.samples[sample_number]
         coronagraph, input_pars = sli.import_pars(file_path_yml)
-        (coronagraph, merit_val, tau, whole_throughput, throughputs
+        (coronagraph, ln_merit, tau, whole_throughput, throughputs
          , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
          , Cr_b_star, Cr_b_zodi, Cr_b_exozodi
          , Cr_b) = slr.ln_probability(design_parameters=pars
                                      , coronagraph=coronagraph
                                      , non_negative=input_pars['non_negative']
                                      , input_pars=input_pars, reconstruct=True)
-        return (coronagraph, merit_val, tau, whole_throughput, throughputs
+        return (coronagraph, ln_merit, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
             , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
         
@@ -217,13 +221,13 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     reader = emc.backends.HDFBackend(file_path_hdf)
     pars = reader.get_chain(flat=True)[sample_number]
     coronagraph, input_pars = sli.import_pars(file_path_yml)
-    (merit_val, tau, whole_throughput, throughputs, whole_contrast
+    (ln_merit, tau, whole_throughput, throughputs, whole_contrast
      , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
      , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
                                  , coronagraph=coronagraph
                                  , non_negative=input_pars['non_negative']
                                  , input_pars=input_pars, reconstruct=True) 
-    print("merit value:  {}".format(merit_val))
+    print("ln merit value:  {}".format(ln_merit))
     print("required exposure time:  {}".format(tau))
     print("overall throughput:  {}".format(whole_throughput))
     print("throughput each Airy band:  {}".format(throughputs))

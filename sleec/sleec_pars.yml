@@ -4,28 +4,41 @@
 # All parameters are in mks units unless otherwise noted.  
 
 # OPTIMIZATION PARAMETERS
+target_tau: 0.0  # Required-integration-time target for computing merit 
+    # value
+tolerance: 72000.  # Tolerance for computing merit value 
+    # (ref. Habex Report Table 5.1-2) 
+weights: 
+    # {array_like or 'null'}.  Weights to be applied to 
+    # merit values in each Airy band.  
+    -    1.000E+00
+    -    1.000E+00
+    -    1.000E+00
+nwalkers: 44
+ndim: 11 
+nsteps: 10000 
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
 num_pupil_pars: 3  # Number of pupil design parameters
 # dm1_type: slepian_fourier
 # dm1_type: slepian_fourier
 dm1_type: disk_harmonic
-num_dm1_pars: 24
+num_dm1_pars: 3
 # dm2_type: slepian_fourier
 dm2_type: disk_harmonic
-num_dm2_pars: 24
+num_dm2_pars: 3
 fpm_type: dot
 # fpm_type: super_gaussian
 num_fpm_pars:  1  # Number of FPM design parameters
 lyot_type:  circular_clear  # Geometric type of the Lyot aperture   
 num_lyot_pars:  1  # Number of Lyot-pupil design parameters
 
-seed_start: False # Whether or not to initialize the run with prescribed
+seed_start: False  # Whether or not to initialize the run with prescribed
     # walker positions from a sample of a previous run
 #directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
     # directory path of the <.hdf> file
-#run_id: '20210629t0950'  # If `seed_start` is `True`, specify the run ID
-#sample_number: 84851  # If `seed_start` is `True`, spacify the sample number
-spread_factor: 0.1  # Spread of initial walker positions.  The distribution 
+#run_id: '20200706t2300'  # If `seed_start` is `True`, specify the run ID
+#sample_number: 12922  # If `seed_start` is `True`, spacify the sample number
+spread_factor: 0.0001  # Spread of initial walker positions.  The distribution 
     # of parameter values among walkers is 
     # (p0 + spread_factor*(max-min)*normal_distribution
     # Bounds_pars below specify p0, max, and min.  
@@ -33,75 +46,22 @@ spread_factor: 0.1  # Spread of initial walker positions.  The distribution
 ## Bounds on Optimization Parameters [ini, min, max].  If `seed_start` is 
     # `True` the <ini> values will be ignored 
 bounds_pars: 
-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient
-    -    [0.1, -1.0, 2.0]  # Slepian pupil coefficient 
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [1.5086887, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [-0.93083707, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [0.2132759, -1.0, 2.0]  # Slepian pupil coefficient 
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
     -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
-    -    [5.0, 2.0, 8.0]  # FPM diameter [wvl/D]
+    -    [5.95487522, 2.0, 8.0]  # FPM diameter [wvl/D]
 #    -    [0.5, 0.0, 1.0]  # A: FPM peak amplitude opacity
 #    -    [1.3, 0.2, 5.0]  # sigma: FPM super-Gaussian width parameter
 #    -    [20, 2, 588]  # N: FPM super-Gaussian order
-    -    [0.706, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
+    -    [0.85783221, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
                                 # diameter]
-nwalkers: 106
-ndim: 53 
-nsteps: 10000 
-
 wvl: 570.0e-9  # wavelength
-weights: 
-    # {array_like or 'null'}.  Weights to be applied to 
-    # merit values in each Airy band.  
-    -    1.000E+00
-    -    1.000E+00
-    -    1.000E+00
-flux_ratio: 1e-10  # Planet-to-star flux ratio
 non_negative: True  # If `True`, set negative pupil field values to zero
 
 
@@ -142,13 +102,13 @@ dm1_filename: ../../sleec_out/dm1_diskharmonic.pkl
 dm_dm1:  'dm1'
 m_dm1:  [0]
 n_min_dm1:  1
-n_max_dm1:  24
+n_max_dm1:  3
 bc_dm1:  'dirichlet'
 dm2_filename: ../../sleec_out/dm2_diskharmonic.pkl
 dm_dm2:  'dm2dm1'
 m_dm2:  [0]
 n_min_dm2:  1
-n_max_dm2:  24
+n_max_dm2:  3
 bc_dm2:  'dirichlet'
 dm_seprtn: 1.0  # Physical distance between the two DMs  
 dm1_surfc: zero  # Must be one of the following values:  

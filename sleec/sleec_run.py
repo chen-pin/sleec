@@ -113,10 +113,12 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                           , corngrph=coronagraph)
     band_centers = np.arange(input_pars['IWA']+0.5, input_pars['OWA']+0.5)
     if reconstruct:
-        ( merit_val, tau, throughputs, band_contrasts
+        ( ln_merit, tau, throughputs, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
              , Cr_b_exozodi, Cr_b ) = slm.merit(
-                        coronagraph=coronagraph
+                        target_tau=input_pars['target_tau']
+                        , tolerance=input_pars['tolerance']
+                        , coronagraph=coronagraph
                         , weights=input_pars['weights']
                         , inner_radius=input_pars['IWA']
                         , outer_radius=input_pars['OWA']
@@ -131,12 +133,12 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                         , z=input_pars['z']
                         , x=input_pars['x']
                         , n=input_pars['n']    )
-        ln_prob = np.log(merit_val)
+        ln_prob = ln_merit
         whole_throughput = np.sum(throughputs
                                 *band_centers)/np.sum(band_centers)
         whole_contrast = np.sum(band_contrasts
                                 *band_centers)/np.sum(band_centers)
-        return ( coronagraph, merit_val, tau, whole_throughput, throughputs
+        return ( coronagraph, ln_merit, tau, whole_throughput, throughputs
              , whole_contrast, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
              , Cr_b_exozodi, Cr_b ) 
@@ -149,10 +151,12 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         print("Pupil field EXCEEDS LIMITS")
         ln_pupil_pr = -np.inf
     if (np.isfinite(ln_prr) and np.isfinite(ln_pupil_pr)):
-        ( merit_val, tau, throughputs, band_contrasts
+        ( ln_merit, tau, throughputs, band_contrasts
              , encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
              , Cr_b_exozodi, Cr_b ) = slm.merit(
-                        coronagraph=coronagraph
+                        target_tau=input_pars['target_tau']
+                        , tolerance=input_pars['tolerance']
+                        , coronagraph=coronagraph
                         , weights=input_pars['weights']
                         , inner_radius=input_pars['IWA']
                         , outer_radius=input_pars['OWA']
@@ -167,7 +171,7 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
                         , z=input_pars['z']
                         , x=input_pars['x']
                         , n=input_pars['n']    )
-        ln_prob = ln_prr + np.log(merit_val) + ln_pupil_pr
+        ln_prob = ln_prr + ln_merit + ln_pupil_pr
         whole_throughput = np.sum(throughputs
                                 *band_centers)/np.sum(band_centers)
         whole_contrast = np.sum(band_contrasts
