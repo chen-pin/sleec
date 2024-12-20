@@ -1,4 +1,5 @@
 import os
+import pickle as pkl
 import yaml as yml
 import numpy as np
 import matplotlib.pyplot as plt
@@ -155,7 +156,7 @@ class RunData(emc.backends.HDFBackend):
         else:
             plt.show()
 
-    def reconstruct(self, sample_number, airy_scale=True):  
+    def reconstruct(self, sample_number, save, verbose=True, show=True):  
         file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
         file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
         pars = self.samples[sample_number]
@@ -167,15 +168,148 @@ class RunData(emc.backends.HDFBackend):
                                      , coronagraph=coronagraph
                                      , non_negative=input_pars['non_negative']
                                      , input_pars=input_pars, reconstruct=True)
-        return (coronagraph, ln_merit, tau, whole_throughput, throughputs
+        if verbose:
+            print("ln merit value:  {}".format(ln_merit))
+            print("required exposure time:  {}".format(tau))
+            print("overall throughput:  {}".format(whole_throughput))
+            print("throughput each Airy band:  {}".format(throughputs))
+            print("overall contrast:  {}".format(whole_contrast))
+            print("contrast in each Airy band:  {}".format(band_contrasts))
+            print("encircled PSF energy {}".format(encircle_psf))
+        if (show or save):
+            iwa = input_pars['IWA']
+            owa = input_pars['OWA']
+            resel = coronagraph.f_num*coronagraph.wvl
+            psf = wavefronts['on_fpm'].intensity
+            psf0 = psf.max()
+            radii = wavefronts['on_fpm'].electric_field.grid.as_('polar').r
+            mask = np.where((iwa*resel <= radii) & (radii < owa*resel), 1, 0)
+            avg_background = (wavefronts['camera'].intensity[np.where(mask)]
+                                                       .mean())
+            contrast_r = avg_background/psf0
+            print("recomputed contrast:  {:E}".format(contrast_r))
+            # Show PUPIL
+            field = coronagraph.pupil_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_PUPIL.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            
+            # Show DM1
+            field = wavefronts['dm1'].electric_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM1.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            # Show ON_DM2
+            field = wavefronts['on_dm2'].electric_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-DM2.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            # Show RELAY_PUPIL
+            field = wavefronts['relay_pupil'].electric_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RELAY-PUPIL.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            # Show ON_FPM
+            field = wavefronts['on_fpm'].electric_field
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-FPM.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, '[lambda/D]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, '[lambda/D]'
+                          , show=show, save=save)
+            # Show FPM
+            field = coronagraph.fpm_field
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_FPM.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'FPM', grid_scale, '[lambda/D]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'FPM', grid_scale, '[lambda/D]'
+                          , show=show, save=save)
+            # Show ON_LYOT
+            field = wavefronts['on_lyot'].electric_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-LYOT.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil diameter'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            # Show LYOT APERTURE
+            field = coronagraph.lyot_field
+            grid_scale = coronagraph.pupil_diameter
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_LYOT.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]'
+                          , show=show, save=save)
+            # Show CONTRAST	
+            field = ( np.abs(wavefronts['camera'].electric_field)
+                      /np.abs(wavefronts['on_fpm'].electric_field).max() )
+            scale_max = 10**(np.ceil(np.log10(field.max()**2)))
+            scale_min = 1e-13
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]', 'log'
+                      , im_vmin=scale_min, im_vmax=scale_max, show=show) 
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_CONTRAST.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
+                          , show=show, save=save, path=path)
+            else:
+                quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
+                          , show=show, save=save)
+        return_obj = (coronagraph, ln_merit, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
             , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
+        if save:
+            fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RETURN.pkl'
+            path = os.path.join(self.directory, fn)
+            with open(path, 'wb') as f:
+                pkl.dump(return_obj, f)
+
+        return return_obj
         
     def acceptance_fractn(self):
         return np.mean(self.accepted/float(self.iteration))
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
-              , im_vmin=None, im_vmax=None):
+              , show=True, im_vmin=None, im_vmax=None
+              , save=False, **kwargs):
     intensity = (np.abs(field))**2
     if np.iscomplexobj(field):
         phase = np.angle(field)
@@ -209,120 +343,11 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
               , phase.reshape(side_dim, side_dim)[ctr_ndx,:]/np.pi )
     plt.xlabel(grid_label)
     plt.ylabel('phase [pi]')
-    plt.show()
-    
-    
+    if save:
+        plt.savefig(kwargs['path'])
+    if show:
+        plt.show()
 
-def reconstruct(fn_prefix, sample_number, airy_scale=True):  
-    path = os.path.join('..', '..', 'sleec_out')
-    file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
-    file_path_slp = os.path.join(path, fn_prefix+'.pkl')
-    file_path_yml = os.path.join(path, fn_prefix+'.yml')
-    reader = emc.backends.HDFBackend(file_path_hdf)
-    pars = reader.get_chain(flat=True)[sample_number]
-    coronagraph, input_pars = sli.import_pars(file_path_yml)
-    (coronagraph, ln_merit, tau, whole_throughput, throughputs, whole_contrast
-     , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
-     , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
-                                 , coronagraph=coronagraph
-                                 , non_negative=input_pars['non_negative']
-                                 , input_pars=input_pars, reconstruct=True) 
-    print("ln merit value:  {}".format(ln_merit))
-    print("required exposure time:  {}".format(tau))
-    print("overall throughput:  {}".format(whole_throughput))
-    print("throughput each Airy band:  {}".format(throughputs))
-    print("overall contrast:  {}".format(whole_contrast))
-    print("contrast in each Airy band:  {}".format(band_contrasts))
-    print("encircled PSF energy {}".format(encircle_psf))
-    # Check Contrast
-    iwa = input_pars['IWA']
-    owa = input_pars['OWA']
-    resel = coronagraph.f_num*coronagraph.wvl
-#    r = coronagraph.fpm_field.grid.as_('polar').r
-#    ndx = np.where((iwa*resel <= r)*( r  < owa*resel))
-#    print("\nndx sum:  {}".format(np.sum(np.ones_like(r)[ndx])))
-#
-#    field = ( np.abs(wavefronts['camera'].electric_field)
-#              /np.abs(wavefronts['on_fpm'].electric_field.max()) )
-#    denom = np.abs(wavefronts['on_fpm'].electric_field)
-#    truth = np.where((denom>=0.0)*(np.isreal(denom)), 1, 0).reshape(
-#                int(np.sqrt(451584)), int(np.sqrt(451584)))
-#    print("truth sum:  {}".format(truth.sum()))
-#    print("denominator:  {}:".format(
-#                        np.abs(wavefronts['on_fpm'].electric_field.max())
-#                                      ))
-#    print("denominator^2:  {}:".format(
-#                        np.abs(wavefronts['on_fpm'].electric_field.max())**2
-#                                      ))
-#    contrast_1 = (np.abs(field))**2
-#    contrast_zone = contrast_1[ndx].mean()
-#    print("contrast_1:  {}".format(contrast_1))
-#    print("Mean contrast_1 in target zone:  {:E}".format(contrast_zone))
-#
-#    field = np.abs(wavefronts['camera'].electric_field)**2
-#    norm = (np.abs(wavefronts['on_fpm'].electric_field)**2).max() 
-#    print("\nnorm:  {}".format(norm))
-#    contrast_2 = (field/norm)
-#    contrast_zone = contrast_2[ndx].mean()
-#    print("contrast_2:  {}".format(contrast_2))
-#    print("Mean contrast_2 in target zone:  {:E}".format(contrast_zone))
-#
-    psf = wavefronts['on_fpm'].intensity
-    psf0 = psf.max()
-#    print("\npsf0:  {}".format(psf0))
-    radii = wavefronts['on_fpm'].electric_field.grid.as_('polar').r
-    mask = np.where((iwa*resel <= radii) & (radii < owa*resel), 1, 0)
-#    print("mask sum:  {}".format(mask.sum()))
-#    avg_background = ( np.sum(wavefronts['camera'].intensity[np.where(mask)])
-#                       /mask.sum() )
-    avg_background = wavefronts['camera'].intensity[np.where(mask)].mean()
-    contrast_r = avg_background/psf0
-    print("recomputed contrast:  {:E}".format(contrast_r))
-    # Show PUPIL
-    field = coronagraph.pupil_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]') 
-    # Show DM1
-    field = wavefronts['dm1'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]')
-    # Show ON_DM2
-    field = wavefronts['on_dm2'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]') 
-    # Show ON_DM2
-    field = wavefronts['dm2'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'DM2', grid_scale, 'x [pupil diameter]') 
-    # Show RELAY_PUPIL
-    field = wavefronts['relay_pupil'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]') 
-    # Show ON_FPM
-    field = wavefronts['on_fpm'].electric_field
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, 'lambda/D')
-    # Show FPM
-    field = coronagraph.fpm_field
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'FPM', grid_scale, '[lambda/D]') 
-    # Show ON_LYOT
-    field = wavefronts['on_lyot'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'FIELD INCIDENT ON THE LYOT PUPIL', grid_scale
-              , 'x [pupil diameter]') 
-    # Show LYOT APERTURE
-    field = coronagraph.lyot_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]') 
-    # Show CONTRAST	
-    field = ( np.abs(wavefronts['camera'].electric_field)
-              /np.abs(wavefronts['on_fpm'].electric_field).max() )
-    scale_max = 10**(np.ceil(np.log10(field.max()**2)))
-    scale_min = 1e-13
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]', 'log'
-              , im_vmin=scale_min, im_vmax=scale_max) 
 
 
 if __name__ == "__main__":
