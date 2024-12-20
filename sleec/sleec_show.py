@@ -221,7 +221,7 @@ def reconstruct(fn_prefix, sample_number, airy_scale=True):
     reader = emc.backends.HDFBackend(file_path_hdf)
     pars = reader.get_chain(flat=True)[sample_number]
     coronagraph, input_pars = sli.import_pars(file_path_yml)
-    (ln_merit, tau, whole_throughput, throughputs, whole_contrast
+    (coronagraph, ln_merit, tau, whole_throughput, throughputs, whole_contrast
      , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
      , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
                                  , coronagraph=coronagraph
