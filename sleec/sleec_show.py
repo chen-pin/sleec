@@ -190,60 +190,82 @@ class RunData(emc.backends.HDFBackend):
             print("recomputed contrast:  {:E}".format(contrast_r))
             # Show PUPIL
             field = coronagraph.pupil_field
-            grid_scale = coronagraph.pupil_diameter
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_PUPIL.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             
             # Show DM1
             field = wavefronts['dm1'].electric_field
-            grid_scale = coronagraph.pupil_diameter
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM1.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'DM1', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'DM1', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show ON_DM2
             field = wavefronts['on_dm2'].electric_field
-            grid_scale = coronagraph.pupil_diameter
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-DM2.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show DM2
+            field = wavefronts['dm2'].electric_field
+            grid_scale = coronagraph.pupil_diameter/2.0
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM2.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'DM2', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show RELAY_PUPIL
             field = wavefronts['relay_pupil'].electric_field
-            grid_scale = coronagraph.pupil_diameter
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RELAY-PUPIL.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show ON_FPM
             field = wavefronts['on_fpm'].electric_field
+            field = field/np.abs(field).max()
             grid_scale = coronagraph.f_num*coronagraph.wvl
+            scale_max = np.ceil(np.abs(field.max())**2) 
+#            print(f"scale_max:  {scale_max}")
+            scale_min = 1e-13
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-FPM.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, '[lambda/D]'
-                          , show=show, scale1='linear', save=save, path=path)
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale
+                          , '[lambda/D]', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, scale1='log', scale2='log'
+                          , save=save, path=path)
             else:
-                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, '[lambda/D]'
-                          , show=show, scale1='linear', save=save)
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale
+                          , '[lambda/D]', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, scale1='log', scale2='log'
+                          , save=save )
             # Show FPM
             field = coronagraph.fpm_field
             grid_scale = coronagraph.f_num*coronagraph.wvl
@@ -257,48 +279,52 @@ class RunData(emc.backends.HDFBackend):
                           , show=show, scale1='linear', save=save)
             # Show ON_LYOT
             field = wavefronts['on_lyot'].electric_field
-            grid_scale = coronagraph.pupil_diameter
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-LYOT.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil diameter'
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil radius'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show LYOT APERTURE
             field = coronagraph.lyot_field
-            grid_scale = coronagraph.pupil_diameter
+            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_LYOT.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]'
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show CONTRAST	
             field = ( np.abs(wavefronts['camera'].electric_field)
                       /np.abs(wavefronts['on_fpm'].electric_field).max() )
-            scale_max = 10**(np.ceil(np.log10(field.max()**2)))
+            scale_max = 1e-9
             scale_min = 1e-13
+            print(f"scale_max:  {scale_max}")
             grid_scale = coronagraph.f_num*coronagraph.wvl
-            quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]', 'log'
-                      , im_vmin=scale_min, im_vmax=scale_max, show=show) 
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_CONTRAST.png'
                 path = os.path.join(self.directory, fn)
                 quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
-                          , show=show, scale1='log', save=save, path=path)
+                          , normalization='none'
+                          , scale='log', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, save=save, path=path) 
             else:
                 quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
-                          , show=show, scale1='log', save=save)
+                          , scale='log', psf_vmin=scale_min, psf_vmax=scale_max
+                          , normalization='none'
+                          , show=show) 
         return_obj = (coronagraph, ln_merit, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
             , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
-        if save:
-            fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RETURN.pkl'
-            path = os.path.join(self.directory, fn)
+#        if save:
+#            fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RETURN.pkl'
+#            path = os.path.join(self.directory, fn)
 #            with open(path, 'wb') as f:
 #                pkl.dump(return_obj, f)
 
@@ -309,7 +335,8 @@ class RunData(emc.backends.HDFBackend):
 
 def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
               , scale2='linear', scale3='linear', scale4='linear'
-              , show=True, im_vmin=None, im_vmax=None
+#              , normalization='peak'
+              , show=True, psf_vmin=1E-12, psf_vmax=1.0
               , save=False, **kwargs):
     intensity = (np.abs(field))**2
     if np.iscomplexobj(field):
@@ -320,12 +347,13 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
     plt.suptitle(suptitle)
     plt.subplot(221)
     plt.title('intensity')
-    hci.imshow_psf(intensity, scale=scale1, normalization='none'
-                   , cmap=turbo, vmin=im_vmin, vmax=im_vmax
+    hci.imshow_psf(intensity, scale=scale1
+#                   , normalization=normalization
+                   , cmap=turbo, vmin=psf_vmin, vmax=psf_vmax
                    , spatial_resolution=grid_scale)
     plt.subplot(223)
     plt.title('phase [pi]')
-    hci.imshow_psf(phase/np.pi, scale=scale2, normalization='none'
+    hci.imshow_psf(phase/np.pi, scale=scale3
                    , cmap=turbo, vmax=1.0, vmin=-1.0
                    , spatial_resolution=grid_scale)
     plt.subplot(222)
@@ -334,7 +362,7 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
     plt.title('Horizontal Center Cross-Section:  Intensity')
     abscissa = ( field.grid.x.reshape(side_dim, side_dim)
                                                      [ctr_ndx, :] )/grid_scale
-    plt.yscale(scale3)
+    plt.yscale(scale2)
     plt.plot( abscissa 
               , intensity.reshape(side_dim, side_dim)[ctr_ndx,:])
     plt.xlabel(grid_label)
