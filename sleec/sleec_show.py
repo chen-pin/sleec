@@ -201,21 +201,33 @@ class RunData(emc.backends.HDFBackend):
                 quad_plot(field, 'PUPIL', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             
+            # Show DM1_SURFC
+            field = coronagraph.dm1_surfc
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM1-SURFC.png'
+                path = os.path.join(self.directory, fn)
+                single_plot(field, title='DM1 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
+            else:
+                single_plot(field, title='DM1 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
             # Show DM1
             field = wavefronts['dm1'].electric_field
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
-                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM1.png'
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_POST-DM1.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'DM1', grid_scale, 'x [pupil radius]'
+                quad_plot(field, 'POST-DM1', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'DM1', grid_scale, 'x [pupil radius]'
+                quad_plot(field, 'POST-DM1', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show ON_DM2
             field = wavefronts['on_dm2'].electric_field
             field = field/np.abs(field).max()
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-DM2.png'
                 path = os.path.join(self.directory, fn)
@@ -224,21 +236,33 @@ class RunData(emc.backends.HDFBackend):
             else:
                 quad_plot(field, 'ON DM2', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
+            # Show DM2_SURFC
+            field = coronagraph.dm2_surfc
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM2-SURFC.png'
+                path = os.path.join(self.directory, fn)
+                single_plot(field, title='DM2 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
+            else:
+                single_plot(field, title='DM2 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
             # Show DM2
             field = wavefronts['dm2'].electric_field
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
-                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM2.png'
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_POST-DM2.png'
                 path = os.path.join(self.directory, fn)
-                quad_plot(field, 'DM2', grid_scale, 'x [pupil radius]'
+                quad_plot(field, 'POST-DM2', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save, path=path)
             else:
-                quad_plot(field, 'DM2', grid_scale, 'x [pupil radius]'
+                quad_plot(field, 'POST-DM2', grid_scale, 'x [pupil radius]'
                           , show=show, scale1='linear', save=save)
             # Show RELAY_PUPIL
             field = wavefronts['relay_pupil'].electric_field
             field = field/np.abs(field).max()
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RELAY-PUPIL.png'
                 path = os.path.join(self.directory, fn)
@@ -280,7 +304,6 @@ class RunData(emc.backends.HDFBackend):
             # Show ON_LYOT
             field = wavefronts['on_lyot'].electric_field
             field = field/np.abs(field).max()
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-LYOT.png'
                 path = os.path.join(self.directory, fn)
@@ -291,7 +314,6 @@ class RunData(emc.backends.HDFBackend):
                           , show=show, scale1='linear', save=save)
             # Show LYOT APERTURE
             field = coronagraph.lyot_field
-            grid_scale = coronagraph.pupil_diameter/2.0
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_LYOT.png'
                 path = os.path.join(self.directory, fn)
@@ -333,7 +355,7 @@ class RunData(emc.backends.HDFBackend):
     def acceptance_fractn(self):
         return np.mean(self.accepted/float(self.iteration))
 
-def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
+def quad_plot(field, suptitle, grid_scale, xlabel, scale1='linear'
               , scale2='linear', scale3='linear', scale4='linear'
 #              , normalization='peak'
               , show=True, psf_vmin=1E-12, psf_vmax=1.0
@@ -365,20 +387,31 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
     plt.yscale(scale2)
     plt.plot( abscissa 
               , intensity.reshape(side_dim, side_dim)[ctr_ndx,:])
-    plt.xlabel(grid_label)
+    plt.xlabel(xlabel)
 #    plt.ylabel('amplitude')
     plt.subplot(224)
     plt.title('Horizontal Center Cross-Section:  Phase')
     plt.yscale(scale4)
     plt.plot( abscissa 
               , phase.reshape(side_dim, side_dim)[ctr_ndx,:]/np.pi)
-    plt.xlabel(grid_label)
+    plt.xlabel(xlabel)
     plt.ylabel('phase [pi]')
     if save:
         plt.savefig(kwargs['path'])
     if show:
         plt.show()
 
+def single_plot(field, title, xlabel, scale='linear'
+                , vmin=1e-12, vmax=1.0
+                , show=True, save=False, **kwargs):
+    plt.figure(figsize=(15, 12))
+    plt.title(title)
+    hci.imshow_psf(field, scale=scale, cmap=turbo, vmin=vmin, vmax=vmax)
+    plt.xlabel(xlabel)
+    if save:
+        plt.savefig(kwargs['path'])
+    if show:
+        plt.show()
 
 
 if __name__ == "__main__":
