@@ -209,7 +209,7 @@ class RunData(emc.backends.HDFBackend):
                 single_plot(field, title='DM1 SURFACE'
                             , xlabel ='x [m]', scale='linear'
                             , vmin=field.min(), vmax=field.max()
-                            , show=show, save=save)
+                            , show=show, save=save, path=path)
             else:
                 single_plot(field, title='DM1 SURFACE'
                             , xlabel ='x [m]', scale='linear'
@@ -244,7 +244,7 @@ class RunData(emc.backends.HDFBackend):
                 single_plot(field, title='DM2 SURFACE'
                             , xlabel ='x [m]', scale='linear'
                             , vmin=field.min(), vmax=field.max()
-                            , show=show, save=save)
+                            , show=show, save=save, path=path)
             else:
                 single_plot(field, title='DM2 SURFACE'
                             , xlabel ='x [m]', scale='linear'
@@ -276,7 +276,6 @@ class RunData(emc.backends.HDFBackend):
             field = field/np.abs(field).max()
             grid_scale = coronagraph.f_num*coronagraph.wvl
             scale_max = np.ceil(np.abs(field.max())**2) 
-#            print(f"scale_max:  {scale_max}")
             scale_min = 1e-13
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-FPM.png'
@@ -327,7 +326,6 @@ class RunData(emc.backends.HDFBackend):
                       /np.abs(wavefronts['on_fpm'].electric_field).max() )
             scale_max = 1e-9
             scale_min = 1e-13
-            print(f"scale_max:  {scale_max}")
             grid_scale = coronagraph.f_num*coronagraph.wvl
             if save:
                 fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_CONTRAST.png'
