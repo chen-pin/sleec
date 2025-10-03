@@ -67,7 +67,12 @@ not run the optimization routine.
     * If applicable, add code in <sleec_input.py.import_pars()> to implement new DM feature  
     * If applicable, add code in <sleec_run.ln_prior()> to implement corresponding prior distribution.  
     
-Commit <46f32b23> is an example of changes made to implement a new basis-set feature for adjusting DM1.  Use the following command to see the code changes:  git diff 46f32 0bd2e
+Commit <46f32b23> is an example of changes made to implement a new basis-set feature for adjusting DM1.  Use the following command to see the code changes:  git diff 46f32 0bd2e  
 
+# Legal Notices  
+
+Copyright 2025, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
+ 
+This software may be subject to U.S. export control laws. By accepting this software, the user agrees to comply with all applicable U.S. export laws and regulations. User has the responsibility to obtain export licenses, or other export authority as may be required before exporting such information to foreign countries or providing access to foreign persons.
 
 
