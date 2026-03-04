@@ -15,7 +15,9 @@ optical planes:  entrance pupil/DM1, DM2, focal, and Lyot pupil planes.
 * Scipy.interpolate
 * Astropy,io.fits
 * HCIPy v0.3.1 with bug fix #70
-
+* h5py
+* oct2py
+* corner
 
 ## Installation
 * Install prerequisites (see above)  
@@ -47,10 +49,11 @@ pip install -e .
     * Replace the 'hcipy' directory under '~/Anaconda3/' with the downloaded folder    
 
 ## Running tests
-* From the code directory <sleec/source>, enter the following command:
-    * To test the propagation code:  `python sleec_input.py`.  This does 
-not run the optimization routine.  
-* Each module has various test at the bottom of the code, some are obsolete.  
+* From the code directory <sleec/sleec>:
+    * To test the propagation code:  `python sleec_input.py`.  This does not run the optimization routine.  
+    * To run the optimization code: `python sleec_run.py`. The parameters can be modified in <sleec_pars.yml>
+    * To plot the output of optimization, see example in <sleec_show.py>
+    * Each module has various test at the bottom of the code, some are obsolete.  
 
 ## Instructions for adding a coronagraph optimization feature  
 * Add function in <sleec_alter.py>.  This is the function that accepts optimization parameters and alters the coronagraph accordingly.  

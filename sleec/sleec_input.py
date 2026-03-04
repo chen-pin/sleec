@@ -61,7 +61,7 @@ def import_pars(filename='sleec_pars.yml', verbose=True):
         try:
             inflnc_ftn.modes = inflnc_ftn.load_modes()
         except FileNotFoundError:
-            print("Influence-functions pickle file not found.")
+            print("Influence-functions file not found.")
             print("Generate influence functions on the fly.")
             inflnc_ftn.modes = inflnc_ftn.genrt_modes()
         if dm1_vmap != None:  
@@ -97,7 +97,7 @@ def import_pars(filename='sleec_pars.yml', verbose=True):
         try:
             inflnc_ftn.modes = inflnc_ftn.load_modes()
         except FileNotFoundError:
-            print("Influence-functions pickle file not found.")
+            print("Influence-functions file not found.")
             print("Generate influence functions on the fly.")
             inflnc_ftn.modes = inflnc_ftn.genrt_modes()
         if dm2_vmap != None:  
