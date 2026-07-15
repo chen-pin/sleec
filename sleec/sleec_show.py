@@ -1,5 +1,4 @@
 import os
-import pickle as pkl
 import yaml as yml
 import numpy as np
 import matplotlib.pyplot as plt
@@ -144,6 +143,8 @@ class RunData(emc.backends.HDFBackend):
 
     def track_plot(self, save=False):
         non_flat_log_probs = self.log_prob_samples.reshape(-1, self.shape[0])
+        # make sure this opens in a new figure
+        plt.figure("Track Plot")
         x = [i for i in range(int(self.num_iters))]
         for walker in range(self.num_walkers): 
             plt.plot(x, non_flat_log_probs[:, walker])
@@ -157,7 +158,8 @@ class RunData(emc.backends.HDFBackend):
             plt.show()
 
     def reconstruct(self, sample_number, save, verbose=True, show=True):  
-        file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
+        # file_path_slp does not seem to be used anywhere
+        # file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
         file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
         pars = self.samples[sample_number]
         coronagraph, input_pars = sli.import_pars(file_path_yml)
@@ -342,6 +344,7 @@ class RunData(emc.backends.HDFBackend):
         return_obj = (coronagraph, ln_merit, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
             , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
+            # TODO: find alternative to pickle for saving
 #        if save:
 #            fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RETURN.pkl'
 #            path = os.path.join(self.directory, fn)
@@ -414,7 +417,7 @@ def single_plot(field, title, xlabel, scale='linear'
 
 if __name__ == "__main__":
 #    show_run_stats(filename='20210624t1612.hdf', plot=False, long=False)    
-    reconstruct('20210624t1612', 309877)
+#    reconstruct('20210624t1612', 309877)
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -425,3 +428,8 @@ if __name__ == "__main__":
 #    reconstruct('20200726t1539', 33301)
 #    reconstruct('20210111t1609', 10419)
 #    reconstruct('20210111t1609', 58536)
+
+# example to make corner and track plots for a run
+    a  = RunData("test_40_1000_A")
+    a.corner_plot(save=True)
+    a.track_plot(save=True)

@@ -31,7 +31,6 @@ Notes
 """
 
 import os
-import pickle
 import time
 import numpy as np
 import scipy.sparse as spr
@@ -238,7 +237,7 @@ class InflncFtn(object):
                  , acttr_filnm=os.path.join(os.path.expanduser('~'), 'sleec_in'
                                             , 'superinf-20180730-10x10.fits')
                  , save_filnm=os.path.join(os.path.expanduser('~')
-                                           , 'sleec_out', 'inflnc_ftns.pkl')
+                                           , 'sleec_out', 'inflnc_ftns.npz')
                  , dm_diameter=1.0, acttr_spacing=1.0/48
                  , acttr_pxl_spacing=10):
         self.pupil_grid = pupil_grid
@@ -329,7 +328,7 @@ class InflncFtn(object):
             Tilt of the DM around the z-axis in radians.
         save : bool
             True --> save the array of influence functions as a CSR sparse 
-            matrix as a pickle file.  
+            matrix. pickle disabled due to security risks.
             False --> return a `hci.ModeBasis` object representing the 
             array of influence functions.
         intrpltn : 'nearest' or 'linear'
@@ -340,8 +339,8 @@ class InflncFtn(object):
         csr_matrix, if `save` = False
             Sparse matrix of peak-normalized influence functions.  If 
             `save`=True, a dictionary of the CSR sparse matrix of influence 
-            functions (key = 'modes') and relevant paramters are pickled to a 
-            file (filename = `self.save_filnm`).   
+            functions (key = 'modes') and relevant paramters are saved to a 
+            file (filename = `self.save_filnm`). pickle disabled due to security risks.  
     
         Notes
         -----
@@ -372,17 +371,20 @@ class InflncFtn(object):
                                .shifted(-self.acttr_positns[i]))
             print("{}/{} mode complete".format((i+1), self.acttr_positns.size))
         if save:
-#            spr.save_npz(self.save_filnm, modes.tocsr())
-            save_dict = {'x_tilt': x_tilt, 'y_tilt': y_tilt, 'z_tilt': z_tilt
-                         , 'intrpltn': intrpltn
-                         , 'evaluated_grid': evaluated_grid
-                         , 'self.acttr_positns': self.acttr_positns
-                         , 'self.acttr_grid': self.acttr_grid
-                         , 'self.acttr': self.acttr
-                         , 'modes': modes.tocsr()} 
-            f = open(self.save_filnm, 'wb')
-            pickle.dump(save_dict, f)
-            f.close()
+            # TODO: use this to avoid pickle security risks, but need to test loading with NPZ first.
+            spr.save_npz(self.save_filnm, modes.tocsr())
+            # following lines save the influence functions and relevant parameters as a dictionary in a pickle file. 
+            # This had to be removed due to pickle security risks. Want to keep this code around in case the npz doesn't work out.
+            # save_dict = {'x_tilt': x_tilt, 'y_tilt': y_tilt, 'z_tilt': z_tilt
+            #              , 'intrpltn': intrpltn
+            #              , 'evaluated_grid': evaluated_grid
+            #              , 'self.acttr_positns': self.acttr_positns
+            #              , 'self.acttr_grid': self.acttr_grid
+            #              , 'self.acttr': self.acttr
+            #              , 'modes': modes.tocsr()} 
+            # f = open(self.save_filnm, 'wb')
+            # pickle.dump(save_dict, f)
+            # f.close()
         else:
             return modes
 
@@ -407,7 +409,7 @@ class InflncFtn(object):
         return hci.Field(surfc, self.pupil_grid)      
 
     def load_modes(self):
-        """Load previously pickled influence functions.  
+        """Load previously saved influence functions.  
 
         Returns
         -------
@@ -415,9 +417,13 @@ class InflncFtn(object):
             Sparse matrix of peak-normalized influence functions.
         
         """
-        f = open(self.save_filnm, 'rb')
-        dict_results = pickle.load(f)
-        return dict_results['modes']
+        # TODO: this has not been tested with the new NPZ saving method, but it should work in theory.
+        modes = spr.load_npz(self.save_filnm)
+        # old method with pickle file
+        # f = open(self.save_filnm, 'rb')
+        # dict_results = pickle.load(f)
+        # return dict_results['modes']
+        return modes
 
     @property
     def acttr(self):
@@ -525,7 +531,8 @@ class Coronagraph(hci.OpticalElement):
     """
     def __init__(self, wvl=None, pupil_diameter=None, pupil_field=None
                  , fpm_field=None , lyot_field=None 
-                 , dm1_surfc=None, dm2_surfc=None 
+                 , dm1_surfc=None 
+                 , dm2_surfc=None 
                  , dm1_vmap=None, dm2_vmap=None, inflnc_ftn=None
                  , dm_seprtn=None , f_num=None):
         self.wvl = wvl
@@ -697,6 +704,58 @@ class Coronagraph(hci.OpticalElement):
                                                         =self.focal_length)
         return prop_to_camera
       
+class CoroBasis(hci.ModeBasis):
+    """Basis for coronagraph optical planes.  This is a modification of 
+       `hci.ModeBasis` to hold the pupil, DM1 and DM2 bases.  The pupil basis is 
+        used to represent the pupil field, and the DM1 and DM2 bases are used to 
+        represent the DM surfaces.  The pupil basis is a list of `hci.Field` 
+        objects representing the modes spanning the pupil field.  The DM1 and DM2 
+        bases are lists of `hci.Field` objects representing the modes spanning the 
+        DM surfaces.  The disk harmonic basis is a list of `hci.Field` objects 
+        representing the modes spanning the disk harmonic surface. 
+    
+        Parameters
+        ----------
+        pupil_basis : list of `hci.Field` objects
+            Basis for representing the pupil field.
+        dm1_basis : list of `hci.Field` objects
+            Basis for representing the DM1 surface.
+        dm2_basis : list of `hci.Field` objects
+            Basis for representing the DM2 surface.
+        disk_harmonic_basis : list of `hci.Field` objects
+            Basis for representing the disk harmonic surface.
+    
+        """
+
+    def __init__(self, pupil_basis=None, dm1_basis=None, dm2_basis=None):
+        self._pupil_basis = pupil_basis
+        self._dm1_basis = dm1_basis
+        self._dm2_basis = dm2_basis
+
+    @property
+    def pupil_basis(self):
+        return self._pupil_basis
+
+    @pupil_basis.setter
+    def pupil_basis(self, basis):
+        self._pupil_basis = basis
+
+    @property
+    def dm1_basis(self):
+        return self._dm1_basis
+
+    @dm1_basis.setter
+    def dm1_basis(self, basis):
+        self._dm1_basis = basis
+
+    @property
+    def dm2_basis(self):
+        return self._dm2_basis
+
+    @dm2_basis.setter
+    def dm2_basis(self, basis):
+        self._dm2_basis = basis
+
 
 #def demo_coronagraph():
 #    """Sample routine to demonstrate coronagraph propagation"""

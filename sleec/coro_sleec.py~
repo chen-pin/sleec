@@ -1,8 +1,10 @@
 """Module for modeling a coronagraph using HCIPy as the propagation code."""
 
+# this seems to be an obsolete file. Jagmit Sandhu
+# commenting all mentions of pickle.
 import os
 import matplotlib.pyplot as plt
-import pickle
+# import pickle
 import time
 import numpy as np
 import scipy.sparse as spr
@@ -283,9 +285,9 @@ class InflncFtn(object):
                          , 'self.acttr_grid': self.acttr_grid
                          , 'self.acttr': self.acttr
                          , 'modes': modes.tocsr()} 
-            f = open(self.save_filnm, 'wb')
-            pickle.dump(save_dict, f)
-            f.close()
+            # f = open(self.save_filnm, 'wb')
+            # pickle.dump(save_dict, f)
+            # f.close()
         else:
             return modes
 
@@ -310,9 +312,10 @@ class InflncFtn(object):
         return hci.Field(surfc, self.pupil_grid)      
 
     def load_modes(self):
-        f = open(self.save_filnm, 'rb')
-        dict_results = pickle.load(f)
-        return dict_results['modes']
+        # f = open(self.save_filnm, 'rb')
+        # dict_results = pickle.load(f)
+        # return dict_results['modes']
+        pass
 
     @property
     def acttr(self):

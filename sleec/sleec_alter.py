@@ -4,12 +4,11 @@
 
 import os
 import math
-import pickle as pkl
 import numpy as np
 import hcipy as hci
 
 
-def pupil_slepian_r(coefs, corngrph, file_exists, filename
+def pupil_slepian_r(coefs, corngrph, basis_exists, coro_basis
                     , non_negative , n2d, L=170, method='SE', orthgnlty=0
                     , num_dense_pts=4096):
 
@@ -71,9 +70,8 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename
     if corngrph != None:
         diameter = corngrph.pupil_diameter
         grid = corngrph.pupil_field.grid
-    if file_exists: 
-        with open(filename, 'rb') as f:
-            slepians = pkl.load(f)['slepians']
+    if basis_exists: 
+        slepians = coro_basis.pupil_basis
     else:
         cwd = os.getcwd()
         grid_pts = len(grid.x)
@@ -83,15 +81,8 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename
         slepians = gsl(n2d, L, method, orthgnlty
                        , diameter 
                        , grid, num_dense_pts)
+        coro_basis.pupil_basis = slepians
         os.chdir(cwd)
-        with  open(filename, 'wb') as f:
-            output = {}
-            output['n2d_pupil'] = n2d
-            output['L'] = L
-            output['orthgnlty'] = orthgnlty
-            output['D'] = diameter
-            output['slepians'] = slepians
-            pkl.dump(output, f)
     pupil_field = slepians.linear_combination(coefs)
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
@@ -105,7 +96,7 @@ def pupil_slepian_r(coefs, corngrph, file_exists, filename
         return update_pupil(pupil_field, corngrph) 
         
 
-def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
+def dm1_slepian_2d(coefs, corngrph, basis_exists, coro_basis
                    , m_max=None, n2d=None, k=None, L=170, method='SE'
                    , orthgnlty=0, num_dense_pts=4096):  
 
@@ -164,9 +155,8 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
     """
     diameter = corngrph.pupil_diameter
     grid = corngrph.pupil_field.grid
-    if file_exists: 
-        with open(filename, 'rb') as f:
-            basis = pkl.load(f)['slepian_fourier']
+    if basis_exists: 
+            basis = coro_basis.dm1_basis
     else:
         cwd = os.getcwd()
         grid_pts = len(grid.x)
@@ -176,16 +166,7 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
         basis = gsf(m_max, n2d, k, L, method, orthgnlty, diameter, grid
                        , num_dense_pts)
         os.chdir(cwd)
-        with  open(filename, 'wb') as f:
-            output = {}
-            output['m_max'] = m_max
-            output['n2d_pupil'] = n2d
-            output['k'] = k
-            output['L'] = L
-            output['orthgnlty'] = orthgnlty
-            output['D'] = diameter
-            output['slepian_fourier'] = basis
-            pkl.dump(output, f)
+    coro_basis.dm1_basis = basis
     field = basis.linear_combination(coefs)
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
@@ -196,7 +177,7 @@ def dm1_slepian_2d(coefs, corngrph, file_exists, filename=None
         return update_dm1_surfc(field, corngrph) 
         
 
-def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
+def dm2_slepian_2d(coefs, corngrph, basis_exists, coro_basis
                    , m_max=None, n2d=None, k=None, L=170, method='SE'
                    , orthgnlty=0, num_dense_pts=4096, oppose_dm1=True):  
 
@@ -259,9 +240,8 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
     """
     diameter = corngrph.pupil_diameter
     grid = corngrph.pupil_field.grid
-    if file_exists: 
-        with open(filename, 'rb') as f:
-            basis = pkl.load(f)['slepian_fourier']
+    if basis_exists: 
+            basis = coro_basis.dm2_basis
     else:
         cwd = os.getcwd()
         grid_pts = len(grid.x)
@@ -271,16 +251,7 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
         basis = gsf(m_max, n2d, k, L, method, orthgnlty, diameter, grid
                        , num_dense_pts)
         os.chdir(cwd)
-        with  open(filename, 'wb') as f:
-            output = {}
-            output['m_max'] = m_max
-            output['n2d_pupil'] = n2d
-            output['k'] = k
-            output['L'] = L
-            output['orthgnlty'] = orthgnlty
-            output['D'] = diameter
-            output['slepian_fourier'] = basis
-            pkl.dump(output, f)
+        coro_basis.dm2_basis = basis
     field = basis.linear_combination(coefs)
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
@@ -293,7 +264,7 @@ def dm2_slepian_2d(coefs, corngrph, file_exists, filename=None
         return update_dm2_surfc(field, corngrph)
         
 
-def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
+def disk_harmonic_basis(m, n_min, n_max,  grid, diameter
                         , bc='dirichlet'):  
 
     """
@@ -326,20 +297,10 @@ def disk_harmonic_basis(m, n_min, n_max,  grid, diameter, filename=None
     modes = [hci.disk_harmonic(n=order[1], m=order[0], D=diameter, bc=bc
                                 , grid=grid) 
              for order in orders]
-    basis = hci.ModeBasis(modes, grid)
-    if filename != None:
-        with open(filename, 'wb') as f:
-            output = {}
-            output['m'] = m
-            output['n_min'] = n_min
-            output['n_max'] = n_max
-            output['bc'] = bc
-            output['disk_harmonic'] = basis
-            pkl.dump(output, f)
     return hci.ModeBasis(modes, grid) 
         
 
-def dm_disk_harmonic(coefs, corngrph, dm, file_exists, filename=None
+def dm_disk_harmonic(coefs, corngrph, dm, basis_exists, coro_basis 
                      , m=None, n_min=None, n_max=None, bc=None):
 
     """
@@ -383,14 +344,24 @@ def dm_disk_harmonic(coefs, corngrph, dm, file_exists, filename=None
 #    modes = [[hci.disk_harmonic(n=n, m=m_i, D=diameter, bc=bc, grid=grid) 
 #              for n in range(n_min, n_max+1)] for m_i in m]
 #    basis = hci.ModeBasis(modes, grid)
-    if file_exists: 
-        with open(filename, 'rb') as f:
-            basis = pkl.load(f)['disk_harmonic']
+    if basis_exists: 
+        if dm=='dm1':
+            dm_basis = coro_basis.dm1_basis
+        elif dm=='dm2':
+            dm_basis = coro_basis.dm2_basis
+        elif dm=='dm2dm1':
+            dm_basis = coro_basis.dm2_basis
+        else:
+            print('<dm_disk_harmonic>: Invalid `dm` or `corngrph` argument value!')
     else:
-        basis = disk_harmonic_basis(m=m, n_min=n_min, n_max=n_max, grid=grid
-                                    , diameter=diameter, filename=filename
+        dm_basis = disk_harmonic_basis(m=m, n_min=n_min, n_max=n_max, grid=grid
+                                    , diameter=diameter
                                     , bc=bc)
-    field = basis.linear_combination(coefs)
+        if dm=='dm1':
+            coro_basis.dm1_basis = dm_basis
+        elif dm=='dm2':
+            coro_basis.dm2_basis = dm_basis
+    field = dm_basis.linear_combination(coefs)
     aperture = ( hci.circular_aperture(diameter)
                                       (grid) )
     field *= aperture
@@ -674,10 +645,11 @@ def _test_pupil_slepian_r():
     print('N2D = {}'.format(n2d))
     coefs = np.random.random(1)
     print('Coefficients = {}'.format(coefs)) 
-    file_exists = False
-    filename = '../../sleec_out/slepians.pkl'
+    basis_exists = False
+    # create empty basis set for pupil and DMS
+    coro_basis = slo.CoroBasis()
     non_negative = True
-    corngrph = pupil_slepian_r(coefs, corngrph, file_exists, filename
+    corngrph = pupil_slepian_r(coefs, corngrph, basis_exists, coro_basis
                                , non_negative, n2d
                                , L=170, method='SE', orthgnlty=0
                                , num_dense_pts=4096, diameter=None, grid=None)
@@ -721,10 +693,13 @@ def _test_dm1_slepian_2d():
     print('N2D = {}'.format(n2d))
     coefs = 6e-9*np.random.uniform(-1.0, 1.0, (2*m_max+1)*len(n2d)*k)
     print('Coefficients = {}'.format(coefs)) 
-    file_exists = False
-#    file_exists = True
-    filename = '../../sleec_out/slepians_dm1.pkl'
-    corngrph = dm1_slepian_2d(coefs, corngrph, file_exists, filename
+    basis_exists = False
+    # TODO: True option will require a solution to accomodate the new coro_basis structure
+    # not implemented
+    # basis_exists = True
+    # create empty basis set for pupil and DMS
+    coro_basis = slo.CoroBasis()
+    corngrph = dm1_slepian_2d(coefs, corngrph, basis_exists, coro_basis
                                , m_max=m_max, n2d=n2d, k=k
                                , L=170, method='SE', orthgnlty=0
                                , num_dense_pts=4096)
@@ -793,16 +768,22 @@ def _test_dm_disk_harmonic():
     print('Coefficients = {}'.format(coefs)) 
     dm = 'dm1'
     print('dm = {}'.format(dm))
-    file_exists = False
-#    file_exists = True
-    if dm == 'dm1':
-        filename = '../../sleec_out/disk_harmonic_dm1.pkl'
-    if dm == 'dm2':
-        filename = '../../sleec_out/disk_harmonic_dm2.pkl'
-    if dm == 'dm2dm1':
-        filename = '../../sleec_out/disk_harmonic_dm2dm1.pkl'
+    basis_exists = False
+    # TODO: True option will require a solution to accomodate the new coro_basis structure
+    # not implemented
+    # basis_exists = True
+    # create empty basis set for pupil and DMS
+    coro_basis = slo.CoroBasis()
+    # TODO: following lines need to be modified to accomodate the new coro_basis structure
+    # not implemented
+    # if dm == 'dm1':
+    #     filename = '../../sleec_out/disk_harmonic_dm1.pkl'
+    # if dm == 'dm2':
+    #     filename = '../../sleec_out/disk_harmonic_dm2.pkl'
+    # if dm == 'dm2dm1':
+    #     filename = '../../sleec_out/disk_harmonic_dm2dm1.pkl'
     corngrph = dm_disk_harmonic(coefs=coefs, corngrph=corngrph, dm=dm
-                                , file_exists=file_exists, filename=filename
+                                , basis_exists=basis_exists, coro_basis=coro_basis
                                 , m=m, n_min=n_min, n_max=n_max, bc=bc)
     output = corngrph(input_wavefront)
 #    subplot_seq = 1

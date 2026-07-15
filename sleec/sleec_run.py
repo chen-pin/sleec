@@ -1,7 +1,6 @@
 """<sleec_run>:  Module for running optimizations."""
 import os
 import shutil as stl
-import pickle as pkl
 from multiprocessing import Pool
 import yaml as yml
 import numpy as np
@@ -11,6 +10,7 @@ import hcipy as hci
 import sleec_input as sli
 import sleec_alter as sla
 import sleec_merit as slm
+import sleec_optics as slo
 
 
 def ln_prior(design_parameters, input_pars):
@@ -28,7 +28,7 @@ def ln_prior(design_parameters, input_pars):
     return 0.0
  
 
-def ln_probability(design_parameters, coronagraph, input_pars, non_negative
+def ln_probability(design_parameters, coronagraph, coro_basis, input_pars, non_negative
                    , reconstruct=False):
     """
     Return log probability for optimization using EMCEE.  
@@ -39,8 +39,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     if input_pars['pupil_type'] == 'slepian_n2d':
         coronagraph = sla.pupil_slepian_r(coefs=pupil_pars
                           , corngrph=coronagraph
-                          , file_exists=True
-                          , filename=input_pars['pupil_filename']
+                          , basis_exists=True
+                          , coro_basis=coro_basis
                           , non_negative=non_negative
                           , n2d=None, L=None, method=None
                           , orthgnlty=None, num_dense_pts=None)
@@ -51,8 +51,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         coronagraph = sla.dm_disk_harmonic(coefs=dm1_pars
                           , corngrph=coronagraph
                           , dm=input_pars['dm_dm1']
-                          , file_exists=True
-                          , filename=input_pars['dm1_filename']
+                          , basis_exists=True
+                          , coro_basis=coro_basis
                           , m=None
                           , n_min=None
                           , n_max=None
@@ -60,8 +60,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     elif input_pars['dm1_type'] == 'slepian_fourier':
         coronagraph = sla.dm1_slepian_2d(coefs=dm1_pars
                           , corngrph=coronagraph
-                          , file_exists=True
-                          , filename=input_pars['dm1_filename']
+                          , basis_exists=True
+                          , coro_basis=coro_basis
                           , m_max=None
                           , n2d=None
                           , k=None
@@ -75,8 +75,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
         coronagraph = sla.dm_disk_harmonic(coefs=dm2_pars
                           , corngrph=coronagraph
                           , dm=input_pars['dm_dm2']
-                          , file_exists=True
-                          , filename=input_pars['dm2_filename']
+                          , basis_exists=True
+                          , coro_basis=coro_basis
                           , m=None
                           , n_min=None
                           , n_max=None
@@ -84,8 +84,8 @@ def ln_probability(design_parameters, coronagraph, input_pars, non_negative
     elif input_pars['dm2_type'] == 'slepian_fourier':
         coronagraph = sla.dm2_slepian_2d(coefs=dm2_pars
                           , corngrph=coronagraph
-                          , file_exists=True
-                          , filename=input_pars['dm2_filename']
+                          , basis_exists=True
+                          , coro_basis=coro_basis
                           , m_max=None
                           , n2d=None
                           , k=None
@@ -196,38 +196,32 @@ def run_emcee(parallel=False):
         fn_prefix = input("Enter filename prefix for saving EMCEE run:  ")
         path = os.path.join('..', '..', 'sleec_out')
         file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
-        file_path_pupil_slp = os.path.join(path, fn_prefix+'_pupil.pkl')
-        file_path_dm1_slp = os.path.join(path, fn_prefix+'_dm1.pkl')
-        file_path_dm2_slp = os.path.join(path, fn_prefix+'_dm2.pkl')
         file_path_yml = os.path.join(path, fn_prefix+'.yml')
         backend = emc.backends.HDFBackend(file_path_hdf)
         backend.reset(input_pars['nwalkers'], input_pars['ndim'])
-        if input_pars['pupil_filename'] != None:
-            stl.copyfile(input_pars['pupil_filename'], file_path_pupil_slp)    
-        if input_pars['dm1_filename'] != None:
-            stl.copyfile(input_pars['dm1_filename'], file_path_dm1_slp)    
-        if input_pars['dm2_filename'] != None:
-            stl.copyfile(input_pars['dm2_filename'], file_path_dm2_slp)    
         stl.copyfile('sleec_pars.yml', file_path_yml)    
     else:
         backend = None
     non_negative = input_pars['non_negative']
     output0 = coronagraph(hci.Wavefront(coronagraph.pupil_field
                                         , coronagraph.wvl))
+    # create empty basis set for pupil and DMS
+    coro_basis = slo.CoroBasis()
+
     print("Initialized coronagraph")
     if input_pars['pupil_type'] == 'slepian_n2d':
         sla.pupil_slepian_r(coefs=np.ones(input_pars['num_pupil_pars'])
-                            , corngrph=coronagraph, file_exists=False
-                            , filename=input_pars['pupil_filename']
+                            , corngrph=coronagraph, basis_exists=False
+                            , coro_basis=coro_basis
                             , non_negative=non_negative
                             , n2d=input_pars['n2d_pupil'], L=170
                             , method='SE', orthgnlty=0, num_dense_pts=4096)
-        print("Pupil Slepian file created")
+        print("Pupil Slepian created")
     if input_pars['dm1_type'] == 'slepian_fourier':
         sla.dm1_slepian_2d(coefs=np.ones(input_pars['num_dm1_pars'])
                             , corngrph=coronagraph
-                            , file_exists=False
-                            , filename=input_pars['dm1_filename']
+                            , basis_exists=False
+                            , coro_basis=coro_basis
                             , m_max=input_pars['m_dm1']
                             , n2d=input_pars['n2d_dm1']
                             , k=input_pars['k_dm1']
@@ -235,13 +229,13 @@ def run_emcee(parallel=False):
                             , method='SE'
                             , orthgnlty=0
                             , num_dense_pts=4096)
-        print("DM1 Slepian-Fourier file created")
+        print("DM1 Slepian-Fourier created")
     elif input_pars['dm1_type'] == 'disk_harmonic':
         sla.dm_disk_harmonic(coefs=np.ones(input_pars['num_dm1_pars'])
                             , corngrph=coronagraph
                             , dm='dm1'
-                            , file_exists=False
-                            , filename=input_pars['dm1_filename']
+                            , basis_exists=False
+                            , coro_basis=coro_basis
                             , m=input_pars['m_dm1']
                             , n_min=input_pars['n_min_dm1']
                             , n_max=input_pars['n_max_dm1']
@@ -250,8 +244,8 @@ def run_emcee(parallel=False):
     if input_pars['dm2_type'] == 'slepian_fourier':
         sla.dm2_slepian_2d(coefs=np.ones(input_pars['num_dm2_pars'])
                             , corngrph=coronagraph
-                            , file_exists=False
-                            , filename=input_pars['dm2_filename']
+                            , basis_exists=False
+                            , coro_basis=coro_basis
                             , m_max=input_pars['m_dm2']
                             , n2d=input_pars['n2d_dm2']
                             , k=input_pars['k_dm2']
@@ -259,18 +253,18 @@ def run_emcee(parallel=False):
                             , method='SE'
                             , orthgnlty=0
                             , num_dense_pts=4096)
-        print("DM2 Slepian-Fourier file created")
+        print("DM2 Slepian-Fourier created")
     elif input_pars['dm2_type'] == 'disk_harmonic':
         sla.dm_disk_harmonic(coefs=np.ones(input_pars['num_dm2_pars'])
                             , corngrph=coronagraph
                             , dm='dm2'
-                            , file_exists=False
-                            , filename=input_pars['dm2_filename']
+                            , basis_exists=False
+                            , coro_basis=coro_basis
                             , m=input_pars['m_dm2']
                             , n_min=input_pars['n_min_dm2']
                             , n_max=input_pars['n_max_dm2']
                             , bc=input_pars['bc_dm2'])
-        print("DM2 disk-harmoic file created")
+        print("DM2 disk-harmoic created")
     ini_positns = np.empty((input_pars['nwalkers'], input_pars['ndim']))
     i = 0
     if input_pars['seed_start']:
@@ -307,7 +301,7 @@ def run_emcee(parallel=False):
             sampler = emc.EnsembleSampler(
                           input_pars['nwalkers'], input_pars['ndim']
                           , ln_probability, backend=backend, pool=pool
-                          , args=(coronagraph, input_pars, non_negative)
+                          , args=(coronagraph, coro_basis, input_pars, non_negative)
                           , blobs_dtype=dtype
                                          )
             print("Ensemble Sampler instantiated.")  
@@ -317,7 +311,7 @@ def run_emcee(parallel=False):
          sampler = emc.EnsembleSampler(input_pars['nwalkers']
                                          , input_pars['ndim']
                                          , ln_probability, backend=backend 
-                                         , args=(coronagraph, input_pars
+                                         , args=(coronagraph, coro_basis, input_pars
                                                  , non_negative)
                                          , blobs_dtype=dtype)
          print("Ensemble Sampler instantiated.  Starting optimization run now.")
@@ -326,7 +320,7 @@ def run_emcee(parallel=False):
 
 
 if __name__ == '__main__':  
-    run_emcee(parallel=True)
+    run_emcee(parallel=False)
 
 
 
