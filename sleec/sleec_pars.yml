@@ -16,7 +16,7 @@ weights:
     -    1.000E+00
 ndim: 10 
 nwalkers: 40
-nsteps: 10000 
+nsteps: 1000 
 pupil_type: slepian_n2d  # Geometric/functional type of the pupil
 num_pupil_pars: 3  # Number of pupil design parameters
 # dm1_type: slepian_fourier
@@ -85,11 +85,15 @@ pupil_dia: 48.0e-3  # Pupil diameter
 grid_oversize: 1.01  # Ratio of grid width to pupil diameter
 num_pxl_across: 512  # No. of pixels across the pupil diameter
 n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
-pupil_filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
-# pupil_filename: null
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
+# pupil_filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
+pupil_filename: null
 
 
 ## DM Parameters
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
 # dm1_filename: ../../sleec_out/dm1_slepian2d.pkl
 # dm2_filename: ../../sleec_out/dm2_slepian2d.pkl
 # n2d_dm1: [15]
@@ -98,13 +102,15 @@ pupil_filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
 # n2d_dm2: [15]
 # k_dm2: 15
 # m_dm2: 0
-dm1_filename: ../../sleec_out/dm1_diskharmonic.pkl
+# dm1_filename: ../../sleec_out/dm1_diskharmonic.pkl
+# dm1_filename: null
 dm_dm1:  'dm1'
 m_dm1:  [0]
 n_min_dm1:  1
 n_max_dm1:  3
 bc_dm1:  'dirichlet'
-dm2_filename: ../../sleec_out/dm2_diskharmonic.pkl
+# dm2_filename: ../../sleec_out/dm2_diskharmonic.pkl
+# dm2_filename: null
 dm_dm2:  'dm2dm1'
 m_dm2:  [0]
 n_min_dm2:  2
@@ -143,6 +149,8 @@ acttr_filnm: null  # Fits filename for the influence function, located in
 # acttr_filnm: superinf-20180730-10x10.fits
 acttr_save_filnm: null  # Pickle filename to save a computed influence 
     # function, in <../../sleec_out>.  
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
 # acttr_save_filnm: inflnc_ftns_2x.pkl    
 dm1_vmap: null  # Either `null` or a `.fits` filename (the path prefix is hard 
     # coded as <../../sleec_in>).  If the value is `null` AND `dm1_surfc = 

@@ -143,6 +143,8 @@ class RunData(emc.backends.HDFBackend):
 
     def track_plot(self, save=False):
         non_flat_log_probs = self.log_prob_samples.reshape(-1, self.shape[0])
+        # make sure this opens in a new figure
+        plt.figure("Track Plot")
         x = [i for i in range(int(self.num_iters))]
         for walker in range(self.num_walkers): 
             plt.plot(x, non_flat_log_probs[:, walker])
@@ -155,8 +157,9 @@ class RunData(emc.backends.HDFBackend):
         else:
             plt.show()
 
-    def reconstruct(self, sample_number, airy_scale=True):  
-        file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
+    def reconstruct(self, sample_number, save, verbose=True, show=True):  
+        # file_path_slp does not seem to be used anywhere
+        # file_path_slp = os.path.join(self.directory, self.run_id+'.pkl')
         file_path_yml = os.path.join(self.directory, self.run_id+'.yml')
         pars = self.samples[sample_number]
         coronagraph, input_pars = sli.import_pars(file_path_yml)
@@ -167,15 +170,197 @@ class RunData(emc.backends.HDFBackend):
                                      , coronagraph=coronagraph
                                      , non_negative=input_pars['non_negative']
                                      , input_pars=input_pars, reconstruct=True)
-        return (coronagraph, ln_merit, tau, whole_throughput, throughputs
+        if verbose:
+            print("ln merit value:  {}".format(ln_merit))
+            print("required exposure time:  {}".format(tau))
+            print("overall throughput:  {}".format(whole_throughput))
+            print("throughput each Airy band:  {}".format(throughputs))
+            print("overall contrast:  {}".format(whole_contrast))
+            print("contrast in each Airy band:  {}".format(band_contrasts))
+            print("encircled PSF energy {}".format(encircle_psf))
+        if (show or save):
+            iwa = input_pars['IWA']
+            owa = input_pars['OWA']
+            resel = coronagraph.f_num*coronagraph.wvl
+            psf = wavefronts['on_fpm'].intensity
+            psf0 = psf.max()
+            radii = wavefronts['on_fpm'].electric_field.grid.as_('polar').r
+            mask = np.where((iwa*resel <= radii) & (radii < owa*resel), 1, 0)
+            avg_background = (wavefronts['camera'].intensity[np.where(mask)]
+                                                       .mean())
+            contrast_r = avg_background/psf0
+            print("recomputed contrast:  {:E}".format(contrast_r))
+            # Show PUPIL
+            field = coronagraph.pupil_field
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.pupil_diameter/2.0
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_PUPIL.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'PUPIL', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            
+            # Show DM1_SURFC
+            field = coronagraph.dm1_surfc
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM1-SURFC.png'
+                path = os.path.join(self.directory, fn)
+                single_plot(field, title='DM1 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save, path=path)
+            else:
+                single_plot(field, title='DM1 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
+            # Show DM1
+            field = wavefronts['dm1'].electric_field
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_POST-DM1.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'POST-DM1', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'POST-DM1', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show ON_DM2
+            field = wavefronts['on_dm2'].electric_field
+            field = field/np.abs(field).max()
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-DM2.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'ON DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show DM2_SURFC
+            field = coronagraph.dm2_surfc
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_DM2-SURFC.png'
+                path = os.path.join(self.directory, fn)
+                single_plot(field, title='DM2 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save, path=path)
+            else:
+                single_plot(field, title='DM2 SURFACE'
+                            , xlabel ='x [m]', scale='linear'
+                            , vmin=field.min(), vmax=field.max()
+                            , show=show, save=save)
+            # Show DM2
+            field = wavefronts['dm2'].electric_field
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_POST-DM2.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'POST-DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'POST-DM2', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show RELAY_PUPIL
+            field = wavefronts['relay_pupil'].electric_field
+            field = field/np.abs(field).max()
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RELAY-PUPIL.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show ON_FPM
+            field = wavefronts['on_fpm'].electric_field
+            field = field/np.abs(field).max()
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            scale_max = np.ceil(np.abs(field.max())**2) 
+            scale_min = 1e-13
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-FPM.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale
+                          , '[lambda/D]', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, scale1='log', scale2='log'
+                          , save=save, path=path)
+            else:
+                quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale
+                          , '[lambda/D]', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, scale1='log', scale2='log'
+                          , save=save )
+            # Show FPM
+            field = coronagraph.fpm_field
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_FPM.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'FPM', grid_scale, '[lambda/D]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'FPM', grid_scale, '[lambda/D]'
+                          , show=show, scale1='linear', save=save)
+            # Show ON_LYOT
+            field = wavefronts['on_lyot'].electric_field
+            field = field/np.abs(field).max()
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_ON-LYOT.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil radius'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'INCIDENT FIELD ON THE LYOT STOP', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show LYOT APERTURE
+            field = coronagraph.lyot_field
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_LYOT.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save, path=path)
+            else:
+                quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil radius]'
+                          , show=show, scale1='linear', save=save)
+            # Show CONTRAST	
+            field = ( np.abs(wavefronts['camera'].electric_field)
+                      /np.abs(wavefronts['on_fpm'].electric_field).max() )
+            scale_max = 1e-9
+            scale_min = 1e-13
+            grid_scale = coronagraph.f_num*coronagraph.wvl
+            if save:
+                fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_CONTRAST.png'
+                path = os.path.join(self.directory, fn)
+                quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
+                          , normalization='none'
+                          , scale='log', psf_vmin=scale_min, psf_vmax=scale_max
+                          , show=show, save=save, path=path) 
+            else:
+                quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]'
+                          , scale='log', psf_vmin=scale_min, psf_vmax=scale_max
+                          , normalization='none'
+                          , show=show) 
+        return_obj = (coronagraph, ln_merit, tau, whole_throughput, throughputs
             , whole_contrast, band_contrasts, encircle_psf, wavefronts, Cr_p
             , Cr_b_star, Cr_b_zodi, Cr_b_exozodi, Cr_b)  
+            # TODO: find alternative to pickle for saving
+#        if save:
+#            fn = 'RUN'+self.run_id+'_SAMPLE'+str(sample_number)+'_RETURN.pkl'
+#            path = os.path.join(self.directory, fn)
+#            with open(path, 'wb') as f:
+#                pkl.dump(return_obj, f)
+
+        return return_obj
         
     def acceptance_fractn(self):
         return np.mean(self.accepted/float(self.iteration))
 
-def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
-              , im_vmin=None, im_vmax=None):
+def quad_plot(field, suptitle, grid_scale, xlabel, scale1='linear'
+              , scale2='linear', scale3='linear', scale4='linear'
+#              , normalization='peak'
+              , show=True, psf_vmin=1E-12, psf_vmax=1.0
+              , save=False, **kwargs):
     intensity = (np.abs(field))**2
     if np.iscomplexobj(field):
         phase = np.angle(field)
@@ -185,12 +370,13 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
     plt.suptitle(suptitle)
     plt.subplot(221)
     plt.title('intensity')
-    hci.imshow_psf(intensity, scale=scale1, normalization='none'
-                   , cmap=turbo, vmin=im_vmin, vmax=im_vmax
+    hci.imshow_psf(intensity, scale=scale1
+#                   , normalization=normalization
+                   , cmap=turbo, vmin=psf_vmin, vmax=psf_vmax
                    , spatial_resolution=grid_scale)
     plt.subplot(223)
     plt.title('phase [pi]')
-    hci.imshow_psf(phase/np.pi, scale='linear', normalization='none'
+    hci.imshow_psf(phase/np.pi, scale=scale3
                    , cmap=turbo, vmax=1.0, vmin=-1.0
                    , spatial_resolution=grid_scale)
     plt.subplot(222)
@@ -199,135 +385,39 @@ def quad_plot(field, suptitle, grid_scale, grid_label, scale1='linear'
     plt.title('Horizontal Center Cross-Section:  Intensity')
     abscissa = ( field.grid.x.reshape(side_dim, side_dim)
                                                      [ctr_ndx, :] )/grid_scale
+    plt.yscale(scale2)
     plt.plot( abscissa 
-              , intensity.reshape(side_dim, side_dim)[ctr_ndx,:] )
-    plt.xlabel(grid_label)
-    plt.ylabel('amplitude')
+              , intensity.reshape(side_dim, side_dim)[ctr_ndx,:])
+    plt.xlabel(xlabel)
+#    plt.ylabel('amplitude')
     plt.subplot(224)
     plt.title('Horizontal Center Cross-Section:  Phase')
+    plt.yscale(scale4)
     plt.plot( abscissa 
-              , phase.reshape(side_dim, side_dim)[ctr_ndx,:]/np.pi )
-    plt.xlabel(grid_label)
+              , phase.reshape(side_dim, side_dim)[ctr_ndx,:]/np.pi)
+    plt.xlabel(xlabel)
     plt.ylabel('phase [pi]')
-    plt.show()
-    
-    
+    if save:
+        plt.savefig(kwargs['path'])
+    if show:
+        plt.show()
 
-def reconstruct(fn_prefix, sample_number, airy_scale=True):  
-    path = os.path.join('..', '..', 'sleec_out')
-    file_path_hdf = os.path.join(path, fn_prefix+'.hdf')
-    file_path_slp = os.path.join(path, fn_prefix+'.pkl')
-    file_path_yml = os.path.join(path, fn_prefix+'.yml')
-    reader = emc.backends.HDFBackend(file_path_hdf)
-    pars = reader.get_chain(flat=True)[sample_number]
-    coronagraph, input_pars = sli.import_pars(file_path_yml)
-    (ln_merit, tau, whole_throughput, throughputs, whole_contrast
-     , band_contrasts, encircle_psf, wavefronts, Cr_p, Cr_b_star, Cr_b_zodi
-     , Cr_b_exozodi, Cr_b) = slr.ln_probability(design_parameters=pars
-                                 , coronagraph=coronagraph
-                                 , non_negative=input_pars['non_negative']
-                                 , input_pars=input_pars, reconstruct=True) 
-    print("ln merit value:  {}".format(ln_merit))
-    print("required exposure time:  {}".format(tau))
-    print("overall throughput:  {}".format(whole_throughput))
-    print("throughput each Airy band:  {}".format(throughputs))
-    print("overall contrast:  {}".format(whole_contrast))
-    print("contrast in each Airy band:  {}".format(band_contrasts))
-    print("encircled PSF energy {}".format(encircle_psf))
-    # Check Contrast
-    iwa = input_pars['IWA']
-    owa = input_pars['OWA']
-    resel = coronagraph.f_num*coronagraph.wvl
-#    r = coronagraph.fpm_field.grid.as_('polar').r
-#    ndx = np.where((iwa*resel <= r)*( r  < owa*resel))
-#    print("\nndx sum:  {}".format(np.sum(np.ones_like(r)[ndx])))
-#
-#    field = ( np.abs(wavefronts['camera'].electric_field)
-#              /np.abs(wavefronts['on_fpm'].electric_field.max()) )
-#    denom = np.abs(wavefronts['on_fpm'].electric_field)
-#    truth = np.where((denom>=0.0)*(np.isreal(denom)), 1, 0).reshape(
-#                int(np.sqrt(451584)), int(np.sqrt(451584)))
-#    print("truth sum:  {}".format(truth.sum()))
-#    print("denominator:  {}:".format(
-#                        np.abs(wavefronts['on_fpm'].electric_field.max())
-#                                      ))
-#    print("denominator^2:  {}:".format(
-#                        np.abs(wavefronts['on_fpm'].electric_field.max())**2
-#                                      ))
-#    contrast_1 = (np.abs(field))**2
-#    contrast_zone = contrast_1[ndx].mean()
-#    print("contrast_1:  {}".format(contrast_1))
-#    print("Mean contrast_1 in target zone:  {:E}".format(contrast_zone))
-#
-#    field = np.abs(wavefronts['camera'].electric_field)**2
-#    norm = (np.abs(wavefronts['on_fpm'].electric_field)**2).max() 
-#    print("\nnorm:  {}".format(norm))
-#    contrast_2 = (field/norm)
-#    contrast_zone = contrast_2[ndx].mean()
-#    print("contrast_2:  {}".format(contrast_2))
-#    print("Mean contrast_2 in target zone:  {:E}".format(contrast_zone))
-#
-    psf = wavefronts['on_fpm'].intensity
-    psf0 = psf.max()
-#    print("\npsf0:  {}".format(psf0))
-    radii = wavefronts['on_fpm'].electric_field.grid.as_('polar').r
-    mask = np.where((iwa*resel <= radii) & (radii < owa*resel), 1, 0)
-#    print("mask sum:  {}".format(mask.sum()))
-#    avg_background = ( np.sum(wavefronts['camera'].intensity[np.where(mask)])
-#                       /mask.sum() )
-    avg_background = wavefronts['camera'].intensity[np.where(mask)].mean()
-    contrast_r = avg_background/psf0
-    print("recomputed contrast:  {:E}".format(contrast_r))
-    # Show PUPIL
-    field = coronagraph.pupil_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'PUPIL', grid_scale, 'x [pupil diameter]') 
-    # Show DM1
-    field = wavefronts['dm1'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'DM1', grid_scale, 'x [pupil diameter]')
-    # Show ON_DM2
-    field = wavefronts['on_dm2'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'ON DM2', grid_scale, 'x [pupil diameter]') 
-    # Show ON_DM2
-    field = wavefronts['dm2'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'DM2', grid_scale, 'x [pupil diameter]') 
-    # Show RELAY_PUPIL
-    field = wavefronts['relay_pupil'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'RELAY PUPIL', grid_scale, 'x [pupil diameter]') 
-    # Show ON_FPM
-    field = wavefronts['on_fpm'].electric_field
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'INCIDENT FIELD ON THE FPM', grid_scale, 'lambda/D')
-    # Show FPM
-    field = coronagraph.fpm_field
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'FPM', grid_scale, '[lambda/D]') 
-    # Show ON_LYOT
-    field = wavefronts['on_lyot'].electric_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'FIELD INCIDENT ON THE LYOT PUPIL', grid_scale
-              , 'x [pupil diameter]') 
-    # Show LYOT APERTURE
-    field = coronagraph.lyot_field
-    grid_scale = coronagraph.pupil_diameter
-    quad_plot(field, 'LYOT STOP', grid_scale, 'x [pupil diameter]') 
-    # Show CONTRAST	
-    field = ( np.abs(wavefronts['camera'].electric_field)
-              /np.abs(wavefronts['on_fpm'].electric_field).max() )
-    scale_max = 10**(np.ceil(np.log10(field.max()**2)))
-    scale_min = 1e-13
-    grid_scale = coronagraph.f_num*coronagraph.wvl
-    quad_plot(field, 'CONTRAST', grid_scale, '[lambda/D]', 'log'
-              , im_vmin=scale_min, im_vmax=scale_max) 
+def single_plot(field, title, xlabel, scale='linear'
+                , vmin=1e-12, vmax=1.0
+                , show=True, save=False, **kwargs):
+    plt.figure(figsize=(15, 12))
+    plt.title(title)
+    hci.imshow_psf(field, scale=scale, cmap=turbo, vmin=vmin, vmax=vmax)
+    plt.xlabel(xlabel)
+    if save:
+        plt.savefig(kwargs['path'])
+    if show:
+        plt.show()
 
 
 if __name__ == "__main__":
 #    show_run_stats(filename='20210624t1612.hdf', plot=False, long=False)    
-    reconstruct('20210624t1612', 309877)
+#    reconstruct('20210624t1612', 309877)
 #    reconstruct('20200508t1759', 35937)
 #    reconstruct('20200516t0007', 10712)
 #    reconstruct('20200516t0007', 10732)
@@ -338,3 +428,8 @@ if __name__ == "__main__":
 #    reconstruct('20200726t1539', 33301)
 #    reconstruct('20210111t1609', 10419)
 #    reconstruct('20210111t1609', 58536)
+
+# example to make corner and track plots for a run
+    a  = RunData("test_40_1000_A")
+    a.corner_plot(save=True)
+    a.track_plot(save=True)
