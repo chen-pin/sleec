@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.plotting package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-plotting-package">
+<h1>hcipy.hcipy.plotting package<a class="headerlink" href="#hcipy-hcipy-plotting-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.animation">
+<span id="hcipy-hcipy-plotting-animation-module"></span><h2>hcipy.hcipy.plotting.animation module<a class="headerlink" href="#module-hcipy.hcipy.plotting.animation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.plotting.animation.FFMpegWriter">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.plotting.animation.</code><code class="descname">FFMpegWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>codec=None</em>, <em>framerate=24</em>, <em>quality=None</em>, <em>preset=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.FFMpegWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_frame</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>close</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.animation.FFMpegWriter.add_frame">
+<code class="descname">add_frame</code><span class="sig-paren">(</span><em>fig=None</em>, <em>arr=None</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter.add_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.FFMpegWriter.add_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.animation.FFMpegWriter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.FFMpegWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.plotting.animation.GifWriter">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.plotting.animation.</code><code class="descname">GifWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>framerate=15</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.GifWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_frame</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>close</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.animation.GifWriter.add_frame">
+<code class="descname">add_frame</code><span class="sig-paren">(</span><em>fig=None</em>, <em>arr=None</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter.add_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.GifWriter.add_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.animation.GifWriter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.animation.GifWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.color_scheme">
+<span id="hcipy-hcipy-plotting-color-scheme-module"></span><h2>hcipy.hcipy.plotting.color_scheme module<a class="headerlink" href="#module-hcipy.hcipy.plotting.color_scheme" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.color_scheme.set_color_scheme">
+<code class="descclassname">hcipy.hcipy.plotting.color_scheme.</code><code class="descname">set_color_scheme</code><span class="sig-paren">(</span><em>dark=False</em>, <em>publication_quality=False</em>, <em>cmap='viridis'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/color_scheme.html#set_color_scheme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.color_scheme.set_color_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a color scheme to all matplotlib figures. The setting
+publication_quality uses LaTeX for all text in the figure.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.colors">
+<span id="hcipy-hcipy-plotting-colors-module"></span><h2>hcipy.hcipy.plotting.colors module<a class="headerlink" href="#module-hcipy.hcipy.plotting.colors" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.density">
+<span id="hcipy-hcipy-plotting-density-module"></span><h2>hcipy.hcipy.plotting.density module<a class="headerlink" href="#module-hcipy.hcipy.plotting.density" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.density.plot_density_scatter">
+<code class="descclassname">hcipy.hcipy.plotting.density.</code><code class="descname">plot_density_scatter</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>xsacle=1</em>, <em>yscale=1</em>, <em>sort=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_density_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.density.plot_density_scatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.density.plot_kde_density_1d">
+<code class="descclassname">hcipy.hcipy.plotting.density.</code><code class="descname">plot_kde_density_1d</code><span class="sig-paren">(</span><em>x</em>, <em>bw_method=None</em>, <em>n_steps=200</em>, <em>alpha_fill=0.25</em>, <em>rug=False</em>, <em>overshoot=0.1</em>, <em>ax=None</em>, <em>kernel_size=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_kde_density_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.density.plot_kde_density_1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a 1D kernel density estimate function of the data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.density.plot_kde_density_2d">
+<code class="descclassname">hcipy.hcipy.plotting.density.</code><code class="descname">plot_kde_density_2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>bw_method=None</em>, <em>n_steps=200</em>, <em>ax=None</em>, <em>overshoot=0.1</em>, <em>kernel_size=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_kde_density_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.density.plot_kde_density_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a 2D kernel density estimate function of the data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.density.plot_rug">
+<code class="descclassname">hcipy.hcipy.plotting.density.</code><code class="descname">plot_rug</code><span class="sig-paren">(</span><em>x</em>, <em>height=0.05</em>, <em>axis='x'</em>, <em>color='k'</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_rug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.density.plot_rug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a rug density plot efficiently. The height parameter is the length of 
+the rug marks given as a fraction of the axis length perpendicular to the 
+axis the marks are attached to.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.error_bars">
+<span id="hcipy-hcipy-plotting-error-bars-module"></span><h2>hcipy.hcipy.plotting.error_bars module<a class="headerlink" href="#module-hcipy.hcipy.plotting.error_bars" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.error_bars.errorfill">
+<code class="descclassname">hcipy.hcipy.plotting.error_bars.</code><code class="descname">errorfill</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>y_err_pos</em>, <em>y_err_neg=None</em>, <em>color=None</em>, <em>alpha_fill=0.25</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/error_bars.html#errorfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.error_bars.errorfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a line with filled errorbars.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting.field">
+<span id="hcipy-hcipy-plotting-field-module"></span><h2>hcipy.hcipy.plotting.field module<a class="headerlink" href="#module-hcipy.hcipy.plotting.field" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.field.complex_field_to_rgb">
+<code class="descclassname">hcipy.hcipy.plotting.field.</code><code class="descname">complex_field_to_rgb</code><span class="sig-paren">(</span><em>field</em>, <em>theme='dark'</em>, <em>rmin=None</em>, <em>rmax=None</em>, <em>norm=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#complex_field_to_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.field.complex_field_to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an array of complex number and converts it to an array of [r, g, b],
+where phase gives hue and saturaton/value are given by the absolute value.
+Especially for use with imshow for complex plots.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.field.contour_field">
+<code class="descclassname">hcipy.hcipy.plotting.field.</code><code class="descname">contour_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#contour_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.field.contour_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.field.contourf_field">
+<code class="descclassname">hcipy.hcipy.plotting.field.</code><code class="descname">contourf_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#contourf_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.field.contourf_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.field.imsave_field">
+<code class="descclassname">hcipy.hcipy.plotting.field.</code><code class="descname">imsave_field</code><span class="sig-paren">(</span><em>filename</em>, <em>field</em>, <em>grid=None</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>norm=None</em>, <em>mask=None</em>, <em>mask_color='w'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#imsave_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.field.imsave_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.field.imshow_field">
+<code class="descclassname">hcipy.hcipy.plotting.field.</code><code class="descname">imshow_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>aspect='equal'</em>, <em>norm=None</em>, <em>interpolation=None</em>, <em>non_linear_axes=False</em>, <em>cmap=None</em>, <em>mask=None</em>, <em>mask_color='k'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#imshow_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.field.imshow_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a two-dimensional image on a matplotlib figure.</p>
+<p>This function serves as an easy replacement for the matplotlib.pyplot.imshow() function.
+Its signature mostly folows that of matplotlib, with a few minor differences.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or ndarray</span><dd><p class="first last">The field that we want to display. If this is an ndarray,
+then the parameter <cite>grid</cite> needs to be supplied. If the field
+is complex, then it will be automatically fed into :func:<a href="#id1"><span class="problematic" id="id2">`</span></a>complex_field_to_rgb&#8217;.
+If the field is a vector field with length 3 or 4, these will be 
+interpreted as an RGB or RGBA field.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid or None</span><dd><p class="first last">If a grid is supplied, it will be used instead of the grid of <a href="#id3"><span class="problematic" id="id4">`</span></a>field.</p>
+</dd>
+<dt><strong>ax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">matplotlib axes</span><dd><p class="first last">The axes which to draw on. If it is not given, the current axes will be used.</p>
+</dd>
+<dt><strong>vmin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The minimum value on the colorbar. If it is not given, then the minimum value 
+of the field will be used.</p>
+</dd>
+<dt><strong>vmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The maximum value on the colorbar. If it is not given, then the maximum value 
+of the field will be used.</p>
+</dd>
+<dt><strong>aspect</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">[&#8216;auto&#8217;, &#8216;equal&#8217;, scalar]</span><dd><p class="first last">If &#8216;auto&#8217;, changes the image aspect ratio to match that of the axes.
+If &#8216;equal&#8217;, changes the axes aspect ratio to match that of the image.</p>
+</dd>
+<dt><strong>norm</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Normalize</span><dd><p class="first last">A Normalize instance is used to scale the input to the (0,1) range for
+input to the <cite>cmap</cite>. If it is not given, a linear scale will be used.</p>
+</dd>
+<dt><strong>interpolation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd></dd>
+<dt><strong>non_linear_axes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If axes are scaled in a non-linear way, for example on a log plot, then imshow_field
+needs to use a more expensive implementation. This parameter is to indicate that this
+algorithm needs to be used.</p>
+</dd>
+<dt><strong>cmap</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Colormap</span><dd><p class="first last">The colormap with which to plot the image. It is ignored if a complex
+field or a vector field is supplied.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">field or ndarray</span><dd><p class="first last">If part of the image needs to be masked, this mask is overlayed on top of the image.
+This is for example useful when plotting a phase pattern on a certain aperture, which
+has no meaning outside of the aperture. Masks can be partially translucent, and will
+be automatically scaled between (0,1). Zero means invisible, one means visible.</p>
+</dd>
+<dt><strong>mask_color</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Color</span><dd><p class="first last">The color of the mask, if it is used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>AxesImage</strong></dt>
+<dd><p class="first last">The produced image.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.plotting">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.plotting" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.plotting.GifWriter">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">GifWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>framerate=15</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.GifWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_frame</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>close</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.GifWriter.add_frame">
+<code class="descname">add_frame</code><span class="sig-paren">(</span><em>fig=None</em>, <em>arr=None</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter.add_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.GifWriter.add_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.GifWriter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#GifWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.GifWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.plotting.FFMpegWriter">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">FFMpegWriter</code><span class="sig-paren">(</span><em>filename</em>, <em>codec=None</em>, <em>framerate=24</em>, <em>quality=None</em>, <em>preset=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.FFMpegWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>add_frame</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>close</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.FFMpegWriter.add_frame">
+<code class="descname">add_frame</code><span class="sig-paren">(</span><em>fig=None</em>, <em>arr=None</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter.add_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.FFMpegWriter.add_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.plotting.FFMpegWriter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/animation.html#FFMpegWriter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.FFMpegWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.set_color_scheme">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">set_color_scheme</code><span class="sig-paren">(</span><em>dark=False</em>, <em>publication_quality=False</em>, <em>cmap='viridis'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/color_scheme.html#set_color_scheme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.set_color_scheme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply a color scheme to all matplotlib figures. The setting
+publication_quality uses LaTeX for all text in the figure.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.plot_kde_density_1d">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">plot_kde_density_1d</code><span class="sig-paren">(</span><em>x</em>, <em>bw_method=None</em>, <em>n_steps=200</em>, <em>alpha_fill=0.25</em>, <em>rug=False</em>, <em>overshoot=0.1</em>, <em>ax=None</em>, <em>kernel_size=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_kde_density_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.plot_kde_density_1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a 1D kernel density estimate function of the data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.plot_kde_density_2d">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">plot_kde_density_2d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>bw_method=None</em>, <em>n_steps=200</em>, <em>ax=None</em>, <em>overshoot=0.1</em>, <em>kernel_size=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_kde_density_2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.plot_kde_density_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a 2D kernel density estimate function of the data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.plot_rug">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">plot_rug</code><span class="sig-paren">(</span><em>x</em>, <em>height=0.05</em>, <em>axis='x'</em>, <em>color='k'</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_rug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.plot_rug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a rug density plot efficiently. The height parameter is the length of 
+the rug marks given as a fraction of the axis length perpendicular to the 
+axis the marks are attached to.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.plot_density_scatter">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">plot_density_scatter</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>xsacle=1</em>, <em>yscale=1</em>, <em>sort=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/density.html#plot_density_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.plot_density_scatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.errorfill">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">errorfill</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>y_err_pos</em>, <em>y_err_neg=None</em>, <em>color=None</em>, <em>alpha_fill=0.25</em>, <em>ax=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/error_bars.html#errorfill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.errorfill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a line with filled errorbars.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.imshow_field">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">imshow_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>aspect='equal'</em>, <em>norm=None</em>, <em>interpolation=None</em>, <em>non_linear_axes=False</em>, <em>cmap=None</em>, <em>mask=None</em>, <em>mask_color='k'</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#imshow_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.imshow_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a two-dimensional image on a matplotlib figure.</p>
+<p>This function serves as an easy replacement for the matplotlib.pyplot.imshow() function.
+Its signature mostly folows that of matplotlib, with a few minor differences.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field or ndarray</span><dd><p class="first last">The field that we want to display. If this is an ndarray,
+then the parameter <cite>grid</cite> needs to be supplied. If the field
+is complex, then it will be automatically fed into :func:<a href="#id5"><span class="problematic" id="id6">`</span></a>complex_field_to_rgb&#8217;.
+If the field is a vector field with length 3 or 4, these will be 
+interpreted as an RGB or RGBA field.</p>
+</dd>
+<dt><strong>grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid or None</span><dd><p class="first last">If a grid is supplied, it will be used instead of the grid of <a href="#id7"><span class="problematic" id="id8">`</span></a>field.</p>
+</dd>
+<dt><strong>ax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">matplotlib axes</span><dd><p class="first last">The axes which to draw on. If it is not given, the current axes will be used.</p>
+</dd>
+<dt><strong>vmin</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The minimum value on the colorbar. If it is not given, then the minimum value 
+of the field will be used.</p>
+</dd>
+<dt><strong>vmax</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The maximum value on the colorbar. If it is not given, then the maximum value 
+of the field will be used.</p>
+</dd>
+<dt><strong>aspect</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">[&#8216;auto&#8217;, &#8216;equal&#8217;, scalar]</span><dd><p class="first last">If &#8216;auto&#8217;, changes the image aspect ratio to match that of the axes.
+If &#8216;equal&#8217;, changes the axes aspect ratio to match that of the image.</p>
+</dd>
+<dt><strong>norm</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Normalize</span><dd><p class="first last">A Normalize instance is used to scale the input to the (0,1) range for
+input to the <cite>cmap</cite>. If it is not given, a linear scale will be used.</p>
+</dd>
+<dt><strong>interpolation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd></dd>
+<dt><strong>non_linear_axes</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If axes are scaled in a non-linear way, for example on a log plot, then imshow_field
+needs to use a more expensive implementation. This parameter is to indicate that this
+algorithm needs to be used.</p>
+</dd>
+<dt><strong>cmap</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Colormap</span><dd><p class="first last">The colormap with which to plot the image. It is ignored if a complex
+field or a vector field is supplied.</p>
+</dd>
+<dt><strong>mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">field or ndarray</span><dd><p class="first last">If part of the image needs to be masked, this mask is overlayed on top of the image.
+This is for example useful when plotting a phase pattern on a certain aperture, which
+has no meaning outside of the aperture. Masks can be partially translucent, and will
+be automatically scaled between (0,1). Zero means invisible, one means visible.</p>
+</dd>
+<dt><strong>mask_color</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Color</span><dd><p class="first last">The color of the mask, if it is used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>AxesImage</strong></dt>
+<dd><p class="first last">The produced image.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.imsave_field">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">imsave_field</code><span class="sig-paren">(</span><em>filename</em>, <em>field</em>, <em>grid=None</em>, <em>vmin=None</em>, <em>vmax=None</em>, <em>norm=None</em>, <em>mask=None</em>, <em>mask_color='w'</em>, <em>cmap=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#imsave_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.imsave_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.contour_field">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">contour_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#contour_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.contour_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.contourf_field">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">contourf_field</code><span class="sig-paren">(</span><em>field</em>, <em>grid=None</em>, <em>ax=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#contourf_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.contourf_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.plotting.complex_field_to_rgb">
+<code class="descclassname">hcipy.hcipy.plotting.</code><code class="descname">complex_field_to_rgb</code><span class="sig-paren">(</span><em>field</em>, <em>theme='dark'</em>, <em>rmin=None</em>, <em>rmax=None</em>, <em>norm=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/plotting/field.html#complex_field_to_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.plotting.complex_field_to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes an array of complex number and converts it to an array of [r, g, b],
+where phase gives hue and saturaton/value are given by the absolute value.
+Especially for use with imshow for complex plots.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.plotting package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.animation">hcipy.hcipy.plotting.animation module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.color_scheme">hcipy.hcipy.plotting.color_scheme module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.colors">hcipy.hcipy.plotting.colors module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.density">hcipy.hcipy.plotting.density module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.error_bars">hcipy.hcipy.plotting.error_bars module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting.field">hcipy.hcipy.plotting.field module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.plotting">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.plotting.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.plotting.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

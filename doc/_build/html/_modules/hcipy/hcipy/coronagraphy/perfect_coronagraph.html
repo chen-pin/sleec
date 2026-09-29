@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.coronagraphy.perfect_coronagraph &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.coronagraphy.perfect_coronagraph</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..optics</span> <span class="kn">import</span> <span class="n">OpticalElement</span>
+<span class="kn">from</span> <span class="nn">..mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+<span class="kn">from</span> <span class="nn">..math_util</span> <span class="kn">import</span> <span class="n">inverse_truncated</span>
+
+<div class="viewcode-block" id="PerfectCoronagraph"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.PerfectCoronagraph">[docs]</a><span class="k">class</span> <span class="nc">PerfectCoronagraph</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A perfect coronagraph for a certain aperture and order.</span>
+
+<span class="sd">		These type of coronagraphs suppress all light for a flat wavefront. The incoming complex</span>
+<span class="sd">		amplitude :math:`A` is modified as follows (following [1]_):</span>
+
+<span class="sd">		.. math::</span>
+<span class="sd">			\overline{A} = A - \Pi \sqrt{S}</span>
+<span class="sd">		</span>
+<span class="sd">		where :math:`\overline{A}` is the resulting complex ampliutude, :math:`\Pi` is the telescope</span>
+<span class="sd">		pupil, and :math:`S` is the Strehl ratio of the incoming wavefront.</span>
+
+<span class="sd">		Higher orders are added by fitting higher-order electric field modes to the incoming</span>
+<span class="sd">		wavefront and subtracting those, following [2]_.</span>
+
+<span class="sd">		.. [1] Celine Cavarroc et al. &quot;Fundamental limitations on Earth-like planet detection with extremely large telescopes.&quot; Astronomy &amp; Astrophysics 447.1 (2006): 397-403</span>
+<span class="sd">		.. [2] Olivier Guyon et al. &quot;Theoretical limits on extrasolar terrestrial planet detection with coronagraphs.&quot; The Astrophysical Journal Supplement Series 167.1 (2006): 81</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		aperture : Field</span>
+<span class="sd">			The reference aperture. The perfect coronagraph is designed for this aperture.</span>
+<span class="sd">		order : integer</span>
+<span class="sd">			The order of the perfect coronagraph. This must be even.</span>
+<span class="sd">		coeffs : list or ndarray or None</span>
+<span class="sd">			The coefficients that are used for subtraction. This allows for partial suppression of certain</span>
+<span class="sd">			modes, which can be used to design perfect coronagraphs that are insensitive to stellar</span>
+<span class="sd">			radius [2]_. If it is None, all modes are completely suppressed.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aperture</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">coeffs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span> <span class="o">=</span> <span class="n">aperture</span><span class="o">.</span><span class="n">grid</span>
+		<span class="n">modes</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="k">if</span> <span class="n">coeffs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">coeffs</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">=</span> <span class="n">coeffs</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">order</span> <span class="o">*</span> <span class="p">(</span><span class="n">order</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">))</span>
+
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">order</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+				<span class="n">modes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aperture</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="n">j</span><span class="p">))</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">mode_basis</span> <span class="o">=</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span><span class="o">.</span><span class="n">orthogonalized</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">transformation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_basis</span><span class="o">.</span><span class="n">transformation_matrix</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">transformation_inverse</span> <span class="o">=</span> <span class="n">inverse_truncated</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PerfectCoronagraph.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.PerfectCoronagraph.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront through the perfect coronagraph.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront (in the pupil plane)</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The post-coronagraphic wavefront (in the pupil plane).</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+		<span class="n">correction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation_inverse</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span><span class="p">))</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">-=</span> <span class="n">correction</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="PerfectCoronagraph.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.PerfectCoronagraph.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront backwards through the perfect coronagraph.</span>
+
+<span class="sd">		This method behaves the same as the forward propagation.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront (in the pupil plane)</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The post-coronagraphic wavefront (in the pupil plane).</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="PerfectCoronagraph.get_transformation_matrix_forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.PerfectCoronagraph.get_transformation_matrix_forward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Get the forward propagation transformation matrix.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavelength : scalar</span>
+<span class="sd">			The wavelength at which to calculate the transformation matrix.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		ndarray</span>
+<span class="sd">			The forward transformation_matrix.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pupil_grid</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformation_inverse</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="PerfectCoronagraph.get_transformation_matrix_backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.PerfectCoronagraph.get_transformation_matrix_backward">[docs]</a>	<span class="k">def</span> <span class="nf">get_transformation_matrix_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Get the backwards propagation transformation matrix.</span>
+
+<span class="sd">		This method behaves the same as the forward propagation.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavelength : scalar</span>
+<span class="sd">			The wavelength at which to calculate the transformation matrix.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		ndarray</span>
+<span class="sd">			The backward transformation_matrix.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_transformation_matrix_forward</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.interpolation.linear &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.interpolation.linear</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span><span class="p">,</span> <span class="n">LinearNDInterpolator</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<div class="viewcode-block" id="make_linear_interpolator_separated"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.interpolation.html#hcipy.hcipy.make_linear_interpolator_separated">[docs]</a><span class="k">def</span> <span class="nf">make_linear_interpolator_separated</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make a linear interpolators for a separated grid.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	field : Field or ndarray</span>
+<span class="sd">		The field to interpolate.</span>
+<span class="sd">	grid : Grid or None</span>
+<span class="sd">		The grid of the field. If it is given, the grid of `field` is replaced by this grid.</span>
+<span class="sd">	fill_value : scalar</span>
+<span class="sd">		The value to use for points outside of the domain of the input field. If this is None, the values</span>
+<span class="sd">		outside the domain are extrapolated.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The interpolator, as a Field generator. The grid on which this field generator will evaluated, does</span>
+<span class="sd">		not have to be separated.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">grid</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">field</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	
+	<span class="n">axes_reversed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">)</span>
+	<span class="n">interp</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">(</span><span class="n">axes_reversed</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">shaped</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">interpolator</span><span class="p">(</span><span class="n">evaluated_grid</span><span class="p">):</span>
+		<span class="n">evaluated_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">evaluated_grid</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">evaluated_coords</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">evaluated_grid</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">interpolator</span></div>
+
+<div class="viewcode-block" id="make_linear_interpolator_unstructured"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.interpolation.html#hcipy.hcipy.make_linear_interpolator_unstructured">[docs]</a><span class="k">def</span> <span class="nf">make_linear_interpolator_unstructured</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make a linear interpolator for an unstructured grid.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	field : Field or array_like</span>
+<span class="sd">		The field to interpolate.</span>
+<span class="sd">	grid : Grid or None</span>
+<span class="sd">		The grid of the field. If it is given, the grid of `field` is replaced by this grid.</span>
+<span class="sd">	fill_value : scalar</span>
+<span class="sd">		The value to use for points outside of the domain of the input field. Extrapolation is not supported.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The interpolator as a Field generator. The grid on which this field generator will be evaluated does</span>
+<span class="sd">		not need to have any structure.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">if</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Extrapolation is not supported for a linear interpolator on an unstructured grid.&#39;</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">grid</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">field</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	
+	<span class="n">interp</span> <span class="o">=</span> <span class="n">LinearNDInterpolator</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">interpolator</span><span class="p">(</span><span class="n">evaluated_grid</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">evaluated_grid</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">interpolator</span></div>
+
+<div class="viewcode-block" id="make_linear_interpolator"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.interpolation.html#hcipy.hcipy.make_linear_interpolator">[docs]</a><span class="k">def</span> <span class="nf">make_linear_interpolator</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make a linear interpolator for any type of grid.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	field : Field or array_like</span>
+<span class="sd">		The field to interpolate.</span>
+<span class="sd">	grid : Grid or None</span>
+<span class="sd">		The grid of the field. If it is given, the grid of `field` is replaced by this grid.</span>
+<span class="sd">	fill_value : scalar or None</span>
+<span class="sd">		The value to use for points outside of the domain of the input field. Extrapolation is not supported.</span>
+<span class="sd">		If it is None, a numpy.nan value will be used for points outside of the domain.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The interpolator as a Field generator. The grid on which this field generator will be evaluated does</span>
+<span class="sd">		not need to have any structure.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">grid</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">grid</span>
+	
+	<span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_unstructured</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">make_linear_interpolator_unstructured</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">make_linear_interpolator_separated</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

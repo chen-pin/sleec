@@ -1,0 +1,181 @@
+# Input parameter file for sleec   
+
+
+# All parameters are in mks units unless otherwise noted.  
+
+# OPTIMIZATION PARAMETERS
+target_tau: 0.0  # Required-integration-time target for computing merit 
+    # value
+tolerance: 72000.  # Tolerance for computing merit value 
+    # (ref. Habex Report Table 5.1-2) 
+weights: 
+    # {array_like or 'null'}.  Weights to be applied to 
+    # merit values in each Airy band.  
+    -    1.000E+00
+    -    1.000E+00
+    -    1.000E+00
+ndim: 10 
+nwalkers: 40
+nsteps: 1000 
+pupil_type: slepian_n2d  # Geometric/functional type of the pupil
+num_pupil_pars: 3  # Number of pupil design parameters
+# dm1_type: slepian_fourier
+# dm1_type: slepian_fourier
+dm1_type: disk_harmonic
+num_dm1_pars: 3
+# dm2_type: slepian_fourier
+dm2_type: disk_harmonic
+num_dm2_pars: 2
+fpm_type: dot
+# fpm_type: super_gaussian
+num_fpm_pars:  1  # Number of FPM design parameters
+lyot_type:  circular_clear  # Geometric type of the Lyot aperture   
+num_lyot_pars:  1  # Number of Lyot-pupil design parameters
+
+seed_start: False  # Whether or not to initialize the run with prescribed
+    # walker positions from a sample of a previous run
+#directory:  '../../sleec_out'  # If `seed_start` is `True`, specify the 
+    # directory path of the <.hdf> file
+#run_id: '20200706t2300'  # If `seed_start` is `True`, specify the run ID
+#sample_number: 12922  # If `seed_start` is `True`, spacify the sample number
+spread_factor: 0.0001  # Spread of initial walker positions.  The distribution 
+    # of parameter values among walkers is 
+    # (p0 + spread_factor*(max-min)*normal_distribution
+    # Bounds_pars below specify p0, max, and min.  
+
+## Bounds on Optimization Parameters [ini, min, max].  If `seed_start` is 
+    # `True` the <ini> values will be ignored 
+bounds_pars: 
+    -    [1.5086887, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [-0.93083707, -1.0, 2.0]  # Slepian pupil coefficient
+    -    [0.2132759, -1.0, 2.0]  # Slepian pupil coefficient 
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm1 coefficient
+#    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [0.0, -2.85E-07, 2.85E-07]  # Disk-harmonic dm2 coefficient
+    -    [5.95487522, 2.0, 8.0]  # FPM diameter [wvl/D]
+#    -    [0.5, 0.0, 1.0]  # A: FPM peak amplitude opacity
+#    -    [1.3, 0.2, 5.0]  # sigma: FPM super-Gaussian width parameter
+#    -    [20, 2, 588]  # N: FPM super-Gaussian order
+    -    [0.85783221, 0.300, 1.000]  # Lyot stop diameter [fraction of pupil 
+                                # diameter]
+wvl: 570.0e-9  # wavelength
+non_negative: True  # If `True`, set negative pupil field values to zero
+
+
+# ASTRONOMICAL PARAMETERS (ref. Stark et al. 2014)  
+F_0: 9500.0e+13  # V-band, zero-magnitude flux [photon/(m^3 s)]
+m_v: 5.0  # apparent magnitude
+delta_mag: 25  # contrast magnitude of faintest detectable planet
+wvl_bw: 1.7e-8  # wavelength bandwidth [m]
+z: 23  # surface brightness of zodiacal light [mag/arcsec^2]
+x: 22  # surface brightness of 1 zodi of exozodiacal dust [mag/arcsec^2]
+n: 3  # number of zodis 
+D: 4.0  # Telescope diameter
+encircle_radius: 0.7  # Radius of PSF encirclement
+snr: 7.0  # SNR requirement
+ 
+
+# CORONAGRAPH SETUP/INITIALIZATION PARAMETERS
+## Pupil Parameters    
+# pupil_type: circular_clear  # Geometric/functional type of the pupil
+pupil_dia: 48.0e-3  # Pupil diameter 
+grid_oversize: 1.01  # Ratio of grid width to pupil diameter
+num_pxl_across: 512  # No. of pixels across the pupil diameter
+n2d_pupil: [10, 15, 22]  # 2-D Shannon numbers.  Must be integers.
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
+# pupil_filename: ../../sleec_out/slepians.pkl  # File holding Slepian mode basis
+pupil_filename: null
+
+
+## DM Parameters
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
+# dm1_filename: ../../sleec_out/dm1_slepian2d.pkl
+# dm2_filename: ../../sleec_out/dm2_slepian2d.pkl
+# n2d_dm1: [15]
+# k_dm1: 15
+# m_dm1: 0
+# n2d_dm2: [15]
+# k_dm2: 15
+# m_dm2: 0
+# dm1_filename: ../../sleec_out/dm1_diskharmonic.pkl
+# dm1_filename: null
+dm_dm1:  'dm1'
+m_dm1:  [0]
+n_min_dm1:  1
+n_max_dm1:  3
+bc_dm1:  'dirichlet'
+# dm2_filename: ../../sleec_out/dm2_diskharmonic.pkl
+# dm2_filename: null
+dm_dm2:  'dm2dm1'
+m_dm2:  [0]
+n_min_dm2:  2
+n_max_dm2:  3
+bc_dm2:  'dirichlet'
+dm_seprtn: 1.0  # Physical distance between the two DMs  
+dm1_surfc: zero  # Must be one of the following values:  
+    # A '.fits' filename:  
+        # The path prefix is hard coded to <../../sleec_in>) or `False`.  If a 
+        # filename is entered, then the DM surface is directly input without 
+        # using a voltage map (bypassing actuators altogether), and 
+        # actuator-related parameters below should be `null`.  
+    # zero:  Same as above, except the DM surface is set to a flat field of 
+        # zeros.  
+    # null:  DM is specified through actuator settings, and actuator-related 
+        # parameters below must be provided. 
+dm2_surfc: zero  # Must be one of the following values:  
+    # A '.fits' filename:  
+        # The path prefix is hard coded to <../../sleec_in>) or `False`.  If a 
+        # filename is entered, then the DM surface is directly input without 
+        # using a voltage map (bypassing actuators altogether), and 
+        # actuator-related parameters below should be `null`.  
+    # zero:  Same as above, except the DM surface is set to a flat field of 
+        # zeros.  
+    # null:  DM is specified through actuator settings, and actuator-related 
+        # parameters below must be provided. 
+num_acttrs_across: null  # No. of actuators across the pupil diameter.  
+    # Null means DM surface is directly input without using a 
+    # voltage map. 
+acttr_pxl_spacing: null  # Pixel sampling of the super-influence function, 
+    # normally 10 pixels between adjacent actuators. 
+    # Null means DM surface is directly input without using a 
+    # voltage map. 
+acttr_filnm: null  # Fits filename for the influence function, located in 
+    # <../../sleec_in>.  
+# acttr_filnm: superinf-20180730-10x10.fits
+acttr_save_filnm: null  # Pickle filename to save a computed influence 
+    # function, in <../../sleec_out>.  
+# TODO: find alternative to pickle files. npz files can save sparse matrices, but not dictionaries. 
+# May need to save the influence function and relevant parameters in separate files.
+# acttr_save_filnm: inflnc_ftns_2x.pkl    
+dm1_vmap: null  # Either `null` or a `.fits` filename (the path prefix is hard 
+    # coded as <../../sleec_in>).  If the value is `null` AND `dm1_surfc = 
+    # `null` then the voltage map is set to an array of zeros.  
+dm2_vmap: null  # Either `null` or a `.fits` filename.  Path prefix is hard
+    # coded as <../../sleec_in>).  If the value is `null` AND `dm2_surfc` = 
+    # `null` then the voltage map is set to an array of zeros.  
+
+
+## Focal-Plane Parameters  
+f_num:  30.0  # f/#
+num_airy: 28  # Outer extent in terms of Airy rings
+fpm_dia: 4.0  # Diameter of the focal-plane mask in units of 
+    # f_num/wvl
+oversmpl: 12  # No. of pixles per resolution width
+
+    
+# Lyot Plane Parameters   
+lyot_dia:  0.7071 # Lyot aperture diameter, as a fraction of pupil 
+    # diameter.  
+
+    
+## Camera-Plane Parameters
+dark_zone_type: 'annular_full'
+IWA: 2.5  # Inner working angle (for contrast calculation).  
+    # In units of f_num*wvl
+OWA: 5.5  # Outer working angle.  
+    # In units of f_num*wvl

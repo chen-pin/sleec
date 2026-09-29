@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-package">
+<h1>hcipy package<a class="headerlink" href="#hcipy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hcipy.hcipy.html">hcipy.hcipy package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hcipy.hcipy.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.aperture.html">hcipy.hcipy.aperture package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.aperture.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.aperture.html#module-hcipy.hcipy.aperture.generic">hcipy.hcipy.aperture.generic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.aperture.html#module-hcipy.hcipy.aperture.realistic">hcipy.hcipy.aperture.realistic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.aperture.html#module-hcipy.hcipy.aperture">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.atmosphere.html">hcipy.hcipy.atmosphere package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere.atmospheric_model">hcipy.hcipy.atmosphere.atmospheric_model module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere.finite_atmospheric_layer">hcipy.hcipy.atmosphere.finite_atmospheric_layer module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere.infinite_atmospheric_layer">hcipy.hcipy.atmosphere.infinite_atmospheric_layer module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere.modal_adaptive_optics_layer">hcipy.hcipy.atmosphere.modal_adaptive_optics_layer module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere.standard_atmosphere">hcipy.hcipy.atmosphere.standard_atmosphere module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.atmosphere.html#module-hcipy.hcipy.atmosphere">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.config.html">hcipy.hcipy.config package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.config.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.config.html#module-hcipy.hcipy.config.config">hcipy.hcipy.config.config module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.config.html#module-hcipy.hcipy.config">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html">hcipy.hcipy.coronagraphy package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#module-hcipy.hcipy.coronagraphy.apodizing_phase_plate">hcipy.hcipy.coronagraphy.apodizing_phase_plate module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#module-hcipy.hcipy.coronagraphy.lyot">hcipy.hcipy.coronagraphy.lyot module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#module-hcipy.hcipy.coronagraphy.perfect_coronagraph">hcipy.hcipy.coronagraphy.perfect_coronagraph module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#module-hcipy.hcipy.coronagraphy.vortex">hcipy.hcipy.coronagraphy.vortex module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.coronagraphy.html#module-hcipy.hcipy.coronagraphy">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.field.html">hcipy.hcipy.field package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.cartesian_grid">hcipy.hcipy.field.cartesian_grid module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.coordinates">hcipy.hcipy.field.coordinates module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.field">hcipy.hcipy.field.field module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.grid">hcipy.hcipy.field.grid module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.operations">hcipy.hcipy.field.operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.polar_grid">hcipy.hcipy.field.polar_grid module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field.util">hcipy.hcipy.field.util module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.field.html#module-hcipy.hcipy.field">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.fourier.html">hcipy.hcipy.fourier package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier.fast_fourier_transform">hcipy.hcipy.fourier.fast_fourier_transform module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier.fourier_operations">hcipy.hcipy.fourier.fourier_operations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier.fourier_transform">hcipy.hcipy.fourier.fourier_transform module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier.matrix_fourier_transform">hcipy.hcipy.fourier.matrix_fourier_transform module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier.naive_fourier_transform">hcipy.hcipy.fourier.naive_fourier_transform module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.fourier.html#module-hcipy.hcipy.fourier">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.interpolation.html">hcipy.hcipy.interpolation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.interpolation.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.interpolation.html#module-hcipy.hcipy.interpolation.linear">hcipy.hcipy.interpolation.linear module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.interpolation.html#module-hcipy.hcipy.interpolation.nearest">hcipy.hcipy.interpolation.nearest module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.interpolation.html#module-hcipy.hcipy.interpolation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.io.html">hcipy.hcipy.io package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.io.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.io.html#module-hcipy.hcipy.io.fits">hcipy.hcipy.io.fits module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.io.html#module-hcipy.hcipy.io.util">hcipy.hcipy.io.util module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.io.html#module-hcipy.hcipy.io">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.math_util.html">hcipy.hcipy.math_util package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.math_util.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.math_util.html#module-hcipy.hcipy.math_util.matrix_inversion">hcipy.hcipy.math_util.matrix_inversion module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.math_util.html#module-hcipy.hcipy.math_util.singular_value_decomposition">hcipy.hcipy.math_util.singular_value_decomposition module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.math_util.html#module-hcipy.hcipy.math_util">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.metrics.html">hcipy.hcipy.metrics package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.metrics.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.metrics.html#module-hcipy.hcipy.metrics.contrast">hcipy.hcipy.metrics.contrast module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.metrics.html#module-hcipy.hcipy.metrics.profile">hcipy.hcipy.metrics.profile module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.metrics.html#module-hcipy.hcipy.metrics">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.mode_basis.html">hcipy.hcipy.mode_basis package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.disk_harmonic">hcipy.hcipy.mode_basis.disk_harmonic module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.fourier">hcipy.hcipy.mode_basis.fourier module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.gaussian_hermite">hcipy.hcipy.mode_basis.gaussian_hermite module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.gaussian_laguerre">hcipy.hcipy.mode_basis.gaussian_laguerre module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.gaussian_pokes">hcipy.hcipy.mode_basis.gaussian_pokes module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.mode_basis">hcipy.hcipy.mode_basis.mode_basis module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis.zernike">hcipy.hcipy.mode_basis.zernike module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.mode_basis.html#module-hcipy.hcipy.mode_basis">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.optics.html">hcipy.hcipy.optics package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.aberration">hcipy.hcipy.optics.aberration module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.apodization">hcipy.hcipy.optics.apodization module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.deformable_mirror">hcipy.hcipy.optics.deformable_mirror module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.detector">hcipy.hcipy.optics.detector module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.dynamic_optical_system">hcipy.hcipy.optics.dynamic_optical_system module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.fiber">hcipy.hcipy.optics.fiber module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.gaussian_beam">hcipy.hcipy.optics.gaussian_beam module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.micro_lens_array">hcipy.hcipy.optics.micro_lens_array module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.multi_layer_atmosphere">hcipy.hcipy.optics.multi_layer_atmosphere module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.optical_element">hcipy.hcipy.optics.optical_element module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.polarization">hcipy.hcipy.optics.polarization module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.vibration">hcipy.hcipy.optics.vibration module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics.wavefront">hcipy.hcipy.optics.wavefront module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.optics.html#module-hcipy.hcipy.optics">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.plotting.html">hcipy.hcipy.plotting package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.animation">hcipy.hcipy.plotting.animation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.color_scheme">hcipy.hcipy.plotting.color_scheme module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.colors">hcipy.hcipy.plotting.colors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.density">hcipy.hcipy.plotting.density module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.error_bars">hcipy.hcipy.plotting.error_bars module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting.field">hcipy.hcipy.plotting.field module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.plotting.html#module-hcipy.hcipy.plotting">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.propagation.html">hcipy.hcipy.propagation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#module-hcipy.hcipy.propagation.angular_spectrum">hcipy.hcipy.propagation.angular_spectrum module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#module-hcipy.hcipy.propagation.fraunhofer">hcipy.hcipy.propagation.fraunhofer module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#module-hcipy.hcipy.propagation.fresnel">hcipy.hcipy.propagation.fresnel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#module-hcipy.hcipy.propagation.propagator">hcipy.hcipy.propagation.propagator module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.propagation.html#module-hcipy.hcipy.propagation">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.statistics.html">hcipy.hcipy.statistics package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.statistics.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.statistics.html#module-hcipy.hcipy.statistics.spectral_noise">hcipy.hcipy.statistics.spectral_noise module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.statistics.html#module-hcipy.hcipy.statistics.util">hcipy.hcipy.statistics.util module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.statistics.html#module-hcipy.hcipy.statistics">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.techniques.html">hcipy.hcipy.techniques package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.techniques.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.techniques.html#module-hcipy.hcipy.techniques.computer_generated_hologram">hcipy.hcipy.techniques.computer_generated_hologram module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.techniques.html#module-hcipy.hcipy.techniques.electric_field_conjugation">hcipy.hcipy.techniques.electric_field_conjugation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.techniques.html#module-hcipy.hcipy.techniques.stroke_minimization">hcipy.hcipy.techniques.stroke_minimization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.techniques.html#module-hcipy.hcipy.techniques">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.wavefront_control.html">hcipy.hcipy.wavefront_control package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_control.html#module-hcipy.hcipy.wavefront_control">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html">hcipy.hcipy.wavefront_sensing package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing.pyramid">hcipy.hcipy.wavefront_sensing.pyramid module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing.shack_hartmann">hcipy.hcipy.wavefront_sensing.shack_hartmann module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing.wavefront_sensor">hcipy.hcipy.wavefront_sensing.wavefront_sensor module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor">hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor module</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="hcipy.hcipy.wavefront_sensing.html#module-hcipy.hcipy.wavefront_sensing">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hcipy.hcipy.html#module-hcipy.hcipy">Module contents</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="hcipy-setup-module">
+<h2>hcipy.setup module<a class="headerlink" href="#hcipy-setup-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#hcipy-setup-module">hcipy.setup module</a></li>
+<li><a class="reference internal" href="#module-hcipy">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

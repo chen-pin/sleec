@@ -1,0 +1,2737 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.wavefront_sensing package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-wavefront-sensing-package">
+<h1>hcipy.hcipy.wavefront_sensing package<a class="headerlink" href="#hcipy-hcipy-wavefront-sensing-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor">
+<span id="hcipy-hcipy-wavefront-sensing-optical-differentiation-wavefront-sensor-module"></span><h2>hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor module<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">OpticalDifferentiationWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from OD wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the pupils for the normalized differences.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of an OD wavefront sensor is sampled.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the normalized differences are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the normalized differences.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the wavefront slope from a ODWFS image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the wavefront slope from a ODWFS image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">List</span><dd><p class="first last">A list of scalar intensity fields containing OD wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A field with wavefront sensor slopes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">OpticalDifferentiationWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>amplitude_filter</em>, <em>pupil_grid</em>, <em>pupil_diameter</em>, <em>pupil_separation</em>, <em>num_pupil_pixels</em>, <em>q</em>, <em>wavelength_0</em>, <em>refractive_index</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The value of some physical quantity for each point in some coordinate system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>amplitude_filter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function which acts on the focal plane grid to create a amplitude filter.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.PolgODWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">PolgODWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>beta</em>, <em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function PolgODWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#PolgODWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.PolgODWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A generalised optical differentiation wavefront sensor based on linear amplitude filters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>beta</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The step size. A value of 0 corresponds to a linear filter and a value of 1 to a
+full step.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.RooftopWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">RooftopWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function RooftopWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#RooftopWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.RooftopWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A rooftop wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.gODWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">gODWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>beta</em>, <em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function gODWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#gODWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.gODWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A generalised optical differentiation wavefront sensor based on linear amplitude filters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>beta</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The step size. A value of 0 corresponds to a linear filter and a value of 1 to a
+full step.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.optical_differentiation_surface">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.</code><code class="descname">optical_differentiation_surface</code><span class="sig-paren">(</span><em>filter_size</em>, <em>amplitude_filter</em>, <em>separation</em>, <em>wavelength_0</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#optical_differentiation_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.optical_differentiation_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create the complex multiplexed surface for the ODWFS on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>amplitude_filter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function which acts on the focal plane grid to create a amplitude filter.</p>
+</dd>
+<dt><strong>separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation of the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength for the filter specifications.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function for the refractive index which accepts a wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the amplitude filters for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing.pyramid">
+<span id="hcipy-hcipy-wavefront-sensing-pyramid-module"></span><h2>hcipy.hcipy.wavefront_sensing.pyramid module<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing.pyramid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.pyramid.</code><code class="descname">PyramidWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from pyramid wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the pupils for the normalized differences.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of a pyramid wavefront sensor is sampled.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the normalized differences are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the normalized differences.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the wavefront slope from a pyramid image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the wavefront slope from a pyramid image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images - List</strong></dt>
+<dd><p class="first last">A list of scalar intensity fields containing pyramid wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res - Field</strong></dt>
+<dd><p class="first last">A field with wavefront sensor slopes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.pyramid.</code><code class="descname">PyramidWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>wavelength_0=1</em>, <em>pupil_separation=1.5</em>, <em>pupil_diameter=None</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>refractive_index=&lt;function PyramidWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The optical elements for a pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>pyramid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wf)</td>
+<td>Propagates a wavefront through the pyramid wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid.PyramidWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid.pyramid_surface">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.pyramid.</code><code class="descname">pyramid_surface</code><span class="sig-paren">(</span><em>refractive_index</em>, <em>separation</em>, <em>wavelength_0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#pyramid_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid.pyramid_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create a pyramid surface on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation of the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength for the filter specifications.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function for the refractive index which accepts a wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the pyramid surface for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing.shack_hartmann">
+<span id="hcipy-hcipy-wavefront-sensing-shack-hartmann-module"></span><h2>hcipy.hcipy.wavefront_sensing.shack_hartmann module<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing.shack_hartmann" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.shack_hartmann.</code><code class="descname">ShackHartmannWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>mla_grid</em>, <em>mla_index</em>, <em>estimation_subapertures=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images[,&nbsp;use_par_map])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em>, <em>use_par_map=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.shack_hartmann.</code><code class="descname">ShackHartmannWavefrontSensorOptics</code><span class="sig-paren">(</span><em>input_grid</em>, <em>micro_lens_array</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.shack_hartmann.SquareShackHartmannWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.shack_hartmann.</code><code class="descname">SquareShackHartmannWavefrontSensorOptics</code><span class="sig-paren">(</span><em>input_grid</em>, <em>f_number</em>, <em>num_lenslets</em>, <em>pupil_diameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#SquareShackHartmannWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.SquareShackHartmannWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing.wavefront_sensor">
+<span id="hcipy-hcipy-wavefront-sensing-wavefront-sensor-module"></span><h2>hcipy.hcipy.wavefront_sensing.wavefront_sensor module<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing.wavefront_sensor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.wavefront_sensor.</code><code class="descname">WavefrontSensor</code><span class="sig-paren">(</span><em>wfs_optics=None</em>, <em>detector=None</em>, <em>frame_corrector=None</em>, <em>wfs_estimator=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>A complete wavefront sensor.</p>
+<p>This convenience class consolidates the optics, detector, frame correction 
+and estimation parts of a wavefront sensor.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">This class only works with estimators that require only one image.
+For estimators with more than one required image, the wavefront
+sensor must be handcoded.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wfs_optics</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">WavefrontSensorOptics object</span><dd><p class="first last">The optics of the wavefront sensor. If it is not supplied, no optics 
+will be used.</p>
+</dd>
+<dt><strong>detector</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Detector object</span><dd><p class="first last">The detector of the wavefront sensor. If it is not supplied, a NoiselessDetector
+will be used.</p>
+</dd>
+<dt><strong>frame_correction</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FrameCorrector object</span><dd><p class="first last">The frame correction of the detector. If it is not supplied, no frame
+correction will be used.</p>
+</dd>
+<dt><strong>wfs_estimator</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">WavefrontEstimator</span><dd><p class="first last">The wavefront estimator. If it is not supplied, the corrected image will
+be returned instead.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.detector" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.detector"><code class="xref py py-obj docutils literal"><span class="pre">detector</span></code></a></dt>
+<dd><p class="first last">The used detector.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.frame_corrector" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.frame_corrector"><code class="xref py py-obj docutils literal"><span class="pre">frame_corrector</span></code></a></dt>
+<dd><p class="first last">The used frame corrector.</p>
+</dd>
+<dt><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.wfs_optics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.wfs_optics"><code class="xref py py-obj docutils literal"><span class="pre">wfs_optics</span></code></a></dt>
+<dd><p class="first last">The used wavefront sensor optics.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront[,&nbsp;dt,&nbsp;weight])</td>
+<td>Convenience function to integrate and read out the wavefront sensor.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.integrate" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.integrate"><code class="xref py py-obj docutils literal"><span class="pre">integrate</span></code></a>(wavefront,&nbsp;dt[,&nbsp;weight])</td>
+<td>Integrate the wavefront sensor.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.read_out" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.read_out"><code class="xref py py-obj docutils literal"><span class="pre">read_out</span></code></a>()</td>
+<td>Estimate the wavefront from the read-out detector image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.detector">
+<code class="descname">detector</code><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The used detector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.frame_corrector">
+<code class="descname">frame_corrector</code><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.frame_corrector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The used frame corrector.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.integrate">
+<code class="descname">integrate</code><span class="sig-paren">(</span><em>wavefront</em>, <em>dt</em>, <em>weight=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensor.integrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.integrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integrate the wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The wavefront will be propagated through the wavefront sensor optics 
+and fall onto the detector.</p>
+</dd>
+<dt><strong>dt</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The integration time in units of time.</p>
+</dd>
+<dt><strong>weight</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">Weight of every unit of integration time.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.read_out">
+<code class="descname">read_out</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensor.read_out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.read_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the wavefront from the read-out detector image.</p>
+<p>If there is no wavefront estimator avaiable, the corrected detector
+image will be returned instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or ndarray</strong></dt>
+<dd><p class="first last">The estimate of the wavefront sensor. If the wavefront sensor estimator
+is not give, the corrected detector image will be given instead.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.wfs_optics">
+<code class="descname">wfs_optics</code><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensor.wfs_optics" title="Permalink to this definition">¶</a></dt>
+<dd><p>The used wavefront sensor optics.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.wavefront_sensor.</code><code class="descname">WavefrontSensorEstimator</code><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The estimator for a wavefront sensor.</p>
+<p>This object serves as the base class for all estimators in a wavefront sensor.
+It calculates from a list of images what the wavefront is. This wavefront can be
+anything that responds to wavefront changes, such as slopes, pupil amplitude, etc...</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>Estimate the wavefront from <cite>images</cite>.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the wavefront from <cite>images</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list</span><dd><p class="first last">The list of images on which to base the estimate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or ndarray</strong></dt>
+<dd><p class="first last">The estimate of the wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.wavefront_sensor.</code><code class="descname">WavefrontSensorOptics</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalSystem" title="hcipy.hcipy.optics.optical_element.OpticalSystem"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalSystem</span></code></a></p>
+<p>The optics for a wavefront sensor.</p>
+<p>This object serves as the base class for all optics in a wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor">
+<span id="hcipy-hcipy-wavefront-sensing-zernike-wavefront-sensor-module"></span><h2>hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor module<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.</code><code class="descname">ZernikeWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em>, <em>reference</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from pyramid wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the output phase measurements.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of a pyramid wavefront sensor is sampled.</p>
+</dd>
+<dt><strong>reference</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A reference image to subtract from the Zernike wavefront sensor data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the phase measurements are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the phase measurements.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+<dt><strong>reference</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A reference image to subtract from the Zernike wavefront sensor data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the phase from a Zernike wavefront sensor image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the phase from a Zernike wavefront sensor image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images - List</strong></dt>
+<dd><p class="first last">A list of scalar intensity fields containing Zernike wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res - Field</strong></dt>
+<dd><p class="first last">A field with phase estimates.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.</code><code class="descname">ZernikeWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>num_pupil_pixels=32</em>, <em>q=2</em>, <em>wavelength_0=1</em>, <em>diameter=1.06</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The optical elements for a pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The input pupil diameter. If this parameter is not set it will take the input grid size as the pupil diameter.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the phase dot in terms of lambda/D.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>phase_step</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">PhaseApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.ZernikeWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.phase_step_mask">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.</code><code class="descname">phase_step_mask</code><span class="sig-paren">(</span><em>diameter=1</em>, <em>phase_step=1.5707963267948966</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#phase_step_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor.phase_step_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create the phase dot on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the phase dot in physical units.</p>
+</dd>
+<dt><strong>phase_step</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The height of the phase dot.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the phase mask for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.wavefront_sensing">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.wavefront_sensing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.WavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">WavefrontSensorOptics</code><span class="sig-paren">(</span><em>optical_elements</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.WavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="hcipy.hcipy.optics.html#hcipy.hcipy.optics.optical_element.OpticalSystem" title="hcipy.hcipy.optics.optical_element.OpticalSystem"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.optics.optical_element.OpticalSystem</span></code></a></p>
+<p>The optics for a wavefront sensor.</p>
+<p>This object serves as the base class for all optics in a wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">WavefrontSensorEstimator</code><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The estimator for a wavefront sensor.</p>
+<p>This object serves as the base class for all estimators in a wavefront sensor.
+It calculates from a list of images what the wavefront is. This wavefront can be
+anything that responds to wavefront changes, such as slopes, pupil amplitude, etc...</p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>Estimate the wavefront from <cite>images</cite>.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/wavefront_sensor.html#WavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.WavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the wavefront from <cite>images</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list</span><dd><p class="first last">The list of images on which to base the estimate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field or ndarray</strong></dt>
+<dd><p class="first last">The estimate of the wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.optical_differentiation_surface">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">optical_differentiation_surface</code><span class="sig-paren">(</span><em>filter_size</em>, <em>amplitude_filter</em>, <em>separation</em>, <em>wavelength_0</em>, <em>refractive_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#optical_differentiation_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create the complex multiplexed surface for the ODWFS on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>amplitude_filter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function which acts on the focal plane grid to create a amplitude filter.</p>
+</dd>
+<dt><strong>separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation of the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength for the filter specifications.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function for the refractive index which accepts a wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the amplitude filters for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">OpticalDifferentiationWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>amplitude_filter</em>, <em>pupil_grid</em>, <em>pupil_diameter</em>, <em>pupil_separation</em>, <em>num_pupil_pixels</em>, <em>q</em>, <em>wavelength_0</em>, <em>refractive_index</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The value of some physical quantity for each point in some coordinate system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>amplitude_filter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function which acts on the focal plane grid to create a amplitude filter.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.gODWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">gODWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>beta</em>, <em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function gODWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#gODWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.gODWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A generalised optical differentiation wavefront sensor based on linear amplitude filters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>beta</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The step size. A value of 0 corresponds to a linear filter and a value of 1 to a
+full step.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.RooftopWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">RooftopWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function RooftopWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#RooftopWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.RooftopWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A rooftop wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.PolgODWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">PolgODWavefrontSensorOptics</code><span class="sig-paren">(</span><em>filter_size</em>, <em>beta</em>, <em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>pupil_separation=1.5</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>wavelength_0=1</em>, <em>refractive_index=&lt;function PolgODWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#PolgODWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.PolgODWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor.OpticalDifferentiationWavefrontSensorOptics</span></code></a></p>
+<p>A generalised optical differentiation wavefront sensor based on linear amplitude filters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>filter_size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The physical size of the filter in lambda/D.</p>
+</dd>
+<dt><strong>beta</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The step size. A value of 0 corresponds to a linear filter and a value of 1 to a
+full step.</p>
+</dd>
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>focal_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">MultiplexedComplexSurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">OpticalDifferentiationWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from OD wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the pupils for the normalized differences.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of an OD wavefront sensor is sampled.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the normalized differences are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the normalized differences.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the wavefront slope from a ODWFS image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/optical_differentiation_wavefront_sensor.html#OpticalDifferentiationWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.OpticalDifferentiationWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the wavefront slope from a ODWFS image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">List</span><dd><p class="first last">A list of scalar intensity fields containing OD wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A field with wavefront sensor slopes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.pyramid_surface">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">pyramid_surface</code><span class="sig-paren">(</span><em>refractive_index</em>, <em>separation</em>, <em>wavelength_0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#pyramid_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.pyramid_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create a pyramid surface on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation of the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength for the filter specifications.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">lambda function</span><dd><p class="first last">A lambda function for the refractive index which accepts a wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the pyramid surface for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">PyramidWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>wavelength_0=1</em>, <em>pupil_separation=1.5</em>, <em>pupil_diameter=None</em>, <em>num_pupil_pixels=32</em>, <em>q=4</em>, <em>refractive_index=&lt;function PyramidWavefrontSensorOptics.&lt;lambda&gt;&gt;</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The optical elements for a pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The size of the pupil.
+If it is set to None the pupil_diameter will be the diameter of the pupil_grid.</p>
+</dd>
+<dt><strong>pupil_separation</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The separation distance between the pupils in pupil diameters.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>refractive_index</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function that returns the refractive index as function of wavelength.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>pyramid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">SurfaceApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wf)</td>
+<td>Propagates a wavefront through the pyramid wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wf</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">PyramidWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from pyramid wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the pupils for the normalized differences.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of a pyramid wavefront sensor is sampled.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the normalized differences are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the normalized differences.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the wavefront slope from a pyramid image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/pyramid.html#PyramidWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.PyramidWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the wavefront slope from a pyramid image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images - List</strong></dt>
+<dd><p class="first last">A list of scalar intensity fields containing pyramid wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res - Field</strong></dt>
+<dd><p class="first last">A field with wavefront sensor slopes.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">ShackHartmannWavefrontSensorOptics</code><span class="sig-paren">(</span><em>input_grid</em>, <em>micro_lens_array</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.SquareShackHartmannWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">SquareShackHartmannWavefrontSensorOptics</code><span class="sig-paren">(</span><em>input_grid</em>, <em>f_number</em>, <em>num_lenslets</em>, <em>pupil_diameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#SquareShackHartmannWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.SquareShackHartmannWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.shack_hartmann.ShackHartmannWavefrontSensorOptics</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>optical_elements</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">ShackHartmannWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>mla_grid</em>, <em>mla_index</em>, <em>estimation_subapertures=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images[,&nbsp;use_par_map])</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em>, <em>use_par_map=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/shack_hartmann.html#ShackHartmannWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ShackHartmannWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.wavefront_sensing.phase_step_mask">
+<code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">phase_step_mask</code><span class="sig-paren">(</span><em>diameter=1</em>, <em>phase_step=1.5707963267948966</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#phase_step_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.phase_step_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a function which can create the phase dot on a grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the phase dot in physical units.</p>
+</dd>
+<dt><strong>phase_step</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The height of the phase dot.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The returned function acts on a grid to create the phase mask for that grid.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">ZernikeWavefrontSensorOptics</code><span class="sig-paren">(</span><em>pupil_grid</em>, <em>pupil_diameter=None</em>, <em>num_pupil_pixels=32</em>, <em>q=2</em>, <em>wavelength_0=1</em>, <em>diameter=1.06</em>, <em>num_airy=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorOptics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorOptics</span></code></a></p>
+<p>The optical elements for a pyramid wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The input pupil grid.</p>
+</dd>
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The input pupil diameter. If this parameter is not set it will take the input grid size as the pupil diameter.</p>
+</dd>
+<dt><strong>num_pupil_pixels</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels that are used to sample the output pupil.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The focal plane oversampling coefficient.</p>
+</dd>
+<dt><strong>wavelength_0</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The reference wavelength which determines the physical scales.</p>
+</dd>
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the phase dot in terms of lambda/D.</p>
+</dd>
+<dt><strong>num_airy</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The output grid of the wavefront sensor.</p>
+</dd>
+<dt><strong>focal_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The intermediate focal plane grid where the focal plane is sampled.</p>
+</dd>
+<dt><strong>pupil_to_focal</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the input pupil plane to the intermediate focal plane.</p>
+</dd>
+<dt><strong>focal_to_pupil</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">FraunhoferPropagator</span><dd><p class="first last">A propagator for the intermediate focal plane to the output pupil plane.</p>
+</dd>
+<dt><strong>phase_step</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">PhaseApodizer</span><dd><p class="first last">The filter that is applied in the focal plane.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">__call__</span></code>(wavefront)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics.forward" title="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(wavefront)</td>
+<td>Propagates a wavefront through the wavefront sensor.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="79%" />
+<col width="21%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_instance</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><strong>get_transformation_matrix_backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>get_transformation_matrix_forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>wavefront</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorOptics.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorOptics.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Propagates a wavefront through the wavefront sensor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>wavefront</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The input wavefront that will propagate through the system.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>wf</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Wavefront</span><dd><p class="first last">The output wavefront.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.wavefront_sensing.</code><code class="descname">ZernikeWavefrontSensorEstimator</code><span class="sig-paren">(</span><em>aperture</em>, <em>output_grid</em>, <em>reference</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorEstimator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator" title="hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.wavefront_sensing.wavefront_sensor.WavefrontSensorEstimator</span></code></a></p>
+<p>Estimates the wavefront slopes from pyramid wavefront sensor images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">A function which mask the output phase measurements.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the output of a pyramid wavefront sensor is sampled.</p>
+</dd>
+<dt><strong>reference</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A reference image to subtract from the Zernike wavefront sensor data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>measurement_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid on which the phase measurements are defined.</p>
+</dd>
+<dt><strong>pupil_mask</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">A mask for the phase measurements.</p>
+</dd>
+<dt><strong>num_measurements</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of pixels in the output vector.</p>
+</dd>
+<dt><strong>reference</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">A reference image to subtract from the Zernike wavefront sensor data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator.estimate" title="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator.estimate"><code class="xref py py-obj docutils literal"><span class="pre">estimate</span></code></a>(images)</td>
+<td>A function which estimates the phase from a Zernike wavefront sensor image.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator.estimate">
+<code class="descname">estimate</code><span class="sig-paren">(</span><em>images</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/wavefront_sensing/zernike_wavefront_sensor.html#ZernikeWavefrontSensorEstimator.estimate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.wavefront_sensing.ZernikeWavefrontSensorEstimator.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function which estimates the phase from a Zernike wavefront sensor image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>images - List</strong></dt>
+<dd><p class="first last">A list of scalar intensity fields containing Zernike wavefront sensor images.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>res - Field</strong></dt>
+<dd><p class="first last">A field with phase estimates.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.wavefront_sensing package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor">hcipy.hcipy.wavefront_sensing.optical_differentiation_wavefront_sensor module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing.pyramid">hcipy.hcipy.wavefront_sensing.pyramid module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing.shack_hartmann">hcipy.hcipy.wavefront_sensing.shack_hartmann module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing.wavefront_sensor">hcipy.hcipy.wavefront_sensing.wavefront_sensor module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor">hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor module</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.wavefront_sensing">Module contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.wavefront_sensing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.wavefront_sensing.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

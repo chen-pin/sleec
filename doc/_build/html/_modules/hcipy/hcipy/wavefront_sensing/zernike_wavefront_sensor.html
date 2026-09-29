@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.wavefront_sensing.zernike_wavefront_sensor</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.wavefront_sensor</span> <span class="kn">import</span> <span class="n">WavefrontSensorOptics</span><span class="p">,</span> <span class="n">WavefrontSensorEstimator</span>
+<span class="kn">from</span> <span class="nn">..propagation</span> <span class="kn">import</span> <span class="n">FraunhoferPropagator</span>
+<span class="kn">from</span> <span class="nn">..plotting</span> <span class="kn">import</span> <span class="n">imshow_field</span>
+<span class="kn">from</span> <span class="nn">..optics</span> <span class="kn">import</span> <span class="n">SurfaceApodizer</span><span class="p">,</span> <span class="n">PhaseApodizer</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">make_pupil_grid</span><span class="p">,</span> <span class="n">make_focal_grid</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<div class="viewcode-block" id="phase_step_mask"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.phase_step_mask">[docs]</a><span class="k">def</span> <span class="nf">phase_step_mask</span><span class="p">(</span><span class="n">diameter</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phase_step</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Creates a function which can create the phase dot on a grid.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	diameter : scalar</span>
+<span class="sd">		The diameter of the phase dot in physical units.</span>
+<span class="sd">	phase_step : scalar</span>
+<span class="sd">		The height of the phase dot.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	----------</span>
+<span class="sd">	func : function</span>
+<span class="sd">		The returned function acts on a grid to create the phase mask for that grid.</span>
+
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">radius</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">r</span>
+		<span class="n">phase_mask</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">phase_step</span> <span class="o">*</span> <span class="p">(</span><span class="n">radius</span> <span class="o">&lt;=</span> <span class="n">diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">grid</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">PhaseApodizer</span><span class="p">(</span><span class="n">phase_mask</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="ZernikeWavefrontSensorOptics"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.ZernikeWavefrontSensorOptics">[docs]</a><span class="k">class</span> <span class="nc">ZernikeWavefrontSensorOptics</span><span class="p">(</span><span class="n">WavefrontSensorOptics</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;The optical elements for a pyramid wavefront sensor.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	pupil_grid : Grid</span>
+<span class="sd">		The input pupil grid.</span>
+<span class="sd">	pupil_diameter : scalar</span>
+<span class="sd">		The input pupil diameter. If this parameter is not set it will take the input grid size as the pupil diameter.</span>
+<span class="sd">	num_pupil_pixels : int</span>
+<span class="sd">		The number of pixels that are used to sample the output pupil.</span>
+<span class="sd">	q : scalar</span>
+<span class="sd">		The focal plane oversampling coefficient.</span>
+<span class="sd">	wavelength_0 : scalar</span>
+<span class="sd">		The reference wavelength which determines the physical scales.</span>
+<span class="sd">	diameter : scalar</span>
+<span class="sd">		The diameter of the phase dot in terms of lambda/D.</span>
+<span class="sd">	num_airy : int</span>
+<span class="sd">		The size of the intermediate focal plane grid that is used in terms of lambda/D at the reference wavelength.</span>
+
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	output_grid : Grid</span>
+<span class="sd">		The output grid of the wavefront sensor.</span>
+<span class="sd">	focal_grid : Grid</span>
+<span class="sd">		The intermediate focal plane grid where the focal plane is sampled.</span>
+<span class="sd">	pupil_to_focal : FraunhoferPropagator</span>
+<span class="sd">		A propagator for the input pupil plane to the intermediate focal plane.</span>
+<span class="sd">	focal_to_pupil : FraunhoferPropagator</span>
+<span class="sd">		A propagator for the intermediate focal plane to the output pupil plane.</span>
+<span class="sd">	phase_step : PhaseApodizer</span>
+<span class="sd">		The filter that is applied in the focal plane.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">,</span> <span class="n">pupil_diameter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_pupil_pixels</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">wavelength_0</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">diameter</span><span class="o">=</span><span class="mf">1.06</span><span class="p">,</span> <span class="n">num_airy</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+		<span class="n">output_grid_size</span> <span class="o">=</span> <span class="n">pupil_grid</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">ptp</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">pupil_diameter</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">pupil_diameter</span> <span class="o">=</span> <span class="n">output_grid_size</span>
+
+		<span class="c1"># Create the intermediate and final grids</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span> <span class="o">=</span> <span class="n">make_pupil_grid</span><span class="p">(</span><span class="n">num_pupil_pixels</span><span class="p">,</span> <span class="n">output_grid_size</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span> <span class="o">=</span> <span class="n">make_focal_grid</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">q</span><span class="p">,</span> <span class="n">num_airy</span><span class="o">=</span><span class="n">num_airy</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength_0</span><span class="p">)</span>
+
+		<span class="c1"># Make all the optical elements</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pupil_to_focal</span> <span class="o">=</span> <span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span><span class="p">,</span> <span class="n">wavelength_0</span><span class="o">=</span><span class="n">wavelength_0</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">phase_step</span> <span class="o">=</span> <span class="n">phase_step_mask</span><span class="p">(</span><span class="n">diameter</span> <span class="o">*</span> <span class="n">wavelength_0</span><span class="o">/</span><span class="n">pupil_diameter</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">focal_to_pupil</span> <span class="o">=</span> <span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="p">,</span> <span class="n">wavelength_0</span><span class="o">=</span><span class="n">wavelength_0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ZernikeWavefrontSensorOptics.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.ZernikeWavefrontSensorOptics.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagates a wavefront through the wavefront sensor.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------		</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The input wavefront that will propagate through the system.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		wf : Wavefront</span>
+<span class="sd">			The output wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pupil_to_focal</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_step</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_to_pupil</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">wf</span></div></div>
+
+<div class="viewcode-block" id="ZernikeWavefrontSensorEstimator"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.ZernikeWavefrontSensorEstimator">[docs]</a><span class="k">class</span> <span class="nc">ZernikeWavefrontSensorEstimator</span><span class="p">(</span><span class="n">WavefrontSensorEstimator</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Estimates the wavefront slopes from pyramid wavefront sensor images.</span>
+<span class="sd">	</span>
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	aperture : function</span>
+<span class="sd">		A function which mask the output phase measurements.</span>
+<span class="sd">	output_grid : Grid</span>
+<span class="sd">		The grid on which the output of a pyramid wavefront sensor is sampled.</span>
+<span class="sd">	reference : Field</span>
+<span class="sd">		A reference image to subtract from the Zernike wavefront sensor data.</span>
+<span class="sd">			</span>
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	measurement_grid : Grid</span>
+<span class="sd">		The grid on which the phase measurements are defined.</span>
+<span class="sd">	pupil_mask : array_like</span>
+<span class="sd">		A mask for the phase measurements.</span>
+<span class="sd">	num_measurements : int</span>
+<span class="sd">		The number of pixels in the output vector.</span>
+<span class="sd">	reference : Field</span>
+<span class="sd">		A reference image to subtract from the Zernike wavefront sensor data.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aperture</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">measurement_grid</span> <span class="o">=</span> <span class="n">output_grid</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">pupil_mask</span> <span class="o">=</span> <span class="n">aperture</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">measurement_grid</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">num_measurements</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pupil_mask</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ZernikeWavefrontSensorEstimator.estimate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.wavefront_sensing.html#hcipy.hcipy.ZernikeWavefrontSensorEstimator.estimate">[docs]</a>	<span class="k">def</span> <span class="nf">estimate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A function which estimates the phase from a Zernike wavefront sensor image.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		images - List</span>
+<span class="sd">			A list of scalar intensity fields containing Zernike wavefront sensor images.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		res - Field</span>
+<span class="sd">			A field with phase estimates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">image</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="n">intensity_measurements</span> <span class="o">=</span> <span class="p">(</span><span class="n">image</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">pupil_mask</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">intensity_measurements</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pupil_mask</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pupil_mask</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">res</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

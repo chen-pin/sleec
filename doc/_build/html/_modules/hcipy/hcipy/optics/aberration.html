@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.aberration &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.aberration</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">..statistics</span> <span class="kn">import</span> <span class="n">SpectralNoiseFactoryFFT</span>
+<span class="kn">from</span> <span class="nn">.apodization</span> <span class="kn">import</span> <span class="n">SurfaceApodizer</span>
+<span class="kn">from</span> <span class="nn">..propagation</span> <span class="kn">import</span> <span class="n">FresnelPropagator</span>
+<span class="kn">from</span> <span class="nn">..mode_basis</span> <span class="kn">import</span> <span class="n">make_zernike_basis</span>
+<span class="kn">from</span> <span class="nn">..math_util</span> <span class="kn">import</span> <span class="n">inverse_tikhonov</span>
+<span class="kn">from</span> <span class="nn">..aperture</span> <span class="kn">import</span> <span class="n">circular_aperture</span>
+<span class="kn">from</span> <span class="nn">.optical_element</span> <span class="kn">import</span> <span class="n">OpticalElement</span>
+
+<div class="viewcode-block" id="make_power_law_error"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.make_power_law_error">[docs]</a><span class="k">def</span> <span class="nf">make_power_law_error</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">aperture</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">remove_modes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create an error surface from a power-law power spectral density.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	pupil_grid : Grid</span>
+<span class="sd">		The grid on which to calculate the error.</span>
+<span class="sd">	ptv : scalar</span>
+<span class="sd">		The peak-to-valley of the wavefront aberration in meters.</span>
+<span class="sd">	diameter : scalar</span>
+<span class="sd">		The diameter over which the ptv is calculated.</span>
+<span class="sd">	exponent : scalar</span>
+<span class="sd">		The exponent of the power law.</span>
+<span class="sd">	aperture : Field</span>
+<span class="sd">		The mask over which to calculate the ptv. A circular aperture with diameter</span>
+<span class="sd">		`diameter` is used if this is not given.</span>
+<span class="sd">	remove_modes : ModeBasis</span>
+<span class="sd">		The modes which to remove from the surface aberration. The peak-to-valley</span>
+<span class="sd">		is enforced before these modes are removed. This allows for correctting surface</span>
+<span class="sd">		errors with optic alignment.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The surface error calculated on `pupil_grid`.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">psd</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">r</span><span class="o">**</span><span class="n">exponent</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+		<span class="n">res</span><span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">return</span> <span class="n">res</span>
+	
+	<span class="k">if</span> <span class="n">aperture</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">aperture</span> <span class="o">=</span> <span class="n">circular_aperture</span><span class="p">(</span><span class="n">diameter</span><span class="p">)(</span><span class="n">pupil_grid</span><span class="p">)</span>
+	
+	<span class="n">screen</span> <span class="o">=</span> <span class="n">SpectralNoiseFactoryFFT</span><span class="p">(</span><span class="n">psd</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">)</span><span class="o">.</span><span class="n">make_random</span><span class="p">()()</span>
+	<span class="n">screen</span> <span class="o">*=</span> <span class="n">ptv</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">screen</span><span class="p">[</span><span class="n">aperture</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
+
+	<span class="k">if</span> <span class="n">remove_modes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">modes</span> <span class="o">=</span> <span class="n">make_zernike_basis</span><span class="p">(</span><span class="n">remove_modes</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">)</span>
+		<span class="n">trans</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">transformation_matrix</span>
+		<span class="n">trans_inv</span> <span class="o">=</span> <span class="n">inverse_tikhonov</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">)</span>
+		<span class="n">screen</span> <span class="o">-=</span> <span class="n">trans</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">trans_inv</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">screen</span><span class="p">))</span>
+	
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">screen</span> <span class="o">*</span> <span class="n">aperture</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SurfaceAberration"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceAberration">[docs]</a><span class="k">class</span> <span class="nc">SurfaceAberration</span><span class="p">(</span><span class="n">SurfaceApodizer</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A surface aberration with a specific power law.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	pupil_grid : Grid</span>
+<span class="sd">		The grid on which the incoming wavefront is defined.</span>
+<span class="sd">	ptv : scalar</span>
+<span class="sd">		The peak-to-valley of the wavefront aberration in meters.</span>
+<span class="sd">	diameter : scalar</span>
+<span class="sd">		The diameter over which the ptv is calculated.</span>
+<span class="sd">	exponent : scalar</span>
+<span class="sd">		The exponent of the power law.</span>
+<span class="sd">	refractive_index : scalar</span>
+<span class="sd">		The refractive index of the surface for which this is the surface error.</span>
+<span class="sd">		The default is a mirror surface.</span>
+<span class="sd">	aperture : Field</span>
+<span class="sd">		The mask over which to calculate the ptv. A circular aperture with diameter</span>
+<span class="sd">		`diameter` is used if this is not given.</span>
+<span class="sd">	remove_modes : ModeBasis</span>
+<span class="sd">		The modes which to remove from the surface aberration. The peak-to-valley</span>
+<span class="sd">		is enforced before these modes are removed. This allows for correctting surface</span>
+<span class="sd">		errors with optic alignment.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">refractive_index</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">aperture</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">remove_modes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="n">surface</span> <span class="o">=</span> <span class="n">make_power_law_error</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">ptv</span><span class="p">,</span> <span class="n">diameter</span><span class="p">,</span> <span class="n">exponent</span><span class="p">,</span> <span class="n">aperture</span><span class="p">,</span> <span class="n">remove_modes</span><span class="p">)</span>
+		<span class="n">SurfaceApodizer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface</span><span class="p">,</span> <span class="n">refractive_index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SurfaceAberrationAtDistance"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceAberrationAtDistance">[docs]</a><span class="k">class</span> <span class="nc">SurfaceAberrationAtDistance</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A surface at a certain distance from the current plane.</span>
+
+<span class="sd">	Light is propagated to this surface, then the surface errors are</span>
+<span class="sd">	applied, and afterwards the light is propagated back towards the</span>
+<span class="sd">	original plane. This allows for easy addition of surface errors on</span>
+<span class="sd">	lenses, while still retaining the Fraunhofer propagations in between</span>
+<span class="sd">	focal and pupil planes.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	surface_aberration : OpticalElement</span>
+<span class="sd">		The optical element describing the surface aberration.</span>
+<span class="sd">	distance : scalar</span>
+<span class="sd">		The distance from the current plane.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surface_aberration</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fresnel</span> <span class="o">=</span> <span class="n">FresnelPropagator</span><span class="p">(</span><span class="n">surface_aberration</span><span class="o">.</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">surface_aberration</span> <span class="o">=</span> <span class="n">surface_aberration</span>
+
+<div class="viewcode-block" id="SurfaceAberrationAtDistance.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceAberrationAtDistance.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate a wavefront forwards through the surface aberration.</span>
+<span class="sd">	</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The wavefront after the surface aberration. This wavefront is</span>
+<span class="sd">			given at the same plane as `wavefront`.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fresnel</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_aberration</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fresnel</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SurfaceAberrationAtDistance.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.SurfaceAberrationAtDistance.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate a wavefront backwards through the surface aberration.</span>
+<span class="sd">	</span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The wavefront before the surface aberration. This wavefront is</span>
+<span class="sd">			given at the same plane as `wavefront`.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fresnel</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface_aberration</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fresnel</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,810 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.aperture package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-aperture-package">
+<h1>hcipy.hcipy.aperture package<a class="headerlink" href="#hcipy-hcipy-aperture-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.aperture.generic">
+<span id="hcipy-hcipy-aperture-generic-module"></span><h2>hcipy.hcipy.aperture.generic module<a class="headerlink" href="#module-hcipy.hcipy.aperture.generic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.circular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">circular_aperture</code><span class="sig-paren">(</span><em>diameter</em>, <em>center=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#circular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.circular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a circular aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the aperture.</p>
+</dd>
+<dt><strong>center</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of the aperture</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.hexagonal_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">hexagonal_aperture</code><span class="sig-paren">(</span><em>circum_diameter</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#hexagonal_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.hexagonal_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a hexagon aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>circum_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The circumdiameter of the polygon.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.make_obstructed_circular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">make_obstructed_circular_aperture</code><span class="sig-paren">(</span><em>pupil_diameter</em>, <em>central_obscuration_ratio</em>, <em>num_spiders=0</em>, <em>spider_width=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_obstructed_circular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.make_obstructed_circular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a simple circular aperture with central obscuration and support structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the circular aperture.</p>
+</dd>
+<dt><strong>central_obscuration_ratio</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The ratio of the diameter of the central obscuration compared to the pupil diameter.</p>
+</dd>
+<dt><strong>num_spiders</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of spiders holding up the central obscuration.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spiders.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The circularly obstructed aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.make_obstruction">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">make_obstruction</code><span class="sig-paren">(</span><em>aperture</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_obstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.make_obstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an obstruction of <cite>aperture</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>aperture</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The aperture to invert.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The obstruction.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.make_segmented_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">make_segmented_aperture</code><span class="sig-paren">(</span><em>segment_shape</em>, <em>segment_positions</em>, <em>segment_transmissions=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_segmented_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.make_segmented_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a segmented aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>segment_shape</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The shape for each of the segments.</p>
+</dd>
+<dt><strong>segment_positions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The center position for each of the segments.</p>
+</dd>
+<dt><strong>segment_transmissions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or ndarray</span><dd><p class="first last">The transmission for each of the segments. If this is a scalar, the same transmission is used for all segments.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The segmented aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.make_spider">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">make_spider</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em>, <em>spider_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_spider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.make_spider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a rectangular obstruction from <cite>p1</cite> to <cite>p2</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p1</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The starting coordinates of the spider.</p>
+</dd>
+<dt><strong>p2</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The end coordinates of the spider.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spider.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The spider obstruction.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.make_spider_infinite">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">make_spider_infinite</code><span class="sig-paren">(</span><em>p</em>, <em>angle</em>, <em>spider_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_spider_infinite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.make_spider_infinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an infinite spider starting at <cite>p</cite> and extending at an angle <cite>angle</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The starting coordinate of the spider.</p>
+</dd>
+<dt><strong>angle</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The angle to which the spider is pointing in degrees.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spider.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The spider obstruction.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.rectangular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">rectangular_aperture</code><span class="sig-paren">(</span><em>size</em>, <em>center=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#rectangular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.rectangular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a rectangular aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or array_like</span><dd><p class="first last">The length of the sides. If this is scalar, a square aperture is assumed.</p>
+</dd>
+<dt><strong>center</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of the aperture</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.generic.regular_polygon_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.generic.</code><code class="descname">regular_polygon_aperture</code><span class="sig-paren">(</span><em>num_sides</em>, <em>circum_diameter</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#regular_polygon_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.generic.regular_polygon_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a regular-polygon-shaped aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>num_sides</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of sides for the polygon.</p>
+</dd>
+<dt><strong>circum_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The circumdiameter of the polygon.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.aperture.realistic">
+<span id="hcipy-hcipy-aperture-realistic-module"></span><h2>hcipy.hcipy.aperture.realistic module<a class="headerlink" href="#module-hcipy.hcipy.aperture.realistic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_elt_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_elt_aperture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_elt_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_elt_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_keck_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_keck_aperture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_keck_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_keck_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_lbt_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_lbt_aperture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_lbt_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_lbt_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_luvoir_a_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_luvoir_a_aperture</code><span class="sig-paren">(</span><em>normalized=False</em>, <em>with_spiders=True</em>, <em>with_segment_gaps=True</em>, <em>segment_transmissions=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_luvoir_a_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_luvoir_a_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the LUVOIR A aperture.</p>
+<p>This aperture changes frequently. This one is based on <a class="reference internal" href="#r96e53715db1a-1" id="id1">[1]</a>. Spiders and segment gaps 
+can be included or excluded, and the transmission for each of the segments can also be changed.</p>
+<table class="docutils citation" frame="void" id="r96e53715db1a-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Ruane et al. 2018 &#8220;Fast linearized coronagraph optimizer (FALCO) IV: coronagraph design 
+survey for obstructed and segmented apertures.&#8221; Space Telescopes and Instrumentation 2018: 
+Optical, Infrared, and Millimeter Wave. Vol. 10698. International Society for Optics and Photonics, 2018.</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>normalized</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the outer diameter will be scaled to 1. Otherwise, the
+diameter of the pupil will be 15.0 meters.</p>
+</dd>
+<dt><strong>with_spiders</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Include the secondary mirror support structure in the aperture.</p>
+</dd>
+<dt><strong>with_segment_gaps</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Include the gaps between individual segments in the aperture.</p>
+</dd>
+<dt><strong>segment_transmissions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or array_like</span><dd><p class="first last">The transmission for each of the segments. If this is a scalar, this transmission will
+be used for all segments.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The LUVOIR A aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_magellan_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_magellan_aperture</code><span class="sig-paren">(</span><em>normalized=False</em>, <em>with_spiders=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_magellan_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_magellan_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the Magellan aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>normalized</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the outer diameter will be scaled to 1. Otherwise, the
+diameter of the pupil will be 6.5 meters.</p>
+</dd>
+<dt><strong>with_spiders: boolean</strong></dt>
+<dd><p class="first last">If this is False, the spiders will be left out.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The Magellan aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_subaru_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_subaru_aperture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_subaru_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_subaru_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.realistic.make_vlt_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.realistic.</code><code class="descname">make_vlt_aperture</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_vlt_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.realistic.make_vlt_aperture" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.aperture">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.aperture" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.circular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">circular_aperture</code><span class="sig-paren">(</span><em>diameter</em>, <em>center=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#circular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.circular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a circular aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the aperture.</p>
+</dd>
+<dt><strong>center</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of the aperture</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.rectangular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">rectangular_aperture</code><span class="sig-paren">(</span><em>size</em>, <em>center=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#rectangular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.rectangular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a rectangular aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>size</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or array_like</span><dd><p class="first last">The length of the sides. If this is scalar, a square aperture is assumed.</p>
+</dd>
+<dt><strong>center</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span><dd><p class="first last">The center of the aperture</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.regular_polygon_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">regular_polygon_aperture</code><span class="sig-paren">(</span><em>num_sides</em>, <em>circum_diameter</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#regular_polygon_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.regular_polygon_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a regular-polygon-shaped aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>num_sides</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">integer</span><dd><p class="first last">The number of sides for the polygon.</p>
+</dd>
+<dt><strong>circum_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The circumdiameter of the polygon.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.hexagonal_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">hexagonal_aperture</code><span class="sig-paren">(</span><em>circum_diameter</em>, <em>angle=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#hexagonal_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.hexagonal_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a Field generator for a hexagon aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>circum_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The circumdiameter of the polygon.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">This function can be evaluated on a grid to get a Field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_spider">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_spider</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em>, <em>spider_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_spider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_spider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a rectangular obstruction from <cite>p1</cite> to <cite>p2</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p1</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The starting coordinates of the spider.</p>
+</dd>
+<dt><strong>p2</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The end coordinates of the spider.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spider.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The spider obstruction.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_spider_infinite">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_spider_infinite</code><span class="sig-paren">(</span><em>p</em>, <em>angle</em>, <em>spider_width</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_spider_infinite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_spider_infinite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an infinite spider starting at <cite>p</cite> and extending at an angle <cite>angle</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>p</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">list or ndarray</span><dd><p class="first last">The starting coordinate of the spider.</p>
+</dd>
+<dt><strong>angle</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The angle to which the spider is pointing in degrees.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spider.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The spider obstruction.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_obstructed_circular_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_obstructed_circular_aperture</code><span class="sig-paren">(</span><em>pupil_diameter</em>, <em>central_obscuration_ratio</em>, <em>num_spiders=0</em>, <em>spider_width=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_obstructed_circular_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_obstructed_circular_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a simple circular aperture with central obscuration and support structure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>pupil_diameter</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The diameter of the circular aperture.</p>
+</dd>
+<dt><strong>central_obscuration_ratio</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The ratio of the diameter of the central obscuration compared to the pupil diameter.</p>
+</dd>
+<dt><strong>num_spiders</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">int</span><dd><p class="first last">The number of spiders holding up the central obscuration.</p>
+</dd>
+<dt><strong>spider_width</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">The full width of the spiders.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The circularly obstructed aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_segmented_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_segmented_aperture</code><span class="sig-paren">(</span><em>segment_shape</em>, <em>segment_positions</em>, <em>segment_transmissions=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/generic.html#make_segmented_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_segmented_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a segmented aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>segment_shape</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field generator</span><dd><p class="first last">The shape for each of the segments.</p>
+</dd>
+<dt><strong>segment_positions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The center position for each of the segments.</p>
+</dd>
+<dt><strong>segment_transmissions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or ndarray</span><dd><p class="first last">The transmission for each of the segments. If this is a scalar, the same transmission is used for all segments.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The segmented aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_magellan_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_magellan_aperture</code><span class="sig-paren">(</span><em>normalized=False</em>, <em>with_spiders=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_magellan_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_magellan_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the Magellan aperture.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>normalized</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the outer diameter will be scaled to 1. Otherwise, the
+diameter of the pupil will be 6.5 meters.</p>
+</dd>
+<dt><strong>with_spiders: boolean</strong></dt>
+<dd><p class="first last">If this is False, the spiders will be left out.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The Magellan aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.aperture.make_luvoir_a_aperture">
+<code class="descclassname">hcipy.hcipy.aperture.</code><code class="descname">make_luvoir_a_aperture</code><span class="sig-paren">(</span><em>normalized=False</em>, <em>with_spiders=True</em>, <em>with_segment_gaps=True</em>, <em>segment_transmissions=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/aperture/realistic.html#make_luvoir_a_aperture"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.aperture.make_luvoir_a_aperture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the LUVOIR A aperture.</p>
+<p>This aperture changes frequently. This one is based on <a class="reference internal" href="#r97d870319eaf-1" id="id2">[1]</a>. Spiders and segment gaps 
+can be included or excluded, and the transmission for each of the segments can also be changed.</p>
+<table class="docutils citation" frame="void" id="r97d870319eaf-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Ruane et al. 2018 &#8220;Fast linearized coronagraph optimizer (FALCO) IV: coronagraph design 
+survey for obstructed and segmented apertures.&#8221; Space Telescopes and Instrumentation 2018: 
+Optical, Infrared, and Millimeter Wave. Vol. 10698. International Society for Optics and Photonics, 2018.</td></tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>normalized</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">If this is True, the outer diameter will be scaled to 1. Otherwise, the
+diameter of the pupil will be 15.0 meters.</p>
+</dd>
+<dt><strong>with_spiders</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Include the secondary mirror support structure in the aperture.</p>
+</dd>
+<dt><strong>with_segment_gaps</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">boolean</span><dd><p class="first last">Include the gaps between individual segments in the aperture.</p>
+</dd>
+<dt><strong>segment_transmissions</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar or array_like</span><dd><p class="first last">The transmission for each of the segments. If this is a scalar, this transmission will
+be used for all segments.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field generator</strong></dt>
+<dd><p class="first last">The LUVOIR A aperture.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.aperture package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.aperture.generic">hcipy.hcipy.aperture.generic module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.aperture.realistic">hcipy.hcipy.aperture.realistic module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.aperture">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.aperture.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.aperture.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

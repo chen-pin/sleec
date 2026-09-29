@@ -1,0 +1,409 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.field.coordinates &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.field.coordinates</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<div class="viewcode-block" id="CoordsBase"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.CoordsBase">[docs]</a><span class="k">class</span> <span class="nc">CoordsBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Base class for coordinates.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="CoordsBase.copy"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.CoordsBase.copy">[docs]</a>	<span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Make a copy.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+	
+	<span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">res</span> <span class="o">+=</span> <span class="n">b</span>
+		<span class="k">return</span> <span class="n">res</span>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+	
+	<span class="k">def</span> <span class="nf">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">b</span>
+	
+	<span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Subtract `b` from the coordinates separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+	
+	<span class="k">def</span> <span class="nf">__isub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Subtract `b` from the coordinates separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span> <span class="o">+=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">res</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">return</span> <span class="n">res</span>
+	
+	<span class="k">def</span> <span class="nf">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">f</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+	
+	<span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Divide each coordinate with `f` separately and return the result.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">f</span><span class="p">)</span>
+	
+	<span class="k">def</span> <span class="nf">__idiv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Divide each coordinate with `f` separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">f</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The `i`-th point for these coordinates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_separated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if the coordinates are separated, False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;separated_coords&#39;</span><span class="p">)</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">is_regular</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;True if the coordinates are regularly-spaced, False otherwise.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;regular_coords&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CoordsBase.reverse"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.CoordsBase.reverse">[docs]</a>	<span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reverse the ordering of points in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+	
+	<span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="UnstructuredCoords"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.UnstructuredCoords">[docs]</a><span class="k">class</span> <span class="nc">UnstructuredCoords</span><span class="p">(</span><span class="n">CoordsBase</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;An unstructured list of points.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	coords : list or tuple</span>
+<span class="sd">		A tuple of a list of positions for each dimension.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+	
+	<span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+	
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The `i`-th point for these coordinates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span> <span class="o">*</span> <span class="n">b</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">))</span> <span class="o">*</span> <span class="n">f</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+<div class="viewcode-block" id="UnstructuredCoords.reverse"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.UnstructuredCoords.reverse">[docs]</a>	<span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reverse the ordering of points in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span></div></div>
+
+<div class="viewcode-block" id="SeparatedCoords"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.SeparatedCoords">[docs]</a><span class="k">class</span> <span class="nc">SeparatedCoords</span><span class="p">(</span><span class="n">CoordsBase</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A list of points that are separable along each dimension.</span>
+
+<span class="sd">	The actual points are given by the iterated tensor product of the `separated_coords`.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	separated_coords : list or tuple</span>
+<span class="sd">		A tuple of a list of coordinates along each dimension.</span>
+
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	separated_coords</span>
+<span class="sd">		A tuple of a list of coordinates along each dimension.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">separated_coords</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">separated_coords</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The `i`-th point for these coordinates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">s0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">j</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+		<span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">s0</span><span class="p">[:</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">s0</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+	
+	<span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">)</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">dims</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points along each dimension.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">])</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The shape of an ``numpy.ndarray`` with the right dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+<div class="viewcode-block" id="SeparatedCoords.reverse"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.SeparatedCoords.reverse">[docs]</a>	<span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reverse the ordering of points in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="k">return</span> <span class="bp">self</span></div></div>
+
+<div class="viewcode-block" id="RegularCoords"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.RegularCoords">[docs]</a><span class="k">class</span> <span class="nc">RegularCoords</span><span class="p">(</span><span class="n">CoordsBase</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A list of points that have a regular spacing in all dimensions.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	delta : array_like</span>
+<span class="sd">		The spacing between the points.</span>
+<span class="sd">	dims : array_like</span>
+<span class="sd">		The number of points along each dimension.</span>
+<span class="sd">	zero : array_like</span>
+<span class="sd">		The coordinates for the first point.</span>
+
+<span class="sd">	Attributes</span>
+<span class="sd">	----------</span>
+<span class="sd">	delta</span>
+<span class="sd">		The spacing between the points.</span>
+<span class="sd">	dims</span>
+<span class="sd">		The number of points along each dimension.</span>
+<span class="sd">	zero</span>
+<span class="sd">		The coordinates for the first point.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">zero</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">dims</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+		
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">delta</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="n">zero</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">))</span>
+		<span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">zero</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">zero</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">))</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">zero</span><span class="p">)</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">separated_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;A tuple of a list of the values for each dimension.</span>
+
+<span class="sd">		The actual points are the iterated tensor product of this tuple.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span> <span class="n">zero</span> <span class="k">for</span> <span class="n">delta</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">zero</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero</span><span class="p">)]</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">regular_coords</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The tuple `(delta, dims, zero)` of the regularly-spaced coordinates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero</span>
+
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of points.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+	
+	<span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The number of dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The shape of an ``numpy.ndarray`` with the right dimensions.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The `i`-th point for these coordinates.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">s0</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+		<span class="n">j</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+		<span class="n">t</span> <span class="o">=</span> <span class="n">s0</span><span class="p">[:</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span> <span class="o">+</span> <span class="n">s0</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+		<span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">separated_coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Add `b` to the coordinates separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">+=</span> <span class="n">b</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Multiply each coordinate with `f` separately in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+<div class="viewcode-block" id="RegularCoords.reverse"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.RegularCoords.reverse">[docs]</a>	<span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reverse the ordering of points in-place.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">maximum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dims</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">delta</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">zero</span> <span class="o">=</span> <span class="n">maximum</span>
+		<span class="k">return</span> <span class="bp">self</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

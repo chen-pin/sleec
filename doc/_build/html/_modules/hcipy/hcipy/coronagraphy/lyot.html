@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.coronagraphy.lyot &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.coronagraphy.lyot</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">..optics</span> <span class="kn">import</span> <span class="n">Apodizer</span><span class="p">,</span> <span class="n">OpticalElement</span>
+<span class="kn">from</span> <span class="nn">..propagation</span> <span class="kn">import</span> <span class="n">FraunhoferPropagator</span>
+
+<div class="viewcode-block" id="LyotCoronagraph"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.LyotCoronagraph">[docs]</a><span class="k">class</span> <span class="nc">LyotCoronagraph</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A Lyot coronagraph with a small focal-plane mask.</span>
+
+<span class="sd">	The area outside of this focal-plane mask is assumed to be fully transmisive. The </span>
+<span class="sd">	method for propagation is based on Soummer et al. (2007), &quot;Fast computation of Lyot-style</span>
+<span class="sd">	coronagraph propagation&quot;.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	input_grid : Grid</span>
+<span class="sd">		The grid on which the incoming wavefront is defined.</span>
+<span class="sd">	focal_plane_mask : Field or OpticalElement</span>
+<span class="sd">		The (complex) transmission of the focal-plane mask. If this is an :class:`OpticalElement`,</span>
+<span class="sd">		this will be used instead. This allows for more realistic implementations of focal-plane</span>
+<span class="sd">		masks.</span>
+<span class="sd">	lyot_stop : Field or OpticalElement or None</span>
+<span class="sd">		The (complex) transmission of the Lyot stop. If this is an :class:`OpticalElement`,</span>
+<span class="sd">		this will be used instead. This allows for more realistic implementations of Lyot stops.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">focal_plane_mask</span><span class="p">,</span> <span class="n">lyot_stop</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">focal_plane_mask</span><span class="p">,</span> <span class="s1">&#39;input_grid&#39;</span><span class="p">):</span>
+			<span class="c1"># Focal plane mask is an optical element.</span>
+			<span class="n">grid</span> <span class="o">=</span> <span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">input_grid</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span> <span class="o">=</span> <span class="n">focal_plane_mask</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Focal plane mask is a field.</span>
+			<span class="n">grid</span> <span class="o">=</span> <span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">grid</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span> <span class="o">=</span> <span class="n">Apodizer</span><span class="p">(</span><span class="n">focal_plane_mask</span><span class="p">)</span>
+		
+		<span class="k">if</span> <span class="n">lyot_stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">lyot_stop</span><span class="p">,</span> <span class="s1">&#39;input_grid&#39;</span><span class="p">):</span>
+			<span class="n">lyot_stop</span> <span class="o">=</span> <span class="n">Apodizer</span><span class="p">(</span><span class="n">lyot_stop</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">lyot_stop</span> <span class="o">=</span> <span class="n">lyot_stop</span>
+		
+<span class="c1">#		self.prop = FraunhoferPropagator(input_grid, focal_plane_mask.grid)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>  <span class="c1"># P. Chen 2018-12-03</span>
+	
+<div class="viewcode-block" id="LyotCoronagraph.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.LyotCoronagraph.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront through the Lyot coronagraph.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The Lyot-plane wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf_foc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span>
+		<span class="n">wf_foc</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wf_foc</span><span class="p">)</span><span class="o">.</span><span class="n">electric_field</span>
+
+		<span class="n">lyot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf_foc</span><span class="p">)</span>
+		<span class="n">lyot</span><span class="o">.</span><span class="n">electric_field</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">-</span> <span class="n">lyot</span><span class="o">.</span><span class="n">electric_field</span>
+
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lyot_stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">lyot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lyot_stop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">lyot</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">lyot</span></div>
+	
+<div class="viewcode-block" id="LyotCoronagraph.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.LyotCoronagraph.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront from the Lyot plane to the pupil plane.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront to propagate.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The pupil-plane wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lyot_stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+			<span class="n">wf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lyot_stop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span>
+		
+		<span class="n">wf_foc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wf</span><span class="p">)</span>
+		<span class="n">wf_foc</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf_foc</span><span class="p">)</span><span class="o">.</span><span class="n">electric_field</span>
+
+		<span class="n">pup</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">wf_foc</span><span class="p">)</span>
+		<span class="n">pup</span><span class="o">.</span><span class="n">electric_field</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">-</span> <span class="n">wf_foc</span><span class="o">.</span><span class="n">electric_field</span>
+
+		<span class="k">return</span> <span class="n">pup</span></div></div>
+
+<div class="viewcode-block" id="OccultedLyotCoronagraph"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.OccultedLyotCoronagraph">[docs]</a><span class="k">class</span> <span class="nc">OccultedLyotCoronagraph</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A Lyot coronagraph with a focal-plane mask.</span>
+
+<span class="sd">	The area outside of this focal-plane mask is assumed to be fully absorbing.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	input_grid : Grid</span>
+<span class="sd">		The grid on which the incoming wavefront is defined.</span>
+<span class="sd">	focal_plane_mask : Field or OpticalElement</span>
+<span class="sd">		The (complex) transmission of the focal-plane mask. If this is an :class:`OpticalElement`,</span>
+<span class="sd">		this will be used instead. This allows for more realistic implementations of focal-plane</span>
+<span class="sd">		masks.</span>
+<span class="sd">	lyot_stop : Field or OpticalElement or None</span>
+<span class="sd">		The (complex) transmission of the Lyot stop. If this is an :class:`OpticalElement`,</span>
+<span class="sd">		this will be used instead. This allows for more realistic implementations of Lyot stops.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">focal_plane_mask</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">focal_plane_mask</span><span class="p">,</span> <span class="s1">&#39;input_grid&#39;</span><span class="p">):</span>
+			<span class="c1"># Focal plane mask is an optical element.</span>
+			<span class="n">grid</span> <span class="o">=</span> <span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">input_grid</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span> <span class="o">=</span> <span class="n">focal_plane_mask</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="c1"># Focal plane mask is a field.</span>
+			<span class="n">grid</span> <span class="o">=</span> <span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">grid</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span> <span class="o">=</span> <span class="n">Apodizer</span><span class="p">(</span><span class="n">focal_plane_mask</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">FraunhoferPropagator</span><span class="p">(</span><span class="n">input_grid</span><span class="p">,</span> <span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+	
+<div class="viewcode-block" id="OccultedLyotCoronagraph.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.OccultedLyotCoronagraph.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront through the Lyot coronagraph.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront to propagate. This wavefront is assumed to be in the pupil plane.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The Lyot-plane wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)))</span></div>
+	
+<div class="viewcode-block" id="OccultedLyotCoronagraph.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.coronagraphy.html#hcipy.hcipy.OccultedLyotCoronagraph.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate the wavefront from the Lyot plane to the pupil plane.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The wavefront to propagate.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The pupil-plane wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focal_plane_mask</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">wavefront</span><span class="p">)))</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.field.operations &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.field.operations</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.field</span> <span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="field_inverse_tikhonov"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_inverse_tikhonov">[docs]</a><span class="k">def</span> <span class="nf">field_inverse_tikhonov</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Invert a tensor field of order 2 using Tikhonov regularization.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	f : `Field`</span>
+<span class="sd">		The tensor field for which to calculate the inverses. The tensor order</span>
+<span class="sd">		of this Field has to be 2.</span>
+<span class="sd">	rcond : scalar</span>
+<span class="sd">		The relative regularization parameter to use for the inversions.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The resulting Field with tensor order 2.</span>
+<span class="sd">	</span>
+<span class="sd">	Raises</span>
+<span class="sd">	------</span>
+<span class="sd">	ValueError</span>
+<span class="sd">		If the tensor order of field `f` is not 2.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="kn">from</span> <span class="nn">..math_util</span> <span class="kn">import</span> <span class="n">inverse_tikhonov</span>
+
+	<span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">tensor_order</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Field must be a tensor field of order 2 to be able to calculate inverses.&quot;</span><span class="p">)</span>
+
+	<span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+		<span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inverse_tikhonov</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="o">...</span><span class="p">,</span><span class="n">i</span><span class="p">],</span> <span class="n">rcond</span><span class="p">))</span>
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="field_svd"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.field_svd">[docs]</a><span class="k">def</span> <span class="nf">field_svd</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Calculate the singular value decomposition for a tensor field of order 2.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	f : `Field`</span>
+<span class="sd">		The tensor field for which to calculate the singular value decompositions.</span>
+<span class="sd">	full_matrices : boolean</span>
+<span class="sd">		If True, matrices in U and Vh will have shapes (M,M) and (N,N) respectively.</span>
+<span class="sd">		Otherwise their shapes are (M,K), (K,N) respectively, where K=min(M,N).</span>
+<span class="sd">	compute_uv : boolean</span>
+<span class="sd">		Whether to compute matrices U and Vh in addition to the singular values.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	U : `Field`</span>
+<span class="sd">		The unitary matrices. Only returned if `compute_uv` is True.</span>
+<span class="sd">	S : `Field`</span>
+<span class="sd">		The singular values, sorted in descending order.</span>
+<span class="sd">	Vh : `Field`</span>
+<span class="sd">		The unitary matrices. Only returned if `compute_uv` is True.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	
+	<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">full_matrices</span><span class="p">,</span> <span class="n">compute_uv</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">compute_uv</span><span class="p">:</span>
+		<span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vh</span> <span class="o">=</span> <span class="n">res</span>
+		<span class="n">U</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+		<span class="n">Vh</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">Vh</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">S</span> <span class="o">=</span> <span class="n">res</span>
+	
+	<span class="n">S</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">f</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="n">compute_uv</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vh</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">S</span></div>
+
+<div class="viewcode-block" id="make_field_operation"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.field.html#hcipy.hcipy.make_field_operation">[docs]</a><span class="k">def</span> <span class="nf">make_field_operation</span><span class="p">(</span><span class="n">op</span><span class="p">):</span>
+	<span class="k">pass</span></div>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">def make_field_operation(op):</span>
+<span class="sd">	def inner(*args, **kwargs):</span>
+<span class="sd">		# Determine which args are fields.</span>
+<span class="sd">		is_field = [hasattr(arg, &#39;grid&#39;) for arg in args]</span>
+
+<span class="sd">		if not np.any(is_field):</span>
+<span class="sd">			return op(*args, **kwargs)</span>
+
+<span class="sd">		# At least one argument has a field</span>
+<span class="sd">		grid_size = np.flatnonzero(is_field)[0]].grid.size</span>
+<span class="sd">		</span>
+<span class="sd">		if len(args) == 1:</span>
+<span class="sd">			# Only one argument; use loop comprehension</span>
+<span class="sd">			res = np.array([op(args[0][...,i]) for i in range(grid_size)])</span>
+
+<span class="sd">			return Field(, args[0].grid)</span>
+<span class="sd">		</span>
+<span class="sd">		# More than one argument operation.</span>
+<span class="sd">		res = []</span>
+<span class="sd">		for i in range(grid_size):</span>
+<span class="sd">			a = tuple([args[j][...,i] if is_field[j] else args[j] for j in len(args)])</span>
+<span class="sd">			res.append(op(*a, **kwargs))</span>
+<span class="sd">		return Field(res, )</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

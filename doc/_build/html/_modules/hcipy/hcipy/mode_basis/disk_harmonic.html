@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.mode_basis.disk_harmonic &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.mode_basis.disk_harmonic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">jv</span><span class="p">,</span> <span class="n">jn_zeros</span><span class="p">,</span> <span class="n">jnp_zeros</span>
+
+<span class="kn">from</span> <span class="nn">.mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+<span class="kn">from</span> <span class="nn">..aperture</span> <span class="kn">import</span> <span class="n">circular_aperture</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<div class="viewcode-block" id="disk_harmonic"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.disk_harmonic">[docs]</a><span class="k">def</span> <span class="nf">disk_harmonic</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bc</span><span class="o">=</span><span class="s1">&#39;dirichlet&#39;</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create a disk harmonic.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	n : int</span>
+<span class="sd">		Radial order</span>
+<span class="sd">	m : int</span>
+<span class="sd">		Azimuthal order</span>
+<span class="sd">	D : scalar</span>
+<span class="sd">		The diameter of the pupil.</span>
+<span class="sd">	bc : string</span>
+<span class="sd">		The boundary conditions to use. This can be either &#39;dirichlet&#39;, or </span>
+<span class="sd">		&#39;neumann&#39; for a Dirichlet or Neumann boundary condition respectively.</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the function.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field</span>
+<span class="sd">		The disk harmonic function evaluated on `grid`.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">polar_grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span>
+	<span class="n">r</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">polar_grid</span><span class="o">.</span><span class="n">r</span> <span class="o">/</span> <span class="n">D</span>
+	<span class="n">theta</span> <span class="o">=</span> <span class="n">polar_grid</span><span class="o">.</span><span class="n">theta</span>
+
+	<span class="n">m_negative</span> <span class="o">=</span> <span class="n">m</span> <span class="o">&lt;</span> <span class="mi">0</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">bc</span> <span class="o">==</span> <span class="s1">&#39;dirichlet&#39;</span><span class="p">:</span>
+		<span class="n">lambda_mn</span> <span class="o">=</span> <span class="n">jn_zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span>
+	<span class="k">elif</span> <span class="n">bc</span> <span class="o">==</span> <span class="s1">&#39;neumann&#39;</span><span class="p">:</span>
+		<span class="n">lambda_mn</span> <span class="o">=</span> <span class="n">jnp_zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+		<span class="n">norm</span> <span class="o">=</span> <span class="mi">1</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Boundary condition not recongnized.&#39;</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="n">m_negative</span><span class="p">:</span>
+		<span class="n">z</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">jv</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lambda_mn</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">z</span> <span class="o">=</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">jv</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">lambda_mn</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">theta</span><span class="p">)</span>
+
+	<span class="c1"># Do manual normalization for now...</span>
+	<span class="n">mask</span> <span class="o">=</span> <span class="n">circular_aperture</span><span class="p">(</span><span class="n">D</span><span class="p">)(</span><span class="n">grid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+	<span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="n">mask</span><span class="p">]))</span>
+
+	<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">z</span> <span class="o">*</span> <span class="n">mask</span> <span class="o">/</span> <span class="n">norm</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="disk_harmonic_energy"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.disk_harmonic_energy">[docs]</a><span class="k">def</span> <span class="nf">disk_harmonic_energy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">bc</span><span class="o">=</span><span class="s1">&#39;dirichlet&#39;</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Get the energy of a disk harmonic function.</span>
+
+<span class="sd">	This allows for functions to sort a disk harmonic mode basis on energy.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	n : int</span>
+<span class="sd">		Radial order</span>
+<span class="sd">	m : int</span>
+<span class="sd">		Azimuthal order</span>
+<span class="sd">	bc : string</span>
+<span class="sd">		The boundary conditions to use. This can be either &#39;dirichlet&#39;, or </span>
+<span class="sd">		&#39;neumann&#39; for a Dirichlet or Neumann boundary condition respectively.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	scalar</span>
+<span class="sd">		The energy corresponding to the mode.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">m</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">bc</span> <span class="o">==</span> <span class="s1">&#39;dirichlet&#39;</span><span class="p">:</span>
+		<span class="n">lambda_mn</span> <span class="o">=</span> <span class="n">jn_zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">elif</span> <span class="n">bc</span> <span class="o">==</span> <span class="s1">&#39;neumann&#39;</span><span class="p">:</span>
+		<span class="n">lambda_mn</span> <span class="o">=</span> <span class="n">jnp_zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Boundary condition not recognized.&#39;</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">lambda_mn</span><span class="o">**</span><span class="mi">2</span></div>
+
+<div class="viewcode-block" id="get_disk_harmonic_orders_sorted"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.get_disk_harmonic_orders_sorted">[docs]</a><span class="k">def</span> <span class="nf">get_disk_harmonic_orders_sorted</span><span class="p">(</span><span class="n">num_modes</span><span class="p">,</span> <span class="n">bc</span><span class="o">=</span><span class="s1">&#39;dirichlet&#39;</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Return the orders for the first `num_modes` modes.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	num_modes : int</span>
+<span class="sd">		The number of modes to return.</span>
+<span class="sd">	bc : string</span>
+<span class="sd">		The boundary conditions to use. This can be either &#39;dirichlet&#39;, or </span>
+<span class="sd">		&#39;neumann&#39; for a Dirichlet or Neumann boundary condition respectively.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	list of tuples</span>
+<span class="sd">		A list of orders (n, m).</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">orders</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span>
+	<span class="n">energies</span> <span class="o">=</span> <span class="p">[</span><span class="n">disk_harmonic_energy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bc</span><span class="p">)]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">num_modes</span><span class="p">:</span>
+		<span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+		<span class="n">order</span> <span class="o">=</span> <span class="n">orders</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		
+		<span class="k">if</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+		<span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+		<span class="k">del</span> <span class="n">orders</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+		<span class="k">del</span> <span class="n">energies</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+		<span class="n">new_order</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">new_order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span> <span class="ow">and</span> <span class="n">new_order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+			<span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_order</span><span class="p">)</span>
+			<span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">disk_harmonic_energy</span><span class="p">(</span><span class="n">new_order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_order</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bc</span><span class="p">))</span>
+		<span class="n">new_order</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">if</span> <span class="n">new_order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span> <span class="ow">and</span> <span class="n">new_order</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+			<span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_order</span><span class="p">)</span>
+			<span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">disk_harmonic_energy</span><span class="p">(</span><span class="n">new_order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_order</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bc</span><span class="p">))</span>
+
+	<span class="k">return</span> <span class="n">results</span><span class="p">[:</span><span class="n">num_modes</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="make_disk_harmonic_basis"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.mode_basis.html#hcipy.hcipy.make_disk_harmonic_basis">[docs]</a><span class="k">def</span> <span class="nf">make_disk_harmonic_basis</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">num_modes</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bc</span><span class="o">=</span><span class="s1">&#39;dirichlet&#39;</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create a disk harmonic mode basis.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	grid : Grid</span>
+<span class="sd">		The grid on which to evaluate the disk harmonic modes.</span>
+<span class="sd">	num_modes : int</span>
+<span class="sd">		The number of modes to create.</span>
+<span class="sd">	D : scalar</span>
+<span class="sd">		The diameter of the disk.</span>
+<span class="sd">	bc : string</span>
+<span class="sd">		The boundary conditions to use. This can be either &#39;dirichlet&#39;, or </span>
+<span class="sd">		&#39;neumann&#39; for a Dirichlet or Neumann boundary condition respectively.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	ModeBasis</span>
+<span class="sd">		The evaluated disk harmonic modes.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">orders</span> <span class="o">=</span> <span class="n">get_disk_harmonic_orders_sorted</span><span class="p">(</span><span class="n">num_modes</span><span class="p">,</span> <span class="n">bc</span><span class="p">)</span>
+
+	<span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">disk_harmonic</span><span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">D</span><span class="p">,</span> <span class="n">bc</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

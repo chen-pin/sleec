@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.aperture.realistic &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.aperture.realistic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">CartesianGrid</span><span class="p">,</span> <span class="n">UnstructuredCoords</span><span class="p">,</span> <span class="n">make_hexagonal_grid</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">.generic</span> <span class="kn">import</span> <span class="o">*</span>
+
+<div class="viewcode-block" id="make_vlt_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_vlt_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_vlt_aperture</span><span class="p">():</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="make_subaru_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_subaru_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_subaru_aperture</span><span class="p">():</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="make_lbt_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_lbt_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_lbt_aperture</span><span class="p">():</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="make_magellan_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_magellan_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_magellan_aperture</span><span class="p">(</span><span class="n">normalized</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">with_spiders</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make the Magellan aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	normalized : boolean</span>
+<span class="sd">		If this is True, the outer diameter will be scaled to 1. Otherwise, the</span>
+<span class="sd">		diameter of the pupil will be 6.5 meters.</span>
+<span class="sd">	with_spiders: boolean</span>
+<span class="sd">		If this is False, the spiders will be left out.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The Magellan aperture.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">pupil_diameter</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="c1">#m</span>
+	<span class="n">spider_width1</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="mf">0.0254</span> <span class="c1">#m</span>
+	<span class="n">spider_width2</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="mf">0.0254</span> <span class="c1">#m</span>
+	<span class="n">central_obscuration_ratio</span> <span class="o">=</span> <span class="mf">0.29</span> 
+	<span class="n">spider_offset</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.34</span><span class="p">]</span> <span class="c1">#m</span>
+
+	<span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+		<span class="n">spider_width1</span> <span class="o">/=</span> <span class="n">pupil_diameter</span>
+		<span class="n">spider_width2</span> <span class="o">/=</span> <span class="n">pupil_diameter</span>
+		<span class="n">spider_offset</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">/</span> <span class="n">pupil_diameter</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">spider_offset</span><span class="p">]</span>
+		<span class="n">pupil_diameter</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+	<span class="n">spider_offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">spider_offset</span><span class="p">)</span>
+
+	<span class="n">mirror_edge1</span> <span class="o">=</span> <span class="p">(</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+	<span class="n">mirror_edge2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+	<span class="n">mirror_edge3</span> <span class="o">=</span> <span class="p">(</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="o">-</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+	<span class="n">mirror_edge4</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="o">-</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+
+	<span class="n">obstructed_aperture</span> <span class="o">=</span> <span class="n">make_obstructed_circular_aperture</span><span class="p">(</span><span class="n">pupil_diameter</span><span class="p">,</span> <span class="n">central_obscuration_ratio</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">with_spiders</span><span class="p">:</span>
+		<span class="k">return</span> <span class="n">obstructed_aperture</span>
+
+	<span class="n">spider1</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">spider_offset</span><span class="p">,</span> <span class="n">mirror_edge1</span><span class="p">,</span> <span class="n">spider_width1</span><span class="p">)</span>
+	<span class="n">spider2</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">spider_offset</span><span class="p">,</span> <span class="n">mirror_edge2</span><span class="p">,</span> <span class="n">spider_width1</span><span class="p">)</span>
+	<span class="n">spider3</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="o">-</span><span class="n">spider_offset</span><span class="p">,</span> <span class="n">mirror_edge3</span><span class="p">,</span> <span class="n">spider_width2</span><span class="p">)</span>
+	<span class="n">spider4</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="o">-</span><span class="n">spider_offset</span><span class="p">,</span> <span class="n">mirror_edge4</span><span class="p">,</span> <span class="n">spider_width2</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">obstructed_aperture</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider1</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider2</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider3</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider4</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="make_keck_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_keck_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_keck_aperture</span><span class="p">():</span>
+	<span class="k">pass</span></div>
+
+<div class="viewcode-block" id="make_luvoir_a_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_luvoir_a_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_luvoir_a_aperture</span><span class="p">(</span><span class="n">normalized</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">with_spiders</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">with_segment_gaps</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">segment_transmissions</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make the LUVOIR A aperture.</span>
+
+<span class="sd">	This aperture changes frequently. This one is based on [1]_. Spiders and segment gaps </span>
+<span class="sd">	can be included or excluded, and the transmission for each of the segments can also be changed.</span>
+<span class="sd">	</span>
+<span class="sd">	.. [1] Ruane et al. 2018 &quot;Fast linearized coronagraph optimizer (FALCO) IV: coronagraph design </span>
+<span class="sd">		survey for obstructed and segmented apertures.&quot; Space Telescopes and Instrumentation 2018: </span>
+<span class="sd">		Optical, Infrared, and Millimeter Wave. Vol. 10698. International Society for Optics and Photonics, 2018.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	normalized : boolean</span>
+<span class="sd">		If this is True, the outer diameter will be scaled to 1. Otherwise, the</span>
+<span class="sd">		diameter of the pupil will be 15.0 meters.</span>
+<span class="sd">	with_spiders : boolean</span>
+<span class="sd">		Include the secondary mirror support structure in the aperture.</span>
+<span class="sd">	with_segment_gaps : boolean</span>
+<span class="sd">		Include the gaps between individual segments in the aperture.</span>
+<span class="sd">	segment_transmissions : scalar or array_like</span>
+<span class="sd">		The transmission for each of the segments. If this is a scalar, this transmission will</span>
+<span class="sd">		be used for all segments.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The LUVOIR A aperture.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">pupil_diameter</span> <span class="o">=</span> <span class="mf">15.0</span> <span class="c1"># m</span>
+	<span class="n">segment_circum_diameter</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">pupil_diameter</span> <span class="o">/</span> <span class="mi">12</span>
+	<span class="n">num_rings</span> <span class="o">=</span> <span class="mi">6</span>
+	<span class="n">segment_gap</span> <span class="o">=</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">pupil_diameter</span>
+	<span class="n">spider_width</span> <span class="o">=</span> <span class="mf">0.005</span> <span class="o">*</span> <span class="n">pupil_diameter</span>
+	<span class="n">spider_relative_offset</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="c1"># as estimated from the paper, not an actual value</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">with_segment_gaps</span><span class="p">:</span>
+		<span class="n">segment_gap</span> <span class="o">=</span> <span class="mi">0</span>
+
+	<span class="k">if</span> <span class="n">normalized</span><span class="p">:</span>
+		<span class="n">segment_circum_diameter</span> <span class="o">/=</span> <span class="n">pupil_diameter</span>
+		<span class="n">segment_gap</span> <span class="o">/=</span> <span class="n">pupil_diameter</span>
+		<span class="n">spider_width</span> <span class="o">/=</span> <span class="n">pupil_diameter</span>
+		<span class="n">pupil_diameter</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+	<span class="n">segment_positions</span> <span class="o">=</span> <span class="n">make_hexagonal_grid</span><span class="p">(</span><span class="n">segment_circum_diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">num_rings</span><span class="p">)</span>
+	<span class="n">segment_positions</span> <span class="o">=</span> <span class="n">segment_positions</span><span class="o">.</span><span class="n">subset</span><span class="p">(</span><span class="n">circular_aperture</span><span class="p">(</span><span class="n">pupil_diameter</span> <span class="o">*</span> <span class="mf">0.98</span><span class="p">))</span>
+	<span class="n">segment_positions</span> <span class="o">=</span> <span class="n">segment_positions</span><span class="o">.</span><span class="n">subset</span><span class="p">(</span><span class="k">lambda</span> <span class="n">grid</span><span class="p">:</span> <span class="o">~</span><span class="p">(</span><span class="n">circular_aperture</span><span class="p">(</span><span class="n">segment_circum_diameter</span><span class="p">)(</span><span class="n">grid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
+
+	<span class="n">hexagon</span> <span class="o">=</span> <span class="n">hexagonal_aperture</span><span class="p">(</span><span class="n">segment_circum_diameter</span> <span class="o">-</span> <span class="n">segment_gap</span><span class="p">)</span>
+	<span class="k">def</span> <span class="nf">segment</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">hexagon</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+	
+	<span class="k">if</span> <span class="n">with_spiders</span><span class="p">:</span>
+		<span class="n">spider1</span> <span class="o">=</span> <span class="n">make_spider_infinite</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">90</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">)</span>
+
+		<span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">segment_circum_diameter</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">spider_relative_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+		<span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_circum_diameter</span> <span class="o">+</span> <span class="p">(</span><span class="n">segment_circum_diameter</span> <span class="o">*</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">spider_relative_offset</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+		<span class="n">spider2</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">)</span>
+
+		<span class="n">p3</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pupil_diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pupil_diameter</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">])</span>
+		<span class="n">spider3</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">)</span>
+
+		<span class="n">p4</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+		<span class="n">p5</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+		<span class="n">p6</span> <span class="o">=</span> <span class="n">p3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+		<span class="n">spider4</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">p4</span><span class="p">,</span> <span class="n">p5</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">)</span>
+		<span class="n">spider5</span> <span class="o">=</span> <span class="n">make_spider</span><span class="p">(</span><span class="n">p5</span><span class="p">,</span> <span class="n">p6</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">)</span>
+	
+	<span class="n">segmented_aperture</span> <span class="o">=</span> <span class="n">make_segmented_aperture</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">segment_positions</span><span class="p">,</span> <span class="n">segment_transmissions</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">segmented_aperture</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+		
+		<span class="k">if</span> <span class="n">with_spiders</span><span class="p">:</span>
+			<span class="n">res</span> <span class="o">*=</span> <span class="n">spider1</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider2</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider3</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider4</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">spider5</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="make_elt_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_elt_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_elt_aperture</span><span class="p">():</span>
+	<span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

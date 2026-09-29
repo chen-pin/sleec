@@ -1,0 +1,39 @@
+# sleec_parms.yml
+
+# Configuration file for sleec_input_02.py
+
+### FREE PARAMETERS ###
+
+# Focal Plane Mask -- initial value, lower bound, upper bound
+fpm_diameter      : [4.000, 2.500, 6.000]     # Airy units  ref: 3.877
+fpm_od            : [2.652, 1.000, 5.000]     # Optical density
+fpm_cosine_apod   : [0.589, 0.050, 1.000]     # Airy units
+dielectric_dia    : [4.000, 2.500, 6.000]     # Airy units
+dielectric_phase  : [0.200, 1.000, 2.000]     # Radians
+dielectric_apod   : [0.589, 0.589, 0.589]     # Airy units
+
+# Lyot Diameter -- initial value, lower bound, upper bound
+lyot_diameter         : [0.706, 0.300, 0.900]     # fraction of pupil diameter
+
+### FIXED PARAMETERS ###
+
+# Wavelength
+wavelength            : 0.600e-6                  # meters
+
+# Pupil Diameter is defined as the physical diameter of DM1
+actuator_pitch        : 0.001                     # meters
+pupil_dia_actuators   : 48                        # actuators
+pixels_per_actuator   : 10
+
+# f number
+f_number              : 30.0
+
+# Inner and outer working angles (airy units)
+IWA                   : 3.000                      # Airy units
+OWA                   : 10.000                     # Airy units
+
+# Select method from scipy.optimize.minimize
+method                : 'SLSQP'     # 'Nelder', 'L-BFGS-B', 'TNC', 'SLSQP', 'COBYLA'
+
+# Output FITS files?
+printfits : True

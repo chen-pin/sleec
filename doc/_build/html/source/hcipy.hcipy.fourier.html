@@ -1,0 +1,920 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.fourier package &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hcipy-hcipy-fourier-package">
+<h1>hcipy.hcipy.fourier package<a class="headerlink" href="#hcipy-hcipy-fourier-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier.fast_fourier_transform">
+<span id="hcipy-hcipy-fourier-fast-fourier-transform-module"></span><h2>hcipy.hcipy.fourier.fast_fourier_transform module<a class="headerlink" href="#module-hcipy.hcipy.fourier.fast_fourier_transform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fast_fourier_transform.</code><code class="descname">FastFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>q=1</em>, <em>fov=1</em>, <em>shift=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fast_fourier_transform.html#FastFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.fast_fourier_transform.FastFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.fast_fourier_transform.make_fft_grid">
+<code class="descclassname">hcipy.hcipy.fourier.fast_fourier_transform.</code><code class="descname">make_fft_grid</code><span class="sig-paren">(</span><em>input_grid</em>, <em>q=1</em>, <em>fov=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fast_fourier_transform.html#make_fft_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fast_fourier_transform.make_fft_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier.fourier_operations">
+<span id="hcipy-hcipy-fourier-fourier-operations-module"></span><h2>hcipy.hcipy.fourier.fourier_operations module<a class="headerlink" href="#module-hcipy.hcipy.fourier.fourier_operations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fourier_operations.ConvolveFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fourier_operations.</code><code class="descname">ConvolveFFT</code><span class="sig-paren">(</span><em>input_grid</em>, <em>kernel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ConvolveFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_operations.ConvolveFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fourier_operations.ConvolveFFT.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ConvolveFFT.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_operations.ConvolveFFT.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fourier_operations.FilterFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fourier_operations.</code><code class="descname">FilterFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#FilterFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_operations.FilterFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fourier_operations.RotateFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fourier_operations.</code><code class="descname">RotateFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#RotateFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_operations.RotateFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fourier_operations.ShearFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fourier_operations.</code><code class="descname">ShearFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ShearFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_operations.ShearFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier.fourier_transform">
+<span id="hcipy-hcipy-fourier-fourier-transform-module"></span><h2>hcipy.hcipy.fourier.fourier_transform module<a class="headerlink" href="#module-hcipy.hcipy.fourier.fourier_transform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.fourier_transform.FourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.fourier_transform.</code><code class="descname">FourierTransform</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The base class for all Fourier transform implementations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that is expected for the input field.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that is produced by the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.backward" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(field)</td>
+<td>Returns the inverse Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.forward" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(field)</td>
+<td>Returns the forward Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_backward" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_backward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code></a>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_forward" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_forward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code></a>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fourier_transform.FourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The field to inverse Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The inverse Fourier transform of the field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fourier_transform.FourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the forward Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The field to Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The Fourier transform of the field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_backward">
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transformation matrix corresonding to the
+Fourier transform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">A matrix representing the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_forward">
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transformation matrix corresonding to the
+Fourier transform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">A matrix representing the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.fourier_transform.make_fourier_transform">
+<code class="descclassname">hcipy.hcipy.fourier.fourier_transform.</code><code class="descname">make_fourier_transform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid=None</em>, <em>q=1</em>, <em>fov=1</em>, <em>planner='estimate'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#make_fourier_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.make_fourier_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a FourierTransform object.</p>
+<p>The most time-efficient Fourier transform method will be chosen according to actual or estimated performance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that will be used for the Field passed to the Fourier transform.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">None or Grid</span><dd><p class="first last">The grid of the resulting field. If it is None, a optimal grid will be chosen, according to <cite>q</cite> and <cite>fov</cite>.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">Describes how many samples to take in the Fourier domain. A value of 1 means critcally sampled in the Fourier domain.</p>
+</dd>
+<dt><strong>fov</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">Describes how far out the Fourier domain extends. A value of 1 means the same amount of samples as the spatial domain.</p>
+</dd>
+<dt><strong>planner</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">If it is &#8216;estimate&#8217;, performance of the different methods will be estimated from theoretical complexity estimates. 
+If it is &#8216;measure&#8217;, actual Fourier transforms will be performed to get the actual performance. The latter takes longer,
+but is more accurate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>FourierTransform</strong></dt>
+<dd><p class="first last">The Fourier transform that was requested.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.fourier_transform.multiplex_for_tensor_fields">
+<code class="descclassname">hcipy.hcipy.fourier.fourier_transform.</code><code class="descname">multiplex_for_tensor_fields</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#multiplex_for_tensor_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.multiplex_for_tensor_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for automatically multiplexing a function over the tensor directions.</p>
+<p>This function is used internally for simplifying the implementation of the Fourier transforms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>func</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">function</span><dd><p class="first last">The function to multiplex. This function gets called for each of the tensor elements.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.fourier_transform.time_it">
+<code class="descclassname">hcipy.hcipy.fourier.fourier_transform.</code><code class="descname">time_it</code><span class="sig-paren">(</span><em>function</em>, <em>t_max=5</em>, <em>n_max=100</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#time_it"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.fourier_transform.time_it" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier.matrix_fourier_transform">
+<span id="hcipy-hcipy-fourier-matrix-fourier-transform-module"></span><h2>hcipy.hcipy.fourier.matrix_fourier_transform module<a class="headerlink" href="#module-hcipy.hcipy.fourier.matrix_fourier_transform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.matrix_fourier_transform.</code><code class="descname">MatrixFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/matrix_fourier_transform.html#MatrixFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.matrix_fourier_transform.MatrixFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier.naive_fourier_transform">
+<span id="hcipy-hcipy-fourier-naive-fourier-transform-module"></span><h2>hcipy.hcipy.fourier.naive_fourier_transform module<a class="headerlink" href="#module-hcipy.hcipy.fourier.naive_fourier_transform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.naive_fourier_transform.</code><code class="descname">NaiveFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid</em>, <em>cache_matrices=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/naive_fourier_transform.html#NaiveFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>T_backward</strong></dt>
+<dd></dd>
+<dt><strong>T_forward</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.T_backward">
+<code class="descname">T_backward</code><a class="headerlink" href="#hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.T_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.T_forward">
+<code class="descname">T_forward</code><a class="headerlink" href="#hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.T_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.naive_fourier_transform.NaiveFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-hcipy.hcipy.fourier">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-hcipy.hcipy.fourier" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.make_fourier_transform">
+<code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">make_fourier_transform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid=None</em>, <em>q=1</em>, <em>fov=1</em>, <em>planner='estimate'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#make_fourier_transform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.make_fourier_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a FourierTransform object.</p>
+<p>The most time-efficient Fourier transform method will be chosen according to actual or estimated performance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that will be used for the Field passed to the Fourier transform.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">None or Grid</span><dd><p class="first last">The grid of the resulting field. If it is None, a optimal grid will be chosen, according to <cite>q</cite> and <cite>fov</cite>.</p>
+</dd>
+<dt><strong>q</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">Describes how many samples to take in the Fourier domain. A value of 1 means critcally sampled in the Fourier domain.</p>
+</dd>
+<dt><strong>fov</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">scalar</span><dd><p class="first last">Describes how far out the Fourier domain extends. A value of 1 means the same amount of samples as the spatial domain.</p>
+</dd>
+<dt><strong>planner</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">string</span><dd><p class="first last">If it is &#8216;estimate&#8217;, performance of the different methods will be estimated from theoretical complexity estimates. 
+If it is &#8216;measure&#8217;, actual Fourier transforms will be performed to get the actual performance. The latter takes longer,
+but is more accurate.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>FourierTransform</strong></dt>
+<dd><p class="first last">The Fourier transform that was requested.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.FourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">FourierTransform</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>The base class for all Fourier transform implementations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>input_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that is expected for the input field.</p>
+</dd>
+<dt><strong>output_grid</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Grid</span><dd><p class="first last">The grid that is produced by the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.fourier.FourierTransform.backward" title="hcipy.hcipy.fourier.FourierTransform.backward"><code class="xref py py-obj docutils literal"><span class="pre">backward</span></code></a>(field)</td>
+<td>Returns the inverse Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.fourier.FourierTransform.forward" title="hcipy.hcipy.fourier.FourierTransform.forward"><code class="xref py py-obj docutils literal"><span class="pre">forward</span></code></a>(field)</td>
+<td>Returns the forward Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_backward" title="hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_backward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code></a>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_forward" title="hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_forward"><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code></a>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The field to inverse Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The inverse Fourier transform of the field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the forward Fourier transform of the <code class="xref py py-class docutils literal"><span class="pre">Field</span></code> field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>field</strong></dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">Field</span><dd><p class="first last">The field to Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Field</strong></dt>
+<dd><p class="first last">The Fourier transform of the field.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_backward">
+<code class="descname">get_transformation_matrix_backward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.get_transformation_matrix_backward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transformation matrix corresonding to the
+Fourier transform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">A matrix representing the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_forward">
+<code class="descname">get_transformation_matrix_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_transform.html#FourierTransform.get_transformation_matrix_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FourierTransform.get_transformation_matrix_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the transformation matrix corresonding to the
+Fourier transform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>ndarray</strong></dt>
+<dd><p class="first last">A matrix representing the Fourier transform.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="hcipy.hcipy.fourier.make_fft_grid">
+<code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">make_fft_grid</code><span class="sig-paren">(</span><em>input_grid</em>, <em>q=1</em>, <em>fov=1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fast_fourier_transform.html#make_fft_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.make_fft_grid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.FastFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">FastFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>q=1</em>, <em>fov=1</em>, <em>shift=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fast_fourier_transform.html#FastFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FastFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FastFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.FastFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.FastFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.FastFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.ConvolveFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">ConvolveFFT</code><span class="sig-paren">(</span><em>input_grid</em>, <em>kernel</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ConvolveFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.ConvolveFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.ConvolveFFT.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ConvolveFFT.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.ConvolveFFT.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.ShearFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">ShearFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#ShearFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.ShearFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.RotateFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">RotateFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#RotateFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.RotateFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.FilterFFT">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">FilterFFT</code><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/fourier_operations.html#FilterFFT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.FilterFFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.MatrixFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">MatrixFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/matrix_fourier_transform.html#MatrixFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.MatrixFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.MatrixFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.MatrixFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.MatrixFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.MatrixFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="hcipy.hcipy.fourier.NaiveFourierTransform">
+<em class="property">class </em><code class="descclassname">hcipy.hcipy.fourier.</code><code class="descname">NaiveFourierTransform</code><span class="sig-paren">(</span><em>input_grid</em>, <em>output_grid</em>, <em>cache_matrices=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/hcipy/hcipy/fourier/naive_fourier_transform.html#NaiveFourierTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#hcipy.hcipy.fourier.NaiveFourierTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#hcipy.hcipy.fourier.fourier_transform.FourierTransform" title="hcipy.hcipy.fourier.fourier_transform.FourierTransform"><code class="xref py py-class docutils literal"><span class="pre">hcipy.hcipy.fourier.fourier_transform.FourierTransform</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>T_backward</strong></dt>
+<dd></dd>
+<dt><strong>T_forward</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_backward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_transformation_matrix_forward</span></code>()</td>
+<td>Returns the transformation matrix corresonding to the Fourier transform.</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><strong>backward</strong></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><strong>forward</strong></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="hcipy.hcipy.fourier.NaiveFourierTransform.T_backward">
+<code class="descname">T_backward</code><a class="headerlink" href="#hcipy.hcipy.fourier.NaiveFourierTransform.T_backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="hcipy.hcipy.fourier.NaiveFourierTransform.T_forward">
+<code class="descname">T_forward</code><a class="headerlink" href="#hcipy.hcipy.fourier.NaiveFourierTransform.T_forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.NaiveFourierTransform.backward">
+<code class="descname">backward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.NaiveFourierTransform.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="hcipy.hcipy.fourier.NaiveFourierTransform.forward">
+<code class="descname">forward</code><span class="sig-paren">(</span><em>field</em><span class="sig-paren">)</span><a class="headerlink" href="#hcipy.hcipy.fourier.NaiveFourierTransform.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">hcipy.hcipy.fourier package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier.fast_fourier_transform">hcipy.hcipy.fourier.fast_fourier_transform module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier.fourier_operations">hcipy.hcipy.fourier.fourier_operations module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier.fourier_transform">hcipy.hcipy.fourier.fourier_transform module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier.matrix_fourier_transform">hcipy.hcipy.fourier.matrix_fourier_transform module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier.naive_fourier_transform">hcipy.hcipy.fourier.naive_fourier_transform module</a></li>
+<li><a class="reference internal" href="#module-hcipy.hcipy.fourier">Module contents</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/hcipy.hcipy.fourier.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+      |
+      <a href="../_sources/source/hcipy.hcipy.fourier.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

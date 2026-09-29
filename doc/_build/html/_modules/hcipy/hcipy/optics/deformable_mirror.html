@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.deformable_mirror &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.deformable_mirror</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="kn">from</span> <span class="nn">.optical_element</span> <span class="kn">import</span> <span class="n">OpticalElement</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">make_uniform_grid</span>
+<span class="kn">from</span> <span class="nn">..mode_basis</span> <span class="kn">import</span> <span class="n">ModeBasis</span>
+<span class="kn">from</span> <span class="nn">..interpolation</span> <span class="kn">import</span> <span class="n">make_linear_interpolator_separated</span>
+<span class="kn">from</span> <span class="nn">..io</span> <span class="kn">import</span> <span class="n">read_fits</span>
+
+<div class="viewcode-block" id="make_xinetics_influence_functions"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.make_xinetics_influence_functions">[docs]</a><span class="k">def</span> <span class="nf">make_xinetics_influence_functions</span><span class="p">(</span><span class="n">pupil_grid</span><span class="p">,</span> <span class="n">num_actuators_across_pupil</span><span class="p">,</span> <span class="n">actuator_spacing</span><span class="p">,</span> <span class="n">x_tilt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_tilt</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z_tilt</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create influence functions for a Xinetics deformable mirror.</span>
+
+<span class="sd">	This function uses a The rotation of the deformable mirror will be done in the order X-Y-Z.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	pupil_grid : Grid</span>
+<span class="sd">		The grid on which to calculate the influence functions.</span>
+<span class="sd">	num_actuators_across_pupil : integer</span>
+<span class="sd">		The number of actuators across the pupil. The total number of actuators will be this number squared.</span>
+<span class="sd">	actuator_spacing : scalar</span>
+<span class="sd">		The spacing between actuators before tilting the deformable mirror.</span>
+<span class="sd">	x_tilt : scalar</span>
+<span class="sd">		The tilt of the deformable mirror around the x-axis in radians.</span>
+<span class="sd">	y_tilt : scalar</span>
+<span class="sd">		The tilt of the deformable mirror around the y-axis in radians.</span>
+<span class="sd">	z_tilt : scalar</span>
+<span class="sd">		The tilt of the deformable mirror around the z-axis in radians.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	ModeBasis</span>
+<span class="sd">		The influence functions for each of the actuators.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">extent</span> <span class="o">=</span> <span class="n">actuator_spacing</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_actuators_across_pupil</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+	<span class="n">actuator_positions</span> <span class="o">=</span> <span class="n">make_uniform_grid</span><span class="p">(</span><span class="n">num_actuators_across_pupil</span><span class="p">,</span> <span class="p">[</span><span class="n">extent</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+	<span class="n">evaluated_grid</span> <span class="o">=</span> <span class="n">pupil_grid</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">([</span><span class="n">y_tilt</span><span class="p">,</span> <span class="n">x_tilt</span><span class="p">]))</span><span class="o">.</span><span class="n">rotated</span><span class="p">(</span><span class="o">-</span><span class="n">z_tilt</span><span class="p">)</span>
+
+	<span class="n">actuator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">read_fits</span><span class="p">(</span><span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_stream</span><span class="p">(</span><span class="s1">&#39;hcipy&#39;</span><span class="p">,</span> <span class="s1">&#39;hcipy/optics/influence_dm5v2.fits&#39;</span><span class="p">)))</span>
+	<span class="n">actuator_grid</span> <span class="o">=</span> <span class="n">make_uniform_grid</span><span class="p">(</span><span class="n">actuator</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">actuator</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">actuator_spacing</span> <span class="o">/</span> <span class="mf">10.0</span><span class="p">)</span>
+	<span class="n">actuator</span> <span class="o">=</span> <span class="n">make_linear_interpolator_separated</span><span class="p">(</span><span class="n">actuator</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">actuator_grid</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+	<span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">actuator</span><span class="p">(</span><span class="n">evaluated_grid</span><span class="o">.</span><span class="n">shifted</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">actuator_positions</span><span class="p">]</span>
+	<span class="n">modes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Field</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">pupil_grid</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DeformableMirror"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DeformableMirror">[docs]</a><span class="k">class</span> <span class="nc">DeformableMirror</span><span class="p">(</span><span class="n">OpticalElement</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A deformable mirror using influence functions.</span>
+
+<span class="sd">	This class does not contain any temporal simulation (ie. settling time),</span>
+<span class="sd">	and assumes that there is no crosstalk between actuators.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	influence_functions : ModeBasis</span>
+<span class="sd">		The influence function for each of the actuators.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">influence_functions</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">influence_functions</span> <span class="o">=</span> <span class="n">influence_functions</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">actuators</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">influence_functions</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">influence_functions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span>
+	
+<div class="viewcode-block" id="DeformableMirror.forward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DeformableMirror.forward">[docs]</a>	<span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate a wavefront through the deformable mirror.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The reflected wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">*</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+<div class="viewcode-block" id="DeformableMirror.backward"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DeformableMirror.backward">[docs]</a>	<span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Propagate a wavefront backwards through the deformable mirror.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront</span>
+<span class="sd">			The incoming wavefront.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Wavefront</span>
+<span class="sd">			The reflected wavefront.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">wf</span> <span class="o">=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">wf</span><span class="o">.</span><span class="n">electric_field</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">2j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">*</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">wavenumber</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">wf</span></div>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">influence_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The influence function for each of the actuators of this deformable mirror.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_influence_functions</span>
+	
+	<span class="nd">@influence_functions.setter</span>
+	<span class="k">def</span> <span class="nf">influence_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">influence_functions</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_influence_functions</span> <span class="o">=</span> <span class="n">ModeBasis</span><span class="p">(</span><span class="n">influence_functions</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">_transformation_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_influence_functions</span><span class="o">.</span><span class="n">transformation_matrix</span>
+	
+	<span class="nd">@property</span>
+	<span class="k">def</span> <span class="nf">surface</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;The surface of the deformable mirror in meters.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">surf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation_matrix</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">)</span>
+	
+<div class="viewcode-block" id="DeformableMirror.phase_for"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.DeformableMirror.phase_for">[docs]</a>	<span class="k">def</span> <span class="nf">phase_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Get the phase that is added to a wavefront with a specified wavelength.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavelength : scalar</span>
+<span class="sd">			The wavelength at which to calculate the phase deformation.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		-------</span>
+<span class="sd">		Field</span>
+<span class="sd">			The calculated phase deformation.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">surface</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">wavelength</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

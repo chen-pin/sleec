@@ -1,0 +1,363 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.aperture.generic &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.aperture.generic</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">CartesianGrid</span><span class="p">,</span> <span class="n">UnstructuredCoords</span>
+
+<div class="viewcode-block" id="circular_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.circular_aperture">[docs]</a><span class="k">def</span> <span class="nf">circular_aperture</span><span class="p">(</span><span class="n">diameter</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Makes a Field generator for a circular aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	diameter : scalar</span>
+<span class="sd">		The diameter of the aperture.</span>
+<span class="sd">	center : array_like</span>
+<span class="sd">		The center of the aperture</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		This function can be evaluated on a grid to get a Field.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">shift</span> <span class="o">=</span> <span class="n">center</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">):</span>
+			<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span><span class="o">-</span><span class="n">shift</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">shift</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">r</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+	
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">),</span> <span class="n">grid</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="rectangular_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.rectangular_aperture">[docs]</a><span class="k">def</span> <span class="nf">rectangular_aperture</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Makes a Field generator for a rectangular aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	size : scalar or array_like</span>
+<span class="sd">		The length of the sides. If this is scalar, a square aperture is assumed.</span>
+<span class="sd">	center : array_like</span>
+<span class="sd">		The center of the aperture</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		This function can be evaluated on a grid to get a Field.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">dim</span> <span class="o">=</span> <span class="n">size</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+	
+	<span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">shift</span> <span class="o">=</span> <span class="n">center</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">shift</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">shift</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>			
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">),</span> <span class="n">grid</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="regular_polygon_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.regular_polygon_aperture">[docs]</a><span class="k">def</span> <span class="nf">regular_polygon_aperture</span><span class="p">(</span><span class="n">num_sides</span><span class="p">,</span> <span class="n">circum_diameter</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Makes a Field generator for a regular-polygon-shaped aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	num_sides : integer</span>
+<span class="sd">		The number of sides for the polygon.</span>
+<span class="sd">	circum_diameter : scalar</span>
+<span class="sd">		The circumdiameter of the polygon.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		This function can be evaluated on a grid to get a Field.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">if</span> <span class="n">num_sides</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+		<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The number of sides for a regular polygon has to greater or equal to 3.&#39;</span><span class="p">)</span>
+
+	<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-6</span>
+	
+	<span class="n">apothem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">num_sides</span><span class="p">)</span> <span class="o">*</span> <span class="n">circum_diameter</span> <span class="o">/</span> <span class="mi">2</span>
+	<span class="n">apothem</span> <span class="o">+=</span> <span class="n">apothem</span> <span class="o">*</span> <span class="n">epsilon</span>
+
+	<span class="c1"># Make use of symmetry</span>
+	<span class="k">if</span> <span class="n">num_sides</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num_sides</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_sides</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">angle</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">thetas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">num_sides</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_sides</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_sides</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">angle</span>
+
+	<span class="n">mask</span> <span class="o">=</span> <span class="n">rectangular_aperture</span><span class="p">(</span><span class="n">circum_diameter</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+		<span class="n">g</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;cartesian&#39;</span><span class="p">)</span>
+		<span class="n">m</span> <span class="o">=</span> <span class="n">mask</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">coords</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">m</span><span class="p">]</span>
+
+		<span class="n">f</span><span class="p">[</span><span class="o">~</span><span class="n">m</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+		<span class="c1"># Make use of symmetry</span>
+		<span class="k">if</span> <span class="n">num_sides</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">thetas</span><span class="p">:</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">apothem</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">thetas</span><span class="p">:</span>
+				<span class="k">print</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+				<span class="n">f</span><span class="p">[</span><span class="n">m</span><span class="p">]</span> <span class="o">*=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">apothem</span><span class="p">)</span>
+		
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<span class="c1"># Convenience function</span>
+<div class="viewcode-block" id="hexagonal_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.hexagonal_aperture">[docs]</a><span class="k">def</span> <span class="nf">hexagonal_aperture</span><span class="p">(</span><span class="n">circum_diameter</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Makes a Field generator for a hexagon aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	circum_diameter : scalar</span>
+<span class="sd">		The circumdiameter of the polygon.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		This function can be evaluated on a grid to get a Field.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">return</span> <span class="n">regular_polygon_aperture</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">circum_diameter</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="make_spider"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_spider">[docs]</a><span class="k">def</span> <span class="nf">make_spider</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make a rectangular obstruction from `p1` to `p2`.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	p1 : list or ndarray</span>
+<span class="sd">		The starting coordinates of the spider.</span>
+<span class="sd">	p2 : list or ndarray</span>
+<span class="sd">		The end coordinates of the spider.</span>
+<span class="sd">	spider_width : scalar</span>
+<span class="sd">		The full width of the spider.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The spider obstruction.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+	<span class="n">shift</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
+
+	<span class="n">spider_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">delta</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">spider_length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+
+	<span class="n">spider</span> <span class="o">=</span> <span class="n">rectangular_aperture</span><span class="p">((</span><span class="n">spider_length</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">))</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shifted</span><span class="p">(</span><span class="o">-</span><span class="n">shift</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+
+		<span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span>
+		<span class="n">y_new</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span>
+		<span class="n">spider_grid</span> <span class="o">=</span> <span class="n">CartesianGrid</span><span class="p">(</span><span class="n">UnstructuredCoords</span><span class="p">([</span><span class="n">x_new</span><span class="p">,</span> <span class="n">y_new</span><span class="p">]))</span>
+
+		<span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">spider</span><span class="p">(</span><span class="n">spider_grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="make_spider_infinite"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_spider_infinite">[docs]</a><span class="k">def</span> <span class="nf">make_spider_infinite</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">spider_width</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make an infinite spider starting at `p` and extending at an angle `angle`.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	p : list or ndarray</span>
+<span class="sd">		The starting coordinate of the spider.</span>
+<span class="sd">	angle : scalar</span>
+<span class="sd">		The angle to which the spider is pointing in degrees.</span>
+<span class="sd">	spider_width : scalar</span>
+<span class="sd">		The full width of the spider.</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The spider obstruction.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">spider_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">shifted</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">coords</span>
+
+		<span class="n">x_new</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span>
+		<span class="n">y_new</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">spider_angle</span><span class="p">)</span>
+		<span class="n">infinite_spider</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_new</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">spider_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">x_new</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">infinite_spider</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="make_obstructed_circular_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_obstructed_circular_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_obstructed_circular_aperture</span><span class="p">(</span><span class="n">pupil_diameter</span><span class="p">,</span> <span class="n">central_obscuration_ratio</span><span class="p">,</span> <span class="n">num_spiders</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spider_width</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Make a simple circular aperture with central obscuration and support structure.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	pupil_diameter : scalar</span>
+<span class="sd">		The diameter of the circular aperture.</span>
+<span class="sd">	central_obscuration_ratio : scalar</span>
+<span class="sd">		The ratio of the diameter of the central obscuration compared to the pupil diameter.</span>
+<span class="sd">	num_spiders : int</span>
+<span class="sd">		The number of spiders holding up the central obscuration.</span>
+<span class="sd">	spider_width : scalar</span>
+<span class="sd">		The full width of the spiders.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The circularly obstructed aperture.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">central_obscuration_diameter</span> <span class="o">=</span> <span class="n">pupil_diameter</span> <span class="o">*</span> <span class="n">central_obscuration_ratio</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>	
+		<span class="n">pupil_outer</span> <span class="o">=</span> <span class="n">circular_aperture</span><span class="p">(</span><span class="n">pupil_diameter</span><span class="p">)(</span><span class="n">grid</span><span class="p">)</span>
+		<span class="n">pupil_inner</span> <span class="o">=</span> <span class="n">circular_aperture</span><span class="p">(</span><span class="n">central_obscuration_diameter</span><span class="p">)(</span><span class="n">grid</span><span class="p">)</span>
+		<span class="n">spiders</span> <span class="o">=</span> <span class="mi">1</span>
+
+		<span class="n">spider_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num_spiders</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">angle</span> <span class="ow">in</span> <span class="n">spider_angles</span><span class="p">:</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">pupil_diameter</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="n">pupil_diameter</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+			<span class="n">spiders</span> <span class="o">*=</span> <span class="n">make_spider</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">spider_width</span><span class="p">)(</span><span class="n">grid</span><span class="p">)</span>
+		
+		<span class="k">return</span> <span class="p">(</span><span class="n">pupil_outer</span> <span class="o">-</span> <span class="n">pupil_inner</span><span class="p">)</span> <span class="o">*</span> <span class="n">spiders</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="make_obstruction"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_obstruction">[docs]</a><span class="k">def</span> <span class="nf">make_obstruction</span><span class="p">(</span><span class="n">aperture</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create an obstruction of `aperture`.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	aperture : Field generator</span>
+<span class="sd">		The aperture to invert.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The obstruction.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">return</span> <span class="k">lambda</span> <span class="n">grid</span><span class="p">:</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">aperture</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="make_segmented_aperture"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.aperture.html#hcipy.hcipy.make_segmented_aperture">[docs]</a><span class="k">def</span> <span class="nf">make_segmented_aperture</span><span class="p">(</span><span class="n">segment_shape</span><span class="p">,</span> <span class="n">segment_positions</span><span class="p">,</span> <span class="n">segment_transmissions</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;Create a segmented aperture.</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	segment_shape : Field generator</span>
+<span class="sd">		The shape for each of the segments.</span>
+<span class="sd">	segment_positions : Grid</span>
+<span class="sd">		The center position for each of the segments.</span>
+<span class="sd">	segment_transmissions : scalar or ndarray</span>
+<span class="sd">		The transmission for each of the segments. If this is a scalar, the same transmission is used for all segments.</span>
+<span class="sd">	</span>
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	Field generator</span>
+<span class="sd">		The segmented aperture.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="n">segment_transmissions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">segment_positions</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_transmissions</span>
+
+	<span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">segment_transmissions</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">segment_positions</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">segment_transmissions</span><span class="p">):</span>
+			<span class="n">res</span><span class="p">[</span><span class="n">segment_shape</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">shifted</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+		
+		<span class="k">return</span> <span class="n">Field</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">func</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

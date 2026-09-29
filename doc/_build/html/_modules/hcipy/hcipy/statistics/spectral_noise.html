@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.statistics.spectral_noise &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.statistics.spectral_noise</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+
+<div class="viewcode-block" id="SpectralNoiseFactory"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactory">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoiseFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psd</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">psd_args</span><span class="o">=</span><span class="p">(),</span> <span class="n">psd_kwargs</span><span class="o">=</span><span class="p">{}):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">psd</span> <span class="o">=</span> <span class="n">psd</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">psd_args</span> <span class="o">=</span> <span class="n">psd_args</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">psd_kwargs</span> <span class="o">=</span> <span class="n">psd_kwargs</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span> <span class="o">=</span> <span class="n">output_grid</span>
+	
+<div class="viewcode-block" id="SpectralNoiseFactory.make_random"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactory.make_random">[docs]</a>	<span class="k">def</span> <span class="nf">make_random</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="SpectralNoiseFactory.make_zero"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactory.make_zero">[docs]</a>	<span class="k">def</span> <span class="nf">make_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="SpectralNoise"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoise">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoise</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SpectralNoise.copy"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoise.copy">[docs]</a>	<span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SpectralNoise.shift"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoise.shift">[docs]</a>	<span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="SpectralNoise.shifted"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoise.shifted">[docs]</a>	<span class="k">def</span> <span class="nf">shifted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">a</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">a</span></div>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">NotImplemented</span>
+	
+	<span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">a</span> <span class="o">+=</span> <span class="n">b</span>
+		<span class="k">return</span> <span class="n">a</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">NotImplemented</span>
+	
+	<span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+		<span class="n">a</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">return</span> <span class="n">a</span>
+
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SpectralNoise.evaluate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoise.evaluate">[docs]</a>	<span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="p">()</span></div></div>
+
+<div class="viewcode-block" id="SpectralNoiseFactoryFFT"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryFFT">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoiseFactoryFFT</span><span class="p">(</span><span class="n">SpectralNoiseFactory</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psd</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">oversample</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">psd_args</span><span class="o">=</span><span class="p">(),</span> <span class="n">psd_kwargs</span><span class="o">=</span><span class="p">{}):</span>
+		<span class="kn">from</span> <span class="nn">..fourier</span> <span class="kn">import</span> <span class="n">FastFourierTransform</span>
+
+		<span class="n">SpectralNoiseFactory</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psd</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">psd_args</span><span class="p">,</span> <span class="n">psd_kwargs</span><span class="p">)</span>
+
+		<span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="o">.</span><span class="n">is_regular</span><span class="p">:</span>
+			<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Can&#39;t make a SpectralNoiseFactoryFFT on a non-regular grid.&quot;</span><span class="p">)</span>
+		
+		<span class="bp">self</span><span class="o">.</span><span class="n">fourier</span> <span class="o">=</span> <span class="n">FastFourierTransform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="n">oversample</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier</span><span class="o">.</span><span class="n">output_grid</span>
+	
+		<span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">output_grid</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">delta</span> <span class="o">*</span> <span class="n">output_grid</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">shape</span>
+
+		<span class="c1"># * (2*np.pi)**self.input_grid.ndim is due to conversion from PSD from &quot;per Hertz&quot; to &quot;per radian&quot;, which yields a factor of 2pi per dimension</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">,</span> <span class="o">*</span><span class="n">psd_args</span><span class="p">,</span> <span class="o">**</span><span class="n">psd_kwargs</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SpectralNoiseFactoryFFT.make_random"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryFFT.make_random">[docs]</a>	<span class="k">def</span> <span class="nf">make_random</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">size</span>
+		<span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+		<span class="n">C</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">SpectralNoiseFFT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SpectralNoiseFactoryFFT.make_zero"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryFFT.make_zero">[docs]</a>	<span class="k">def</span> <span class="nf">make_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">C</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">SpectralNoiseFFT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span></div></div>
+	
+<div class="viewcode-block" id="SpectralNoiseFFT"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFFT">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoiseFFT</span><span class="p">(</span><span class="n">SpectralNoise</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">factory</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="n">C</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">separated_coords</span>
+
+<div class="viewcode-block" id="SpectralNoiseFFT.shift"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFFT.shift">[docs]</a>	<span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="n">s</span> <span class="o">=</span> <span class="n">shift</span><span class="c1">#np.mod(shift + self.factory.period / 2, self.factory.period) - self.factory.period / 2</span>
+		<span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords</span><span class="p">))]</span>
+		<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="o">*</span><span class="n">S</span><span class="p">))</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">S</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span></div>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">+=</span> <span class="n">b</span><span class="o">.</span><span class="n">C</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">fourier</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">real</span></div>
+	
+<div class="viewcode-block" id="SpectralNoiseFactoryMultiscale"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryMultiscale">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoiseFactoryMultiscale</span><span class="p">(</span><span class="n">SpectralNoiseFactory</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psd</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">oversampling</span><span class="p">,</span> <span class="n">psd_args</span><span class="o">=</span><span class="p">(),</span> <span class="n">psd_kwargs</span><span class="o">=</span><span class="p">{}):</span>
+		<span class="kn">from</span> <span class="nn">..fourier</span> <span class="kn">import</span> <span class="n">FastFourierTransform</span><span class="p">,</span> <span class="n">MatrixFourierTransform</span>
+
+		<span class="n">SpectralNoiseFactory</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">psd</span><span class="p">,</span> <span class="n">output_grid</span><span class="p">,</span> <span class="n">psd_args</span><span class="p">,</span> <span class="n">psd_kwargs</span><span class="p">)</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">oversampling</span> <span class="o">=</span> <span class="n">oversampling</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">fourier_1</span> <span class="o">=</span> <span class="n">FastFourierTransform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fourier_1</span><span class="o">.</span><span class="n">output_grid</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">scaled</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">oversampling</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">fourier_2</span> <span class="o">=</span> <span class="n">MatrixFourierTransform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="p">)</span>
+
+		<span class="n">boundary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+		<span class="n">mask_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">r</span> <span class="o">&lt;</span> <span class="n">boundary</span>
+		<span class="n">mask_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="o">.</span><span class="n">as_</span><span class="p">(</span><span class="s1">&#39;polar&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">r</span> <span class="o">&gt;=</span> <span class="n">boundary</span>
+
+		<span class="c1"># * (2*np.pi)**self.input_grid.ndim is due to conversion from PSD from &quot;per Hertz&quot; to &quot;per radian&quot;, which yields a factor of 2pi per dimension</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">psd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="p">,</span> <span class="o">*</span><span class="n">psd_args</span><span class="p">,</span> <span class="o">**</span><span class="n">psd_kwargs</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span><span class="p">[</span><span class="n">mask_1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">psd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="p">,</span> <span class="o">*</span><span class="n">psd_args</span><span class="p">,</span> <span class="o">**</span><span class="n">psd_kwargs</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="o">.</span><span class="n">weights</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span><span class="p">[</span><span class="n">mask_2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+	
+<div class="viewcode-block" id="SpectralNoiseFactoryMultiscale.make_random"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryMultiscale.make_random">[docs]</a>	<span class="k">def</span> <span class="nf">make_random</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">N_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">size</span>
+		<span class="n">N_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="o">.</span><span class="n">size</span>
+		
+		<span class="n">C_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N_1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N_1</span><span class="p">))</span>
+		<span class="n">C_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N_2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1j</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N_2</span><span class="p">))</span>
+
+		<span class="k">return</span> <span class="n">SpectralNoiseMultiscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_1</span><span class="p">,</span> <span class="n">C_2</span><span class="p">)</span></div>
+	
+<div class="viewcode-block" id="SpectralNoiseFactoryMultiscale.make_zero"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseFactoryMultiscale.make_zero">[docs]</a>	<span class="k">def</span> <span class="nf">make_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">N_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_1</span><span class="o">.</span><span class="n">size</span>
+		<span class="n">N_2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_grid_2</span><span class="o">.</span><span class="n">size</span>
+
+		<span class="n">C_1</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N_1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_1</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+		<span class="n">C_2</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N_1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">C_2</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">SpectralNoiseMultiscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">C_1</span><span class="p">,</span> <span class="n">C_2</span><span class="p">)</span></div></div>
+	
+<div class="viewcode-block" id="SpectralNoiseMultiscale"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseMultiscale">[docs]</a><span class="k">class</span> <span class="nc">SpectralNoiseMultiscale</span><span class="p">(</span><span class="n">SpectralNoise</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">C_1</span><span class="p">,</span> <span class="n">C_2</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">factory</span> <span class="o">=</span> <span class="n">factory</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">=</span> <span class="n">C_1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">=</span> <span class="n">C_2</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords_1</span> <span class="o">=</span> <span class="n">C_1</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">separated_coords</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">coords_2</span> <span class="o">=</span> <span class="n">C_2</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">separated_coords</span>
+
+<div class="viewcode-block" id="SpectralNoiseMultiscale.shift"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.statistics.html#hcipy.hcipy.SpectralNoiseMultiscale.shift">[docs]</a>	<span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">):</span>
+		<span class="n">S_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">shift</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords_1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords_1</span><span class="p">))]</span>
+		<span class="n">S_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="o">*</span><span class="n">S_1</span><span class="p">))</span>
+
+		<span class="n">S_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">shift</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coords_2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coords_2</span><span class="p">))]</span>
+		<span class="n">S_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="o">*</span><span class="n">S_2</span><span class="p">))</span>
+
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">S_1</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">*=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1j</span> <span class="o">*</span> <span class="n">S_2</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span></div>
+	
+	<span class="k">def</span> <span class="nf">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">+=</span> <span class="n">b</span><span class="o">.</span><span class="n">C_1</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">+=</span> <span class="n">b</span><span class="o">.</span><span class="n">C_2</span>
+		<span class="k">return</span> <span class="bp">self</span>
+	
+	<span class="k">def</span> <span class="nf">__imul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_1</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">C_2</span> <span class="o">*=</span> <span class="n">f</span>
+		<span class="k">return</span> <span class="bp">self</span>
+
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="n">ps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">fourier_1</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C_1</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+		<span class="n">ps</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">fourier_2</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C_2</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+		<span class="k">return</span> <span class="n">ps</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

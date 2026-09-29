@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>hcipy.hcipy.optics.detector &mdash; sleec 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="sleec 0.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for hcipy.hcipy.optics.detector</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">..field</span> <span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">..statistics</span> <span class="kn">import</span> <span class="n">large_poisson</span>
+
+<div class="viewcode-block" id="Detector"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.Detector">[docs]</a><span class="k">class</span> <span class="nc">Detector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Detector.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.Detector.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrates the detector.</span>
+<span class="sd">  </span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront or array_like</span>
+<span class="sd">			The wavefront sets the amount of power generated per unit time. </span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time. </span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time. </span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+<div class="viewcode-block" id="Detector.read_out"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.Detector.read_out">[docs]</a>	<span class="k">def</span> <span class="nf">read_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reads out the detector.</span>
+
+<span class="sd">		No noise will be added to the image.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		----------</span>
+<span class="sd">		output_field : array_like</span>
+<span class="sd">			The final detector image.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
+	
+	<span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrate and read out the detector.</span>
+
+<span class="sd">		This is a convenience function to avoid having to call two functions</span>
+<span class="sd">		in quick succession.</span>
+
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront or array_like</span>
+<span class="sd">			The wavefront sets the amount of power generated per unit time. </span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time. </span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time.</span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		----------</span>
+<span class="sd">		output_field : array_like</span>
+<span class="sd">			The final detector image.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_out</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="NoiselessDetector"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoiselessDetector">[docs]</a><span class="k">class</span> <span class="nc">NoiselessDetector</span><span class="p">(</span><span class="n">Detector</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A detector without noise.</span>
+
+<span class="sd">	This detector includes no noise effects at all. This can be used as a</span>
+<span class="sd">	theoretically perfect detector.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="NoiselessDetector.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoiselessDetector.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrates the detector.</span>
+<span class="sd">  </span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront or array_like</span>
+<span class="sd">			The wavefront sets the amount of power generated per unit time. </span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time. </span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time. </span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">+=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">power</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">weight</span></div>
+
+<div class="viewcode-block" id="NoiselessDetector.read_out"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoiselessDetector.read_out">[docs]</a>	<span class="k">def</span> <span class="nf">read_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reads out the detector.</span>
+
+<span class="sd">		No noise will be added to the image.</span>
+
+<span class="sd">		Returns</span>
+<span class="sd">		----------</span>
+<span class="sd">		output_field : array_like</span>
+<span class="sd">			The final detector image.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="c1"># Make sure not to overwrite output</span>
+		<span class="n">output_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+		<span class="c1"># Reset detector</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="mi">0</span>
+
+		<span class="k">return</span> <span class="n">output_field</span></div></div>
+
+<div class="viewcode-block" id="NoisyDetector"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoisyDetector">[docs]</a><span class="k">class</span> <span class="nc">NoisyDetector</span><span class="p">(</span><span class="n">Detector</span><span class="p">):</span>
+	<span class="sd">&#39;&#39;&#39;A detector class that has some basic noise properties. </span>
+
+<span class="sd">	A detector that includes the following noise sources: photon shot noise, dark current </span>
+<span class="sd">	shot noise, flat field errors and read noise. These noise sources (except for photon shot</span>
+<span class="sd">	noise) can be either a scalar (same for entire grid) or an array. For the flat field error</span>
+<span class="sd">	specifically: if a scalar is given, a normal distributed flat field map (given scalar</span>
+<span class="sd">	is standard deviation about 1) is generated that will be used - if an array is given, that </span>
+<span class="sd">	array will be used, so it will NOT be a normal distributed flat field where every point in</span>
+<span class="sd">	array gives the standard deviation. This allows the user to load a specific flat field map. </span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	input_grid : Grid</span>
+<span class="sd">		The grid on which the detector samples. </span>
+<span class="sd">	dark_current_rate : scalar or array_like</span>
+<span class="sd">		An array or scalar that gives dark current rate in counts per unit time for each point </span>
+<span class="sd">		in the grid.</span>
+<span class="sd">	read_noise : scalar or array_like</span>
+<span class="sd">		An array or scalar that gives the rms read noise counts for each point in the grid.</span>
+<span class="sd">	flat_field : scalar or array_like</span>
+<span class="sd">		An array or scalar that gives the flat field error for each point in the </span>
+<span class="sd">		grid. If a scalar is given, a random normal distributed flat field map (given scalar</span>
+<span class="sd">		is standard deviation about 1) is generated that will be used. </span>
+<span class="sd">	include_photon_noise : boolean</span>
+<span class="sd">		Turns the photon noise on or off.</span>
+<span class="sd">	</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_grid</span><span class="p">,</span> <span class="n">dark_current_rate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">read_noise</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat_field</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">include_photon_noise</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+		<span class="c1"># Setting the start power. </span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="mi">0</span>
+	
+		<span class="c1"># The parameters. </span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span> <span class="o">=</span> <span class="n">input_grid</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dark_current_rate</span> <span class="o">=</span> <span class="n">dark_current_rate</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">read_noise</span> <span class="o">=</span> <span class="n">read_noise</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">flat_field</span> <span class="o">=</span> <span class="n">flat_field</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">include_photon_noise</span> <span class="o">=</span> <span class="n">include_photon_noise</span>
+
+	<span class="nd">@property</span> 
+	<span class="k">def</span> <span class="nf">flat_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flat_field</span>
+
+	<span class="nd">@flat_field.setter</span>
+	<span class="k">def</span> <span class="nf">flat_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flat_field</span><span class="p">):</span>
+		<span class="c1"># If the flatfield parameters was a scalar, we will generate a flat field map that will</span>
+		<span class="c1"># be constant for this object until flat_field is manually changed. </span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">flat_field</span><span class="p">):</span> 
+			<span class="bp">self</span><span class="o">.</span><span class="n">_flat_field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">flat_field</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">input_grid</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">_flat_field</span> <span class="o">=</span> <span class="n">flat_field</span> 
+
+<div class="viewcode-block" id="NoisyDetector.integrate"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoisyDetector.integrate">[docs]</a>	<span class="k">def</span> <span class="nf">integrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavefront</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Integrates the detector.</span>
+
+<span class="sd">		The amount of power and dark current that the detector generates are calculated</span>
+<span class="sd">		for a given integration time and weight.</span>
+<span class="sd">  </span>
+<span class="sd">		Parameters</span>
+<span class="sd">		----------</span>
+<span class="sd">		wavefront : Wavefront or array_like</span>
+<span class="sd">			The wavefront sets the amount of power generated per unit time. </span>
+<span class="sd">		dt : scalar</span>
+<span class="sd">			The integration time in units of time. </span>
+<span class="sd">		weight : scalar</span>
+<span class="sd">			Weight of every unit of integration time. </span>
+<span class="sd">	</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="c1">#The power that the detector detects during the integration.</span>
+		<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">wavefront</span><span class="p">,</span> <span class="s1">&#39;power&#39;</span><span class="p">):</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">+=</span> <span class="n">wavefront</span><span class="o">.</span><span class="n">power</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">weight</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">+=</span> <span class="n">wavefront</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">weight</span>
+
+		<span class="c1">#Adding the generated dark current to the power.</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dark_current_rate</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">weight</span></div>
+
+<div class="viewcode-block" id="NoisyDetector.read_out"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.NoisyDetector.read_out">[docs]</a>	<span class="k">def</span> <span class="nf">read_out</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;Reads out the detector. </span>
+
+<span class="sd">		The read out operation of the detector. This means that, if applicable, first photon noise </span>
+<span class="sd">		will be included to the power. Then, in this order, the flat field error and </span>
+<span class="sd">		read-out noise are applied. After the read out the power is reset.  </span>
+<span class="sd">		</span>
+<span class="sd">		Returns</span>
+<span class="sd">		----------</span>
+<span class="sd">		output_field : array_like</span>
+<span class="sd">			The final detector image.</span>
+
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="c1"># Make sure not to overwrite output</span>
+		<span class="n">output_field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+		<span class="c1"># Adding photon noise. </span>
+		<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_photon_noise</span><span class="p">:</span>
+			<span class="n">output_field</span> <span class="o">=</span> <span class="n">large_poisson</span><span class="p">(</span><span class="n">output_field</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">1e6</span><span class="p">)</span>
+
+		<span class="c1"># Adding flat field errors. </span>
+		<span class="n">output_field</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flat_field</span>
+
+		<span class="c1"># Adding read-out noise. </span>
+		<span class="n">output_field</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_noise</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">output_field</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+		<span class="c1"># Reset detector</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="mi">0</span>
+
+		<span class="k">return</span> <span class="n">output_field</span></div></div>
+
+<div class="viewcode-block" id="FrameCorrector"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.FrameCorrector">[docs]</a><span class="k">class</span> <span class="nc">FrameCorrector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FrameCorrector.correct"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.FrameCorrector.correct">[docs]</a>	<span class="k">def</span> <span class="nf">correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+		<span class="k">return</span> <span class="n">img</span></div></div>
+
+<div class="viewcode-block" id="BasicFrameCorrector"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.BasicFrameCorrector">[docs]</a><span class="k">class</span> <span class="nc">BasicFrameCorrector</span><span class="p">(</span><span class="n">FrameCorrector</span><span class="p">):</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dark</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">flat_field</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">dark</span> <span class="o">=</span> <span class="n">dark</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">flat_field</span> <span class="o">=</span> <span class="n">flat_field</span>
+	
+<div class="viewcode-block" id="BasicFrameCorrector.correct"><a class="viewcode-back" href="../../../../source/hcipy.hcipy.optics.html#hcipy.hcipy.BasicFrameCorrector.correct">[docs]</a>	<span class="k">def</span> <span class="nf">correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+		<span class="k">return</span> <span class="p">(</span><span class="n">img</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">dark</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">flat_field</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Pin Chen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
